@@ -25,7 +25,7 @@ void NConfigWidget::setCurrentProject(QString dirPath) {
 
     this->syncAppJsonToWidget();
     this->syncSceneJsonToWidget();
-
+    this->syncPageJsonToWidget();
 }
 
 
@@ -36,6 +36,7 @@ void NConfigWidget::saveConfig() {
 
     this->syncAppWidgetToJson();
     this->syncSceneWidgetToJson();
+    this->syncPageWidgetToJson();
 
     // app.json
     QFile configAppFile(this->mProjectDir->absoluteFilePath("config/app.json"));
@@ -50,6 +51,13 @@ void NConfigWidget::saveConfig() {
         return;
     }
     configSceneFile.write(this->mConfigScene.stringify());
+
+    // page.json
+    QFile configPageFile(this->mProjectDir->absoluteFilePath("config/page.json"));
+    if (!configPageFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+        return;
+    }
+    configPageFile.write(this->mConfigPage.stringify());
 }
 
 void NConfigWidget::newScene() {
@@ -86,6 +94,39 @@ void NConfigWidget::removeScene() {
     }
 }
 
+void NConfigWidget::newPage() {
+    int count = ui->pageConfigTreeWidget->topLevelItemCount();
+    QString suffix = QString::number(count);
+    QStringList row;
+    NUtil::expand(row, ui->pageConfigTreeWidget->columnCount());
+    row[PAGE_COL_ID] = "Page" + suffix;
+    row[PAGE_COL_CLASS] = "Page" + suffix;
+    row[PAGE_COL_CLASS_FILE] = "code/page" + suffix + ".js";
+    row[PAGE_COL_LAYOUT] = "layout/page" + suffix + ".json";
+    QTreeWidgetItem *item = new QTreeWidgetItem(row);
+    item->setFlags(item->flags() | Qt::ItemIsEditable);
+    ui->pageConfigTreeWidget->insertTopLevelItem(count, item);
+}
+
+void NConfigWidget::removePage() {
+    QList<QTreeWidgetItem *> selectedItems = ui->pageConfigTreeWidget->selectedItems();
+    if (selectedItems.length() == 0) {
+        return;
+    }
+
+    QTreeWidgetItem *item = selectedItems[0];
+
+    QMessageBox msgBox;
+    msgBox.setText(tr("Do you remove page?"));
+    msgBox.setInformativeText(item->text(PAGE_COL_ID));
+    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Cancel);
+    int ret = msgBox.exec();
+    if (ret == QMessageBox::Ok) {
+        ui->pageConfigTreeWidget->takeTopLevelItem(ui->pageConfigTreeWidget->indexOfTopLevelItem(item));
+    }
+}
+
 void NConfigWidget::contextMenuForConfigApp(QPoint /*point*/) {
     QMenu menu(this);
     menu.addSeparator();
@@ -99,6 +140,15 @@ void NConfigWidget::contextMenuForConfigScene(QPoint /*point*/) {
     menu.addAction(tr("&Remove Scene"), this, SLOT(removeScene()));
     menu.addSeparator();
     menu.addAction(tr("&Edit Raw Data"), this, SLOT(editConfigSceneJson()));
+    menu.exec(QCursor::pos());
+}
+
+void NConfigWidget::contextMenuForConfigPage(QPoint /*point*/) {
+    QMenu menu(this);
+    menu.addAction(tr("&New Page"), this, SLOT(newPage()));
+    menu.addAction(tr("&Remove Page"), this, SLOT(removePage()));
+    menu.addSeparator();
+    menu.addAction(tr("&Edit Raw Data"), this, SLOT(editConfigPageJson()));
     menu.exec(QCursor::pos());
 }
 
@@ -127,6 +177,24 @@ void NConfigWidget::syncSceneJsonToWidget() {
     ui->sceneConfigTreeWidget->addTopLevelItems(items);
 }
 
+void NConfigWidget::syncPageJsonToWidget() {
+    QList<QTreeWidgetItem *> items;
+    for (int i = 0; i < mConfigPage.length(); i++) {
+        NJson page = mConfigPage.getObject(QString::number(i));
+        QStringList row;
+        NUtil::expand(row, ui->pageConfigTreeWidget->columnCount());
+        row[PAGE_COL_ID] = page.getStr("id");
+        row[PAGE_COL_CLASS] = page.getStr("class");
+        row[PAGE_COL_CLASS_FILE] = page.getStr("classFile");
+        row[PAGE_COL_LAYOUT] = page.getStr("extra.contentLayoutFile");
+        QTreeWidgetItem *item = new QTreeWidgetItem(row);
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        items.append(item);
+    }
+    ui->pageConfigTreeWidget->clear();
+    ui->pageConfigTreeWidget->addTopLevelItems(items);
+}
+
 void NConfigWidget::syncAppWidgetToJson() {
     mConfigApp.set("size.width", ui->appSizeWidth->value());
     mConfigApp.set("size.height", ui->appSizeHeight->value());
@@ -146,6 +214,18 @@ void NConfigWidget::syncSceneWidgetToJson() {
     }
 }
 
+void NConfigWidget::syncPageWidgetToJson() {
+    mConfigPage.clear();
+    for (int i = 0; i < ui->pageConfigTreeWidget->topLevelItemCount(); i++) {
+        QTreeWidgetItem *item = ui->pageConfigTreeWidget->topLevelItem(i);
+        QString index = QString::number(i);
+        mConfigPage.set(index + ".id", item->text(PAGE_COL_ID));
+        mConfigPage.set(index + ".class", item->text(PAGE_COL_CLASS));
+        mConfigPage.set(index + ".classFile", item->text(PAGE_COL_CLASS_FILE));
+        mConfigPage.set(index + ".extra.contentLayoutFile", item->text(PAGE_COL_LAYOUT));
+    }
+}
+
 void NConfigWidget::editConfigAppJson() {
     EditJsonDialog dialog(this);
     this->syncAppWidgetToJson();
@@ -160,6 +240,12 @@ void NConfigWidget::editConfigSceneJson() {
     dialog.exec();
 }
 
+void NConfigWidget::editConfigPageJson() {
+    EditJsonDialog dialog(this);
+    this->syncPageWidgetToJson();
+    dialog.setJsonText(mConfigPage.stringify());
+    dialog.exec();
+}
 
 NConfigWidget::~NConfigWidget()
 {

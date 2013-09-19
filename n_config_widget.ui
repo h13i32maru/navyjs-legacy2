@@ -14,6 +14,18 @@
    <string>Form</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QFrame" name="appConfigFrame">
      <property name="sizePolicy">
@@ -166,18 +178,24 @@
       </widget>
      </item>
      <item>
-      <widget class="QTreeWidget" name="treeWidget_2">
+      <widget class="QTreeWidget" name="pageConfigTreeWidget">
        <property name="minimumSize">
         <size>
          <width>600</width>
          <height>0</height>
         </size>
        </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
        <property name="indentation">
         <number>0</number>
+       </property>
+       <property name="sortingEnabled">
+        <bool>true</bool>
        </property>
        <property name="columnCount">
         <number>4</number>
@@ -208,20 +226,6 @@
          <string>layout</string>
         </property>
        </column>
-       <item>
-        <property name="text">
-         <string>MainPage</string>
-        </property>
-        <property name="text">
-         <string>MainPage</string>
-        </property>
-        <property name="text">
-         <string>code/main_page.js</string>
-        </property>
-        <property name="text">
-         <string>layout/main_page.json</string>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>
@@ -262,9 +266,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pageConfigTreeWidget</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>NConfigWidget</receiver>
+   <slot>contextMenuForConfigPage(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>623</x>
+     <y>439</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>468</x>
+     <y>291</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>contextMenuForConfigApp(QPoint)</slot>
   <slot>contextMenuForConfigScene(QPoint)</slot>
+  <slot>contextMenuForConfigPage(QPoint)</slot>
  </slots>
 </ui>

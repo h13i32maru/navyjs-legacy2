@@ -37,7 +37,7 @@
 }</string>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="configTab">
        <attribute name="icon">
@@ -48,217 +48,17 @@
         <string/>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="leftMargin">
+         <number>12</number>
+        </property>
+        <property name="rightMargin">
+         <number>12</number>
+        </property>
+        <property name="bottomMargin">
+         <number>12</number>
+        </property>
         <item>
-         <widget class="QFrame" name="appConfigFrame">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>300</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="contextMenuPolicy">
-           <enum>Qt::CustomContextMenu</enum>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="1" column="1" colspan="2">
-            <widget class="QLineEdit" name="appStartScene">
-             <property name="placeholderText">
-              <string>scene name</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="appSizeWidth">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximum">
-              <number>9999</number>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>size</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>scene</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QSpinBox" name="appSizeHeight">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximum">
-              <number>9999</number>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QTreeWidget" name="sceneConfigTreeWidget">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>601</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="contextMenuPolicy">
-             <enum>Qt::CustomContextMenu</enum>
-            </property>
-            <property name="alternatingRowColors">
-             <bool>true</bool>
-            </property>
-            <property name="indentation">
-             <number>0</number>
-            </property>
-            <property name="sortingEnabled">
-             <bool>true</bool>
-            </property>
-            <property name="columnCount">
-             <number>5</number>
-            </property>
-            <attribute name="headerDefaultSectionSize">
-             <number>200</number>
-            </attribute>
-            <attribute name="headerStretchLastSection">
-             <bool>true</bool>
-            </attribute>
-            <column>
-             <property name="text">
-              <string>name</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>class</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>calss file</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>layout</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>page</string>
-             </property>
-            </column>
-           </widget>
-          </item>
-          <item>
-           <widget class="QTreeWidget" name="treeWidget_2">
-            <property name="minimumSize">
-             <size>
-              <width>600</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="alternatingRowColors">
-             <bool>true</bool>
-            </property>
-            <property name="indentation">
-             <number>0</number>
-            </property>
-            <property name="columnCount">
-             <number>4</number>
-            </property>
-            <attribute name="headerDefaultSectionSize">
-             <number>200</number>
-            </attribute>
-            <attribute name="headerStretchLastSection">
-             <bool>true</bool>
-            </attribute>
-            <column>
-             <property name="text">
-              <string>name</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>class</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>class file</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>layout</string>
-             </property>
-            </column>
-            <item>
-             <property name="text">
-              <string>MainPage</string>
-             </property>
-             <property name="text">
-              <string>MainPage</string>
-             </property>
-             <property name="text">
-              <string>code/main_page.js</string>
-             </property>
-             <property name="text">
-              <string>layout/main_page.json</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
+         <widget class="NConfigWidget" name="nConfigWidget" native="true"/>
         </item>
        </layout>
       </widget>
@@ -453,8 +253,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>197</width>
-                  <height>188</height>
+                  <width>268</width>
+                  <height>393</height>
                  </rect>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_2">
@@ -669,16 +469,6 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_9">
-       <attribute name="title">
-        <string>ページ</string>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="NConfigWidget" name="nConfigWidget" native="true"/>
-        </item>
-       </layout>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -778,38 +568,6 @@
     <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>552</x>
-     <y>283</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sceneConfigTreeWidget</sender>
-   <signal>customContextMenuRequested(QPoint)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>contextMenuForConfigScene(QPoint)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>331</x>
-     <y>307</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>552</x>
-     <y>283</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>appConfigFrame</sender>
-   <signal>customContextMenuRequested(QPoint)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>contextMenuForConfigApp(QPoint)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>173</x>
-     <y>297</y>
     </hint>
     <hint type="destinationlabel">
      <x>552</x>

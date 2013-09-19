@@ -1,5 +1,5 @@
-{
-  "MainPage": {
+[
+  {
     "id": "MainPage",
     "class": "MainPage",
     "classFile": "code/main_page.js",
@@ -10,4 +10,4 @@
       "contentLayoutFile": "layout/main_page.json"
     }
   }
-}
+]
