@@ -32,17 +32,19 @@ private:
 private slots:
     void openProject();
     void newProject();
+
     void saveConfig();
-
-    void contextMenuForConfigApp(QPoint point);
-    void syncAppWidgetToJson();
-    void editConfigAppJson();
-
-    void contextMenuForConfigScene(QPoint point);
-    void editConfigSceneJson();
-    void syncSceneWidgetToJson();
     void newScene();
     void removeScene();
+
+    void contextMenuForConfigApp(QPoint point);
+    void contextMenuForConfigScene(QPoint point);
+
+    void syncAppWidgetToJson();
+    void syncSceneWidgetToJson();
+
+    void editConfigAppJson();
+    void editConfigSceneJson();
 };
 
 #endif // MAIN_WINDOW_H
