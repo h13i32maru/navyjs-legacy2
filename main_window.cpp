@@ -1,6 +1,7 @@
 #include "main_window.h"
 #include "ui_main_window.h"
 #include "edit_json_dialog.h"
+#include "nutil.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -94,11 +95,12 @@ void MainWindow::newScene() {
     int count = ui->sceneConfigTreeWidget->topLevelItemCount();
     QString suffix = QString::number(count);
     QStringList row;
-    row.append("Scene" + suffix); //id
-    row.append("Scene" + suffix); //class
-    row.append("code/scene" + suffix + ".js"); //class file
-    row.append("layout/scene" + suffix + ".json"); //layout file
-    row.append("Page"); //page
+    NUtil::expand(row, ui->sceneConfigTreeWidget->columnCount());
+    row[SCENE_COL_ID] = "Scene" + suffix;
+    row[SCENE_COL_CLASS] = "Scene" + suffix;
+    row[SCENE_COL_CLASS_FILE] = "code/scene" + suffix + ".js";
+    row[SCENE_COL_LAYOUT] = "layout/scene" + suffix + ".json";
+    row[SCENE_COL_PAGE] = "Page";
     QTreeWidgetItem *item = new QTreeWidgetItem(row);
     item->setFlags(item->flags() | Qt::ItemIsEditable);
     ui->sceneConfigTreeWidget->insertTopLevelItem(count, item);
@@ -114,7 +116,7 @@ void MainWindow::removeScene() {
 
     QMessageBox msgBox;
     msgBox.setText(tr("Do you remove scene?"));
-    msgBox.setInformativeText(item->text(0));
+    msgBox.setInformativeText(item->text(SCENE_COL_ID));
     msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
     msgBox.setDefaultButton(QMessageBox::Cancel);
     int ret = msgBox.exec();
@@ -150,11 +152,12 @@ void MainWindow::syncSceneJsonToWidget() {
     for (int i = 0; i < mConfigScene.length(); i++) {
         NJson scene = mConfigScene.getObject(QString::number(i));
         QStringList row;
-        row.append(scene.getStr("id"));
-        row.append(scene.getStr("class"));
-        row.append(scene.getStr("classFile"));
-        row.append(scene.getStr("extra.contentLayoutFile"));
-        row.append(scene.getStr("extra.page"));
+        NUtil::expand(row, ui->sceneConfigTreeWidget->columnCount());
+        row[SCENE_COL_ID] = scene.getStr("id");
+        row[SCENE_COL_CLASS] = scene.getStr("class");
+        row[SCENE_COL_CLASS_FILE] = scene.getStr("classFile");
+        row[SCENE_COL_LAYOUT] = scene.getStr("extra.contentLayoutFile");
+        row[SCENE_COL_PAGE] = scene.getStr("extra.page");
         QTreeWidgetItem *item = new QTreeWidgetItem(row);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
         items.append(item);
@@ -174,11 +177,11 @@ void MainWindow::syncSceneWidgetToJson() {
     for (int i = 0; i < ui->sceneConfigTreeWidget->topLevelItemCount(); i++) {
         QTreeWidgetItem *item = ui->sceneConfigTreeWidget->topLevelItem(i);
         QString index = QString::number(i);
-        mConfigScene.set(index + ".id", item->text(0));
-        mConfigScene.set(index + ".class", item->text(1));
-        mConfigScene.set(index + ".classFile", item->text(2));
-        mConfigScene.set(index + ".extra.contentLayoutFile", item->text(3));
-        mConfigScene.set(index + ".extra.page", item->text(4));
+        mConfigScene.set(index + ".id", item->text(SCENE_COL_ID));
+        mConfigScene.set(index + ".class", item->text(SCENE_COL_CLASS));
+        mConfigScene.set(index + ".classFile", item->text(SCENE_COL_CLASS_FILE));
+        mConfigScene.set(index + ".extra.contentLayoutFile", item->text(SCENE_COL_LAYOUT));
+        mConfigScene.set(index + ".extra.page", item->text(SCENE_COL_PAGE));
     }
 }
 

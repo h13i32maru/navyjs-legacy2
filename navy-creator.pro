@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         main_window.cpp \
     edit_json_dialog.cpp \
-    njson.cpp
+    njson.cpp \
+    nutil.cpp
 
 HEADERS  += main_window.h \
     edit_json_dialog.h \
-    njson.h
+    njson.h \
+    nutil.h
 
 FORMS    += main_window.ui \
     edit_json_dialog.ui
