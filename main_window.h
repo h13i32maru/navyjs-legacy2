@@ -4,6 +4,7 @@
 #include "jobject.h"
 #include <QMainWindow>
 #include <QDir>
+#include <QTreeWidgetItem>
 
 namespace Ui {
 class MainWindow;
@@ -38,7 +39,11 @@ private slots:
     void openProject();
     void newProject();
     void updateConfigAppEditText();
+    void updateConfigScene(QTreeWidgetItem *item, int columnIndex);
     void saveConfig();
+    void contextMenuForConfigScene(QPoint point);
+    void newScene();
+    void removeScene();
 };
 
 #endif // MAIN_WINDOW_H

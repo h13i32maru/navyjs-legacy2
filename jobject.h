@@ -15,6 +15,7 @@ public:
     void parse(QByteArray byteArray);
     bool parseFromFilePath(QString filePath);
     QByteArray stringify();
+    int length();
 
     // getter
     int getInt(QString keysStr);
@@ -23,6 +24,7 @@ public:
 
     // setter
     void set(QString keysStr, int value);
+    void set(QString keysStr, QString value);
 
 private:
     QJsonValue mRootValue;

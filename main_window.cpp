@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -28,17 +29,22 @@ void MainWindow::setCurrentProject(QString dirPath) {
     ui->appStartScene->setText(mConfigApp.getStr("start.scene"));
 
     // scene.json
-    //mConfigScene.parseFromFilePath(mProjectDir->absoluteFilePath("config/scene.json"));
-    /*
+    mConfigScene.parseFromFilePath(mProjectDir->absoluteFilePath("config/scene.json"));
+    QList<QTreeWidgetItem *> items;
     for (int i = 0; i < mConfigScene.length(); i++) {
         JObject scene = mConfigScene.getObject(QString::number(i));
+        QStringList row;
+        row.append(scene.getStr("id"));
+        row.append(scene.getStr("class"));
+        row.append(scene.getStr("classFile"));
+        row.append(scene.getStr("extra.contentLayoutFile"));
+        row.append(scene.getStr("extra.page"));
+        QTreeWidgetItem *item = new QTreeWidgetItem(row);
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        items.append(item);
     }
-    */
-
-    QList<QTreeWidgetItem *> items;
-    for (int i = 0; i < 10; ++i)
-        items.append(new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("item: %1").arg(i))));
-    ui->sceneConfigTreeWidget->insertTopLevelItems(0, items);
+    ui->sceneConfigTreeWidget->clear();
+    ui->sceneConfigTreeWidget->addTopLevelItems(items);
 
     ui->topTabWidget->setEnabled(true);
 }
@@ -84,16 +90,76 @@ void MainWindow::updateConfigAppEditText() {
     ui->appConfigTextEdit->setText(mConfigApp.stringify());
 }
 
+void MainWindow::updateConfigScene(QTreeWidgetItem *item, int /* columnIndex */){
+    int rowIndex = ui->sceneConfigTreeWidget->indexOfTopLevelItem(item);
+
+    mConfigScene.set(rowIndex + ".id", item->text(0));
+    mConfigScene.set(rowIndex + ".class", item->text(1));
+    mConfigScene.set(rowIndex + ".classFile", item->text(2));
+    mConfigScene.set(rowIndex + ".extra.contentLayoutFile", item->text(3));
+    mConfigScene.set(rowIndex + ".extra.page", item->text(4));
+
+    ui->sceneConfigTextEdit->setText(mConfigScene.stringify());
+}
+
 void MainWindow::saveConfig() {
     if (mProjectName.isEmpty()) {
         return;
     }
 
+    // app.json
     QFile configAppFile(this->mProjectDir->absoluteFilePath("config/app.json"));
     if (!configAppFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
         return;
     }
     configAppFile.write(this->mConfigApp.stringify());
+
+    // scene.json
+    QFile configSceneFile(this->mProjectDir->absoluteFilePath("config/scene.json"));
+    if (!configSceneFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+        return;
+    }
+    configSceneFile.write(this->mConfigScene.stringify());
+}
+
+void MainWindow::newScene() {
+    int count = ui->sceneConfigTreeWidget->topLevelItemCount();
+    QString suffix = QString::number(count);
+    QStringList row;
+    row.append("Scene" + suffix); //id
+    row.append("Scene" + suffix); //class
+    row.append("code/scene" + suffix + ".js"); //class file
+    row.append("layout/scene" + suffix + ".json"); //layout file
+    row.append("Page"); //page
+    QTreeWidgetItem *item = new QTreeWidgetItem(row);
+    item->setFlags(item->flags() | Qt::ItemIsEditable);
+    ui->sceneConfigTreeWidget->insertTopLevelItem(count, item);
+}
+
+void MainWindow::removeScene() {
+    QList<QTreeWidgetItem *> selectedItems = ui->sceneConfigTreeWidget->selectedItems();
+    if (selectedItems.length() == 0) {
+        return;
+    }
+
+    QTreeWidgetItem *item = selectedItems[0];
+
+    QMessageBox msgBox;
+    msgBox.setText(tr("Do you remove scene?"));
+    msgBox.setInformativeText(item->text(0));
+    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Cancel);
+    int ret = msgBox.exec();
+    if (ret == QMessageBox::Ok) {
+        ui->sceneConfigTreeWidget->takeTopLevelItem(ui->sceneConfigTreeWidget->indexOfTopLevelItem(item));
+    }
+}
+
+void MainWindow::contextMenuForConfigScene(QPoint /*point*/) {
+    QMenu menu(this);
+    menu.addAction(tr("&New Scene"), this, SLOT(newScene()));
+    menu.addAction(tr("&Remove Scene"), this, SLOT(removeScene()));
+    menu.exec(QCursor::pos());
 }
 
 MainWindow::~MainWindow()

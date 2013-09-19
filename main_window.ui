@@ -182,6 +182,9 @@
                  <height>0</height>
                 </size>
                </property>
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
                <property name="alternatingRowColors">
                 <bool>true</bool>
                </property>
@@ -226,7 +229,7 @@
                 </property>
                </column>
               </widget>
-              <widget class="QTextEdit" name="textEdit_2"/>
+              <widget class="QTextEdit" name="sceneConfigTextEdit"/>
              </widget>
             </item>
            </layout>
@@ -761,6 +764,11 @@
     <string>Ctrl+O</string>
    </property>
   </action>
+  <action name="actionAddScene">
+   <property name="text">
+    <string>AddScene</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -838,11 +846,45 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>sceneConfigTreeWidget</sender>
+   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateConfigScene(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>331</x>
+     <y>307</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>552</x>
+     <y>283</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sceneConfigTreeWidget</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>contextMenuForConfigScene(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>331</x>
+     <y>307</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>552</x>
+     <y>283</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>newProject()</slot>
   <slot>updateConfigAppEditText()</slot>
   <slot>saveConfig()</slot>
   <slot>openProject()</slot>
+  <slot>updateConfigScene(QTreeWidgetItem*,int)</slot>
+  <slot>contextMenuForConfigScene(QPoint)</slot>
  </slots>
 </ui>

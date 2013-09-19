@@ -44,6 +44,15 @@ QByteArray JObject::stringify()
     return doc.toJson();
 }
 
+int JObject::length()
+{
+    if (mRootValue.isArray()) {
+        return mRootValue.toArray().size();
+    } else {
+        return 0;
+    }
+}
+
 int JObject::getInt(QString keysStr)
 {
     return (int) get(mRootValue, keysStr).toDouble();
@@ -82,6 +91,11 @@ QJsonValue JObject::get(QJsonValue value, QString keysStr)
 }
 
 void JObject::set(QString keysStr, int value)
+{
+    mRootValue = set(mRootValue, keysStr, QJsonValue(value));
+}
+
+void JObject::set(QString keysStr, QString value)
 {
     mRootValue = set(mRootValue, keysStr, QJsonValue(value));
 }
