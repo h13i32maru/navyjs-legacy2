@@ -37,12 +37,12 @@
 }</string>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="configTab">
        <attribute name="icon">
         <iconset resource="resource.qrc">
-         <normaloff>:/icon/icon_config.png</normaloff>:/icon/icon_config.png</iconset>
+         <normaloff>:/icon/config.png</normaloff>:/icon/config.png</iconset>
        </attribute>
        <attribute name="title">
         <string/>
@@ -92,14 +92,14 @@
               </property>
               <layout class="QGridLayout" name="gridLayout">
                <item row="1" column="1" colspan="2">
-                <widget class="QLineEdit" name="lineEdit">
+                <widget class="QLineEdit" name="appStartScene">
                  <property name="placeholderText">
                   <string>scene name</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QSpinBox" name="spinBox">
+                <widget class="QSpinBox" name="appSizeWidth">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -126,12 +126,15 @@
                 </widget>
                </item>
                <item row="0" column="2">
-                <widget class="QSpinBox" name="spinBox_2">
+                <widget class="QSpinBox" name="appSizeHeight">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximum">
+                  <number>9999</number>
                  </property>
                 </widget>
                </item>
@@ -152,7 +155,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QTextEdit" name="textEdit"/>
+             <widget class="QTextEdit" name="appConfigTextEdit"/>
             </item>
            </layout>
           </widget>
@@ -327,7 +330,7 @@
       <widget class="QWidget" name="codeTab">
        <attribute name="icon">
         <iconset resource="resource.qrc">
-         <normaloff>:/icon/icon_code.png</normaloff>:/icon/icon_code.png</iconset>
+         <normaloff>:/icon/code.png</normaloff>:/icon/code.png</iconset>
        </attribute>
        <attribute name="title">
         <string/>
@@ -403,7 +406,7 @@
       <widget class="QWidget" name="layoutTab">
        <attribute name="icon">
         <iconset resource="resource.qrc">
-         <normaloff>:/icon/icon_layout.png</normaloff>:/icon/icon_layout.png</iconset>
+         <normaloff>:/icon/layout.png</normaloff>:/icon/layout.png</iconset>
        </attribute>
        <attribute name="title">
         <string/>
@@ -641,7 +644,7 @@
       <widget class="QWidget" name="imageTab">
        <attribute name="icon">
         <iconset resource="resource.qrc">
-         <normaloff>:/icon/icon_image.png</normaloff>:/icon/icon_image.png</iconset>
+         <normaloff>:/icon/image.png</normaloff>:/icon/image.png</iconset>
        </attribute>
        <attribute name="title">
         <string/>
@@ -744,6 +747,13 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -754,6 +764,11 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -766,5 +781,42 @@
  <resources>
   <include location="resource.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionNew</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>newProject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>222</x>
+     <y>39</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>appSizeWidth</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateConfigAppEditText()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>152</x>
+     <y>115</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>250</x>
+     <y>38</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>newProject()</slot>
+  <slot>updateConfigAppEditText()</slot>
+ </slots>
 </ui>

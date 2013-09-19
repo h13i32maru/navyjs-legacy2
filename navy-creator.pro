@@ -13,9 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        main_window.cpp
+        main_window.cpp \
+    jobject.cpp
 
-HEADERS  += main_window.h
+HEADERS  += main_window.h \
+    jobject.h
 
 FORMS    += main_window.ui
 

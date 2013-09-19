@@ -1,8 +1,11 @@
 <RCC>
-    <qresource prefix="/icon">
-        <file>icon_code.png</file>
-        <file>icon_config.png</file>
-        <file>icon_image.png</file>
-        <file>icon_layout.png</file>
+    <qresource prefix="/">
+        <file>icon/code.png</file>
+        <file>icon/config.png</file>
+        <file>icon/image.png</file>
+        <file>icon/layout.png</file>
+        <file>template/config/app.json</file>
+        <file>template/config/page.json</file>
+        <file>template/config/scene.json</file>
     </qresource>
 </RCC>

@@ -1,0 +1,10 @@
+{
+  "size": {"width": 640, "height": 1136},
+  "start": {
+    "scene": "Scene1"
+  },
+  "test": [
+    {"aaa": 10, "bbb": 20},
+    {"aaa": 100, "bbb": 200}
+  ]
+}
