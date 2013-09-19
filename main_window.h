@@ -15,7 +15,6 @@ class MainWindow : public QMainWindow
 
 public:
     enum SCENE_COL {SCENE_COL_ID, SCENE_COL_CLASS, SCENE_COL_CLASS_FILE, SCENE_COL_LAYOUT, SCENE_COL_PAGE};
-    static bool cpDir(const QString &srcPath, const QString &dstPath);
 
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();

@@ -48,7 +48,7 @@ void MainWindow::newProject()
         }
     }
 
-    cpDir(":/template", dirName);
+    NUtil::copyDir(":/template", dirName);
     setCurrentProject(dirName);
 //    ui->webView->load(QUrl("file://" + projectDir->absoluteFilePath("index.html")));
 
@@ -203,30 +203,4 @@ void MainWindow::editConfigSceneJson() {
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-bool MainWindow::cpDir(const QString &srcPath, const QString &dstPath)
-{
-    QDir parentDstDir(QFileInfo(dstPath).path());
-    if (!parentDstDir.mkdir(QFileInfo(dstPath).fileName()))
-        return false;
-
-    QDir srcDir(srcPath);
-    foreach(const QFileInfo &info, srcDir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot)) {
-        QString srcItemPath = srcPath + "/" + info.fileName();
-        QString dstItemPath = dstPath + "/" + info.fileName();
-        if (info.isDir()) {
-            if (!cpDir(srcItemPath, dstItemPath)) {
-                return false;
-            }
-        } else if (info.isFile()) {
-            if (!QFile::copy(srcItemPath, dstItemPath)) {
-                return false;
-            }
-            QFile::setPermissions(dstItemPath, QFile::WriteOwner | QFile::permissions(dstItemPath));
-        } else {
-            qDebug() << "Unhandled item" << info.filePath() << "in cpDir";
-        }
-    }
-    return true;
 }
