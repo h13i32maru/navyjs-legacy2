@@ -7,5 +7,7 @@
         <file>template/config/app.json</file>
         <file>template/config/page.json</file>
         <file>template/config/scene.json</file>
+        <file>template/code/main_page.js</file>
+        <file>template/code/main_scene.js</file>
     </qresource>
 </RCC>
