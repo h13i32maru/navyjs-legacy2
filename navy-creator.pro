@@ -14,12 +14,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         main_window.cpp \
-    jobject.cpp
+    jobject.cpp \
+    edit_json_dialog.cpp
 
 HEADERS  += main_window.h \
-    jobject.h
+    jobject.h \
+    edit_json_dialog.h
 
-FORMS    += main_window.ui
+FORMS    += main_window.ui \
+    edit_json_dialog.ui
 
 RESOURCES += \
     resource.qrc

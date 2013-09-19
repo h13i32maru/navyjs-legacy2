@@ -16,6 +16,7 @@ public:
     bool parseFromFilePath(QString filePath);
     QByteArray stringify();
     int length();
+    void clear();
 
     // getter
     int getInt(QString keysStr);

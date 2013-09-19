@@ -4,7 +4,6 @@
 #include "jobject.h"
 #include <QMainWindow>
 #include <QDir>
-#include <QTreeWidgetItem>
 
 namespace Ui {
 class MainWindow;
@@ -16,11 +15,6 @@ class MainWindow : public QMainWindow
 
 public:
     static bool cpDir(const QString &srcPath, const QString &dstPath);
-
-    static QJsonValue jsonValue(QJsonObject object, QString keys);
-    static int jsonInt(QJsonObject object, QString keys);
-    static QString jsonStr(QJsonObject object, QString keys);
-    static QJsonObject setValue(QJsonObject obj, QString keyStr, QJsonValue value);
 
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -38,10 +32,15 @@ private:
 private slots:
     void openProject();
     void newProject();
-    void updateConfigAppEditText();
-    void updateConfigScene(QTreeWidgetItem *item, int columnIndex);
     void saveConfig();
+
+    void contextMenuForConfigApp(QPoint point);
+    void syncAppWidgetToJson();
+    void editConfigAppJson();
+
     void contextMenuForConfigScene(QPoint point);
+    void editConfigSceneJson();
+    void syncSceneWidgetToJson();
     void newScene();
     void removeScene();
 };

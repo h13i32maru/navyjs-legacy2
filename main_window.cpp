@@ -1,5 +1,6 @@
 #include "main_window.h"
 #include "ui_main_window.h"
+#include "edit_json_dialog.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -84,28 +85,13 @@ void MainWindow::openProject() {
     setCurrentProject(dirName);
 }
 
-void MainWindow::updateConfigAppEditText() {
-    mConfigApp.set("size.width", ui->appSizeWidth->value());
-    mConfigApp.set("test.0.aaa", ui->appSizeWidth->value());
-    ui->appConfigTextEdit->setText(mConfigApp.stringify());
-}
-
-void MainWindow::updateConfigScene(QTreeWidgetItem *item, int /* columnIndex */){
-    int rowIndex = ui->sceneConfigTreeWidget->indexOfTopLevelItem(item);
-
-    mConfigScene.set(rowIndex + ".id", item->text(0));
-    mConfigScene.set(rowIndex + ".class", item->text(1));
-    mConfigScene.set(rowIndex + ".classFile", item->text(2));
-    mConfigScene.set(rowIndex + ".extra.contentLayoutFile", item->text(3));
-    mConfigScene.set(rowIndex + ".extra.page", item->text(4));
-
-    ui->sceneConfigTextEdit->setText(mConfigScene.stringify());
-}
-
 void MainWindow::saveConfig() {
     if (mProjectName.isEmpty()) {
         return;
     }
+
+    this->syncAppWidgetToJson();
+    this->syncSceneWidgetToJson();
 
     // app.json
     QFile configAppFile(this->mProjectDir->absoluteFilePath("config/app.json"));
@@ -155,10 +141,52 @@ void MainWindow::removeScene() {
     }
 }
 
+void MainWindow::syncAppWidgetToJson() {
+    mConfigApp.set("size.width", ui->appSizeWidth->value());
+    mConfigApp.set("size.height", ui->appSizeHeight->value());
+    mConfigApp.set("start.scene", ui->appStartScene->text());
+}
+
+void MainWindow::editConfigAppJson() {
+    EditJsonDialog dialog(this);
+    this->syncAppWidgetToJson();
+    dialog.setJsonText(mConfigApp.stringify());
+    dialog.exec();
+}
+
+void MainWindow::syncSceneWidgetToJson() {
+    mConfigScene.clear();
+    for (int i = 0; i < ui->sceneConfigTreeWidget->topLevelItemCount(); i++) {
+        QTreeWidgetItem *item = ui->sceneConfigTreeWidget->topLevelItem(i);
+        QString index = QString::number(i);
+        mConfigScene.set(index + ".id", item->text(0));
+        mConfigScene.set(index + ".class", item->text(1));
+        mConfigScene.set(index + ".classFile", item->text(2));
+        mConfigScene.set(index + ".extra.contentLayoutFile", item->text(3));
+        mConfigScene.set(index + ".extra.page", item->text(4));
+    }
+}
+
+void MainWindow::editConfigSceneJson() {
+    EditJsonDialog dialog(this);
+    this->syncSceneWidgetToJson();
+    dialog.setJsonText(mConfigScene.stringify());
+    dialog.exec();
+}
+
+void MainWindow::contextMenuForConfigApp(QPoint /*point*/) {
+    QMenu menu(this);
+    menu.addSeparator();
+    menu.addAction(tr("&Edit Raw Data"), this, SLOT(editConfigAppJson()));
+    menu.exec(QCursor::pos());
+}
+
 void MainWindow::contextMenuForConfigScene(QPoint /*point*/) {
     QMenu menu(this);
     menu.addAction(tr("&New Scene"), this, SLOT(newScene()));
     menu.addAction(tr("&Remove Scene"), this, SLOT(removeScene()));
+    menu.addSeparator();
+    menu.addAction(tr("&Edit Raw Data"), this, SLOT(editConfigSceneJson()));
     menu.exec(QCursor::pos());
 }
 

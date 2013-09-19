@@ -53,6 +53,14 @@ int JObject::length()
     }
 }
 
+void JObject::clear() {
+    if (mRootValue.isArray()) {
+        mRootValue = QJsonValue(QJsonArray());
+    } else {
+        mRootValue = QJsonValue(QJsonObject());
+    }
+}
+
 int JObject::getInt(QString keysStr)
 {
     return (int) get(mRootValue, keysStr).toDouble();
@@ -120,7 +128,12 @@ QJsonValue JObject::set(QJsonValue parentValue, QString keysStr, QJsonValue valu
         keys.pop_front();
         if (parentValue.isArray()) {
             QJsonArray array= parentValue.toArray();
-            array[index] = set(QJsonValue(array[index]), keys.join("."), value);
+            QJsonValue newValue = set(QJsonValue(array[index]), keys.join("."), value);
+            if (array.size() <= index) {
+                array.insert(index, newValue);
+            } else {
+                array[index] = newValue;
+            }
             return QJsonValue(array);
         } else {
             QJsonObject object = parentValue.toObject();
