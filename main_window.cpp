@@ -21,31 +21,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 void MainWindow::setCurrentProject(QString dirPath) {
     mProjectDir->setPath(dirPath);
     mProjectName = mProjectDir->dirName();
+
+    mConfigApp.parseFromFilePath(mProjectDir->absoluteFilePath("config/app.json"));
+    mConfigScene.parseFromFilePath(mProjectDir->absoluteFilePath("config/scene.json"));
     mConfigPage.parseFromFilePath(mProjectDir->absoluteFilePath("config/page.json"));
 
-    // app.json
-    mConfigApp.parseFromFilePath(mProjectDir->absoluteFilePath("config/app.json"));
-    ui->appSizeWidth->setValue(mConfigApp.getInt("size.width"));
-    ui->appSizeHeight->setValue(mConfigApp.getInt("size.height"));
-    ui->appStartScene->setText(mConfigApp.getStr("start.scene"));
-
-    // scene.json
-    mConfigScene.parseFromFilePath(mProjectDir->absoluteFilePath("config/scene.json"));
-    QList<QTreeWidgetItem *> items;
-    for (int i = 0; i < mConfigScene.length(); i++) {
-        NJson scene = mConfigScene.getObject(QString::number(i));
-        QStringList row;
-        row.append(scene.getStr("id"));
-        row.append(scene.getStr("class"));
-        row.append(scene.getStr("classFile"));
-        row.append(scene.getStr("extra.contentLayoutFile"));
-        row.append(scene.getStr("extra.page"));
-        QTreeWidgetItem *item = new QTreeWidgetItem(row);
-        item->setFlags(item->flags() | Qt::ItemIsEditable);
-        items.append(item);
-    }
-    ui->sceneConfigTreeWidget->clear();
-    ui->sceneConfigTreeWidget->addTopLevelItems(items);
+    this->syncAppJsonToWidget();
+    this->syncSceneJsonToWidget();
 
     ui->topTabWidget->setEnabled(true);
 }
@@ -155,6 +137,30 @@ void MainWindow::contextMenuForConfigScene(QPoint /*point*/) {
     menu.addSeparator();
     menu.addAction(tr("&Edit Raw Data"), this, SLOT(editConfigSceneJson()));
     menu.exec(QCursor::pos());
+}
+
+void MainWindow::syncAppJsonToWidget() {
+    ui->appSizeWidth->setValue(mConfigApp.getInt("size.width"));
+    ui->appSizeHeight->setValue(mConfigApp.getInt("size.height"));
+    ui->appStartScene->setText(mConfigApp.getStr("start.scene"));
+}
+
+void MainWindow::syncSceneJsonToWidget() {
+    QList<QTreeWidgetItem *> items;
+    for (int i = 0; i < mConfigScene.length(); i++) {
+        NJson scene = mConfigScene.getObject(QString::number(i));
+        QStringList row;
+        row.append(scene.getStr("id"));
+        row.append(scene.getStr("class"));
+        row.append(scene.getStr("classFile"));
+        row.append(scene.getStr("extra.contentLayoutFile"));
+        row.append(scene.getStr("extra.page"));
+        QTreeWidgetItem *item = new QTreeWidgetItem(row);
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        items.append(item);
+    }
+    ui->sceneConfigTreeWidget->clear();
+    ui->sceneConfigTreeWidget->addTopLevelItems(items);
 }
 
 void MainWindow::syncAppWidgetToJson() {

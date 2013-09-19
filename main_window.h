@@ -40,6 +40,9 @@ private slots:
     void contextMenuForConfigApp(QPoint point);
     void contextMenuForConfigScene(QPoint point);
 
+    void syncAppJsonToWidget();
+    void syncSceneJsonToWidget();
+
     void syncAppWidgetToJson();
     void syncSceneWidgetToJson();
 
