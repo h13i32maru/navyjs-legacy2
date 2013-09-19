@@ -3,6 +3,7 @@
 
 #include "jobject.h"
 #include <QMainWindow>
+#include <QDir>
 
 namespace Ui {
 class MainWindow;
@@ -25,11 +26,19 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QString mProjectName;
+    QDir *mProjectDir;
     JObject mConfigApp;
+    JObject mConfigScene;
+    JObject mConfigPage;
+
+    void setCurrentProject(QString dirPath);
 
 private slots:
+    void openProject();
     void newProject();
     void updateConfigAppEditText();
+    void saveConfig();
 };
 
 #endif // MAIN_WINDOW_H

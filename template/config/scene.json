@@ -1,5 +1,5 @@
-{
-  "MainScene": {
+[
+  {
     "id": "MainScene",
     "class": "MainScene",
     "classFile": "class/main_scene.js",
@@ -10,4 +10,4 @@
       "page": "MainPage"
     }
   }
-}
+]

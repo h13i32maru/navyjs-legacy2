@@ -61,7 +61,7 @@
          <number>4</number>
         </property>
         <item>
-         <widget class="QTabWidget" name="tabWidget">
+         <widget class="QTabWidget" name="configTabWidget">
           <property name="currentIndex">
            <number>0</number>
           </property>
@@ -169,7 +169,7 @@
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
-              <widget class="QTreeWidget" name="treeWidget">
+              <widget class="QTreeWidget" name="sceneConfigTreeWidget">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -227,22 +227,7 @@
                </column>
                <item>
                 <property name="text">
-                 <string>MainScene</string>
-                </property>
-                <property name="text">
-                 <string>MainScene</string>
-                </property>
-                <property name="text">
-                 <string>code/main_scene.js</string>
-                </property>
-                <property name="text">
-                 <string>layout/main_scene.json</string>
-                </property>
-                <property name="text">
-                 <string>main_page</string>
-                </property>
-                <property name="flags">
-                 <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+                 <string>新しいアイテム</string>
                 </property>
                </item>
               </widget>
@@ -751,7 +736,8 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionNew"/>
+    <addaction name="actionNewProject"/>
+    <addaction name="actionOpenProject"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -764,9 +750,14 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionNew">
+  <action name="actionNewProject">
    <property name="text">
-    <string>New</string>
+    <string>New Project</string>
+   </property>
+  </action>
+  <action name="actionOpenProject">
+   <property name="text">
+    <string>Open Project</string>
    </property>
   </action>
  </widget>
@@ -783,7 +774,7 @@
  </resources>
  <connections>
   <connection>
-   <sender>actionNew</sender>
+   <sender>actionNewProject</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>newProject()</slot>
@@ -814,9 +805,43 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>configTabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>saveConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>522</x>
+     <y>67</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>494</x>
+     <y>35</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionOpenProject</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openProject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>552</x>
+     <y>283</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>newProject()</slot>
   <slot>updateConfigAppEditText()</slot>
+  <slot>saveConfig()</slot>
+  <slot>openProject()</slot>
  </slots>
 </ui>

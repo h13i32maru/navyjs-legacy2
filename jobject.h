@@ -12,6 +12,7 @@ public:
     JObject();
 
     void parse(QByteArray byteArray);
+    bool parseFromFilePath(QString filePath);
     QByteArray stringify();
 
     // getter

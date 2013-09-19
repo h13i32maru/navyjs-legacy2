@@ -1,16 +1,30 @@
 #include "jobject.h"
 
+#include <QFile>
+
 JObject::JObject()
 {
 }
 
-void JObject::parse(QByteArray byteArray) {
+void JObject::parse(QByteArray byteArray)
+{
     QJsonDocument doc = QJsonDocument::fromJson(byteArray);
     if (doc.isArray()) {
         mRootValue = QJsonValue(doc.array());
     } else {
         mRootValue = QJsonValue(doc.object());
     }
+}
+
+bool JObject::parseFromFilePath(QString filePath)
+{
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return false;
+    }
+    this->parse(file.readAll());
+    file.close();
+    return true;
 }
 
 QByteArray JObject::stringify()
