@@ -23,9 +23,9 @@ private:
     Ui::MainWindow *ui;
     QString mProjectName;
     QDir *mProjectDir;
-    JObject mConfigApp;
-    JObject mConfigScene;
-    JObject mConfigPage;
+    NJson mConfigApp;
+    NJson mConfigScene;
+    NJson mConfigPage;
 
     void setCurrentProject(QString dirPath);
 

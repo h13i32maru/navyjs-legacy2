@@ -14,12 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         main_window.cpp \
-    jobject.cpp \
-    edit_json_dialog.cpp
+    edit_json_dialog.cpp \
+    njson.cpp
 
 HEADERS  += main_window.h \
-    jobject.h \
-    edit_json_dialog.h
+    edit_json_dialog.h \
+    njson.h
 
 FORMS    += main_window.ui \
     edit_json_dialog.ui

@@ -6,11 +6,11 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 
-class JObject
+class NJson
 {
 public:
-    JObject();
-    JObject(QJsonValue value);
+    NJson();
+    NJson(QJsonValue value);
 
     void parse(QByteArray byteArray);
     bool parseFromFilePath(QString filePath);
@@ -21,7 +21,7 @@ public:
     // getter
     int getInt(QString keysStr);
     QString getStr(QString keysStr);
-    JObject getObject(QString keysStr);
+    NJson getObject(QString keysStr);
 
     // setter
     void set(QString keysStr, int value);

@@ -1,17 +1,17 @@
-#include "jobject.h"
+#include "njson.h"
 
 #include <QFile>
 
-JObject::JObject()
+NJson::NJson()
 {
 }
 
-JObject::JObject(QJsonValue value)
+NJson::NJson(QJsonValue value)
 {
     mRootValue = value;
 }
 
-void JObject::parse(QByteArray byteArray)
+void NJson::parse(QByteArray byteArray)
 {
     QJsonDocument doc = QJsonDocument::fromJson(byteArray);
     if (doc.isArray()) {
@@ -21,7 +21,7 @@ void JObject::parse(QByteArray byteArray)
     }
 }
 
-bool JObject::parseFromFilePath(QString filePath)
+bool NJson::parseFromFilePath(QString filePath)
 {
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -32,7 +32,7 @@ bool JObject::parseFromFilePath(QString filePath)
     return true;
 }
 
-QByteArray JObject::stringify()
+QByteArray NJson::stringify()
 {
     QJsonDocument doc;
     if (mRootValue.isArray()) {
@@ -44,7 +44,7 @@ QByteArray JObject::stringify()
     return doc.toJson();
 }
 
-int JObject::length()
+int NJson::length()
 {
     if (mRootValue.isArray()) {
         return mRootValue.toArray().size();
@@ -53,7 +53,7 @@ int JObject::length()
     }
 }
 
-void JObject::clear() {
+void NJson::clear() {
     if (mRootValue.isArray()) {
         mRootValue = QJsonValue(QJsonArray());
     } else {
@@ -61,23 +61,23 @@ void JObject::clear() {
     }
 }
 
-int JObject::getInt(QString keysStr)
+int NJson::getInt(QString keysStr)
 {
     return (int) get(mRootValue, keysStr).toDouble();
 }
 
-QString JObject::getStr(QString keysStr)
+QString NJson::getStr(QString keysStr)
 {
     return get(mRootValue, keysStr).toString();
 }
 
-JObject JObject::getObject(QString keysStr)
+NJson NJson::getObject(QString keysStr)
 {
     QJsonValue value = get(mRootValue, keysStr);
-    return JObject(value);
+    return NJson(value);
 }
 
-QJsonValue JObject::get(QJsonValue value, QString keysStr)
+QJsonValue NJson::get(QJsonValue value, QString keysStr)
 {
     QStringList keys = keysStr.split(".");
     QString key = keys[0];
@@ -98,17 +98,17 @@ QJsonValue JObject::get(QJsonValue value, QString keysStr)
     }
 }
 
-void JObject::set(QString keysStr, int value)
+void NJson::set(QString keysStr, int value)
 {
     mRootValue = set(mRootValue, keysStr, QJsonValue(value));
 }
 
-void JObject::set(QString keysStr, QString value)
+void NJson::set(QString keysStr, QString value)
 {
     mRootValue = set(mRootValue, keysStr, QJsonValue(value));
 }
 
-QJsonValue JObject::set(QJsonValue parentValue, QString keysStr, QJsonValue value)
+QJsonValue NJson::set(QJsonValue parentValue, QString keysStr, QJsonValue value)
 {
     QStringList keys = keysStr.split(".");
     QString key = keys[0];

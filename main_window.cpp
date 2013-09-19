@@ -33,7 +33,7 @@ void MainWindow::setCurrentProject(QString dirPath) {
     mConfigScene.parseFromFilePath(mProjectDir->absoluteFilePath("config/scene.json"));
     QList<QTreeWidgetItem *> items;
     for (int i = 0; i < mConfigScene.length(); i++) {
-        JObject scene = mConfigScene.getObject(QString::number(i));
+        NJson scene = mConfigScene.getObject(QString::number(i));
         QStringList row;
         row.append(scene.getStr("id"));
         row.append(scene.getStr("class"));
