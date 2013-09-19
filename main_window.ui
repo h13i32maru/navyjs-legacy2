@@ -37,7 +37,7 @@
 }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="configTab">
        <attribute name="icon">
@@ -669,6 +669,16 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab_9">
+       <attribute name="title">
+        <string>ページ</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="NConfigWidget" name="nConfigWidget" native="true"/>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -728,6 +738,15 @@
    <class>QWebView</class>
    <extends>QWidget</extends>
    <header>QtWebKitWidgets/QWebView</header>
+  </customwidget>
+  <customwidget>
+   <class>NConfigWidget</class>
+   <extends>QWidget</extends>
+   <header>n_config_widget.h</header>
+   <container>1</container>
+   <slots>
+    <slot>saveConfig()</slot>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources>
@@ -801,7 +820,7 @@
   <connection>
    <sender>topTabWidget</sender>
    <signal>currentChanged(int)</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>nConfigWidget</receiver>
    <slot>saveConfig()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -809,8 +828,8 @@
      <y>291</y>
     </hint>
     <hint type="destinationlabel">
-     <x>552</x>
-     <y>283</y>
+     <x>548</x>
+     <y>297</y>
     </hint>
    </hints>
   </connection>

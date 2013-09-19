@@ -16,15 +16,18 @@ SOURCES += main.cpp\
         main_window.cpp \
     edit_json_dialog.cpp \
     njson.cpp \
-    nutil.cpp
+    nutil.cpp \
+    n_config_widget.cpp
 
 HEADERS  += main_window.h \
     edit_json_dialog.h \
     njson.h \
-    nutil.h
+    nutil.h \
+    n_config_widget.h
 
 FORMS    += main_window.ui \
-    edit_json_dialog.ui
+    edit_json_dialog.ui \
+    n_config_widget.ui
 
 RESOURCES += \
     resource.qrc
