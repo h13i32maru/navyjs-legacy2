@@ -10,6 +10,7 @@ class JObject
 {
 public:
     JObject();
+    JObject(QJsonValue value);
 
     void parse(QByteArray byteArray);
     bool parseFromFilePath(QString filePath);
@@ -18,6 +19,7 @@ public:
     // getter
     int getInt(QString keysStr);
     QString getStr(QString keysStr);
+    JObject getObject(QString keysStr);
 
     // setter
     void set(QString keysStr, int value);

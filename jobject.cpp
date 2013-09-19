@@ -6,6 +6,11 @@ JObject::JObject()
 {
 }
 
+JObject::JObject(QJsonValue value)
+{
+    mRootValue = value;
+}
+
 void JObject::parse(QByteArray byteArray)
 {
     QJsonDocument doc = QJsonDocument::fromJson(byteArray);
@@ -47,6 +52,12 @@ int JObject::getInt(QString keysStr)
 QString JObject::getStr(QString keysStr)
 {
     return get(mRootValue, keysStr).toString();
+}
+
+JObject JObject::getObject(QString keysStr)
+{
+    QJsonValue value = get(mRootValue, keysStr);
+    return JObject(value);
 }
 
 QJsonValue JObject::get(QJsonValue value, QString keysStr)
