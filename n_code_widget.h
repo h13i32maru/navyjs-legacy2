@@ -2,6 +2,7 @@
 #define N_CODE_WIDGET_H
 
 #include <QDir>
+#include <QFileSystemModel>
 #include <QModelIndex>
 #include <QWidget>
 
@@ -22,6 +23,11 @@ private:
     Ui::NCodeWidget *ui;
     QDir *mProjectDir;
     QString mProjectName;
+    QFileSystemModel *mFileSysteMmodel;
+
+    void updateTabForPath(const QString &oldPath, const QString &newPath);
+    void deleteTabForPath(const QString &path, const bool &isDir);
+    QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
 
 public slots:
     void saveCode();

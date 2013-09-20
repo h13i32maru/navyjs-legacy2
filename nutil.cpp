@@ -26,14 +26,14 @@ QString NUtil::selectedPath(QTreeView *treeView) {
     return model->filePath(index);
 }
 
-bool NUtil::newFile(const QString &parentPath, QString fileName, const QString &ext) {
+QString NUtil::newFile(const QString &parentPath, QString fileName, const QString &ext) {
     if (fileName.isEmpty()){
-        return false;
+        return "";
     }
 
     if (fileName.contains(QDir::separator())) {
         QMessageBox::critical(NULL, tr("file name error"), tr("contains directory separator.") + "\n" + fileName);
-        return false;
+        return "";
     }
 
     if (!ext.isEmpty() && fileName.lastIndexOf(ext) == -1) {
@@ -52,26 +52,26 @@ bool NUtil::newFile(const QString &parentPath, QString fileName, const QString &
 
     if (QFile::exists(filePath)) {
         QMessageBox::critical(NULL, tr("file exists"), tr("file exits.") + "\n" + filePath);
-        return false;
+        return "";
     }
 
     QFile file(filePath);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
         qDebug() << "fail file open. " + filePath;
-        return false;
+        return "";
     }
 
-    return true;
+    return filePath;
 }
 
-bool NUtil::newDir(const QString &parentPath, const QString &dirName) {
+QString NUtil::newDir(const QString &parentPath, const QString &dirName) {
     if (dirName.isEmpty()) {
-        return false;
+        return "";
     }
 
     if (dirName.contains(QDir::separator())) {
         QMessageBox::critical(NULL, tr("directory name error"), tr("contains directory separator.\n") + dirName);
-        return false;
+        return "";
     }
 
     QFileInfo parentInfo(parentPath);
@@ -86,10 +86,11 @@ bool NUtil::newDir(const QString &parentPath, const QString &dirName) {
 
     if (QFile::exists(dirPath)) {
         QMessageBox::critical(NULL, tr("directory exists"), tr("directory exits.") + "\n" + dirPath);
-        return false;
+        return "";
     }
 
-    return parentDir.mkdir(dirName);
+    bool ret =  parentDir.mkdir(dirName);
+    return ret ? dirPath : "";
 }
 
 bool NUtil::deletePath(const QString &path) {
@@ -106,14 +107,14 @@ bool NUtil::deletePath(const QString &path) {
     }
 }
 
-bool NUtil::renamePath(const QString &srcPath, QString newName, const QString &ext) {
+QString NUtil::renamePath(const QString &srcPath, QString newName, const QString &ext) {
     if (newName.isEmpty()) {
-        return false;
+        return "";
     }
 
     if (newName.contains(QDir::separator())) {
         QMessageBox::critical(NULL, tr("new name error"), tr("contains directory separator.") + "\n" + newName);
-        return false;
+        return "";
     }
 
     QFileInfo srcInfo(srcPath);
@@ -127,20 +128,21 @@ bool NUtil::renamePath(const QString &srcPath, QString newName, const QString &e
     QString newPath = parentDir.absoluteFilePath(newName);
     if (QFile::exists(newPath)) {
         QMessageBox::critical(NULL, tr("file exists"), tr("file exits.") + "\n" + newPath);
-        return false;
+        return "";
     }
 
-    return parentDir.rename(srcInfo.fileName(), newName);
+    bool ret = parentDir.rename(srcInfo.fileName(), newName);
+    return ret ? parentDir.absoluteFilePath(newName) : "";
 }
 
-bool NUtil::copyPath(const QString &srcPath, QString newName, const QString &ext) {
+QString NUtil::copyPath(const QString &srcPath, QString newName, const QString &ext) {
     if (newName.isEmpty()) {
-        return false;
+        return "";
     }
 
     if (newName.contains(QDir::separator())) {
         QMessageBox::critical(NULL, tr("copy name error"), tr("contains directory separator.") + "\n" + newName);
-        return false;
+        return "";
     }
 
     QFileInfo srcInfo(srcPath);
@@ -155,13 +157,15 @@ bool NUtil::copyPath(const QString &srcPath, QString newName, const QString &ext
     QString newPath = parentDir.absoluteFilePath(newName);
     if (QFile::exists(newPath)) {
         QMessageBox::critical(NULL, tr("file exists"), tr("file exits.") + "\n" + newPath);
-        return false;
+        return "";
     }
 
     if (srcInfo.isDir()) {
-        return copyDir(srcPath, newPath);
+        bool ret = copyDir(srcPath, newPath);
+        return ret ? newPath : "";
     } else {
-        return QFile::copy(srcPath, newPath);
+        bool ret = QFile::copy(srcPath, newPath);
+        return ret ? newPath : "";
     }
 }
 

@@ -13,11 +13,11 @@ public:
 
     // file util
     static QString selectedPath(QTreeView *treeView);
-    static bool newFile(const QString &parentPath, QString fileName, const QString &ext = "");
-    static bool newDir(const QString &parentPath, const QString &dirName);
+    static QString newFile(const QString &parentPath, QString fileName, const QString &ext = "");
+    static QString newDir(const QString &parentPath, const QString &dirName);
     static bool deletePath(const QString &path);
-    static bool renamePath(const QString &srcPath, QString newName, const QString &ext = "");
-    static bool copyPath(const QString &srcPath, QString newName, const QString &ext = "");
+    static QString renamePath(const QString &srcPath, QString newName, const QString &ext = "");
+    static QString copyPath(const QString &srcPath, QString newName, const QString &ext = "");
     static bool copyDir(const QString &srcPath, const QString &dstPath);
 };
 
