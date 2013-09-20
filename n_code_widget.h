@@ -27,7 +27,13 @@ public slots:
     void saveCode();
 
 private slots:
+    void contextMenu();
     void editCode(QModelIndex index);
+    void newFile();
+    void deleteFile();
+    void moveFile();
+    void copyFile();
+    void newDirectory();
 };
 
 #endif // N_CODE_WIDGET_H

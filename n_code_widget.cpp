@@ -4,6 +4,9 @@
 #include <QFileSystemModel>
 #include <QDebug>
 #include <QTextEdit>
+#include <QMenu>
+#include <QInputDialog>
+#include <QMessageBox>
 
 NCodeWidget::NCodeWidget(QWidget *parent) : QWidget(parent), ui(new Ui::NCodeWidget)
 {
@@ -66,6 +69,67 @@ void NCodeWidget::editCode(QModelIndex index) {
     file.close();
     int tabIndex = ui->codeTabWidget->addTab(textEdit, fileName);
     ui->codeTabWidget->setCurrentIndex(tabIndex);
+}
+
+void NCodeWidget::contextMenu() {
+    QMenu menu(this);
+    menu.addAction(tr("&New"), this, SLOT(newFile()));
+    menu.addAction(tr("&Move"), this, SLOT(moveFile()));
+    menu.addAction(tr("&Copy"), this, SLOT(copyFile()));
+    menu.addAction(tr("&Delete"), this, SLOT(deleteFile()));
+    menu.addSeparator();
+    menu.addAction(tr("&New Directory"), this, SLOT(newDirectory()));
+    menu.exec(QCursor::pos());
+}
+
+void NCodeWidget::newFile() {
+    QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"));
+    if (fileName.contains(QDir::separator())) {
+        QMessageBox::critical(this, tr("file name error"), tr("contains directory separator.\n") + fileName);
+        return;
+    }
+
+    if (fileName.lastIndexOf(".js") == -1) {
+        fileName += ".js";
+    }
+
+    QFileSystemModel *model = (QFileSystemModel *)ui->codeTreeView->model();
+    QModelIndex index = ui->codeTreeView->currentIndex();
+    QString dstPath = model->filePath(index);
+    QFileInfo dstInfo(dstPath);
+    QString filePath;
+    if (dstInfo.isDir()) {
+        filePath = QDir(dstPath).absoluteFilePath(fileName);
+    } else {
+        filePath = dstInfo.dir().absoluteFilePath(fileName);
+    }
+
+    if (QFile::exists(filePath)) {
+        QMessageBox::critical(this, tr("file exists"), tr("file exits.\n") + filePath);
+        return;
+    }
+
+    QFile file(filePath);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        qDebug() << "fail file open. " + filePath;
+        return;
+    }
+}
+
+void NCodeWidget::deleteFile() {
+
+}
+
+void NCodeWidget::moveFile() {
+
+}
+
+void NCodeWidget::copyFile() {
+
+}
+
+void NCodeWidget::newDirectory() {
+
 }
 
 NCodeWidget::~NCodeWidget()

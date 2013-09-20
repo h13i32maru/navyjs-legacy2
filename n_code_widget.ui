@@ -44,6 +44,9 @@
         <height>16777215</height>
        </size>
       </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
       </property>
@@ -93,8 +96,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>codeTreeView</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>NCodeWidget</receiver>
+   <slot>contextMenu()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>288</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>402</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>editCode(QModelIndex)</slot>
+  <slot>contextMenu()</slot>
  </slots>
 </ui>
