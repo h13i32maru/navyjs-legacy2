@@ -3,6 +3,7 @@
 #include "nutil.h"
 
 #include <QFileDialog>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -55,6 +56,15 @@ void MainWindow::openProject() {
     }
 
     setCurrentProject(dirName);
+}
+
+void MainWindow::saveAll() {
+    if (mProjectName.isEmpty()) {
+        return;
+    }
+
+    ui->nConfigWidget->saveConfig();
+    ui->nCodeWidget->saveCode();
 }
 
 MainWindow::~MainWindow()

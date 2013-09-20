@@ -426,6 +426,7 @@
     </property>
     <addaction name="actionNewProject"/>
     <addaction name="actionOpenProject"/>
+    <addaction name="actionSaveAll"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -457,6 +458,14 @@
   <action name="actionAddScene">
    <property name="text">
     <string>AddScene</string>
+   </property>
+  </action>
+  <action name="actionSaveAll">
+   <property name="text">
+    <string>Save All</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>
@@ -520,27 +529,25 @@
    </hints>
   </connection>
   <connection>
-   <sender>topTabWidget</sender>
-   <signal>currentChanged(int)</signal>
-   <receiver>nConfigWidget</receiver>
-   <slot>saveConfig()</slot>
+   <sender>actionSaveAll</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>saveAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>548</x>
-     <y>291</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>548</x>
-     <y>297</y>
+     <x>552</x>
+     <y>283</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
   <slot>newProject()</slot>
-  <slot>saveConfig()</slot>
   <slot>openProject()</slot>
-  <slot>contextMenuForConfigScene(QPoint)</slot>
-  <slot>contextMenuForConfigApp(QPoint)</slot>
+  <slot>saveAll()</slot>
  </slots>
 </ui>

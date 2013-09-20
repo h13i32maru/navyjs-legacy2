@@ -23,6 +23,9 @@ private:
     QDir *mProjectDir;
     QString mProjectName;
 
+public slots:
+    void saveCode();
+
 private slots:
     void editCode(QModelIndex index);
 };

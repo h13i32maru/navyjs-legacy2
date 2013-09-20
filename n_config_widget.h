@@ -28,7 +28,7 @@ private:
     NJson mConfigScene;
     NJson mConfigPage;
 
-private slots:
+public slots:
     void saveConfig();
 
     void newScene();
