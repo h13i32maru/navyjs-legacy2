@@ -30,10 +30,10 @@ private slots:
     void contextMenu();
     void editCode(QModelIndex index);
     void newFile();
-    void deleteFile();
-    void moveFile();
-    void copyFile();
-    void newDirectory();
+    void deletePath();
+    void renamePath();
+    void copyPath();
+    void newDir();
 };
 
 #endif // N_CODE_WIDGET_H

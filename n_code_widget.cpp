@@ -1,5 +1,6 @@
 #include "n_code_widget.h"
 #include "ui_n_code_widget.h"
+#include "nutil.h"
 
 #include <QFileSystemModel>
 #include <QDebug>
@@ -74,107 +75,38 @@ void NCodeWidget::editCode(QModelIndex index) {
 void NCodeWidget::contextMenu() {
     QMenu menu(this);
     menu.addAction(tr("&New"), this, SLOT(newFile()));
-    menu.addAction(tr("&Move"), this, SLOT(moveFile()));
-    menu.addAction(tr("&Copy"), this, SLOT(copyFile()));
-    menu.addAction(tr("&Delete"), this, SLOT(deleteFile()));
+    menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
+    menu.addAction(tr("&Copy"), this, SLOT(copyPath()));
+    menu.addAction(tr("&Delete"), this, SLOT(deletePath()));
     menu.addSeparator();
-    menu.addAction(tr("&New Directory"), this, SLOT(newDirectory()));
+    menu.addAction(tr("&New Directory"), this, SLOT(newDir()));
     menu.exec(QCursor::pos());
 }
 
 void NCodeWidget::newFile() {
     QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"));
-    if (fileName.isEmpty()) {
-        return;
-    }
-
-    if (fileName.contains(QDir::separator())) {
-        QMessageBox::critical(this, tr("file name error"), tr("contains directory separator.\n") + fileName);
-        return;
-    }
-
-    if (fileName.lastIndexOf(".js") == -1) {
-        fileName += ".js";
-    }
-
-    QFileSystemModel *model = (QFileSystemModel *)ui->codeTreeView->model();
-    QModelIndex index = ui->codeTreeView->currentIndex();
-    QString dstPath = model->filePath(index);
-    QFileInfo dstInfo(dstPath);
-    QString filePath;
-    if (dstInfo.isDir()) {
-        filePath = QDir(dstPath).absoluteFilePath(fileName);
-    } else {
-        filePath = dstInfo.dir().absoluteFilePath(fileName);
-    }
-
-    if (QFile::exists(filePath)) {
-        QMessageBox::critical(this, tr("file exists"), tr("file exits.\n") + filePath);
-        return;
-    }
-
-    QFile file(filePath);
-    if (!file.open(QFile::WriteOnly | QFile::Text)) {
-        qDebug() << "fail file open. " + filePath;
-        return;
-    }
+    QString parentPath = NUtil::selectedPath(ui->codeTreeView);
+    NUtil::newFile(parentPath, fileName, ".js");
 }
 
-void NCodeWidget::newDirectory() {
+void NCodeWidget::newDir() {
     QString dirName = QInputDialog::getText(this, tr("New Directory"), tr("create new directory"));
-    if (dirName.isEmpty()) {
-        return;
-    }
-
-    if (dirName.contains(QDir::separator())) {
-        QMessageBox::critical(this, tr("directory name error"), tr("contains directory separator.\n") + dirName);
-        return;
-    }
-
-    QFileSystemModel *model = (QFileSystemModel *)ui->codeTreeView->model();
-    QModelIndex index = ui->codeTreeView->currentIndex();
-    QString dstPath = model->filePath(index);
-    QFileInfo dstInfo(dstPath);
-    QDir parentDir;
-    if (dstInfo.isDir()) {
-        parentDir = QDir(dstPath);
-    } else {
-        parentDir = dstInfo.dir();
-    }
-    QString dirPath = parentDir.absoluteFilePath(dirName);
-
-    if (QFile::exists(dirPath)) {
-        QMessageBox::critical(this, tr("directory exists"), tr("directory exits.\n") + dirPath);
-        return;
-    }
-
-    parentDir.mkdir(dirName);
+    QString parentPath = NUtil::selectedPath(ui->codeTreeView);
+    NUtil::newDir(parentPath, dirName);
 }
 
-
-void NCodeWidget::deleteFile() {
-    QFileSystemModel *model = (QFileSystemModel *)ui->codeTreeView->model();
-    QModelIndex index = ui->codeTreeView->currentIndex();
-    QString dstPath = model->filePath(index);
-
-    int ret = QMessageBox::question(this, tr("delete file"), tr("do you delete this file?") + "\n" + dstPath);
-    if (ret != QMessageBox::Yes) {
-        return;
-    }
-
-    QFileInfo dstInfo(dstPath);
-    if (dstInfo.isDir()) {
-        QDir(dstPath).removeRecursively();
-    } else {
-        QFile(dstPath).remove();
-    }
+void NCodeWidget::deletePath() {
+    QString path = NUtil::selectedPath(ui->codeTreeView);
+    NUtil::deletePath(path);
 }
 
-void NCodeWidget::moveFile() {
-
+void NCodeWidget::renamePath() {
+    QString newName = QInputDialog::getText(this, tr("Rename File"), tr("enter new name"));
+    QString srcPath = NUtil::selectedPath(ui->codeTreeView);
+    NUtil::renamePath(srcPath, newName, ".js");
 }
 
-void NCodeWidget::copyFile() {
+void NCodeWidget::copyPath() {
 
 }
 
