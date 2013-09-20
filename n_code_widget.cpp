@@ -84,6 +84,10 @@ void NCodeWidget::contextMenu() {
 
 void NCodeWidget::newFile() {
     QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"));
+    if (fileName.isEmpty()) {
+        return;
+    }
+
     if (fileName.contains(QDir::separator())) {
         QMessageBox::critical(this, tr("file name error"), tr("contains directory separator.\n") + fileName);
         return;
@@ -116,6 +120,38 @@ void NCodeWidget::newFile() {
     }
 }
 
+void NCodeWidget::newDirectory() {
+    QString dirName = QInputDialog::getText(this, tr("New Directory"), tr("create new directory"));
+    if (dirName.isEmpty()) {
+        return;
+    }
+
+    if (dirName.contains(QDir::separator())) {
+        QMessageBox::critical(this, tr("directory name error"), tr("contains directory separator.\n") + dirName);
+        return;
+    }
+
+    QFileSystemModel *model = (QFileSystemModel *)ui->codeTreeView->model();
+    QModelIndex index = ui->codeTreeView->currentIndex();
+    QString dstPath = model->filePath(index);
+    QFileInfo dstInfo(dstPath);
+    QDir parentDir;
+    if (dstInfo.isDir()) {
+        parentDir = QDir(dstPath);
+    } else {
+        parentDir = dstInfo.dir();
+    }
+    QString dirPath = parentDir.absoluteFilePath(dirName);
+
+    if (QFile::exists(dirPath)) {
+        QMessageBox::critical(this, tr("directory exists"), tr("directory exits.\n") + dirPath);
+        return;
+    }
+
+    parentDir.mkdir(dirName);
+}
+
+
 void NCodeWidget::deleteFile() {
     QFileSystemModel *model = (QFileSystemModel *)ui->codeTreeView->model();
     QModelIndex index = ui->codeTreeView->currentIndex();
@@ -139,10 +175,6 @@ void NCodeWidget::moveFile() {
 }
 
 void NCodeWidget::copyFile() {
-
-}
-
-void NCodeWidget::newDirectory() {
 
 }
 
