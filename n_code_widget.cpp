@@ -26,6 +26,8 @@ void NCodeWidget::setCurrentProject(QString dirPath) {
     ui->codeTreeView->hideColumn(2);
     ui->codeTreeView->hideColumn(3);
     ui->codeTreeView->hideColumn(4);
+
+    ui->codeTabWidget->clear();
 }
 
 void NCodeWidget::saveCode() {
