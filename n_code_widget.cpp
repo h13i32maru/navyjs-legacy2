@@ -117,7 +117,21 @@ void NCodeWidget::newFile() {
 }
 
 void NCodeWidget::deleteFile() {
+    QFileSystemModel *model = (QFileSystemModel *)ui->codeTreeView->model();
+    QModelIndex index = ui->codeTreeView->currentIndex();
+    QString dstPath = model->filePath(index);
 
+    int ret = QMessageBox::question(this, tr("delete file"), tr("do you delete this file?") + "\n" + dstPath);
+    if (ret != QMessageBox::Yes) {
+        return;
+    }
+
+    QFileInfo dstInfo(dstPath);
+    if (dstInfo.isDir()) {
+        QDir(dstPath).removeRecursively();
+    } else {
+        QFile(dstPath).remove();
+    }
 }
 
 void NCodeWidget::moveFile() {
