@@ -107,7 +107,9 @@ void NCodeWidget::renamePath() {
 }
 
 void NCodeWidget::copyPath() {
-
+    QString newName = QInputDialog::getText(this, tr("Copy File"), tr("enter copy name"));
+    QString srcPath = NUtil::selectedPath(ui->codeTreeView);
+    NUtil::copyPath(srcPath, newName, ".js");
 }
 
 NCodeWidget::~NCodeWidget()

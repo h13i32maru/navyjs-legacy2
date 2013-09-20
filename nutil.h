@@ -17,6 +17,7 @@ public:
     static bool newDir(const QString &parentPath, const QString &dirName);
     static bool deletePath(const QString &path);
     static bool renamePath(const QString &srcPath, QString newName, const QString &ext = "");
+    static bool copyPath(const QString &srcPath, QString newName, const QString &ext = "");
     static bool copyDir(const QString &srcPath, const QString &dstPath);
 };
 
