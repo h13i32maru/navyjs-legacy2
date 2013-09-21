@@ -9,6 +9,7 @@ NImageWidget::NImageWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui:
 
     mRootDirName = "image";
     mFileExtension = "";
+    mImportFileExtension = "Image (*.png *.jpg *.jpeg *.gif)";
     mContextNewFileLabel = "";
 
     init(ui->fileTreeView, ui->fileTabWidget);

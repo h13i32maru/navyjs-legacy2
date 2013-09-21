@@ -9,6 +9,7 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QMenu>
+#include <QFileDialog>
 
 NFileTabEditor::NFileTabEditor(QWidget *parent) : QWidget(parent)
 {
@@ -210,6 +211,15 @@ void NFileTabEditor::newDir() {
     NUtil::newDir(parentPath, dirName);
 }
 
+void NFileTabEditor::importPath() {
+    QStringList files = QFileDialog::getOpenFileNames(this, "Select one or more files to open", QDir::homePath(), mImportFileExtension);
+
+    QString parentPath = NUtil::selectedPath(mFileTreeView);
+    for (int i = 0; i < files.length(); i++) {
+        NUtil::importFile(parentPath, files[i]);
+    }
+}
+
 void NFileTabEditor::deletePath() {
     QString path = NUtil::selectedPath(mFileTreeView);
     bool isDir = QFileInfo(path).isDir();
@@ -248,7 +258,7 @@ void NFileTabEditor::contextMenu(QPoint point) {
         subMenu->addAction(mContextNewFileLabel, this, SLOT(newFile()));
     }
     subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
-    menu.addAction(tr("&Import"), this, SLOT(newFile()));
+    menu.addAction(tr("&Import"), this, SLOT(importPath()));
 
     menu.addSeparator();
     QAction *renameAction = menu.addAction(tr("&Rename"), this, SLOT(renamePath()));

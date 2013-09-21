@@ -9,6 +9,7 @@ NCodeWidget::NCodeWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui::N
     ui->setupUi(this);
     mRootDirName = "code";
     mFileExtension = "js";
+    mImportFileExtension = "Text (*.js)";
     mContextNewFileLabel = tr("&JavaScript");
     init(ui->fileTreeView, ui->fileTabWidget);
 }

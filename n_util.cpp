@@ -93,6 +93,35 @@ QString NUtil::newDir(const QString &parentPath, const QString &dirName) {
     return ret ? dirPath : "";
 }
 
+QString NUtil::importFile(const QString &parentPath, const QString &filePath) {
+    if (filePath.isEmpty()) {
+        return "";
+    }
+
+    QFileInfo parentInfo(parentPath);
+    QDir parentDir(parentPath);
+    if (parentInfo.isFile()) {
+        parentDir = parentInfo.dir();
+    }
+
+    QString dstName = QFileInfo(filePath).fileName();
+    QString dstPath = parentDir.absoluteFilePath(dstName);
+    QFileInfo dstInfo(dstPath);
+
+    if (dstInfo.exists()) {
+        QMessageBox::critical(NULL, tr("file exists"), tr("file exits.") + "\n" + dstPath);
+        return "";
+    }
+
+    bool ret = QFile::copy(filePath, dstPath);
+    if (ret) {
+        return dstPath;
+    } else {
+        QMessageBox::critical(NULL, tr("fail import"), tr("fail import.") + "\n" + dstPath);
+        return "";
+    }
+}
+
 bool NUtil::deletePath(const QString &path) {
     int ret = QMessageBox::question(NULL, tr("delete file"), tr("do you delete this file?") + "\n" + path);
     if (ret != QMessageBox::Yes) {

@@ -30,6 +30,7 @@ protected:
     QString mContextNewFileLabel;
     QFileSystemModel *mFileSysteMmodel;
     QString mFileExtension;
+    QString mImportFileExtension;
 
     QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
     void init(NTreeView *fileTreeView, QTabWidget *fileTabWidget);
@@ -44,6 +45,7 @@ protected slots:
     void closeFile(int tabIndex);
     void newFile();
     void newDir();
+    void importPath();
     void deletePath();
     void renamePath();
     void copyPath();

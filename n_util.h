@@ -15,6 +15,7 @@ public:
     static QString selectedPath(QTreeView *treeView);
     static QString newFile(const QString &parentPath, QString fileName, const QString &ext = "");
     static QString newDir(const QString &parentPath, const QString &dirName);
+    static QString importFile(const QString &parentPath, const QString &filePath);
     static bool deletePath(const QString &path);
     static QString renamePath(const QString &srcPath, QString newName, const QString &ext = "");
     static QString copyPath(const QString &srcPath, QString newName, const QString &ext = "");
