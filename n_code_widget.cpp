@@ -33,7 +33,8 @@ void NCodeWidget::setCurrentProject(QString dirPath) {
 }
 */
 
-bool NCodeWidget::isTextChanged(int tabIndex) {
+/*
+bool NCodeWidget::isFileContentChanged(int tabIndex) {
     // 内容が編集されているものはタブ名の末尾がアスタリスクとなる
     QString tabName = ui->fileTabWidget->tabText(tabIndex);
     if (tabName[tabName.length() - 1] == '*') {
@@ -42,9 +43,10 @@ bool NCodeWidget::isTextChanged(int tabIndex) {
         return false;
     }
 }
+*/
 
 bool NCodeWidget::saveFile(int tabIndex) {
-    if (!isTextChanged(tabIndex)) {
+    if (!isFileContentChanged(tabIndex)) {
         return true;
     }
 
@@ -87,13 +89,13 @@ QWidget *NCodeWidget::createTabWidget(const QString &filePath) {
     textEdit->setText(file.readAll());
     file.close();
 
-    connect(textEdit, SIGNAL(textChanged()), this, SLOT(updateTabForTextChanged()));
+    connect(textEdit, SIGNAL(textChanged()), this, SLOT(updateTabForCurrentFileContentChanged()));
 
     return textEdit;
 }
 
 void NCodeWidget::closeFile(int tabIndex) {
-    if (!isTextChanged(tabIndex)) {
+    if (!isFileContentChanged(tabIndex)) {
         ui->fileTabWidget->removeTab(tabIndex);
         return;
     }
@@ -108,6 +110,7 @@ void NCodeWidget::closeFile(int tabIndex) {
     }
 }
 
+/*
 void NCodeWidget::updateTabForTextChanged() {
     int tabIndex = ui->fileTabWidget->currentIndex();
     QString tabText = ui->fileTabWidget->tabText(tabIndex);
@@ -116,6 +119,7 @@ void NCodeWidget::updateTabForTextChanged() {
         ui->fileTabWidget->setTabText(tabIndex, tabText + "*");
     }
 }
+*/
 
 /*
 void NCodeWidget::updateTabForPathChanged(const QString &oldPath, const QString &newPath) {

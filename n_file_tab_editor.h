@@ -30,7 +30,8 @@ protected:
 
     QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
     void init(NTreeView *fileTreeView, QTabWidget *fileTabWidget);
-    virtual QWidget *createTabWidget(const QString &filePath){}
+    virtual QWidget *createTabWidget(const QString &filePath) = 0;
+    bool isFileContentChanged(int tabIndex);
 
 protected slots:
     void openFile(QModelIndex index);
@@ -42,6 +43,7 @@ protected slots:
     void updateTabForPathChanged(const QString &oldPath, const QString &newPath);
     void updateTabForDropped(QString dropDirPath, QString selectedFilePath);
     void updateTabForPathDeleted(const QString &path, const bool &isDir);
+    void updateTabForCurrentFileContentChanged();
 };
 
 #endif // N_FILE_TAB_EDITOR_H

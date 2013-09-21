@@ -26,7 +26,7 @@ private:
     Ui::NCodeWidget *ui;
 
 //    QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
-    bool isTextChanged(int tabIndex);
+//    bool isFileContentChanged(int tabIndex);
 
 private slots:
     void contextMenu(QPoint point);
@@ -39,7 +39,7 @@ private slots:
 //    void copyPath();
 //    void updateTabForPathChanged(const QString &oldPath, const QString &newPath);
 //    void updateTabForDropped(QString dropDirPath, QString selectedFilePath);
-    void updateTabForTextChanged();
+//    void updateTabForTextChanged();
 //    void updateTabForPathDeleted(const QString &path, const bool &isDir);
 };
 

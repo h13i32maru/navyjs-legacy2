@@ -97,6 +97,26 @@ void NFileTabEditor::updateTabForPathDeleted(const QString &path, const bool &is
     }
 }
 
+void NFileTabEditor::updateTabForCurrentFileContentChanged() {
+    int tabIndex = mFileTabWidget->currentIndex();
+    QString tabText = mFileTabWidget->tabText(tabIndex);
+
+    if (tabText[tabText.length() - 1] != '*') {
+        mFileTabWidget->setTabText(tabIndex, tabText + "*");
+    }
+}
+
+bool NFileTabEditor::isFileContentChanged(int tabIndex) {
+    // 内容が編集されているものはタブ名の末尾がアスタリスクとなる
+    // もうちょっとちゃんと管理したほうがよいQMap<QWidget *, bool>のような感じで
+    QString tabName = mFileTabWidget->tabText(tabIndex);
+    if (tabName[tabName.length() - 1] == '*') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 void NFileTabEditor::openFile(QModelIndex index) {
     QString filePath = ((QFileSystemModel *) mFileTreeView->model())->filePath(index);
     QList<int> tabIndexes = searchTabIndexesByPath(filePath, false);
