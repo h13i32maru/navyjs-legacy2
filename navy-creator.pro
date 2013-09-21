@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     n_json.cpp \
     n_util.cpp \
     n_image_widget.cpp \
-    n_file_tab_editor.cpp
+    n_file_tab_editor.cpp \
+    n_layout_widget.cpp
 
 HEADERS  += main_window.h \
     edit_json_dialog.h \
@@ -31,14 +32,16 @@ HEADERS  += main_window.h \
     n_json.h \
     n_util.h \
     n_image_widget.h \
-    n_file_tab_editor.h
+    n_file_tab_editor.h \
+    n_layout_widget.h
 
 FORMS    += main_window.ui \
     edit_json_dialog.ui \
     n_config_widget.ui \
     n_code_widget.ui \
     n_image_widget.ui \
-    n_file_tab_editor.ui
+    n_file_tab_editor.ui \
+    n_layout_widget.ui
 
 RESOURCES += \
     resource.qrc

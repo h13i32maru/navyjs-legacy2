@@ -15,15 +15,6 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
-    <property name="leftMargin">
-     <number>4</number>
-    </property>
-    <property name="topMargin">
-     <number>12</number>
-    </property>
-    <property name="bottomMargin">
-     <number>4</number>
-    </property>
     <item>
      <widget class="QTabWidget" name="topTabWidget">
       <property name="styleSheet">
@@ -37,7 +28,7 @@
 }</string>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="configTab">
        <attribute name="icon">
@@ -84,233 +75,9 @@
        <attribute name="title">
         <string/>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_11">
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="QSplitter" name="splitter_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <widget class="QTreeWidget" name="treeWidget_4">
-           <property name="minimumSize">
-            <size>
-             <width>200</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>300</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <column>
-            <property name="text">
-             <string notr="true">1</string>
-            </property>
-           </column>
-          </widget>
-          <widget class="QTabWidget" name="tabWidget_3">
-           <property name="currentIndex">
-            <number>0</number>
-           </property>
-           <property name="documentMode">
-            <bool>true</bool>
-           </property>
-           <property name="tabsClosable">
-            <bool>true</bool>
-           </property>
-           <property name="movable">
-            <bool>true</bool>
-           </property>
-           <widget class="QWidget" name="tab_2">
-            <attribute name="title">
-             <string>Tab 1</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_16">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QWebView" name="webView">
-               <property name="url">
-                <url>
-                 <string>about:blank</string>
-                </url>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </widget>
-          <widget class="QTabWidget" name="tabWidget_4">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>300</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>400</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="currentIndex">
-            <number>0</number>
-           </property>
-           <widget class="QWidget" name="tab_3">
-            <attribute name="title">
-             <string>Prop</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_17">
-             <item>
-              <widget class="QScrollArea" name="scrollArea">
-               <property name="widgetResizable">
-                <bool>true</bool>
-               </property>
-               <widget class="QWidget" name="scrollAreaWidgetContents">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>0</y>
-                  <width>268</width>
-                  <height>393</height>
-                 </rect>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_2">
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="label_3">
-                   <property name="text">
-                    <string>id</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QLineEdit" name="lineEdit_2"/>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="label_4">
-                   <property name="text">
-                    <string>class</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QComboBox" name="comboBox"/>
-                 </item>
-                 <item row="2" column="0">
-                  <widget class="QLabel" name="label_5">
-                   <property name="text">
-                    <string>pos</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="1">
-                  <layout class="QHBoxLayout" name="horizontalLayout_14">
-                   <item>
-                    <widget class="QSpinBox" name="spinBox_3"/>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBox_4"/>
-                   </item>
-                  </layout>
-                 </item>
-                 <item row="3" column="0">
-                  <widget class="QLabel" name="label_6">
-                   <property name="text">
-                    <string>size</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="1">
-                  <layout class="QHBoxLayout" name="horizontalLayout_15">
-                   <item>
-                    <widget class="QSpinBox" name="spinBox_5"/>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBox_6"/>
-                   </item>
-                  </layout>
-                 </item>
-                 <item row="4" column="0">
-                  <widget class="QLabel" name="label_7">
-                   <property name="text">
-                    <string>bg color</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="4" column="1">
-                  <widget class="QLineEdit" name="lineEdit_3"/>
-                 </item>
-                 <item row="5" column="1">
-                  <spacer name="verticalSpacer_2">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </widget>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_5">
-            <attribute name="title">
-             <string>Layer</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_8">
-             <item>
-              <widget class="QListView" name="listView"/>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_6">
-            <attribute name="title">
-             <string>View</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
-             <item>
-              <widget class="QListView" name="listView_2"/>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_4">
-            <attribute name="title">
-             <string>JSON</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_10">
-             <item>
-              <widget class="QTextEdit" name="textEdit_5"/>
-             </item>
-            </layout>
-           </widget>
-          </widget>
-         </widget>
+         <widget class="NLayoutWidget" name="nLayoutWidget" native="true"/>
         </item>
        </layout>
       </widget>
@@ -393,11 +160,6 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
-  </customwidget>
-  <customwidget>
    <class>NConfigWidget</class>
    <extends>QWidget</extends>
    <header>n_config_widget.h</header>
@@ -416,6 +178,12 @@
    <class>NImageWidget</class>
    <extends>QWidget</extends>
    <header>n_image_widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>NLayoutWidget</class>
+   <extends>QWidget</extends>
+   <header>n_layout_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

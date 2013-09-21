@@ -22,6 +22,7 @@ void MainWindow::setCurrentProject(QString dirPath) {
     ui->nConfigWidget->setCurrentProject(dirPath);
     ui->nCodeWidget->setCurrentProject(dirPath);
     ui->nImageWidget->setCurrentProject(dirPath);
+    ui->nLayoutWidget->setCurrentProject(dirPath);
 }
 
 void MainWindow::newProject()
@@ -66,6 +67,7 @@ void MainWindow::saveAll() {
 
     ui->nConfigWidget->saveConfig();
     ui->nCodeWidget->saveAllFile();
+    ui->nLayoutWidget->saveAllFile();
 }
 
 MainWindow::~MainWindow()
