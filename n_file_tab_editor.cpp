@@ -6,6 +6,15 @@
 #include <QFileSystemModel>
 #include <QInputDialog>
 #include <QDebug>
+#include <QFile>
+#include <QMessageBox>
+#include <QFileSystemModel>
+#include <QDebug>
+#include <QTextEdit>
+#include <QMenu>
+#include <QInputDialog>
+#include <QMessageBox>
+#include <QFileSystemWatcher>
 
 NFileTabEditor::NFileTabEditor(QWidget *parent) : QWidget(parent)
 {
@@ -136,6 +145,41 @@ void NFileTabEditor::openFile(QModelIndex index) {
     widget->setObjectName(filePath);
     int tabIndex = mFileTabWidget->addTab(widget, fileName);
     mFileTabWidget->setCurrentIndex(tabIndex);
+}
+
+bool NFileTabEditor::saveFile(int tabIndex) {
+    if (!isFileContentChanged(tabIndex)) {
+        return true;
+    }
+
+    QWidget *widget = mFileTabWidget->widget(tabIndex);
+    QString filePath = widget->objectName();
+    QFile file(filePath);
+
+    QString editedFileContent = this->editedFileContent(widget);
+
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        QMessageBox::critical(this, tr("fail save file."), tr("fail open file.") + "\n" + filePath);
+        return false;
+    }
+    int ret = file.write(editedFileContent.toUtf8());
+    if (ret == -1) {
+        QMessageBox::critical(this, tr("fail save file."), tr("fail save file.") + "\n" + filePath);
+        return false;
+    }
+
+    // 保存が完了したのでタブ名の*を取り除く
+    QString tabName = mFileTabWidget->tabText(tabIndex);
+    mFileTabWidget->setTabText(tabIndex, tabName.remove(tabName.length() - 1, 1));
+
+    return true;
+}
+
+void NFileTabEditor::saveAllFile() {
+    int openFileNum = mFileTabWidget->count();
+    for (int i = 0; i < openFileNum; i++) {
+        saveFile(i);
+    }
 }
 
 void NFileTabEditor::newFile() {

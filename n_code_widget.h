@@ -18,19 +18,22 @@ class NCodeWidget : public NFileTabEditor
 
 public:
     explicit NCodeWidget(QWidget *parent = 0);
-    void saveAllFile();
-    bool saveFile(int tabIndex);
+//    void saveAllFile();
+//    bool saveFile(int tabIndex);
     ~NCodeWidget();
 
 private:
     Ui::NCodeWidget *ui;
+
+protected:
+    virtual QWidget* createTabWidget(const QString &filePath);
+    virtual QString editedFileContent(QWidget *widget);
 
 //    QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
 //    bool isFileContentChanged(int tabIndex);
 
 private slots:
     void contextMenu(QPoint point);
-    virtual QWidget* createTabWidget(const QString &filePath);
     void closeFile(int tabIndex);
 //    void newFile();
 //    void newDir();

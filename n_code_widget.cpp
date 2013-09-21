@@ -45,38 +45,19 @@ bool NCodeWidget::isFileContentChanged(int tabIndex) {
 }
 */
 
-bool NCodeWidget::saveFile(int tabIndex) {
-    if (!isFileContentChanged(tabIndex)) {
-        return true;
-    }
-
-    QTextEdit *edit = (QTextEdit *)ui->fileTabWidget->widget(tabIndex);
-    QString text = edit->toPlainText();
-    QString filePath = edit->objectName();
-    QFile file(filePath);
-    if (!file.open(QFile::WriteOnly | QFile::Text)) {
-        QMessageBox::critical(this, tr("fail save file."), tr("fail open file.") + "\n" + filePath);
-        return false;
-    }
-    int ret = file.write(text.toUtf8());
-    if (ret == -1) {
-        QMessageBox::critical(this, tr("fail save file."), tr("fail save file.") + "\n" + filePath);
-        return false;
-    }
-
-    // 保存が完了したのでタブ名の*を取り除く
-    QString tabName = ui->fileTabWidget->tabText(tabIndex);
-    ui->fileTabWidget->setTabText(tabIndex, tabName.remove(tabName.length() - 1, 1));
-
-    return true;
+QString NCodeWidget::editedFileContent(QWidget *widget) {
+    QTextEdit *edit = (QTextEdit *)widget;
+    return edit->toPlainText();
 }
 
+/*
 void NCodeWidget::saveAllFile() {
     int openFileNum = ui->fileTabWidget->count();
     for (int i = 0; i < openFileNum; i++) {
         saveFile(i);
     }
 }
+*/
 
 QWidget *NCodeWidget::createTabWidget(const QString &filePath) {
     QFile file(filePath);
