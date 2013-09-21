@@ -233,24 +233,30 @@ void NFileTabEditor::copyPath() {
 }
 
 void NFileTabEditor::contextMenu(QPoint point) {
-    // 選択された場所が何もないところだったら、rootを選択したものとみなす
-    QModelIndex index = mFileTreeView->indexAt(point);
-    if (!index.isValid()) {
-        mFileTreeView->setCurrentIndex(mFileTreeView->rootIndex());
-        mFileTreeView->clearSelection();
-    }
-
     QMenu menu(this);
 
     QMenu *subMenu = menu.addMenu(tr("&New"));
     subMenu->addAction(mContextNewFileLabel, this, SLOT(newFile()));
     subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
 
-    menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
-    menu.addAction(tr("&Copy"), this, SLOT(copyPath()));
-    menu.addAction(tr("&Delete"), this, SLOT(deletePath()));
+    menu.addSeparator();
+    QAction *renameAction = menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
+    QAction *copyAction = menu.addAction(tr("&Copy"), this, SLOT(copyPath()));
+    QAction *deleteAction = menu.addAction(tr("&Delete"), this, SLOT(deletePath()));
+
+    // 選択された場所が何もないところだったら、rootを選択したものとみなす
+    QModelIndex index = mFileTreeView->indexAt(point);
+    if (!index.isValid()) {
+        mFileTreeView->setCurrentIndex(mFileTreeView->rootIndex());
+        mFileTreeView->clearSelection();
+
+        renameAction->setDisabled(true);
+        copyAction->setDisabled(true);
+        deleteAction->setDisabled(true);
+    }
 
     menu.exec(QCursor::pos());
+
 }
 
 NFileTabEditor::~NFileTabEditor()
