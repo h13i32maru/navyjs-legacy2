@@ -36,8 +36,8 @@ QString NUtil::newFile(const QString &parentPath, QString fileName, const QStrin
         return "";
     }
 
-    if (!ext.isEmpty() && fileName.lastIndexOf(ext) == -1) {
-        fileName += ext;
+    if (!ext.isEmpty() && QFileInfo(fileName).suffix() != ext) {
+        fileName += "." + ext;
     }
 
     QFileInfo parentInfo(parentPath);
@@ -120,8 +120,8 @@ QString NUtil::renamePath(const QString &srcPath, QString newName, const QString
     QFileInfo srcInfo(srcPath);
     QDir parentDir = srcInfo.dir();
     if (srcInfo.isFile()) {
-        if (!ext.isEmpty() && newName.lastIndexOf(ext) == -1) {
-            newName += ext;
+        if (!ext.isEmpty() && QFileInfo(newName).suffix() != ext) {
+            newName += "." + ext;
         }
     }
 
@@ -149,8 +149,8 @@ QString NUtil::copyPath(const QString &srcPath, QString newName, const QString &
     QDir parentDir = srcInfo.dir();
 
     if (srcInfo.isFile()) {
-        if (!ext.isEmpty() && newName.lastIndexOf(ext) == -1) {
-            newName += ext;
+        if (!ext.isEmpty() && QFileInfo(newName).suffix() != ext) {
+            newName += "." + ext;
         }
     }
 

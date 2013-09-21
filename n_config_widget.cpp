@@ -1,7 +1,7 @@
 #include "n_config_widget.h"
 #include "ui_n_config_widget.h"
 #include "edit_json_dialog.h"
-#include "nutil.h"
+#include "n_util.h"
 
 #include <QDebug>
 #include <QDir>

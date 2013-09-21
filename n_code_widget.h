@@ -43,6 +43,7 @@ private slots:
     void copyPath();
     void newDir();
     void updateTabForDropped(QString dropDirPath, QString selectedFilePath);
+    void updateTabForTextChanged();
 };
 
 #endif // N_CODE_WIDGET_H

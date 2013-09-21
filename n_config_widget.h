@@ -1,7 +1,7 @@
 #ifndef N_CONFIG_WIDGET_H
 #define N_CONFIG_WIDGET_H
 
-#include "njson.h"
+#include "n_json.h"
 #include <QDir>
 #include <QWidget>
 

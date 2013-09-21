@@ -1,6 +1,6 @@
 #include "n_code_widget.h"
 #include "ui_n_code_widget.h"
-#include "nutil.h"
+#include "n_util.h"
 
 #include <QFileSystemModel>
 #include <QDebug>
@@ -80,6 +80,16 @@ void NCodeWidget::editCode(QModelIndex index) {
     file.close();
     int tabIndex = ui->codeTabWidget->addTab(textEdit, fileName);
     ui->codeTabWidget->setCurrentIndex(tabIndex);
+
+    connect(textEdit, SIGNAL(textChanged()), this, SLOT(updateTabForTextChanged()));
+}
+void NCodeWidget::updateTabForTextChanged() {
+    int tabIndex = ui->codeTabWidget->currentIndex();
+    QString tabText = ui->codeTabWidget->tabText(tabIndex);
+
+    if (tabText[tabText.length() - 1] != '*') {
+        ui->codeTabWidget->setTabText(tabIndex, tabText + "*");
+    }
 }
 
 void NCodeWidget::updateTabForPath(const QString &oldPath, const QString &newPath) {
@@ -152,7 +162,7 @@ void NCodeWidget::contextMenu() {
 void NCodeWidget::newFile() {
     QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"));
     QString parentPath = NUtil::selectedPath(ui->codeTreeView);
-    NUtil::newFile(parentPath, fileName, ".js");
+    NUtil::newFile(parentPath, fileName, "js");
 }
 
 void NCodeWidget::newDir() {
@@ -174,7 +184,7 @@ void NCodeWidget::deletePath() {
 void NCodeWidget::renamePath() {
     QString newName = QInputDialog::getText(this, tr("Rename File"), tr("enter new name"));
     QString srcPath = NUtil::selectedPath(ui->codeTreeView);
-    QString newPath = NUtil::renamePath(srcPath, newName, ".js");
+    QString newPath = NUtil::renamePath(srcPath, newName, "js");
 
     if (newPath.isEmpty()) {
         return;
@@ -186,7 +196,7 @@ void NCodeWidget::renamePath() {
 void NCodeWidget::copyPath() {
     QString newName = QInputDialog::getText(this, tr("Copy File"), tr("enter copy name"));
     QString srcPath = NUtil::selectedPath(ui->codeTreeView);
-    NUtil::copyPath(srcPath, newName, ".js");
+    NUtil::copyPath(srcPath, newName, "js");
 }
 
 NCodeWidget::~NCodeWidget()

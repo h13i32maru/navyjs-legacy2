@@ -1,6 +1,6 @@
 #include "main_window.h"
 #include "ui_main_window.h"
-#include "nutil.h"
+#include "n_util.h"
 
 #include <QFileDialog>
 #include <QDebug>
