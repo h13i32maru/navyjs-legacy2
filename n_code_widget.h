@@ -18,17 +18,12 @@ class NCodeWidget : public NFileTabEditor
 
 public:
     explicit NCodeWidget(QWidget *parent = 0);
-    void setCurrentProject(QString dirPath);
     void saveAllFile();
     bool saveFile(int tabIndex);
     ~NCodeWidget();
 
 private:
     Ui::NCodeWidget *ui;
-    QDir *mProjectDir;
-    QString mProjectName;
-    QString mRootDirName;
-    QFileSystemModel *mFileSysteMmodel;
 
     QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
     bool isTextChanged(int tabIndex);
@@ -37,7 +32,7 @@ private slots:
     void contextMenu(QPoint point);
     void openFile(QModelIndex index);
     void closeFile(int tabIndex);
-    void newFile();
+//    void newFile();
     void newDir();
     void deletePath();
     void renamePath();

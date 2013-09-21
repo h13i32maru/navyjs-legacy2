@@ -14,19 +14,12 @@
 NCodeWidget::NCodeWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui::NCodeWidget)
 {
     ui->setupUi(this);
-    mProjectDir = new QDir(QDir::homePath());
-
-    mFileSysteMmodel = new QFileSystemModel;
-    mFileSysteMmodel->setReadOnly(false);
-    ui->fileTreeView->setModel(mFileSysteMmodel);
-    ui->fileTreeView->hideColumn(1);
-    ui->fileTreeView->hideColumn(2);
-    ui->fileTreeView->hideColumn(3);
-    ui->fileTreeView->hideColumn(4);
-
     mRootDirName = "code";
+    mFileExtension = "js";
+    init(ui->fileTreeView, ui->fileTabWidget);
 }
 
+/*
 void NCodeWidget::setCurrentProject(QString dirPath) {
     mProjectDir->setPath(dirPath);
     mProjectName = mProjectDir->dirName();
@@ -38,6 +31,7 @@ void NCodeWidget::setCurrentProject(QString dirPath) {
 
     ui->fileTabWidget->clear();
 }
+*/
 
 bool NCodeWidget::isTextChanged(int tabIndex) {
     // 内容が編集されているものはタブ名の末尾がアスタリスクとなる
@@ -211,12 +205,14 @@ void NCodeWidget::contextMenu(QPoint point) {
     menu.exec(QCursor::pos());
 }
 
+/*
 void NCodeWidget::newFile() {
     QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"));
     QString parentPath = NUtil::selectedPath(ui->fileTreeView);
     qDebug() << parentPath;
     NUtil::newFile(parentPath, fileName, "js");
 }
+*/
 
 void NCodeWidget::newDir() {
     QString dirName = QInputDialog::getText(this, tr("New Directory"), tr("create new directory"));
