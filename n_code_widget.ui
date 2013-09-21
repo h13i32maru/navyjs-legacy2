@@ -31,7 +31,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QTreeView" name="codeTreeView">
+     <widget class="NTreeView" name="codeTreeView">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -78,6 +78,16 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>NTreeView</class>
+   <extends>QTreeView</extends>
+   <header>n_tree_view.h</header>
+   <slots>
+    <signal>dropped(QString,QString)</signal>
+   </slots>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
@@ -112,9 +122,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>codeTreeView</sender>
+   <signal>dropped(QString,QString)</signal>
+   <receiver>NCodeWidget</receiver>
+   <slot>updateTabForDropped(QString,QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>288</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>402</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>editCode(QModelIndex)</slot>
   <slot>contextMenu()</slot>
+  <slot>updateTabForDropped(QString,QString)</slot>
  </slots>
 </ui>

@@ -3,6 +3,7 @@
 
 #include <QDir>
 #include <QFileSystemModel>
+#include <QFileSystemWatcher>
 #include <QModelIndex>
 #include <QWidget>
 
@@ -24,6 +25,7 @@ private:
     QDir *mProjectDir;
     QString mProjectName;
     QFileSystemModel *mFileSysteMmodel;
+    QString mOldFilePathWithDragDrop;
 
     void updateTabForPath(const QString &oldPath, const QString &newPath);
     void deleteTabForPath(const QString &path, const bool &isDir);
@@ -40,6 +42,7 @@ private slots:
     void renamePath();
     void copyPath();
     void newDir();
+    void updateTabForDropped(QString dropDirPath, QString selectedFilePath);
 };
 
 #endif // N_CODE_WIDGET_H

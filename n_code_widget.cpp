@@ -8,6 +8,7 @@
 #include <QMenu>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QFileSystemWatcher>
 
 NCodeWidget::NCodeWidget(QWidget *parent) : QWidget(parent), ui(new Ui::NCodeWidget)
 {
@@ -94,6 +95,13 @@ void NCodeWidget::updateTabForPath(const QString &oldPath, const QString &newPat
 
         ui->codeTabWidget->setTabText(index, QFileInfo(filePath).fileName());
     }
+}
+
+void NCodeWidget::updateTabForDropped(QString dropDirPath, QString selectedFilePath) {
+    QString fileName = QFileInfo(selectedFilePath).fileName();
+    QString newFilePath = QDir(dropDirPath).absoluteFilePath(fileName);
+
+    updateTabForPath(selectedFilePath, newFilePath);
 }
 
 void NCodeWidget::deleteTabForPath(const QString &path, const bool &isDir) {
