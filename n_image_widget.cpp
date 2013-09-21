@@ -9,7 +9,7 @@ NImageWidget::NImageWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui:
 
     mRootDirName = "image";
     mFileExtension = "";
-    mContextNewFileLabel = tr("&Image");
+    mContextNewFileLabel = "";
 
     init(ui->fileTreeView, ui->fileTabWidget);
 }

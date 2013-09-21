@@ -223,7 +223,8 @@ void NFileTabEditor::deletePath() {
 void NFileTabEditor::renamePath() {
     QString newName = QInputDialog::getText(this, tr("Rename File"), tr("enter new name"));
     QString srcPath = NUtil::selectedPath(mFileTreeView);
-    QString newPath = NUtil::renamePath(srcPath, newName, "js");
+    QString ext = QFileInfo(srcPath).suffix();
+    QString newPath = NUtil::renamePath(srcPath, newName, ext);
 
     if (newPath.isEmpty()) {
         return;
@@ -235,15 +236,19 @@ void NFileTabEditor::renamePath() {
 void NFileTabEditor::copyPath() {
     QString newName = QInputDialog::getText(this, tr("Copy File"), tr("enter copy name"));
     QString srcPath = NUtil::selectedPath(mFileTreeView);
-    NUtil::copyPath(srcPath, newName, mFileExtension);
+    QString ext = QFileInfo(srcPath).suffix();
+    NUtil::copyPath(srcPath, newName, ext);
 }
 
 void NFileTabEditor::contextMenu(QPoint point) {
     QMenu menu(this);
 
     QMenu *subMenu = menu.addMenu(tr("&New"));
-    subMenu->addAction(mContextNewFileLabel, this, SLOT(newFile()));
+    if (!mContextNewFileLabel.isEmpty()) {
+        subMenu->addAction(mContextNewFileLabel, this, SLOT(newFile()));
+    }
     subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
+    menu.addAction(tr("&Import"), this, SLOT(newFile()));
 
     menu.addSeparator();
     QAction *renameAction = menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
