@@ -30,9 +30,11 @@ private:
     void updateTabForPath(const QString &oldPath, const QString &newPath);
     void deleteTabForPath(const QString &path, const bool &isDir);
     QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
+    bool isTextChanged(int tabIndex);
 
 public slots:
-    void saveCode();
+    void saveAllCode();
+    bool saveCode(int tabIndex);
 
 private slots:
     void contextMenu();
@@ -44,6 +46,7 @@ private slots:
     void newDir();
     void updateTabForDropped(QString dropDirPath, QString selectedFilePath);
     void updateTabForTextChanged();
+    void closeTab(int tabIndex);
 };
 
 #endif // N_CODE_WIDGET_H

@@ -36,31 +36,46 @@ void NCodeWidget::setCurrentProject(QString dirPath) {
     ui->codeTabWidget->clear();
 }
 
-void NCodeWidget::saveCode() {
+bool NCodeWidget::isTextChanged(int tabIndex) {
+    // 内容が編集されているものはタブ名の末尾がアスタリスクとなる
+    QString tabName = ui->codeTabWidget->tabText(tabIndex);
+    if (tabName[tabName.length() - 1] == '*') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool NCodeWidget::saveCode(int tabIndex) {
+    if (!isTextChanged(tabIndex)) {
+        return true;
+    }
+
+    QTextEdit *edit = (QTextEdit *)ui->codeTabWidget->widget(tabIndex);
+    QString text = edit->toPlainText();
+    QString filePath = edit->objectName();
+    QFile file(filePath);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        QMessageBox::critical(this, tr("fail save file."), tr("fail open file.") + "\n" + filePath);
+        return false;
+    }
+    int ret = file.write(text.toUtf8());
+    if (ret == -1) {
+        QMessageBox::critical(this, tr("fail save file."), tr("fail save file.") + "\n" + filePath);
+        return false;
+    }
+
+    // 保存が完了したのでタブ名の*を取り除く
+    QString tabName = ui->codeTabWidget->tabText(tabIndex);
+    ui->codeTabWidget->setTabText(tabIndex, tabName.remove(tabName.length() - 1, 1));
+
+    return true;
+}
+
+void NCodeWidget::saveAllCode() {
     int editingCodeNum = ui->codeTabWidget->count();
     for (int i = 0; i < editingCodeNum; i++) {
-        // 内容が編集されたものだけファイルを保存する。内容が編集されているものはタブ名の末尾がアスタリスクとなる
-        QString tabName = ui->codeTabWidget->tabText(i);
-        if (tabName[tabName.length() - 1] != '*') {
-            continue;
-        }
-
-        QTextEdit *edit = (QTextEdit *)ui->codeTabWidget->widget(i);
-        QString text = edit->toPlainText();
-        QString filePath = edit->objectName();
-        QFile file(filePath);
-        if (!file.open(QFile::WriteOnly | QFile::Text)) {
-            qDebug() << "fail file open. " + filePath;
-            return;
-        }
-        int ret = file.write(text.toUtf8());
-        if (ret == -1) {
-            QMessageBox::critical(this, tr("fail save file."), tr("fail save file.") + "\n" + filePath);
-            return;
-        }
-
-        // 保存が完了したのでタブ名の*を取り除く
-        ui->codeTabWidget->setTabText(i, tabName.remove(tabName.length() - 1, 1));
+        saveCode(i);
     }
 }
 
@@ -90,6 +105,23 @@ void NCodeWidget::editCode(QModelIndex index) {
 
     connect(textEdit, SIGNAL(textChanged()), this, SLOT(updateTabForTextChanged()));
 }
+
+void NCodeWidget::closeTab(int tabIndex) {
+    if (!isTextChanged(tabIndex)) {
+        ui->codeTabWidget->removeTab(tabIndex);
+        return;
+    }
+
+    int ret = QMessageBox::question(this, tr("save file"), tr("do you save this file?"));
+    if (ret == QMessageBox::Yes) {
+        bool ret = saveCode(tabIndex);
+        if (ret) {
+            ui->codeTabWidget->removeTab(tabIndex);
+        }
+        return;
+    }
+}
+
 void NCodeWidget::updateTabForTextChanged() {
     int tabIndex = ui->codeTabWidget->currentIndex();
     QString tabText = ui->codeTabWidget->tabText(tabIndex);

@@ -138,10 +138,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>codeTabWidget</sender>
+   <signal>tabCloseRequested(int)</signal>
+   <receiver>NCodeWidget</receiver>
+   <slot>closeTab(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>555</x>
+     <y>288</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>402</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>editCode(QModelIndex)</slot>
   <slot>contextMenu()</slot>
   <slot>updateTabForDropped(QString,QString)</slot>
+  <slot>closeTab(int)</slot>
  </slots>
 </ui>
