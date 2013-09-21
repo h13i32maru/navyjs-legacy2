@@ -24,6 +24,7 @@ public:
 protected:
     NTreeView *mFileTreeView;
     QTabWidget *mFileTabWidget;
+    QWidget *mTabBackgroundWidget;
     QDir *mProjectDir;
     QString mProjectName;
     QString mRootDirName;
@@ -33,7 +34,7 @@ protected:
     QString mImportFileExtension;
 
     QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
-    void init(NTreeView *fileTreeView, QTabWidget *fileTabWidget);
+    void init(NTreeView *fileTreeView, QTabWidget *fileTabWidget, QWidget *tabBackgroundWidget);
     bool isFileContentChanged(int tabIndex);
 
     virtual QWidget *createTabWidget(const QString &filePath) = 0;

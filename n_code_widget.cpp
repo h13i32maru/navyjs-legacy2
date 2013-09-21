@@ -11,7 +11,7 @@ NCodeWidget::NCodeWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui::N
     mFileExtension = "js";
     mImportFileExtension = "Text (*.js)";
     mContextNewFileLabel = tr("&JavaScript");
-    init(ui->fileTreeView, ui->fileTabWidget);
+    init(ui->fileTreeView, ui->fileTabWidget, ui->tabBackgroundWidget);
 }
 
 QString NCodeWidget::editedFileContent(QWidget *widget) {

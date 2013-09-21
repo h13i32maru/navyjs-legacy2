@@ -12,7 +12,7 @@ NImageWidget::NImageWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui:
     mImportFileExtension = "Image (*.png *.jpg *.jpeg *.gif)";
     mContextNewFileLabel = "";
 
-    init(ui->fileTreeView, ui->fileTabWidget);
+    init(ui->fileTreeView, ui->fileTabWidget, ui->tabBackgroundWidget);
 }
 
 QWidget *NImageWidget::createTabWidget(const QString &filePath) {

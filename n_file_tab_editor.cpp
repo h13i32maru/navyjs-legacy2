@@ -15,9 +15,10 @@ NFileTabEditor::NFileTabEditor(QWidget *parent) : QWidget(parent)
 {
 }
 
-void NFileTabEditor::init(NTreeView *fileTreeView, QTabWidget *fileTabWidget) {
+void NFileTabEditor::init(NTreeView *fileTreeView, QTabWidget *fileTabWidget, QWidget *tabBackgroundWidget) {
     mFileTreeView = fileTreeView;
     mFileTabWidget = fileTabWidget;
+    mTabBackgroundWidget = tabBackgroundWidget;
     mProjectDir = new QDir(QDir::homePath());
 
     mFileSysteMmodel = new QFileSystemModel;
@@ -27,6 +28,8 @@ void NFileTabEditor::init(NTreeView *fileTreeView, QTabWidget *fileTabWidget) {
     mFileTreeView->hideColumn(2);
     mFileTreeView->hideColumn(3);
     mFileTreeView->hideColumn(4);
+
+    mFileTabWidget->hide();
 
     connect(mFileTreeView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
     connect(mFileTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(openFile(QModelIndex)));
@@ -150,21 +153,27 @@ void NFileTabEditor::openFile(QModelIndex index) {
     widget->setObjectName(filePath);
     int tabIndex = mFileTabWidget->addTab(widget, fileName);
     mFileTabWidget->setCurrentIndex(tabIndex);
+
+    mFileTabWidget->show();
+    mTabBackgroundWidget->hide();
 }
 
 void NFileTabEditor::closeFile(int tabIndex) {
     if (!isFileContentChanged(tabIndex)) {
         mFileTabWidget->removeTab(tabIndex);
-        return;
+    } else {
+        int ret = QMessageBox::question(this, tr("save file"), tr("do you save this file?"));
+        if (ret == QMessageBox::Yes) {
+            bool ret = saveFile(tabIndex);
+            if (ret) {
+                mFileTabWidget->removeTab(tabIndex);
+            }
+        }
     }
 
-    int ret = QMessageBox::question(this, tr("save file"), tr("do you save this file?"));
-    if (ret == QMessageBox::Yes) {
-        bool ret = saveFile(tabIndex);
-        if (ret) {
-            mFileTabWidget->removeTab(tabIndex);
-        }
-        return;
+    if (mFileTabWidget->count() == 0) {
+        mFileTabWidget->hide();
+        mTabBackgroundWidget->show();
     }
 }
 

@@ -10,7 +10,7 @@ NLayoutWidget::NLayoutWidget(QWidget *parent) : NFileTabEditor(parent), ui(new U
     mImportFileExtension = "Text (*.json)";
     mContextNewFileLabel = tr("&JSON");
 
-    init(ui->fileTreeView, ui->fileTabWidget);
+    init(ui->fileTreeView, ui->fileTabWidget, ui->tabBackgroundWidget);
 }
 
 QWidget *NLayoutWidget::createTabWidget(const QString &filePath) {
