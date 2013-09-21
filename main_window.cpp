@@ -65,7 +65,7 @@ void MainWindow::saveAll() {
     }
 
     ui->nConfigWidget->saveConfig();
-    ui->nCodeWidget->saveAllCode();
+    ui->nCodeWidget->saveAllFile();
 }
 
 MainWindow::~MainWindow()

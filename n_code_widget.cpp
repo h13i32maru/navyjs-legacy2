@@ -46,7 +46,7 @@ bool NCodeWidget::isTextChanged(int tabIndex) {
     }
 }
 
-bool NCodeWidget::saveCode(int tabIndex) {
+bool NCodeWidget::saveFile(int tabIndex) {
     if (!isTextChanged(tabIndex)) {
         return true;
     }
@@ -72,14 +72,14 @@ bool NCodeWidget::saveCode(int tabIndex) {
     return true;
 }
 
-void NCodeWidget::saveAllCode() {
+void NCodeWidget::saveAllFile() {
     int editingCodeNum = ui->codeTabWidget->count();
     for (int i = 0; i < editingCodeNum; i++) {
-        saveCode(i);
+        saveFile(i);
     }
 }
 
-void NCodeWidget::editCode(QModelIndex index) {
+void NCodeWidget::openFile(QModelIndex index) {
     QString filePath = ((QFileSystemModel *) ui->codeTreeView->model())->filePath(index);
     QList<int> tabIndexes = searchTabIndexesByPath(filePath, false);
 
@@ -106,7 +106,7 @@ void NCodeWidget::editCode(QModelIndex index) {
     connect(textEdit, SIGNAL(textChanged()), this, SLOT(updateTabForTextChanged()));
 }
 
-void NCodeWidget::closeTab(int tabIndex) {
+void NCodeWidget::closeFile(int tabIndex) {
     if (!isTextChanged(tabIndex)) {
         ui->codeTabWidget->removeTab(tabIndex);
         return;
@@ -114,7 +114,7 @@ void NCodeWidget::closeTab(int tabIndex) {
 
     int ret = QMessageBox::question(this, tr("save file"), tr("do you save this file?"));
     if (ret == QMessageBox::Yes) {
-        bool ret = saveCode(tabIndex);
+        bool ret = saveFile(tabIndex);
         if (ret) {
             ui->codeTabWidget->removeTab(tabIndex);
         }
@@ -131,7 +131,7 @@ void NCodeWidget::updateTabForTextChanged() {
     }
 }
 
-void NCodeWidget::updateTabForPath(const QString &oldPath, const QString &newPath) {
+void NCodeWidget::updateTabForPathChanged(const QString &oldPath, const QString &newPath) {
     QFileInfo newPathInfo(newPath);
     QList<int> indexes  = searchTabIndexesByPath(oldPath, newPathInfo.isDir());
 
@@ -150,10 +150,10 @@ void NCodeWidget::updateTabForDropped(QString dropDirPath, QString selectedFileP
     QString fileName = QFileInfo(selectedFilePath).fileName();
     QString newFilePath = QDir(dropDirPath).absoluteFilePath(fileName);
 
-    updateTabForPath(selectedFilePath, newFilePath);
+    updateTabForPathChanged(selectedFilePath, newFilePath);
 }
 
-void NCodeWidget::deleteTabForPath(const QString &path, const bool &isDir) {
+void NCodeWidget::updateTabForPathDeleted(const QString &path, const bool &isDir) {
     QList<int> indexes = searchTabIndexesByPath(path, isDir);
 
     for (int i = 0; i < indexes.length(); i++) {
@@ -227,7 +227,7 @@ void NCodeWidget::deletePath() {
     bool ret = NUtil::deletePath(path);
 
     if (ret) {
-        deleteTabForPath(path, isDir);
+        updateTabForPathDeleted(path, isDir);
     }
 }
 
@@ -240,7 +240,7 @@ void NCodeWidget::renamePath() {
         return;
     }
 
-    updateTabForPath(srcPath, newPath);
+    updateTabForPathChanged(srcPath, newPath);
 }
 
 void NCodeWidget::copyPath() {

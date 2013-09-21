@@ -94,7 +94,7 @@
    <sender>codeTreeView</sender>
    <signal>doubleClicked(QModelIndex)</signal>
    <receiver>NCodeWidget</receiver>
-   <slot>editCode(QModelIndex)</slot>
+   <slot>openFile(QModelIndex)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>149</x>
@@ -142,7 +142,7 @@
    <sender>codeTabWidget</sender>
    <signal>tabCloseRequested(int)</signal>
    <receiver>NCodeWidget</receiver>
-   <slot>closeTab(int)</slot>
+   <slot>closeFile(int)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>555</x>
@@ -156,9 +156,9 @@
   </connection>
  </connections>
  <slots>
-  <slot>editCode(QModelIndex)</slot>
+  <slot>openFile(QModelIndex)</slot>
   <slot>contextMenu(QPoint)</slot>
   <slot>updateTabForDropped(QString,QString)</slot>
-  <slot>closeTab(int)</slot>
+  <slot>closeFile(int)</slot>
  </slots>
 </ui>
