@@ -25,7 +25,7 @@ public:
 private:
     Ui::NCodeWidget *ui;
 
-    QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
+//    QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
     bool isTextChanged(int tabIndex);
 
 private slots:
@@ -33,14 +33,14 @@ private slots:
     void openFile(QModelIndex index);
     void closeFile(int tabIndex);
 //    void newFile();
-    void newDir();
-    void deletePath();
-    void renamePath();
-    void copyPath();
-    void updateTabForPathChanged(const QString &oldPath, const QString &newPath);
-    void updateTabForDropped(QString dropDirPath, QString selectedFilePath);
+//    void newDir();
+//    void deletePath();
+//    void renamePath();
+//    void copyPath();
+//    void updateTabForPathChanged(const QString &oldPath, const QString &newPath);
+//    void updateTabForDropped(QString dropDirPath, QString selectedFilePath);
     void updateTabForTextChanged();
-    void updateTabForPathDeleted(const QString &path, const bool &isDir);
+//    void updateTabForPathDeleted(const QString &path, const bool &isDir);
 };
 
 #endif // N_CODE_WIDGET_H

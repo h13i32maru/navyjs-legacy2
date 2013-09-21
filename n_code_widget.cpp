@@ -128,6 +128,7 @@ void NCodeWidget::updateTabForTextChanged() {
     }
 }
 
+/*
 void NCodeWidget::updateTabForPathChanged(const QString &oldPath, const QString &newPath) {
     QFileInfo newPathInfo(newPath);
     QList<int> indexes  = searchTabIndexesByPath(oldPath, newPathInfo.isDir());
@@ -142,7 +143,9 @@ void NCodeWidget::updateTabForPathChanged(const QString &oldPath, const QString 
         ui->fileTabWidget->setTabText(index, QFileInfo(filePath).fileName());
     }
 }
+*/
 
+/*
 void NCodeWidget::updateTabForDropped(QString dropDirPath, QString selectedFilePath) {
     QString fileName = QFileInfo(selectedFilePath).fileName();
     QString newFilePath = QDir(dropDirPath).absoluteFilePath(fileName);
@@ -157,7 +160,9 @@ void NCodeWidget::updateTabForPathDeleted(const QString &path, const bool &isDir
         ui->fileTabWidget->removeTab(indexes[i]);
     }
 }
+*/
 
+/*
 QList<int> NCodeWidget::searchTabIndexesByPath(const QString &path, const bool &isDir) {
     QList<int> indexes;
 
@@ -183,7 +188,7 @@ QList<int> NCodeWidget::searchTabIndexesByPath(const QString &path, const bool &
 
     return indexes;
 }
-
+*/
 void NCodeWidget::contextMenu(QPoint point) {
     // 選択された場所が何もないところだったら、rootを選択したものとみなす
     QModelIndex index = ui->fileTreeView->indexAt(point);
@@ -214,12 +219,15 @@ void NCodeWidget::newFile() {
 }
 */
 
+/*
 void NCodeWidget::newDir() {
     QString dirName = QInputDialog::getText(this, tr("New Directory"), tr("create new directory"));
     QString parentPath = NUtil::selectedPath(ui->fileTreeView);
     NUtil::newDir(parentPath, dirName);
 }
+*/
 
+/*
 void NCodeWidget::deletePath() {
     QString path = NUtil::selectedPath(ui->fileTreeView);
     bool isDir = QFileInfo(path).isDir();
@@ -229,7 +237,9 @@ void NCodeWidget::deletePath() {
         updateTabForPathDeleted(path, isDir);
     }
 }
+*/
 
+/*
 void NCodeWidget::renamePath() {
     QString newName = QInputDialog::getText(this, tr("Rename File"), tr("enter new name"));
     QString srcPath = NUtil::selectedPath(ui->fileTreeView);
@@ -241,12 +251,15 @@ void NCodeWidget::renamePath() {
 
     updateTabForPathChanged(srcPath, newPath);
 }
+*/
 
+/*
 void NCodeWidget::copyPath() {
     QString newName = QInputDialog::getText(this, tr("Copy File"), tr("enter copy name"));
     QString srcPath = NUtil::selectedPath(ui->fileTreeView);
     NUtil::copyPath(srcPath, newName, "js");
 }
+*/
 
 NCodeWidget::~NCodeWidget()
 {

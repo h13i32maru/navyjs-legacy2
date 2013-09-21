@@ -28,10 +28,18 @@ protected:
     QFileSystemModel *mFileSysteMmodel;
     QString mFileExtension;
 
+    QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
     void init(NTreeView *fileTreeView, QTabWidget *fileTabWidget);
 
 protected slots:
     void newFile();
+    void newDir();
+    void deletePath();
+    void renamePath();
+    void copyPath();
+    void updateTabForPathChanged(const QString &oldPath, const QString &newPath);
+    void updateTabForDropped(QString dropDirPath, QString selectedFilePath);
+    void updateTabForPathDeleted(const QString &path, const bool &isDir);
 };
 
 #endif // N_FILE_TAB_EDITOR_H
