@@ -17,6 +17,9 @@ NImageWidget::NImageWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui:
 QWidget *NImageWidget::createTabWidget(const QString &filePath) {
     QLabel *label = new QLabel();
     label->setPixmap(QPixmap(filePath));
+    label->setAlignment(Qt::AlignCenter);
+    label->setStyleSheet("QLabel { background: #ffffff; }");
+
     return label;
 }
 
