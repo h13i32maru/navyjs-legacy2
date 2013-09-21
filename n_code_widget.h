@@ -25,7 +25,6 @@ private:
     QDir *mProjectDir;
     QString mProjectName;
     QFileSystemModel *mFileSysteMmodel;
-    QString mOldFilePathWithDragDrop;
 
     void updateTabForPath(const QString &oldPath, const QString &newPath);
     void deleteTabForPath(const QString &path, const bool &isDir);

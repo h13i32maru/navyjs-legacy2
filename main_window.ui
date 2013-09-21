@@ -37,7 +37,7 @@
 }</string>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="configTab">
        <attribute name="icon">
@@ -191,8 +191,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>268</width>
-                  <height>393</height>
+                  <width>197</width>
+                  <height>188</height>
                  </rect>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_2">
@@ -322,88 +322,9 @@
        <attribute name="title">
         <string/>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_13">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QSplitter" name="splitter_5">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <widget class="QTreeWidget" name="treeWidget_5">
-           <property name="minimumSize">
-            <size>
-             <width>200</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>300</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <column>
-            <property name="text">
-             <string notr="true">1</string>
-            </property>
-           </column>
-          </widget>
-          <widget class="QTabWidget" name="tabWidget_5">
-           <property name="documentMode">
-            <bool>true</bool>
-           </property>
-           <property name="tabsClosable">
-            <bool>true</bool>
-           </property>
-           <property name="movable">
-            <bool>true</bool>
-           </property>
-           <widget class="QWidget" name="tab_7">
-            <attribute name="title">
-             <string>Tab 1</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_12">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QLabel" name="label_8">
-               <property name="autoFillBackground">
-                <bool>false</bool>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QLabel {
-  background:#ffffff;
-}</string>
-               </property>
-               <property name="text">
-                <string>Image</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_8">
-            <attribute name="title">
-             <string>Tab 2</string>
-            </attribute>
-           </widget>
-          </widget>
-         </widget>
+         <widget class="NImageWidget" name="nImageWidget" native="true"/>
         </item>
        </layout>
       </widget>
@@ -489,6 +410,12 @@
    <class>NCodeWidget</class>
    <extends>QWidget</extends>
    <header>n_code_widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>NImageWidget</class>
+   <extends>QWidget</extends>
+   <header>n_image_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

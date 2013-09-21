@@ -9,5 +9,6 @@
         <file>template/config/scene.json</file>
         <file>template/code/main_page.js</file>
         <file>template/code/main_scene.js</file>
+        <file>template/image/octocat.png</file>
     </qresource>
 </RCC>

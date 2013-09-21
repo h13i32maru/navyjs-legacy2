@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     n_code_widget.cpp \
     n_tree_view.cpp \
     n_json.cpp \
-    n_util.cpp
+    n_util.cpp \
+    n_image_widget.cpp
 
 HEADERS  += main_window.h \
     edit_json_dialog.h \
@@ -27,12 +28,14 @@ HEADERS  += main_window.h \
     n_code_widget.h \
     n_tree_view.h \
     n_json.h \
-    n_util.h
+    n_util.h \
+    n_image_widget.h
 
 FORMS    += main_window.ui \
     edit_json_dialog.ui \
     n_config_widget.ui \
-    n_code_widget.ui
+    n_code_widget.ui \
+    n_image_widget.ui
 
 RESOURCES += \
     resource.qrc

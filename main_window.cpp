@@ -21,6 +21,7 @@ void MainWindow::setCurrentProject(QString dirPath) {
 
     ui->nConfigWidget->setCurrentProject(dirPath);
     ui->nCodeWidget->setCurrentProject(dirPath);
+    ui->nImageWidget->setCurrentProject(dirPath);
 }
 
 void MainWindow::newProject()
