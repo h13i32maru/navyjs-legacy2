@@ -1,5 +1,9 @@
 #include "n_layout_widget.h"
+#include "native_bridge.h"
 #include "ui_n_layout_widget.h"
+
+#include <QWebView>
+#include <QWebFrame>
 
 NLayoutWidget::NLayoutWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui::NLayoutWidget)
 {
@@ -14,12 +18,21 @@ NLayoutWidget::NLayoutWidget(QWidget *parent) : NFileTabEditor(parent), ui(new U
 }
 
 QWidget *NLayoutWidget::createTabWidget(const QString &filePath) {
-    QLabel *label = new QLabel();
-    label->setText(filePath);
-    label->setAlignment(Qt::AlignCenter);
-    label->setStyleSheet("QLabel { background: #ffffff; }");
+    QWebView *webView = new QWebView();
 
-    return label;
+    QWebSettings *settings = webView->settings();
+    settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
+    settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+
+    //connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(addJSObject()));
+    NativeBridge *native = new NativeBridge(this);
+    QString layoutPath = QString(filePath).remove(0, mProjectDir->absolutePath().length() + 1);
+    native->setLayoutPath(layoutPath);
+    webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("Native"), native);
+
+    QString htmlPath = "file://" + mProjectDir->absoluteFilePath("index.html");
+    webView->load(QUrl(htmlPath));
+    return webView;
 }
 
 QString NLayoutWidget::editedFileContent(QWidget* /* widget */) {

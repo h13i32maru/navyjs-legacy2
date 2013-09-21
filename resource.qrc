@@ -13,5 +13,8 @@
         <file>template/layout/group1.json</file>
         <file>template/layout/main_page.json</file>
         <file>template/layout/main_scene.json</file>
+        <file>template/index.html</file>
+        <file>template/navy/navy.js</file>
+        <file>template/navy/navy.min.js</file>
     </qresource>
 </RCC>

@@ -2,7 +2,7 @@
   {
     "id": "MainScene",
     "class": "MainScene",
-    "classFile": "class/main_scene.js",
+    "classFile": "code/main_scene.js",
     "pos": {"x": 0, "y": 0},
     "size": {"width": 640, "height": 1136},
     "extra": {
