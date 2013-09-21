@@ -12,15 +12,18 @@ NTreeView::NTreeView(QWidget *parent) : QTreeView(parent)
 void NTreeView::dropEvent(QDropEvent *event) {
     QFileSystemModel *model = (QFileSystemModel *)this->model();
 
+    // 選択されたファイルのパスを取得
     QModelIndex selectedIndex = this->currentIndex();
     QString selectedFilePath = model->filePath(selectedIndex);
 
     QTreeView::dropEvent(event);
 
+    // ドロップが無視されたら処理を終了。例えば同じディレクトリなどにドロップした場合は無視される
     if (!event->isAccepted()) {
         return;
     }
 
+    // ドロップされた座標からドロップされた場所のディレクトリパスを取得する
     QModelIndex dropIndex = QTreeView::indexAt(event->pos());
     switch (dropIndicatorPosition()) {
     case QAbstractItemView::AboveItem:
@@ -38,11 +41,8 @@ void NTreeView::dropEvent(QDropEvent *event) {
             dropPath = model->rootPath();
         } else {
             dropPath = model->filePath(dropIndex);
-            if (!QFileInfo(dropPath).isDir()) {
-                dropPath = QFileInfo(dropPath).dir().absolutePath();
-            }
         }
-    } else {
+    } else { // ドロップがModelIndexの領域外になった場合は、ルートディレクトリへのドロップである
         dropPath = model->rootPath();
     }
 
