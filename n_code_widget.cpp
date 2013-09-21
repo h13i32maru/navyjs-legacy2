@@ -76,31 +76,20 @@ void NCodeWidget::saveAllFile() {
     }
 }
 
-void NCodeWidget::openFile(QModelIndex index) {
-    QString filePath = ((QFileSystemModel *) ui->fileTreeView->model())->filePath(index);
-    QList<int> tabIndexes = searchTabIndexesByPath(filePath, false);
-
-    // already open tab for file path;
-    if (tabIndexes.length() > 0) {
-        ui->fileTabWidget->setCurrentIndex(tabIndexes[0]);
-        return;
-    }
-
+QWidget *NCodeWidget::createTabWidget(const QString &filePath) {
     QFile file(filePath);
-    QString fileName = QFileInfo(filePath).fileName();
 
     if(!file.open(QFile::ReadOnly | QFile::Text)){
-        return;
+        return NULL;
     }
 
     QTextEdit *textEdit = new QTextEdit();
-    textEdit->setObjectName(filePath);
     textEdit->setText(file.readAll());
     file.close();
-    int tabIndex = ui->fileTabWidget->addTab(textEdit, fileName);
-    ui->fileTabWidget->setCurrentIndex(tabIndex);
 
     connect(textEdit, SIGNAL(textChanged()), this, SLOT(updateTabForTextChanged()));
+
+    return textEdit;
 }
 
 void NCodeWidget::closeFile(int tabIndex) {

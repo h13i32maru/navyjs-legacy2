@@ -97,6 +97,27 @@ void NFileTabEditor::updateTabForPathDeleted(const QString &path, const bool &is
     }
 }
 
+void NFileTabEditor::openFile(QModelIndex index) {
+    QString filePath = ((QFileSystemModel *) mFileTreeView->model())->filePath(index);
+    QList<int> tabIndexes = searchTabIndexesByPath(filePath, false);
+
+    // already open tab for file path;
+    if (tabIndexes.length() > 0) {
+        mFileTabWidget->setCurrentIndex(tabIndexes[0]);
+        return;
+    }
+
+    QWidget *widget = createTabWidget(filePath);
+    if (widget == NULL) {
+        return;
+    }
+
+    QString fileName = QFileInfo(filePath).fileName();
+    widget->setObjectName(filePath);
+    int tabIndex = mFileTabWidget->addTab(widget, fileName);
+    mFileTabWidget->setCurrentIndex(tabIndex);
+}
+
 void NFileTabEditor::newFile() {
     QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"));
     QString parentPath = NUtil::selectedPath(mFileTreeView);

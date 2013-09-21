@@ -30,7 +30,7 @@ private:
 
 private slots:
     void contextMenu(QPoint point);
-    void openFile(QModelIndex index);
+    virtual QWidget* createTabWidget(const QString &filePath);
     void closeFile(int tabIndex);
 //    void newFile();
 //    void newDir();

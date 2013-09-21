@@ -30,8 +30,10 @@ protected:
 
     QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
     void init(NTreeView *fileTreeView, QTabWidget *fileTabWidget);
+    virtual QWidget *createTabWidget(const QString &filePath){}
 
 protected slots:
+    void openFile(QModelIndex index);
     void newFile();
     void newDir();
     void deletePath();
