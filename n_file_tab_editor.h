@@ -27,6 +27,7 @@ protected:
     QDir *mProjectDir;
     QString mProjectName;
     QString mRootDirName;
+    QString mContextNewFileLabel;
     QFileSystemModel *mFileSysteMmodel;
     QString mFileExtension;
 
@@ -38,8 +39,10 @@ protected:
     virtual QString editedFileContent(QWidget *widget) = 0;
 
 protected slots:
+    void contextMenu(QPoint point);
     void openFile(QModelIndex index);
-    void newFile();
+    void closeFile(int tabIndex);
+    virtual void newFile();
     void newDir();
     void deletePath();
     void renamePath();

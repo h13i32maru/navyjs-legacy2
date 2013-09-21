@@ -33,8 +33,8 @@ protected:
 //    bool isFileContentChanged(int tabIndex);
 
 private slots:
-    void contextMenu(QPoint point);
-    void closeFile(int tabIndex);
+//    virtual void contextMenu(QPoint point);
+//    void closeFile(int tabIndex);
 //    void newFile();
 //    void newDir();
 //    void deletePath();

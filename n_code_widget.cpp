@@ -16,6 +16,7 @@ NCodeWidget::NCodeWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui::N
     ui->setupUi(this);
     mRootDirName = "code";
     mFileExtension = "js";
+    mContextNewFileLabel = tr("&JavaScript");
     init(ui->fileTreeView, ui->fileTabWidget);
 }
 
@@ -75,6 +76,7 @@ QWidget *NCodeWidget::createTabWidget(const QString &filePath) {
     return textEdit;
 }
 
+/*
 void NCodeWidget::closeFile(int tabIndex) {
     if (!isFileContentChanged(tabIndex)) {
         ui->fileTabWidget->removeTab(tabIndex);
@@ -90,6 +92,7 @@ void NCodeWidget::closeFile(int tabIndex) {
         return;
     }
 }
+*/
 
 /*
 void NCodeWidget::updateTabForTextChanged() {
@@ -163,13 +166,9 @@ QList<int> NCodeWidget::searchTabIndexesByPath(const QString &path, const bool &
     return indexes;
 }
 */
+/*
 void NCodeWidget::contextMenu(QPoint point) {
-    // 選択された場所が何もないところだったら、rootを選択したものとみなす
-    QModelIndex index = ui->fileTreeView->indexAt(point);
-    if (!index.isValid()) {
-        ui->fileTreeView->setCurrentIndex(ui->fileTreeView->rootIndex());
-        ui->fileTreeView->clearSelection();
-    }
+    NFileTabEditor::contextMenu(point);
 
     QMenu menu(this);
 
@@ -183,6 +182,7 @@ void NCodeWidget::contextMenu(QPoint point) {
 
     menu.exec(QCursor::pos());
 }
+*/
 
 /*
 void NCodeWidget::newFile() {

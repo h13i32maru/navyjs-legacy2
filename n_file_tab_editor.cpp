@@ -147,6 +147,22 @@ void NFileTabEditor::openFile(QModelIndex index) {
     mFileTabWidget->setCurrentIndex(tabIndex);
 }
 
+void NFileTabEditor::closeFile(int tabIndex) {
+    if (!isFileContentChanged(tabIndex)) {
+        mFileTabWidget->removeTab(tabIndex);
+        return;
+    }
+
+    int ret = QMessageBox::question(this, tr("save file"), tr("do you save this file?"));
+    if (ret == QMessageBox::Yes) {
+        bool ret = saveFile(tabIndex);
+        if (ret) {
+            mFileTabWidget->removeTab(tabIndex);
+        }
+        return;
+    }
+}
+
 bool NFileTabEditor::saveFile(int tabIndex) {
     if (!isFileContentChanged(tabIndex)) {
         return true;
@@ -220,6 +236,27 @@ void NFileTabEditor::copyPath() {
     QString newName = QInputDialog::getText(this, tr("Copy File"), tr("enter copy name"));
     QString srcPath = NUtil::selectedPath(mFileTreeView);
     NUtil::copyPath(srcPath, newName, mFileExtension);
+}
+
+void NFileTabEditor::contextMenu(QPoint point) {
+    // 選択された場所が何もないところだったら、rootを選択したものとみなす
+    QModelIndex index = mFileTreeView->indexAt(point);
+    if (!index.isValid()) {
+        mFileTreeView->setCurrentIndex(mFileTreeView->rootIndex());
+        mFileTreeView->clearSelection();
+    }
+
+    QMenu menu(this);
+
+    QMenu *subMenu = menu.addMenu(tr("&New"));
+    subMenu->addAction(mContextNewFileLabel, this, SLOT(newFile()));
+    subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
+
+    menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
+    menu.addAction(tr("&Copy"), this, SLOT(copyPath()));
+    menu.addAction(tr("&Delete"), this, SLOT(deletePath()));
+
+    menu.exec(QCursor::pos());
 }
 
 NFileTabEditor::~NFileTabEditor()
