@@ -31,7 +31,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="NTreeView" name="imageTreeView">
+     <widget class="NTreeView" name="fileTreeView">
       <property name="maximumSize">
        <size>
         <width>300</width>
@@ -54,7 +54,7 @@
        <bool>false</bool>
       </attribute>
      </widget>
-     <widget class="QTabWidget" name="imageTabWidget">
+     <widget class="QTabWidget" name="fileTabWidget">
       <property name="currentIndex">
        <number>-1</number>
       </property>

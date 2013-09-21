@@ -42,7 +42,7 @@ protected slots:
     void contextMenu(QPoint point);
     void openFile(QModelIndex index);
     void closeFile(int tabIndex);
-    virtual void newFile();
+    void newFile();
     void newDir();
     void deletePath();
     void renamePath();

@@ -1,31 +1,27 @@
 #include "n_image_widget.h"
 #include "ui_n_image_widget.h"
 
-NImageWidget::NImageWidget(QWidget *parent) : QWidget(parent), ui(new Ui::NImageWidget)
+#include <QLabel>
+
+NImageWidget::NImageWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui::NImageWidget)
 {
     ui->setupUi(this);
 
-    mProjectDir = new QDir(QDir::homePath());
+    mRootDirName = "image";
+    mFileExtension = "";
+    mContextNewFileLabel = tr("&Image");
 
-    mFileSysteMmodel = new QFileSystemModel;
-    mFileSysteMmodel->setReadOnly(false);
-    ui->imageTreeView->setModel(mFileSysteMmodel);
-    ui->imageTreeView->hideColumn(1);
-    ui->imageTreeView->hideColumn(2);
-    ui->imageTreeView->hideColumn(3);
-    ui->imageTreeView->hideColumn(4);
+    init(ui->fileTreeView, ui->fileTabWidget);
 }
 
-void NImageWidget::setCurrentProject(QString dirPath) {
-    mProjectDir->setPath(dirPath);
-    mProjectName = mProjectDir->dirName();
+QWidget *NImageWidget::createTabWidget(const QString &filePath) {
+    QLabel *label = new QLabel();
+    label->setPixmap(QPixmap(filePath));
+    return label;
+}
 
-    QString imageDirPath = mProjectDir->absoluteFilePath("image");
-    mFileSysteMmodel->setRootPath(imageDirPath);
-    //特定のディレクトリ以降のみを表示するための設定
-    ui->imageTreeView->setRootIndex(mFileSysteMmodel->index(imageDirPath));
-
-    ui->imageTabWidget->clear();
+QString NImageWidget::editedFileContent(QWidget* /* widget */) {
+    return NULL;
 }
 
 NImageWidget::~NImageWidget()
