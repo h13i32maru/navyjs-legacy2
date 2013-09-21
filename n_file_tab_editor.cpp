@@ -13,6 +13,7 @@
 NFileTabEditor::NFileTabEditor(QWidget *parent) : QWidget(parent)
 {
 }
+
 void NFileTabEditor::init(NTreeView *fileTreeView, QTabWidget *fileTabWidget) {
     mFileTreeView = fileTreeView;
     mFileTabWidget = fileTabWidget;
@@ -20,11 +21,16 @@ void NFileTabEditor::init(NTreeView *fileTreeView, QTabWidget *fileTabWidget) {
 
     mFileSysteMmodel = new QFileSystemModel;
     mFileSysteMmodel->setReadOnly(false);
-    fileTreeView->setModel(mFileSysteMmodel);
-    fileTreeView->hideColumn(1);
-    fileTreeView->hideColumn(2);
-    fileTreeView->hideColumn(3);
-    fileTreeView->hideColumn(4);
+    mFileTreeView->setModel(mFileSysteMmodel);
+    mFileTreeView->hideColumn(1);
+    mFileTreeView->hideColumn(2);
+    mFileTreeView->hideColumn(3);
+    mFileTreeView->hideColumn(4);
+
+    connect(mFileTreeView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
+    connect(mFileTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(openFile(QModelIndex)));
+    connect(mFileTreeView, SIGNAL(dropped(QString,QString)), this, SLOT(updateTabForDropped(QString,QString)));
+    connect(mFileTabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeFile(int)));
 }
 
 void NFileTabEditor::setCurrentProject(QString dirPath) {

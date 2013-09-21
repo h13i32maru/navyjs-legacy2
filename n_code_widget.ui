@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>805</width>
+    <width>812</width>
     <height>577</height>
    </rect>
   </property>
@@ -89,72 +89,7 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>fileTreeView</sender>
-   <signal>doubleClicked(QModelIndex)</signal>
-   <receiver>NCodeWidget</receiver>
-   <slot>openFile(QModelIndex)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>149</x>
-     <y>288</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>402</x>
-     <y>288</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fileTreeView</sender>
-   <signal>customContextMenuRequested(QPoint)</signal>
-   <receiver>NCodeWidget</receiver>
-   <slot>contextMenu(QPoint)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>149</x>
-     <y>288</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>402</x>
-     <y>288</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fileTreeView</sender>
-   <signal>dropped(QString,QString)</signal>
-   <receiver>NCodeWidget</receiver>
-   <slot>updateTabForDropped(QString,QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>149</x>
-     <y>288</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>402</x>
-     <y>288</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fileTabWidget</sender>
-   <signal>tabCloseRequested(int)</signal>
-   <receiver>NCodeWidget</receiver>
-   <slot>closeFile(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>555</x>
-     <y>288</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>402</x>
-     <y>288</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>openFile(QModelIndex)</slot>
   <slot>contextMenu(QPoint)</slot>
