@@ -37,7 +37,7 @@ public slots:
     bool saveCode(int tabIndex);
 
 private slots:
-    void contextMenu();
+    void contextMenu(QPoint point);
     void editCode(QModelIndex index);
     void newFile();
     void deletePath();

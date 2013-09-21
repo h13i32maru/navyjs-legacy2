@@ -110,7 +110,7 @@
    <sender>codeTreeView</sender>
    <signal>customContextMenuRequested(QPoint)</signal>
    <receiver>NCodeWidget</receiver>
-   <slot>contextMenu()</slot>
+   <slot>contextMenu(QPoint)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>149</x>
@@ -157,7 +157,7 @@
  </connections>
  <slots>
   <slot>editCode(QModelIndex)</slot>
-  <slot>contextMenu()</slot>
+  <slot>contextMenu(QPoint)</slot>
   <slot>updateTabForDropped(QString,QString)</slot>
   <slot>closeTab(int)</slot>
  </slots>

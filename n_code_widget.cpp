@@ -187,20 +187,31 @@ QList<int> NCodeWidget::searchTabIndexesByPath(const QString &path, const bool &
     return indexes;
 }
 
-void NCodeWidget::contextMenu() {
+void NCodeWidget::contextMenu(QPoint point) {
+    // 選択された場所が何もないところだったら、rootを選択したものとみなす
+    QModelIndex index = ui->codeTreeView->indexAt(point);
+    if (!index.isValid()) {
+        ui->codeTreeView->setCurrentIndex(ui->codeTreeView->rootIndex());
+        ui->codeTreeView->clearSelection();
+    }
+
     QMenu menu(this);
-    menu.addAction(tr("&New"), this, SLOT(newFile()));
+
+    QMenu *subMenu = menu.addMenu(tr("&New"));
+    subMenu->addAction(tr("&JavaScript"), this, SLOT(newFile()));
+    subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
+
     menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
     menu.addAction(tr("&Copy"), this, SLOT(copyPath()));
     menu.addAction(tr("&Delete"), this, SLOT(deletePath()));
-    menu.addSeparator();
-    menu.addAction(tr("&New Directory"), this, SLOT(newDir()));
+
     menu.exec(QCursor::pos());
 }
 
 void NCodeWidget::newFile() {
     QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"));
     QString parentPath = NUtil::selectedPath(ui->codeTreeView);
+    qDebug() << parentPath;
     NUtil::newFile(parentPath, fileName, "js");
 }
 
