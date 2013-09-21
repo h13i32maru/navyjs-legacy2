@@ -1,5 +1,5 @@
-#ifndef JOBJECT_H
-#define JOBJECT_H
+#ifndef N_JSON_H
+#define N_JSON_H
 
 #include <QStringList>
 #include <QJsonObject>
@@ -33,4 +33,4 @@ private:
     QJsonValue set(QJsonValue parentValue, QString keysStr, QJsonValue value);
 };
 
-#endif // JOBJECT_H
+#endif // N_JSON_H

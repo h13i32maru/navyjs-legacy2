@@ -1,4 +1,4 @@
-#include "njson.h"
+#include "n_json.h"
 
 #include <QFile>
 

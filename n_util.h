@@ -1,5 +1,5 @@
-#ifndef NUTIL_H
-#define NUTIL_H
+#ifndef N_UTIL_H
+#define N_UTIL_H
 
 #include <QStringList>
 #include <QTreeView>
@@ -21,4 +21,4 @@ public:
     static bool copyDir(const QString &srcPath, const QString &dstPath);
 };
 
-#endif // NUTIL_H
+#endif // N_UTIL_H
