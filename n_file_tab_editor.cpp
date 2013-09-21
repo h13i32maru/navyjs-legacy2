@@ -2,19 +2,13 @@
 #include "n_util.h"
 #include "ui_n_file_tab_editor.h"
 
+#include <QDebug>
 #include <QDir>
 #include <QFileSystemModel>
-#include <QInputDialog>
-#include <QDebug>
 #include <QFile>
-#include <QMessageBox>
-#include <QFileSystemModel>
-#include <QDebug>
-#include <QTextEdit>
-#include <QMenu>
 #include <QInputDialog>
 #include <QMessageBox>
-#include <QFileSystemWatcher>
+#include <QMenu>
 
 NFileTabEditor::NFileTabEditor(QWidget *parent) : QWidget(parent)
 {
