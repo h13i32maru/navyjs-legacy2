@@ -129,6 +129,10 @@ bool NFileTabEditor::isFileContentChanged(int tabIndex) {
 
 void NFileTabEditor::openFile(QModelIndex index) {
     QString filePath = ((QFileSystemModel *) mFileTreeView->model())->filePath(index);
+    if (QFileInfo(filePath).isDir()) {
+        return;
+    }
+
     QList<int> tabIndexes = searchTabIndexesByPath(filePath, false);
 
     // already open tab for file path;
