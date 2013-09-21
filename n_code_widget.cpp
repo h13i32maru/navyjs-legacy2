@@ -37,14 +37,14 @@ void NCodeWidget::setCurrentProject(QString dirPath) {
 }
 
 void NCodeWidget::saveCode() {
-    /**
-     * TODO: 現在は開いている全てのファイルをほぞんしているが、編集されたものだけを保存するようにすべき。
-     * そのためにはファイルが編集されたら何らかの目印を付ける必要がある。
-     * 例えばタブ名にアスタリスクをつけるなど.
-     */
-
     int editingCodeNum = ui->codeTabWidget->count();
     for (int i = 0; i < editingCodeNum; i++) {
+        // 内容が編集されたものだけファイルを保存する。内容が編集されているものはタブ名の末尾がアスタリスクとなる
+        QString tabName = ui->codeTabWidget->tabText(i);
+        if (tabName[tabName.length() - 1] != '*') {
+            continue;
+        }
+
         QTextEdit *edit = (QTextEdit *)ui->codeTabWidget->widget(i);
         QString text = edit->toPlainText();
         QString filePath = edit->objectName();
@@ -53,7 +53,14 @@ void NCodeWidget::saveCode() {
             qDebug() << "fail file open. " + filePath;
             return;
         }
-        file.write(text.toUtf8());
+        int ret = file.write(text.toUtf8());
+        if (ret == -1) {
+            QMessageBox::critical(this, tr("fail save file."), tr("fail save file.") + "\n" + filePath);
+            return;
+        }
+
+        // 保存が完了したのでタブ名の*を取り除く
+        ui->codeTabWidget->setTabText(i, tabName.remove(tabName.length() - 1, 1));
     }
 }
 
