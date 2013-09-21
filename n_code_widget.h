@@ -1,6 +1,7 @@
 #ifndef N_CODE_WIDGET_H
 #define N_CODE_WIDGET_H
 
+#include "n_file_tab_editor.h"
 #include <QDir>
 #include <QFileSystemModel>
 #include <QFileSystemWatcher>
@@ -11,7 +12,7 @@ namespace Ui {
 class NCodeWidget;
 }
 
-class NCodeWidget : public QWidget
+class NCodeWidget : public NFileTabEditor
 {
     Q_OBJECT
 
@@ -26,6 +27,7 @@ private:
     Ui::NCodeWidget *ui;
     QDir *mProjectDir;
     QString mProjectName;
+    QString mRootDirName;
     QFileSystemModel *mFileSysteMmodel;
 
     QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);

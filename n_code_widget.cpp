@@ -10,7 +10,8 @@
 #include <QMessageBox>
 #include <QFileSystemWatcher>
 
-NCodeWidget::NCodeWidget(QWidget *parent) : QWidget(parent), ui(new Ui::NCodeWidget)
+//NCodeWidget::NCodeWidget(QWidget *parent) : QWidget(parent), ui(new Ui::NCodeWidget)
+NCodeWidget::NCodeWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui::NCodeWidget)
 {
     ui->setupUi(this);
     mProjectDir = new QDir(QDir::homePath());
@@ -22,16 +23,18 @@ NCodeWidget::NCodeWidget(QWidget *parent) : QWidget(parent), ui(new Ui::NCodeWid
     ui->fileTreeView->hideColumn(2);
     ui->fileTreeView->hideColumn(3);
     ui->fileTreeView->hideColumn(4);
+
+    mRootDirName = "code";
 }
 
 void NCodeWidget::setCurrentProject(QString dirPath) {
     mProjectDir->setPath(dirPath);
     mProjectName = mProjectDir->dirName();
 
-    QString codeDirPath = mProjectDir->absoluteFilePath("code");
-    mFileSysteMmodel->setRootPath(codeDirPath);
+    QString rootDirPath = mProjectDir->absoluteFilePath(mRootDirName);
+    mFileSysteMmodel->setRootPath(rootDirPath);
     //特定のディレクトリ以降のみを表示するための設定
-    ui->fileTreeView->setRootIndex(mFileSysteMmodel->index(codeDirPath));
+    ui->fileTreeView->setRootIndex(mFileSysteMmodel->index(rootDirPath));
 
     ui->fileTabWidget->clear();
 }
@@ -73,8 +76,8 @@ bool NCodeWidget::saveFile(int tabIndex) {
 }
 
 void NCodeWidget::saveAllFile() {
-    int editingCodeNum = ui->fileTabWidget->count();
-    for (int i = 0; i < editingCodeNum; i++) {
+    int openFileNum = ui->fileTabWidget->count();
+    for (int i = 0; i < openFileNum; i++) {
         saveFile(i);
     }
 }

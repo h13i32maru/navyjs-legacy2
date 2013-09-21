@@ -22,6 +22,7 @@ private:
     Ui::NImageWidget *ui;
     QDir *mProjectDir;
     QString mProjectName;
+    QString mRootDirName;
     QFileSystemModel *mFileSysteMmodel;
 };
 
