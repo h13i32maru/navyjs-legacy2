@@ -23,7 +23,9 @@ SOURCES += main.cpp\
     n_image_widget.cpp \
     n_file_tab_editor.cpp \
     n_layout_widget.cpp \
-    native_bridge.cpp
+    native_bridge.cpp \
+    n_layout_edit_widget.cpp \
+    n_layout_prop_edit.cpp
 
 HEADERS  += main_window.h \
     edit_json_dialog.h \
@@ -35,7 +37,9 @@ HEADERS  += main_window.h \
     n_image_widget.h \
     n_file_tab_editor.h \
     n_layout_widget.h \
-    native_bridge.h
+    native_bridge.h \
+    n_layout_edit_widget.h \
+    n_layout_prop_edit.h
 
 FORMS    += main_window.ui \
     edit_json_dialog.ui \
@@ -43,7 +47,9 @@ FORMS    += main_window.ui \
     n_code_widget.ui \
     n_image_widget.ui \
     n_file_tab_editor.ui \
-    n_layout_widget.ui
+    n_layout_widget.ui \
+    n_layout_edit_widget.ui \
+    n_layout_prop_edit.ui
 
 RESOURCES += \
     resource.qrc
