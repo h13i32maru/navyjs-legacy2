@@ -12,6 +12,7 @@ class NJson
 public:
     NJson();
     NJson(QJsonValue value);
+    NJson(const QString &jsonText);
 
     void parse(QByteArray byteArray);
     void parse(const QString &jsonText);

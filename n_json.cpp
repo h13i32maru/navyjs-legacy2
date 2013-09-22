@@ -11,6 +11,10 @@ NJson::NJson(QJsonValue value)
     mRootValue = value;
 }
 
+NJson::NJson(const QString &jsonText) {
+    parse(jsonText);
+}
+
 void NJson::parse(QByteArray byteArray)
 {
     QJsonDocument doc = QJsonDocument::fromJson(byteArray);

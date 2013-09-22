@@ -2,7 +2,6 @@
 #include "native_bridge.h"
 
 #include <QDebug>
-#include <QJsonValue>
 
 NativeBridge::NativeBridge(QObject *parent) : QObject(parent)
 {
@@ -17,8 +16,7 @@ QString NativeBridge::getLayoutPath() const {
 }
 
 void NativeBridge::setViewsFromJS(const QString &viewsJsonText) {
-    NJson json;
-    json.parse(viewsJsonText.toUtf8());
+    NJson json(viewsJsonText);
     QList< QMap<QString, QString> > views;
     for (int i = 0; i < json.length(); i++) {
         QString index = QString::number(i);
@@ -32,17 +30,10 @@ void NativeBridge::setViewsFromJS(const QString &viewsJsonText) {
         views.append(map);
     }
 
-    emit viewsFromJS(views);
+    emit this->viewsFromJS(views);
 }
-
-/*
-void NativeBridge::setJsonOfView(const QVariant &json) {
-    emit this->changedJsonOfView(json);
-}
-*/
 
 void NativeBridge::setCurrentViewFromJS(const QString &viewJsonText) {
-    NJson json;
-    json.parse(viewJsonText);
+    NJson json(viewJsonText);
     emit this->currentViewFromJS(json);
 }
