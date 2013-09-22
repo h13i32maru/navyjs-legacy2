@@ -37,3 +37,7 @@ void NativeBridge::setCurrentViewFromJS(const QString &viewJsonText) {
     NJson json(viewJsonText);
     emit this->currentViewFromJS(json);
 }
+
+void NativeBridge::setCurrentViewPosFromJS(const int &x, const int &y) {
+    emit this->currentViewPosFromJS(x, y);
+}

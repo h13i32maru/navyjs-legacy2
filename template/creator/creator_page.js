@@ -92,7 +92,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     elm.style.left =  x + 'px';
     elm.style.top = y + 'px';
 
-    Native.currentViewPosFromJS(x, y);
+    Native.setCurrentViewPosFromJS(x, y);
   },
 
   _mouseUp: function(/* ev */) {
@@ -104,6 +104,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
  * @typedef {{
  *   setViewsFromJS: function,
  *   setCurrentViewFromJS: function,
+ *   setCurrentViewPosFromJS: function,
  *   changedViewsOrderToJS: {connect: function},
  *   changedSelectedViewToJS: {connect: function},
  *   changedViewPropertyToJS: {connect: function}

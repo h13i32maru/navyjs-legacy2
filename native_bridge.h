@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE QString getLayoutPath() const;
     Q_INVOKABLE void setViewsFromJS(const QString &viewsJsonText);
     Q_INVOKABLE void setCurrentViewFromJS(const QString &viewJsonText);
+    Q_INVOKABLE void setCurrentViewPosFromJS(const int &x, const int &y);
 
 private:
     QString mLayoutPath;
