@@ -13,17 +13,16 @@ class NativeBridge : public QObject
 public:
     explicit NativeBridge(QObject *parent = 0);
     void setLayoutPath(const QString &layoutPath);
+
     Q_INVOKABLE QString getLayoutPath() const;
-    Q_INVOKABLE void addLayer(const QVariantMap &layer, const int &totalCount);
+    Q_INVOKABLE void setViewsFromJS(const QString &viewsJsonText);
     Q_INVOKABLE void setJsonOfView(const QVariant &json);
 
 private:
     QString mLayoutPath;
-    QList< QMap<QString, QString> > mLayers;
-
 
 signals:
-    void changedLayers(const QList< QMap<QString, QString> > & layers);
+    void viewsFromJS(const QList< QMap<QString, QString> > &views);
     void changedJsonOfView(const QVariant &json);
 
     void changedLayersToJS(const QStringList &layerIds);

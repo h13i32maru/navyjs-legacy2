@@ -26,7 +26,7 @@ void NLayoutEditWidget::setNativeBridge(NativeBridge *native) {
 
     ui->layoutPropEdit->setNativeBridge(native);
 
-    connect(native, SIGNAL(changedLayers(QList<QMap<QString,QString> >)), this, SLOT(setLayers(QList<QMap<QString,QString> >)));
+    connect(native, SIGNAL(viewsFromJS(QList<QMap<QString,QString> >)), this, SLOT(setLayers(QList<QMap<QString,QString> >)));
 }
 
 void NLayoutEditWidget::loadFile(QString filePath) {
