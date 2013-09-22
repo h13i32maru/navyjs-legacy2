@@ -424,6 +424,10 @@ Navy.View.View = Navy.Class({
   destroy: function() {
     this._parentView.removeView(this);
     this._element = null;
+  },
+
+  toJSON: function() {
+    return this._layout;
   }
 });
 

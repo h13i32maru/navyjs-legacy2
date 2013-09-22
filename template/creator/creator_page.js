@@ -36,6 +36,50 @@ var CreatorPage = Navy.Class(Navy.Page, {
     Native.changedViewsOrderToJS.connect(this._updateViewsOrder.bind(this));
     Native.changedSelectedViewToJS.connect(this._selectView.bind(this));
     Native.changedViewPropertyToJS.connect(this._updateSelectedViewLayout.bind(this));
+    Native.addViewToJS.connect(this._addView.bind(this));
+  },
+
+  _getOrderedViews: function() {
+    var elm = this._element;
+    var len = elm.childElementCount;
+    var order = [];
+    for (var i = 0; i < len; i++)  {
+      var childElm = elm.children[i];
+      var view = this.findViewByElement(childElm);
+      order.push(view);
+    }
+
+    return order;
+  },
+
+  _addView: function(viewId, viewClass) {
+    var layout = {
+      id: viewId,
+      class: viewClass,
+      pos: {x: 0, y: 0},
+      size: {width: 100, height: 100},
+      extra: {}
+    };
+
+    switch (viewClass) {
+    case 'Navy.View.Text':
+      layout.extra.text = 'text';
+      break;
+    case 'Navy.View.Image':
+      layout.extra.src = null;
+      break;
+    case 'Navy.ViewGroup.ViewGroup':
+      layout.extra.contentLayoutFile = null;
+    }
+
+    var _class = Navy.Resource.getClass(viewClass);
+    var view = new _class(layout, function(){
+      this.addView(view);
+      this._selectView(view.getId());
+      var order = this._getOrderedViews();
+      console.log(JSON.stringify(order));
+      Native.setViewsFromJS(JSON.stringify(order));
+    }.bind(this));
   },
 
   _updateViewsOrder: function(viewIds) {
@@ -63,7 +107,6 @@ var CreatorPage = Navy.Class(Navy.Page, {
 
     if (this._selectedView) {
       var elm = this._selectedView.getElement();
-//      elm.removeEventListener('mousedown', this._mouseDown);
       elm.removeEventListener('mousemove', this._mouseMove);
       elm.removeEventListener('mouseup', this._mouseUp);
     }

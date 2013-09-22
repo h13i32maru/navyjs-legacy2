@@ -171,14 +171,20 @@
               </sizepolicy>
              </property>
              <property name="text">
-              <string>view</string>
+              <string>class</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QTreeWidget" name="treeWidget">
+            <widget class="QTreeWidget" name="viewClassTreeWidget">
+             <property name="editTriggers">
+              <set>QAbstractItemView::NoEditTriggers</set>
+             </property>
              <property name="alternatingRowColors">
               <bool>true</bool>
+             </property>
+             <property name="indentation">
+              <number>0</number>
              </property>
              <attribute name="headerDefaultSectionSize">
               <number>100</number>
@@ -196,6 +202,38 @@
                <string>class</string>
               </property>
              </column>
+             <item>
+              <property name="text">
+               <string>View</string>
+              </property>
+              <property name="text">
+               <string>Navy.View.View</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Text</string>
+              </property>
+              <property name="text">
+               <string>Navy.View.Text</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Image</string>
+              </property>
+              <property name="text">
+               <string>Navy.View.Image</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ViewGroup</string>
+              </property>
+              <property name="text">
+               <string>Navy.ViewGroup.ViewGroup</string>
+              </property>
+             </item>
             </widget>
            </item>
           </layout>

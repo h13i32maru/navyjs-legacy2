@@ -3,6 +3,8 @@
 
 #include "native_bridge.h"
 
+#include <QModelIndex>
+#include <QTreeWidgetItem>
 #include <QWebView>
 #include <QWidget>
 
@@ -16,6 +18,7 @@ class NLayoutEditWidget : public QWidget
 
 public:
     enum ViewsCol {ViewsColId, ViewsColClass, ViewsColPos, ViewsColSize};
+    enum ViewClassCol {ViewClassColName, ViewClassColClass};
 
     explicit NLayoutEditWidget(QWidget *parent = 0);
     void setNativeBridge(NativeBridge *native);
@@ -31,6 +34,7 @@ private slots:
     void setViewsFromJS(const QList< QMap<QString, QString> > &views);
     void updateViewsToJS();
     void selectViewToJS();
+    void addViewToJS(QTreeWidgetItem *item, int index);
 };
 
 #endif // N_LAYOUT_EDIT_WIDGET_H

@@ -15,6 +15,7 @@ NLayoutEditWidget::NLayoutEditWidget(QWidget *parent) : QWidget(parent), ui(new 
     settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
     settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 
+    connect(ui->viewClassTreeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(addViewToJS(QTreeWidgetItem*, int)));
     connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop()), this, SLOT(updateViewsToJS()));
     connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectViewToJS()));
 }
@@ -58,6 +59,9 @@ void NLayoutEditWidget::setViewsFromJS(const QList<QMap<QString, QString> > &vie
     }
 }
 
+/*************************************************
+ * to js method
+ *************************************************/
 void NLayoutEditWidget::updateViewsToJS() {
     NTreeWidget *tree = ui->layerTreeWidget;
     int layerNum = tree->topLevelItemCount();
@@ -72,6 +76,14 @@ void NLayoutEditWidget::selectViewToJS() {
     NTreeWidget *tree = ui->layerTreeWidget;
     QString viewId = tree->currentItem()->text(ViewsColId);
     emit mNative->changedSelectedViewToJS(viewId);
+}
+
+void NLayoutEditWidget::addViewToJS(QTreeWidgetItem *item, int /* index */) {
+    QTreeWidget *tree = ui->viewClassTreeWidget;
+    QString viewId = item->text(ViewClassColName) + QString::number(tree->topLevelItemCount());
+    QString viewClass = item->text(ViewClassColClass);
+
+    emit mNative->addViewToJS(viewId, viewClass);
 }
 
 NLayoutEditWidget::~NLayoutEditWidget()
