@@ -561,6 +561,14 @@ Navy.ViewGroup.ViewGroup = Navy.Class(Navy.View.View, {
 Navy.Page = Navy.Class(Navy.ViewGroup.ViewGroup, {
   CLASSNAME: 'Navy.Page',
 
+  initialize: function($super, layout, callback) {
+    // シーン、ページの場合はsize, posは固定値でよい
+    layout.pos = {x:0, y:0};
+    layout.size = {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height};
+
+    $super(layout, callback);
+  },
+
   onCreate: function() {
     console.log('onCreate', this.CLASSNAME);
   },
@@ -747,6 +755,10 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
     var pass = notify.pass.bind(notify);
     */
 
+    // シーン、ページの場合はsize, posは固定値でよい
+    layout.pos = {x:0, y:0};
+    layout.size = {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height};
+
     $super(layout, function(){
       var views = this._views;
       for (var name in views) {
@@ -844,6 +856,10 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
 
   _createPage: function(pageName, callback) {
     var layout = Navy.Config.page[pageName];
+    if (!layout) {
+      console.log(pageName);
+      console.log(Navy.Config.page);
+    }
     Navy.Resource.loadScript(layout.classFile, this._onLoadScript.bind(this, layout, callback));
   },
 

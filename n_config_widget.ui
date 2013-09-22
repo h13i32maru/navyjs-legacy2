@@ -142,7 +142,7 @@
         <bool>true</bool>
        </property>
        <property name="columnCount">
-        <number>5</number>
+        <number>6</number>
        </property>
        <attribute name="headerDefaultSectionSize">
         <number>200</number>
@@ -175,6 +175,11 @@
          <string>page</string>
         </property>
        </column>
+       <column>
+        <property name="text">
+         <string>backgroundColor</string>
+        </property>
+       </column>
       </widget>
      </item>
      <item>
@@ -198,7 +203,7 @@
         <bool>true</bool>
        </property>
        <property name="columnCount">
-        <number>4</number>
+        <number>5</number>
        </property>
        <attribute name="headerDefaultSectionSize">
         <number>200</number>
@@ -224,6 +229,11 @@
        <column>
         <property name="text">
          <string>layout</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>backgroundColor</string>
         </property>
        </column>
       </widget>

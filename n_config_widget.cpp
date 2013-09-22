@@ -40,21 +40,21 @@ void NConfigWidget::saveConfig() {
 
     // app.json
     QFile configAppFile(this->mProjectDir->absoluteFilePath("config/app.json"));
-    if (!configAppFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+    if (!configAppFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return;
     }
     configAppFile.write(this->mConfigApp.stringify());
 
     // scene.json
     QFile configSceneFile(this->mProjectDir->absoluteFilePath("config/scene.json"));
-    if (!configSceneFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+    if (!configSceneFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return;
     }
     configSceneFile.write(this->mConfigScene.stringify());
 
     // page.json
     QFile configPageFile(this->mProjectDir->absoluteFilePath("config/page.json"));
-    if (!configPageFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+    if (!configPageFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return;
     }
     configPageFile.write(this->mConfigPage.stringify());
@@ -169,6 +169,7 @@ void NConfigWidget::syncSceneJsonToWidget() {
         row[SCENE_COL_CLASS_FILE] = scene.getStr("classFile");
         row[SCENE_COL_LAYOUT] = scene.getStr("extra.contentLayoutFile");
         row[SCENE_COL_PAGE] = scene.getStr("extra.page");
+        row[SCENE_COL_BGCOLOR] = scene.getStr("backgroundColor");
         QTreeWidgetItem *item = new QTreeWidgetItem(row);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
         items.append(item);
@@ -187,6 +188,7 @@ void NConfigWidget::syncPageJsonToWidget() {
         row[PAGE_COL_CLASS] = page.getStr("class");
         row[PAGE_COL_CLASS_FILE] = page.getStr("classFile");
         row[PAGE_COL_LAYOUT] = page.getStr("extra.contentLayoutFile");
+        row[PAGE_COL_BGCOLOR] = page.getStr("backgroundColor");
         QTreeWidgetItem *item = new QTreeWidgetItem(row);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
         items.append(item);
@@ -211,6 +213,7 @@ void NConfigWidget::syncSceneWidgetToJson() {
         mConfigScene.set(index + ".classFile", item->text(SCENE_COL_CLASS_FILE));
         mConfigScene.set(index + ".extra.contentLayoutFile", item->text(SCENE_COL_LAYOUT));
         mConfigScene.set(index + ".extra.page", item->text(SCENE_COL_PAGE));
+        mConfigScene.set(index + ".backgroundColor", item->text(SCENE_COL_BGCOLOR));
     }
 }
 
@@ -223,6 +226,7 @@ void NConfigWidget::syncPageWidgetToJson() {
         mConfigPage.set(index + ".class", item->text(PAGE_COL_CLASS));
         mConfigPage.set(index + ".classFile", item->text(PAGE_COL_CLASS_FILE));
         mConfigPage.set(index + ".extra.contentLayoutFile", item->text(PAGE_COL_LAYOUT));
+        mConfigPage.set(index + ".backgroundColor", item->text(PAGE_COL_BGCOLOR));
     }
 }
 
