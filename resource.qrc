@@ -16,5 +16,6 @@
         <file>template/index.html</file>
         <file>template/navy/navy.js</file>
         <file>template/navy/navy.min.js</file>
+        <file>template/creator/creator_page.js</file>
     </qresource>
 </RCC>

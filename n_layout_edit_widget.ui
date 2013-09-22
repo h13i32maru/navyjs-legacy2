@@ -95,11 +95,14 @@
              <property name="styleSheet">
               <string notr="true"/>
              </property>
+             <property name="dragDropMode">
+              <enum>QAbstractItemView::InternalMove</enum>
+             </property>
              <property name="alternatingRowColors">
               <bool>true</bool>
              </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::MultiSelection</enum>
+             <property name="indentation">
+              <number>0</number>
              </property>
              <attribute name="headerDefaultSectionSize">
               <number>150</number>
@@ -115,6 +118,16 @@
              <column>
               <property name="text">
                <string notr="true">class</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>pos</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>size</string>
               </property>
              </column>
             </widget>

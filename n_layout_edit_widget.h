@@ -15,6 +15,8 @@ class NLayoutEditWidget : public QWidget
     Q_OBJECT
 
 public:
+    enum LayerCol {LayerColId, LayerColClass, LayerColPos, LayerColSize};
+
     explicit NLayoutEditWidget(QWidget *parent = 0);
     void setNativeBridge(NativeBridge *native);
     void loadFile(QString filePath);
@@ -26,6 +28,7 @@ private:
 
 private slots:
     void injectNativeBridge();
+    void setLayers(const QList< QMap<QString, QString> > &layers);
 };
 
 #endif // N_LAYOUT_EDIT_WIDGET_H
