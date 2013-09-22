@@ -134,17 +134,11 @@ var CreatorPage = Navy.Class(Navy.Page, {
     var dy = ev.clientY - this._dragPrevY;
     this._dragPrevX = ev.clientX;
     this._dragPrevY = ev.clientY;
-    var elm = this._selectedView.getElement();
 
-    var currentX = parseInt(elm.style.left, 10);
-    var currentY = parseInt(elm.style.top, 10);
+    this._selectedView.addPos({x: dx / this._zoom, y: dy/this._zoom});
 
-    var x = parseInt(currentX + dx / this._zoom, 10);
-    var y = parseInt(currentY + dy / this._zoom, 10);
-    elm.style.left =  x + 'px';
-    elm.style.top = y + 'px';
-
-    Native.setCurrentViewPosFromJS(x, y);
+    var pos = this._selectedView.getPos();
+    Native.setCurrentViewPosFromJS(pos.x, pos.y);
   },
 
   _mouseUp: function(/* ev */) {

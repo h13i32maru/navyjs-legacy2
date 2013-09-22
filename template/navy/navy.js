@@ -421,6 +421,16 @@ Navy.View.View = Navy.Class({
     this._element.style.cssText += cssText;
   },
 
+  addPos: function(deltaPos) {
+    var x = this._layout.pos.x + (deltaPos.x || 0);
+    var y = this._layout.pos.y + (deltaPos.y || 0);
+    this.setPos({x: x, y: y});
+  },
+
+  getPos: function() {
+    return {x: this._layout.pos.x, y: this._layout.pos.y, z: this._layout.pos.z};
+  },
+
   destroy: function() {
     this._parentView.removeView(this);
     this._element = null;
