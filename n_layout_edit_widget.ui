@@ -120,16 +120,6 @@
                <string notr="true">class</string>
               </property>
              </column>
-             <column>
-              <property name="text">
-               <string>pos</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>size</string>
-              </property>
-             </column>
             </widget>
            </item>
           </layout>

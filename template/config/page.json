@@ -3,9 +3,7 @@
     "id": "MainPage",
     "class": "MainPage",
     "classFile": "code/main_page.js",
-    "pos": {"x": 0, "y": 0},
-    "size": {"width": 640, "height": 1136},
-    "backgroundColor": "#ff0000",
+    "backgroundColor": "#aaaaaa",
     "extra": {
       "contentLayoutFile": "layout/main_page.json"
     }

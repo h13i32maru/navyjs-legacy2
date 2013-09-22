@@ -48,11 +48,9 @@ void NLayoutEditWidget::setViewsFromJS(const QList<QMap<QString, QString> > &vie
     layerTreeWidget->clear();
     for (int i = 0; i < views.length(); i++) {
         QStringList row;
-        NUtil::expand(row, 4);
+        NUtil::expand(row, 2);
         row[ViewsColId] = views[i]["id"];
         row[ViewsColClass] = views[i]["class"];
-        row[ViewsColPos] = views[i]["x"] + ", " + views[i]["y"];
-        row[ViewsColSize] = views[i]["width"] + " x " + views[i]["height"];
 
         QTreeWidgetItem *item = new QTreeWidgetItem(row);
         item->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemNeverHasChildren);
@@ -95,9 +93,16 @@ void NLayoutEditWidget::selectViewToJS() {
 }
 
 void NLayoutEditWidget::addViewToJS(QTreeWidgetItem *item, int /* index */) {
-    QTreeWidget *tree = ui->viewClassTreeWidget;
-    QString viewId = item->text(ViewClassColName) + QString::number(tree->topLevelItemCount());
+    QTreeWidget *tree = ui->layerTreeWidget;
+    QString viewId = item->text(ViewClassColName) + QString::number(tree->topLevelItemCount() + 1);
     QString viewClass = item->text(ViewClassColClass);
+
+    QStringList row;
+    NUtil::expand(row, 2);
+    row[ViewsColId] = viewId;
+    row[ViewsColClass] = viewClass;
+    QTreeWidgetItem *viewsItem = new QTreeWidgetItem(row);
+    tree->addTopLevelItem(viewsItem);
 
     emit mNative->addViewToJS(viewId, viewClass);
 }

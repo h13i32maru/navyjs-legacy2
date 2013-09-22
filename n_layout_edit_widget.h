@@ -17,7 +17,7 @@ class NLayoutEditWidget : public QWidget
     Q_OBJECT
 
 public:
-    enum ViewsCol {ViewsColId, ViewsColClass, ViewsColPos, ViewsColSize};
+    enum ViewsCol {ViewsColId, ViewsColClass};
     enum ViewClassCol {ViewClassColName, ViewClassColClass};
 
     explicit NLayoutEditWidget(QWidget *parent = 0);

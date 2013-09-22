@@ -76,8 +76,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     var view = new _class(layout, function(){
       this.addView(view);
 
-      var order = this._getOrderedViews();
-      Native.setViewsFromJS(JSON.stringify(order));
+      view.getElement().addEventListener('mousedown', this._mouseDown.bind(this, view));
 
       this._selectView(view.getId());
     }.bind(this));

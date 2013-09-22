@@ -450,10 +450,16 @@ Navy.View.Image = Navy.Class(Navy.View.View, {
       this._imgElm = imgElm;
     }
 
-    Navy.Resource.loadImage(layout.extra.src, function(src){
-      this._onLoadImage(src);
-      callback && callback(this);
-    }.bind(this));
+    if (layout && layout.extra.src) {
+      Navy.Resource.loadImage(layout.extra.src, function(src){
+        this._onLoadImage(src);
+        callback && callback(this);
+      }.bind(this));
+    } else {
+      this._layout.extra.src = null;
+      this._imgElm.src = '';
+      callback && setTimeout(callback, 0);
+    }
   },
 
   _onLoadImage: function(src){
