@@ -75,10 +75,11 @@ var CreatorPage = Navy.Class(Navy.Page, {
     var _class = Navy.Resource.getClass(viewClass);
     var view = new _class(layout, function(){
       this.addView(view);
-      this._selectView(view.getId());
+
       var order = this._getOrderedViews();
-      console.log(JSON.stringify(order));
       Native.setViewsFromJS(JSON.stringify(order));
+
+      this._selectView(view.getId());
     }.bind(this));
   },
 

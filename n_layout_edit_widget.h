@@ -35,6 +35,7 @@ private slots:
     void updateViewsToJS();
     void selectViewToJS();
     void addViewToJS(QTreeWidgetItem *item, int index);
+    void setCurrentViewFromJS(const NJson &json);
 };
 
 #endif // N_LAYOUT_EDIT_WIDGET_H

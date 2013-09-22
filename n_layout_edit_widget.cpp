@@ -29,6 +29,7 @@ void NLayoutEditWidget::setNativeBridge(NativeBridge *native) {
     ui->layoutPropEdit->setNativeBridge(native);
 
     connect(native, SIGNAL(viewsFromJS(QList<QMap<QString,QString> >)), this, SLOT(setViewsFromJS(QList<QMap<QString,QString> >)));
+    connect(native, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setCurrentViewFromJS(NJson)));
 }
 
 void NLayoutEditWidget::loadFile(QString filePath) {
@@ -44,6 +45,7 @@ void NLayoutEditWidget::injectNativeBridge (){
 
 void NLayoutEditWidget::setViewsFromJS(const QList<QMap<QString, QString> > &views) {
     QTreeWidget *layerTreeWidget = ui->layerTreeWidget;
+    layerTreeWidget->clear();
     for (int i = 0; i < views.length(); i++) {
         QStringList row;
         NUtil::expand(row, 4);
@@ -56,6 +58,20 @@ void NLayoutEditWidget::setViewsFromJS(const QList<QMap<QString, QString> > &vie
         item->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemNeverHasChildren);
 
         layerTreeWidget->addTopLevelItem(item);
+    }
+}
+
+void NLayoutEditWidget::setCurrentViewFromJS(const NJson &json) {
+    QString viewId = json.getStr("id");
+
+    QTreeWidget *tree = ui->layerTreeWidget;
+    for (int i = 0; i < tree->topLevelItemCount(); i++) {
+        QTreeWidgetItem *item = tree->topLevelItem(i);
+        QString _viewId = item->text(ViewsColId);
+        if (_viewId == viewId) {
+            tree->setCurrentItem(item);
+            return;
+        }
     }
 }
 
