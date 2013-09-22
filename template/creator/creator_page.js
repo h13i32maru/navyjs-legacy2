@@ -1,13 +1,25 @@
 var CreatorPage = Navy.Class(Navy.Page, {
   CLASSNAME: 'CreatorPage',
 
+  _zoom: null,
+
   _selectedBox: null,
   _selectedView: null,
 
+  _dragPrevX: null,
+  _dragPrevY: null,
+
   onCreate: function($super) {
     document.body.style.background = '#666';
-
     window.CreatorPageInstance = this;
+
+    this._mouseDown = this._mouseDown.bind(this);
+    this._mouseUp = this._mouseUp.bind(this);
+    this._mouseMove = this._mouseMove.bind(this);
+    document.body.addEventListener('mouseup', this._mouseUp);
+
+    this._zoom = parseFloat(document.body.style.zoom);
+
     $super();
 
     this._selectedBox = document.createElement('div');
@@ -32,9 +44,19 @@ var CreatorPage = Navy.Class(Navy.Page, {
         parentNode.removeChild(this._selectedBox);
       }
 
+      if (this._selectedView) {
+        var elm = this._selectedView.getElement();
+        elm.removeEventListener('mousedown', this._mouseDown);
+        elm.removeEventListener('mousemove', this._mouseMove);
+        elm.removeEventListener('mouseup', this._mouseUp);
+      }
+
       var view = this._views[viewId];
       var elm = view.getElement();
       elm.appendChild(this._selectedBox);
+      elm.addEventListener('mousedown', this._mouseDown);
+      elm.addEventListener('mouseup', this._mouseUp);
+
       this._selectedView = view;
 
       Native.setCurrentViewFromJS(JSON.stringify(view._layout));
@@ -47,6 +69,30 @@ var CreatorPage = Navy.Class(Navy.Page, {
 
       this._selectedView.setLayout(layout);
     }.bind(this));
+  },
+
+  _mouseDown: function(ev) {
+    this._dragPrevX = ev.clientX;
+    this._dragPrevY = ev.clientY;
+    this._selectedView.getElement().addEventListener('mousemove', this._mouseMove);
+  },
+
+  _mouseMove: function(ev) {
+    var dx = ev.clientX - this._dragPrevX;
+    var dy = ev.clientY - this._dragPrevY;
+    this._dragPrevX = ev.clientX;
+    this._dragPrevY = ev.clientY;
+    var elm = this._selectedView.getElement();
+
+    var currentX = parseInt(elm.style.left, 10);
+    var currentY = parseInt(elm.style.top, 10);
+
+    elm.style.left = (currentX + dx / this._zoom) + 'px';
+    elm.style.top = (currentY + dy / this._zoom) + 'px';
+  },
+
+  _mouseUp: function(/* ev */) {
+    this._selectedView.getElement().removeEventListener('mousemove', this._mouseMove);
   }
 });
 

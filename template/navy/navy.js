@@ -638,7 +638,7 @@ Navy.Root = Navy.Class.instance(Navy.ViewGroup.ViewGroup, {
   },
 
   _initDocument: function(){
-    var style = '* {margin:0; padding:0;} html {width:100%; height:100%} body {background-color:#000;}';
+    var style = '* {margin:0; padding:0; -webkit-user-select: none; -webkit-user-drag:none;} html {width:100%; height:100%} body {background-color:#000;}';
     var styleElm = document.createElement('style');
     styleElm.textContent = style;
     document.head.appendChild(styleElm);
@@ -747,13 +747,6 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
 
   initialize: function($super, layout, callback){
     this._pageStack = [];
-
-    /*
-    var notify = new Navy.Notify(3, function(){
-      this.nextPage(layout.extra.page, callback.bind(null, this));
-    }.bind(this));
-    var pass = notify.pass.bind(notify);
-    */
 
     // シーン、ページの場合はsize, posは固定値でよい
     layout.pos = {x:0, y:0};
