@@ -145,7 +145,7 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QLineEdit" name="bgColorLabel"/>
+           <widget class="QLineEdit" name="backgroundColor"/>
           </item>
          </layout>
         </widget>

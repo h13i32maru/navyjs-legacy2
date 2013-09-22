@@ -453,6 +453,7 @@ Navy.View.Image = Navy.Class(Navy.View.View, {
   },
 
   _onLoadImage: function(src){
+    this._layout.extra.src = src;
     this._imgElm.src = src;
   }
 });
@@ -460,6 +461,8 @@ Navy.View.Image = Navy.Class(Navy.View.View, {
 // file: src/view/text.js
 Navy.View.Text = Navy.Class(Navy.View.View, {
   CLASSNAME: 'Navy.View.Text',
+
+  _textElement: null,
 
   /**
    *
@@ -478,8 +481,15 @@ Navy.View.Text = Navy.Class(Navy.View.View, {
       return;
     }
 
+    if (!this._textElement) {
+      this._textElement = document.createElement('span');
+      this._element.appendChild(this._textElement);
+    }
+
+
     if (layout.extra) {
-      this._element.textContent = layout.extra.text;
+      this._layout.extra.text = layout.extra.text;
+      this._textElement.textContent = layout.extra.text;
     }
 
     callback && setTimeout(callback.bind(null, this), 0);
@@ -508,10 +518,13 @@ Navy.ViewGroup.ViewGroup = Navy.Class(Navy.View.View, {
     $super(layout);
 
     if (layout && layout.extra.contentLayoutFile) {
+      this._layout.extra.contentLayoutFile = layout.extra.contentLayoutFile;
       callback = callback || function(){};
       this._initCallback = callback.bind(null, this);
       Navy.Resource.loadLayout(layout.extra.contentLayoutFile, this._onLoadContentLayout.bind(this));
     } else {
+      // rootは_layoutがnull
+      this._layout && (this._layout.extra.contentLayoutFile = null);
       callback && setTimeout(callback.bind(null, this), 0);
     }
   },

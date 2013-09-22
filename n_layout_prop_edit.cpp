@@ -23,6 +23,16 @@ void NLayoutPropEdit::connectWidgetToJson() {
     connect(ui->posYSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->sizeWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->sizeHeightSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
+    connect(ui->backgroundColor, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+
+    // text
+    connect(ui->extraText, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+
+    // image
+    connect(ui->extraSrc, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+
+    // view group
+    connect(ui->extraContentLayout, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
 }
 
 void NLayoutPropEdit::disconnectWidgetToJson() {
@@ -30,6 +40,16 @@ void NLayoutPropEdit::disconnectWidgetToJson() {
     disconnect(ui->posYSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     disconnect(ui->sizeWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     disconnect(ui->sizeHeightSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
+    disconnect(ui->backgroundColor, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+
+    // text
+    disconnect(ui->extraText, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+
+    // image
+    disconnect(ui->extraSrc, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+
+    // view group
+    disconnect(ui->extraContentLayout, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
 }
 
 void NLayoutPropEdit::hideAllExtraPropWidget() {
@@ -65,7 +85,7 @@ void NLayoutPropEdit::setViewFromJS(const NJson &view) {
     ui->posYSpinBox->setValue(view.getInt("pos.y"));
     ui->sizeWidthSpinBox->setValue(view.getInt("size.width"));
     ui->sizeHeightSpinBox->setValue(view.getInt("size.height"));
-
+    ui->backgroundColor->setText(view.getStr("backgroundColor"));
 
 
     QString className = view.getStr("class");
@@ -93,6 +113,18 @@ void NLayoutPropEdit::syncWidgetToJson() {
     mView.set("pos.y", ui->posYSpinBox->value());
     mView.set("size.width", ui->sizeWidthSpinBox->value());
     mView.set("size.height", ui->sizeHeightSpinBox->value());
+    mView.set("backgroundColor", ui->backgroundColor->text());
+
+    QString className = mView.getStr("class");
+    if (className == ClassView) {
+       // nothing
+    } else if (className == ClassText){
+        mView.set("extra.text", ui->extraText->text());
+    } else if (className == ClassImage) {
+        mView.set("extra.src", ui->extraSrc->text());
+    } else if (className == ClassViewGroup) {
+        mView.set("extra.contentLayoutFile", ui->extraContentLayout->text());
+    }
 
     emit mNative->changedViewPropertyToJS(mView.toVariant());
 }
