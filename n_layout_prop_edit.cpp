@@ -8,10 +8,30 @@ NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::
 {
     ui->setupUi(this);
 
+    hideAllExtraPropWidget();
+
     connect(ui->posXSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->posYSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->sizeWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->sizeHeightSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
+}
+
+void NLayoutPropEdit::hideAllExtraPropWidget() {
+    ui->imageViewWidget->hide();
+    ui->textViewWidget->hide();
+    ui->viewGroupWidget->hide();
+}
+
+void NLayoutPropEdit::showExtraPropWidget(QString className) {
+    if (className == "Navy.View.View") {
+        return;
+    } else if (className == "Navy.View.Image") {
+        ui->imageViewWidget->show();
+    } else if (className == "Navy.View.Text") {
+        ui->textViewWidget->show();
+    } else if (className == "Navy.ViewGroup.ViewGroup") {
+        ui->viewGroupWidget->show();
+    }
 }
 
 void NLayoutPropEdit::setNativeBridge(NativeBridge *native) {
@@ -27,6 +47,9 @@ void NLayoutPropEdit::setViewFromJS(const NJson &view) {
     ui->posYSpinBox->setValue(view.getInt("pos.y"));
     ui->sizeWidthSpinBox->setValue(view.getInt("size.width"));
     ui->sizeHeightSpinBox->setValue(view.getInt("size.height"));
+
+    hideAllExtraPropWidget();
+    showExtraPropWidget(view.getStr("class"));
 }
 
 void NLayoutPropEdit::syncWidgetToJson() {

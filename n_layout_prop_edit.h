@@ -28,6 +28,9 @@ private:
     Ui::NLayoutPropEdit *ui;
     NJson mView;
     NativeBridge *mNative;
+
+    void hideAllExtraPropWidget();
+    void showExtraPropWidget(QString className);
 };
 
 #endif // N_LAYOUT_PROP_EDIT_H
