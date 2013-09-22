@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     n_layout_widget.cpp \
     native_bridge.cpp \
     n_layout_edit_widget.cpp \
-    n_layout_prop_edit.cpp
+    n_layout_prop_edit.cpp \
+    n_tree_widget.cpp
 
 HEADERS  += main_window.h \
     edit_json_dialog.h \
@@ -39,7 +40,8 @@ HEADERS  += main_window.h \
     n_layout_widget.h \
     native_bridge.h \
     n_layout_edit_widget.h \
-    n_layout_prop_edit.h
+    n_layout_prop_edit.h \
+    n_tree_widget.h
 
 FORMS    += main_window.ui \
     edit_json_dialog.ui \

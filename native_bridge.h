@@ -14,9 +14,6 @@ public:
     explicit NativeBridge(QObject *parent = 0);
     void setLayoutPath(const QString &layoutPath);
     Q_INVOKABLE QString getLayoutPath() const;
-//    Q_INVOKABLE void setLayers(QList< QMap<QString, QString> > layers);
-//    Q_INVOKABLE void setLayers(QList< QMap<QString, QVariant> > layers);
-//    Q_INVOKABLE void setLayers(QList< QVariantMap > layers);
     Q_INVOKABLE void addLayer(const QVariantMap &layer, const int &totalCount);
 
 private:
@@ -26,6 +23,7 @@ private:
 
 signals:
     void changedLayers(const QList< QMap<QString, QString> > & layers);
+    void changedLayersToJS(const QStringList &layerIds);
 
 public slots:
 

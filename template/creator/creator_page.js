@@ -16,6 +16,15 @@ var CreatorPage = Navy.Class(Navy.Page, {
         }, layout.length);
       }
     });
+
+    Native.changedLayersToJS.connect(function(layerIds){
+      for (var i = 0; i < layerIds.length; i++) {
+        var id = layerIds[i];
+        var view = this._views[id];
+        this.removeView(view);
+        this.addView(view);
+      }
+    }.bind(this));
   }
 
 });

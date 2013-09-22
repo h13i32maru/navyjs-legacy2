@@ -91,7 +91,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QTreeWidget" name="layerTreeWidget">
+            <widget class="NTreeWidget" name="layerTreeWidget">
              <property name="styleSheet">
               <string notr="true"/>
              </property>
@@ -219,6 +219,11 @@
    <extends>QWidget</extends>
    <header>n_layout_prop_edit.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>NTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>n_tree_widget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

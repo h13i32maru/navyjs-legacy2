@@ -13,6 +13,8 @@ NLayoutEditWidget::NLayoutEditWidget(QWidget *parent) : QWidget(parent), ui(new 
     QWebSettings *settings = webView->settings();
     settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
     settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+
+    connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop()), this, SLOT(changedLayersByDrop()));
 }
 
 void NLayoutEditWidget::setNativeBridge(NativeBridge *native) {
@@ -51,6 +53,17 @@ void NLayoutEditWidget::setLayers(const QList<QMap<QString, QString> > &layers) 
         layerTreeWidget->addTopLevelItem(item);
     }
     qDebug() << layers;
+}
+
+void NLayoutEditWidget::changedLayersByDrop() {
+    NTreeWidget *tree = ui->layerTreeWidget;
+    int layerNum = tree->topLevelItemCount();
+    QStringList layerIds;
+    for (int i = 0; i < layerNum; i++) {
+        layerIds.append(tree->topLevelItem(i)->text(LayerColId));
+    }
+    emit mNative->changedLayersToJS(layerIds);
+    qDebug() << layerIds;
 }
 
 NLayoutEditWidget::~NLayoutEditWidget()

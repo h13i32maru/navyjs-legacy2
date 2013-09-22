@@ -8,6 +8,8 @@
     Navy.App.setInitRootBeforeCallback(function(){
       var sceneId = Navy.Config.app.start.scene;
       var scene = Navy.Config.scene[sceneId];
+      scene.extra.contentLayoutFile = null;
+
       var pageId = scene.extra.page;
       var page = Navy.Config.page[pageId];
       page.extra.contentLayoutFile = Native.getLayoutPath();
