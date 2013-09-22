@@ -4,6 +4,11 @@
 
 #include <QDebug>
 
+const QString NLayoutPropEdit::ClassView = "Navy.View.View";
+const QString NLayoutPropEdit::ClassText = "Navy.View.Text";
+const QString NLayoutPropEdit::ClassImage = "Navy.View.Image";
+const QString NLayoutPropEdit::ClassViewGroup = "Navy.ViewGroup.ViewGroup";
+
 NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::NLayoutPropEdit)
 {
     ui->setupUi(this);
@@ -34,13 +39,13 @@ void NLayoutPropEdit::hideAllExtraPropWidget() {
 }
 
 void NLayoutPropEdit::showExtraPropWidget(QString className) {
-    if (className == "Navy.View.View") {
+    if (className == ClassView) {
         return;
-    } else if (className == "Navy.View.Image") {
+    } else if (className == ClassImage) {
         ui->imageViewWidget->show();
-    } else if (className == "Navy.View.Text") {
+    } else if (className == ClassText) {
         ui->textViewWidget->show();
-    } else if (className == "Navy.ViewGroup.ViewGroup") {
+    } else if (className == ClassViewGroup) {
         ui->viewGroupWidget->show();
     }
 }
@@ -60,6 +65,22 @@ void NLayoutPropEdit::setViewFromJS(const NJson &view) {
     ui->posYSpinBox->setValue(view.getInt("pos.y"));
     ui->sizeWidthSpinBox->setValue(view.getInt("size.width"));
     ui->sizeHeightSpinBox->setValue(view.getInt("size.height"));
+
+
+
+    QString className = view.getStr("class");
+    if (className == ClassView) {
+       // nothing
+    } else if (className == ClassText){
+        ui->extraText->setText(view.getStr("extra.text"));
+    } else if (className == ClassImage) {
+        ui->extraSrc->setText(view.getStr("extra.src"));
+    } else if (className == ClassViewGroup) {
+        ui->extraContentLayout->setText(view.getStr("extra.contentLayoutFile"));
+    }
+
+
+
 
     hideAllExtraPropWidget();
     showExtraPropWidget(view.getStr("class"));

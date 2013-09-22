@@ -16,6 +16,12 @@ class NLayoutPropEdit : public QWidget
     Q_OBJECT
 
 public:
+    static const QString ClassView;
+    static const QString ClassText;
+    static const QString ClassImage;
+    static const QString ClassViewGroup;
+
+public:
     explicit NLayoutPropEdit(QWidget *parent = 0);
     void setNativeBridge(NativeBridge *native);
     ~NLayoutPropEdit();
