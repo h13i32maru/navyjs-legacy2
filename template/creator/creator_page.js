@@ -45,14 +45,15 @@ var CreatorPage = Navy.Class(Navy.Page, {
     }.bind(this));
 
     Native.changedSelectedViewToJS.connect(this._selectView.bind(this));
+    Native.changedViewPropertyToJS.connect(this._updateSelectedViewLayout.bind(this));
+  },
 
-    Native.changedViewPropertyToJS.connect(function(layout){
-      if (!this._selectedView) {
-        return;
-      }
+  _updateSelectedViewLayout: function(layout) {
+    if (!this._selectedView) {
+      return;
+    }
 
-      this._selectedView.setLayout(layout);
-    }.bind(this));
+    this._selectedView.setLayout(layout);
   },
 
   _selectView: function(viewId) {
