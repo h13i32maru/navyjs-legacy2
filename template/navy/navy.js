@@ -856,10 +856,6 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
 
   _createPage: function(pageName, callback) {
     var layout = Navy.Config.page[pageName];
-    if (!layout) {
-      console.log(pageName);
-      console.log(Navy.Config.page);
-    }
     Navy.Resource.loadScript(layout.classFile, this._onLoadScript.bind(this, layout, callback));
   },
 

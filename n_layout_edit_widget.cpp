@@ -11,6 +11,7 @@ NLayoutEditWidget::NLayoutEditWidget(QWidget *parent) : QWidget(parent), ui(new 
 
     QWebView *webView = ui->webView;
     QWebSettings *settings = webView->settings();
+    QWebSettings::setObjectCacheCapacities(0, 0, 0);
     settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
     settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 
