@@ -15,6 +15,7 @@ NLayoutEditWidget::NLayoutEditWidget(QWidget *parent) : QWidget(parent), ui(new 
     settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 
     connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop()), this, SLOT(changedLayersByDrop()));
+    connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(changeSelectedLayer()));
 }
 
 void NLayoutEditWidget::setNativeBridge(NativeBridge *native) {
@@ -52,7 +53,6 @@ void NLayoutEditWidget::setLayers(const QList<QMap<QString, QString> > &layers) 
 
         layerTreeWidget->addTopLevelItem(item);
     }
-    qDebug() << layers;
 }
 
 void NLayoutEditWidget::changedLayersByDrop() {
@@ -63,7 +63,12 @@ void NLayoutEditWidget::changedLayersByDrop() {
         layerIds.append(tree->topLevelItem(i)->text(LayerColId));
     }
     emit mNative->changedLayersToJS(layerIds);
-    qDebug() << layerIds;
+}
+
+void NLayoutEditWidget::changeSelectedLayer() {
+    NTreeWidget *tree = ui->layerTreeWidget;
+    QString viewId = tree->currentItem()->text(LayerColId);
+    emit mNative->changedSelectedViewToJS(viewId);
 }
 
 NLayoutEditWidget::~NLayoutEditWidget()

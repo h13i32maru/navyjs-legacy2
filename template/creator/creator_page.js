@@ -1,8 +1,13 @@
 var CreatorPage = Navy.Class(Navy.Page, {
   CLASSNAME: 'CreatorPage',
 
+  _selectedBox: null,
+
   onCreate: function($super) {
     $super();
+
+    this._selectedBox = document.createElement('div');
+    this._selectedBox.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
 
     Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, function(layout){
       for (var i = 0; i < layout.length; i++) {
@@ -25,6 +30,25 @@ var CreatorPage = Navy.Class(Navy.Page, {
         this.addView(view);
       }
     }.bind(this));
-  }
 
+    Native.changedSelectedViewToJS.connect(function(viewId){
+      var parentNode = this._selectedBox.parentNode;
+      if (parentNode) {
+        parentNode.removeChild(this._selectedBox);
+      }
+
+      var view = this._views[viewId];
+      var elm = view.getElement();
+      elm.appendChild(this._selectedBox);
+    }.bind(this));
+  }
 });
+
+/**
+ * @typedef {{
+ *   addLayer: function,
+ *   changedLayersToJS: {connect: function},
+ *   changedSelectedViewToJS: {connect: function},
+ * }}
+ */
+Native;

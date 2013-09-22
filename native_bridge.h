@@ -24,6 +24,7 @@ private:
 signals:
     void changedLayers(const QList< QMap<QString, QString> > & layers);
     void changedLayersToJS(const QStringList &layerIds);
+    void changedSelectedViewToJS(const QString &viewId);
 
 public slots:
 

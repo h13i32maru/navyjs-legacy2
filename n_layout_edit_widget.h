@@ -30,6 +30,7 @@ private slots:
     void injectNativeBridge();
     void setLayers(const QList< QMap<QString, QString> > &layers);
     void changedLayersByDrop();
+    void changeSelectedLayer();
 };
 
 #endif // N_LAYOUT_EDIT_WIDGET_H
