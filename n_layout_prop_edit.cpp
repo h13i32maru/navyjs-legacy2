@@ -18,6 +18,13 @@ NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::
     connectWidgetToJson();
 }
 
+void NLayoutPropEdit::setNativeBridge(NativeBridge *native) {
+    mNative = native;
+
+    connect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setViewFromJS(NJson)));
+    connect(mNative, SIGNAL(currentViewPosFromJS(int,int)), this, SLOT(setViewPosFromJS(int,int)));
+}
+
 void NLayoutPropEdit::connectWidgetToJson() {
     connect(ui->posXSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->posYSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
@@ -70,11 +77,6 @@ void NLayoutPropEdit::showExtraPropWidget(QString className) {
     }
 }
 
-void NLayoutPropEdit::setNativeBridge(NativeBridge *native) {
-    mNative = native;
-    connect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setViewFromJS(NJson)));
-}
-
 void NLayoutPropEdit::setViewFromJS(const NJson &view) {
     disconnectWidgetToJson();
 
@@ -104,6 +106,15 @@ void NLayoutPropEdit::setViewFromJS(const NJson &view) {
 
     hideAllExtraPropWidget();
     showExtraPropWidget(view.getStr("class"));
+
+    connectWidgetToJson();
+}
+
+void NLayoutPropEdit::setViewPosFromJS(const int &x, const int &y) {
+    disconnectWidgetToJson();
+
+    ui->posXSpinBox->setValue(x);
+    ui->posYSpinBox->setValue(y);
 
     connectWidgetToJson();
 }

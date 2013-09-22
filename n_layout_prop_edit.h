@@ -28,6 +28,7 @@ public:
 
 public slots:
     void setViewFromJS(const NJson &view);
+    void setViewPosFromJS(const int &x, const int &y);
     void syncWidgetToJson();
 
 private:
