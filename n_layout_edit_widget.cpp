@@ -26,7 +26,7 @@ void NLayoutEditWidget::setNativeBridge(NativeBridge *native) {
 
     ui->layoutPropEdit->setNativeBridge(native);
 
-    connect(native, SIGNAL(viewsFromJS(QList<QMap<QString,QString> >)), this, SLOT(setViews(QList<QMap<QString,QString> >)));
+    connect(native, SIGNAL(viewsFromJS(QList<QMap<QString,QString> >)), this, SLOT(setViewsFromJS(QList<QMap<QString,QString> >)));
 }
 
 void NLayoutEditWidget::loadFile(QString filePath) {
@@ -40,7 +40,7 @@ void NLayoutEditWidget::injectNativeBridge (){
     webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("Native"), mNative);
 }
 
-void NLayoutEditWidget::setViews(const QList<QMap<QString, QString> > &views) {
+void NLayoutEditWidget::setViewsFromJS(const QList<QMap<QString, QString> > &views) {
     QTreeWidget *layerTreeWidget = ui->layerTreeWidget;
     for (int i = 0; i < views.length(); i++) {
         QStringList row;

@@ -28,7 +28,7 @@ private:
 
 private slots:
     void injectNativeBridge();
-    void setViews(const QList< QMap<QString, QString> > &views);
+    void setViewsFromJS(const QList< QMap<QString, QString> > &views);
     void updateViewsToJS();
     void selectViewToJS();
 };
