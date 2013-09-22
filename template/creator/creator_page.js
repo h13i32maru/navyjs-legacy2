@@ -37,7 +37,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
       Native.setCurrentViewFromJS(JSON.stringify(view._layout));
     }.bind(this));
 
-    Native.updatePropertyToJS.connect(function(layout){
+    Native.changedViewPropertyToJS.connect(function(layout){
       if (!this._selectedView) {
         return;
       }

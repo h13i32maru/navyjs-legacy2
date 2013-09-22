@@ -35,7 +35,7 @@ void NLayoutPropEdit::syncWidgetToJson() {
     mJson.set("size.width", ui->sizeWidthSpinBox->value());
     mJson.set("size.height", ui->sizeHeightSpinBox->value());
 
-    emit mNative->updatePropertyToJS(mJson.toVariant());
+    emit mNative->changedViewPropertyToJS(mJson.toVariant());
 }
 
 NLayoutPropEdit::~NLayoutPropEdit()
