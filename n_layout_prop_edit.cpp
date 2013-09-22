@@ -16,26 +16,26 @@ NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::
 
 void NLayoutPropEdit::setNativeBridge(NativeBridge *native) {
     mNative = native;
-    connect(native, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setJsonOfView(NJson)));
+    connect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setViewFromJS(NJson)));
 }
 
-void NLayoutPropEdit::setJsonOfView(const NJson &json) {
-    mJson = json;
-    ui->idLabel->setText(json.getStr("id"));
-    ui->classLabel->setText(json.getStr("class"));
-    ui->posXSpinBox->setValue(json.getInt("pos.x"));
-    ui->posYSpinBox->setValue(json.getInt("pos.y"));
-    ui->sizeWidthSpinBox->setValue(json.getInt("size.width"));
-    ui->sizeHeightSpinBox->setValue(json.getInt("size.height"));
+void NLayoutPropEdit::setViewFromJS(const NJson &view) {
+    mView = view;
+    ui->idLabel->setText(view.getStr("id"));
+    ui->classLabel->setText(view.getStr("class"));
+    ui->posXSpinBox->setValue(view.getInt("pos.x"));
+    ui->posYSpinBox->setValue(view.getInt("pos.y"));
+    ui->sizeWidthSpinBox->setValue(view.getInt("size.width"));
+    ui->sizeHeightSpinBox->setValue(view.getInt("size.height"));
 }
 
 void NLayoutPropEdit::syncWidgetToJson() {
-    mJson.set("pos.x", ui->posXSpinBox->value());
-    mJson.set("pos.y", ui->posYSpinBox->value());
-    mJson.set("size.width", ui->sizeWidthSpinBox->value());
-    mJson.set("size.height", ui->sizeHeightSpinBox->value());
+    mView.set("pos.x", ui->posXSpinBox->value());
+    mView.set("pos.y", ui->posYSpinBox->value());
+    mView.set("size.width", ui->sizeWidthSpinBox->value());
+    mView.set("size.height", ui->sizeHeightSpinBox->value());
 
-    emit mNative->changedViewPropertyToJS(mJson.toVariant());
+    emit mNative->changedViewPropertyToJS(mView.toVariant());
 }
 
 NLayoutPropEdit::~NLayoutPropEdit()

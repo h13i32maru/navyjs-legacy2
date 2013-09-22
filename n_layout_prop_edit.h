@@ -21,13 +21,12 @@ public:
     ~NLayoutPropEdit();
 
 public slots:
-    //set json from js to ui
-    void setJsonOfView(const NJson &json);
+    void setViewFromJS(const NJson &view);
     void syncWidgetToJson();
 
 private:
     Ui::NLayoutPropEdit *ui;
-    NJson mJson;
+    NJson mView;
     NativeBridge *mNative;
 };
 
