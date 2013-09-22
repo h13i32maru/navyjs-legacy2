@@ -27,7 +27,7 @@ signals:
     void viewsFromJS(const QList< QMap<QString, QString> > &views);
     void currentViewFromJS(const NJson &json);
 
-    void changedLayersToJS(const QStringList &layerIds);
+    void changedViewsOrderToJS(const QStringList &viewIds);
     void changedSelectedViewToJS(const QString &viewId);
     void updatePropertyToJS(const QVariant &json);
 

@@ -15,7 +15,7 @@ class NLayoutEditWidget : public QWidget
     Q_OBJECT
 
 public:
-    enum LayerCol {LayerColId, LayerColClass, LayerColPos, LayerColSize};
+    enum ViewsCol {ViewsColId, ViewsColClass, ViewsColPos, ViewsColSize};
 
     explicit NLayoutEditWidget(QWidget *parent = 0);
     void setNativeBridge(NativeBridge *native);
@@ -28,9 +28,9 @@ private:
 
 private slots:
     void injectNativeBridge();
-    void setLayers(const QList< QMap<QString, QString> > &layers);
-    void changedLayersByDrop();
-    void changeSelectedLayer();
+    void setViews(const QList< QMap<QString, QString> > &views);
+    void updateViewsToJS();
+    void selectViewToJS();
 };
 
 #endif // N_LAYOUT_EDIT_WIDGET_H

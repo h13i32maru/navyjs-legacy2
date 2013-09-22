@@ -14,8 +14,8 @@ NLayoutEditWidget::NLayoutEditWidget(QWidget *parent) : QWidget(parent), ui(new 
     settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
     settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 
-    connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop()), this, SLOT(changedLayersByDrop()));
-    connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(changeSelectedLayer()));
+    connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop()), this, SLOT(updateViewsToJS()));
+    connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectViewToJS()));
 }
 
 void NLayoutEditWidget::setNativeBridge(NativeBridge *native) {
@@ -26,7 +26,7 @@ void NLayoutEditWidget::setNativeBridge(NativeBridge *native) {
 
     ui->layoutPropEdit->setNativeBridge(native);
 
-    connect(native, SIGNAL(viewsFromJS(QList<QMap<QString,QString> >)), this, SLOT(setLayers(QList<QMap<QString,QString> >)));
+    connect(native, SIGNAL(viewsFromJS(QList<QMap<QString,QString> >)), this, SLOT(setViews(QList<QMap<QString,QString> >)));
 }
 
 void NLayoutEditWidget::loadFile(QString filePath) {
@@ -40,15 +40,15 @@ void NLayoutEditWidget::injectNativeBridge (){
     webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("Native"), mNative);
 }
 
-void NLayoutEditWidget::setLayers(const QList<QMap<QString, QString> > &layers) {
+void NLayoutEditWidget::setViews(const QList<QMap<QString, QString> > &views) {
     QTreeWidget *layerTreeWidget = ui->layerTreeWidget;
-    for (int i = 0; i < layers.length(); i++) {
+    for (int i = 0; i < views.length(); i++) {
         QStringList row;
         NUtil::expand(row, 4);
-        row[LayerColId] = layers[i]["id"];
-        row[LayerColClass] = layers[i]["class"];
-        row[LayerColPos] = layers[i]["x"] + ", " + layers[i]["y"];
-        row[LayerColSize] = layers[i]["width"] + " x " + layers[i]["height"];
+        row[ViewsColId] = views[i]["id"];
+        row[ViewsColClass] = views[i]["class"];
+        row[ViewsColPos] = views[i]["x"] + ", " + views[i]["y"];
+        row[ViewsColSize] = views[i]["width"] + " x " + views[i]["height"];
 
         QTreeWidgetItem *item = new QTreeWidgetItem(row);
         item->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemNeverHasChildren);
@@ -57,19 +57,19 @@ void NLayoutEditWidget::setLayers(const QList<QMap<QString, QString> > &layers) 
     }
 }
 
-void NLayoutEditWidget::changedLayersByDrop() {
+void NLayoutEditWidget::updateViewsToJS() {
     NTreeWidget *tree = ui->layerTreeWidget;
     int layerNum = tree->topLevelItemCount();
-    QStringList layerIds;
+    QStringList viewIds;
     for (int i = 0; i < layerNum; i++) {
-        layerIds.append(tree->topLevelItem(i)->text(LayerColId));
+        viewIds.append(tree->topLevelItem(i)->text(ViewsColId));
     }
-    emit mNative->changedLayersToJS(layerIds);
+    emit mNative->changedViewsOrderToJS(viewIds);
 }
 
-void NLayoutEditWidget::changeSelectedLayer() {
+void NLayoutEditWidget::selectViewToJS() {
     NTreeWidget *tree = ui->layerTreeWidget;
-    QString viewId = tree->currentItem()->text(LayerColId);
+    QString viewId = tree->currentItem()->text(ViewsColId);
     emit mNative->changedSelectedViewToJS(viewId);
 }
 
