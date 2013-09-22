@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QVariant>
 
 class NJson
 {
@@ -17,6 +18,7 @@ public:
     QByteArray stringify();
     int length();
     void clear();
+    QVariant toVariant();
 
     // getter
     int getInt(QString keysStr);

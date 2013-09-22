@@ -153,7 +153,7 @@
             </widget>
            </item>
            <item>
-            <widget class="NLayoutPropEdit" name="widget_2" native="true"/>
+            <widget class="NLayoutPropEdit" name="layoutPropEdit" native="true"/>
            </item>
           </layout>
          </widget>

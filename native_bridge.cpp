@@ -28,3 +28,7 @@ void NativeBridge::addLayer(const QVariantMap &layer, const int &totalCount) {
         emit changedLayers(mLayers);
     }
 }
+
+void NativeBridge::setJsonOfView(const QVariant &json) {
+    emit this->changedJsonOfView(json);
+}

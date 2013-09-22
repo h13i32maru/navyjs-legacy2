@@ -15,6 +15,7 @@ public:
     void setLayoutPath(const QString &layoutPath);
     Q_INVOKABLE QString getLayoutPath() const;
     Q_INVOKABLE void addLayer(const QVariantMap &layer, const int &totalCount);
+    Q_INVOKABLE void setJsonOfView(const QVariant &json);
 
 private:
     QString mLayoutPath;
@@ -23,8 +24,11 @@ private:
 
 signals:
     void changedLayers(const QList< QMap<QString, QString> > & layers);
+    void changedJsonOfView(const QVariant &json);
+
     void changedLayersToJS(const QStringList &layerIds);
     void changedSelectedViewToJS(const QString &viewId);
+    void updatePropertyToJS(const QVariant &json);
 
 public slots:
 

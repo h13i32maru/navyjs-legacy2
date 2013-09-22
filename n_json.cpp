@@ -61,6 +61,10 @@ void NJson::clear() {
     }
 }
 
+QVariant NJson::toVariant() {
+    return mRootValue.toVariant();
+}
+
 int NJson::getInt(QString keysStr)
 {
     return (int) get(mRootValue, keysStr).toDouble();

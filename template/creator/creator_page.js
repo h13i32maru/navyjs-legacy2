@@ -2,6 +2,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
   CLASSNAME: 'CreatorPage',
 
   _selectedBox: null,
+  _selectedView: null,
 
   onCreate: function($super) {
     $super();
@@ -40,6 +41,19 @@ var CreatorPage = Navy.Class(Navy.Page, {
       var view = this._views[viewId];
       var elm = view.getElement();
       elm.appendChild(this._selectedBox);
+      this._selectedView = view;
+
+      Native.setJsonOfView(view._layout);
+    }.bind(this));
+
+    Native.updatePropertyToJS.connect(function(layout){
+      if (!this._selectedView) {
+        return;
+      }
+
+      var view = this._selectedView;
+      view.setPos(layout.pos);
+      console.log(layout);
     }.bind(this));
   }
 });
@@ -47,8 +61,9 @@ var CreatorPage = Navy.Class(Navy.Page, {
 /**
  * @typedef {{
  *   addLayer: function,
+ *   setJsonOfView: function,
  *   changedLayersToJS: {connect: function},
- *   changedSelectedViewToJS: {connect: function},
+ *   changedSelectedViewToJS: {connect: function}
  * }}
  */
 Native;

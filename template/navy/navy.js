@@ -399,17 +399,17 @@ Navy.View.View = Navy.Class({
 
     if (typeof pos.x === 'number') {
       this._layout.pos.x = pos.x;
-      cssText += 'left:' + pos.x + 'px';
+      cssText += 'left:' + pos.x + 'px;';
     }
 
     if (typeof pos.y === 'number') {
       this._layout.pos.y = pos.y;
-      cssText += 'top:' + pos.y + 'px';
+      cssText += 'top:' + pos.y + 'px;';
     }
 
     if (typeof pos.z === 'number') {
       this._layout.pos.z = pos.z;
-      cssText += 'z-index:' + pos.z;
+      cssText += 'z-index:' + pos.z + ';';
     }
 
     this._element.style.cssText += cssText;

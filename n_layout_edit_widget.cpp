@@ -24,6 +24,8 @@ void NLayoutEditWidget::setNativeBridge(NativeBridge *native) {
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(injectNativeBridge()));
     injectNativeBridge();
 
+    ui->layoutPropEdit->setNativeBridge(native);
+
     connect(native, SIGNAL(changedLayers(QList<QMap<QString,QString> >)), this, SLOT(setLayers(QList<QMap<QString,QString> >)));
 }
 
