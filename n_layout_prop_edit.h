@@ -31,6 +31,8 @@ private:
 
     void hideAllExtraPropWidget();
     void showExtraPropWidget(QString className);
+    void connectWidgetToJson();
+    void disconnectWidgetToJson();
 };
 
 #endif // N_LAYOUT_PROP_EDIT_H

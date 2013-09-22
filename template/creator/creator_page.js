@@ -5,6 +5,9 @@ var CreatorPage = Navy.Class(Navy.Page, {
   _selectedView: null,
 
   onCreate: function($super) {
+    document.body.style.background = '#666';
+
+    window.CreatorPageInstance = this;
     $super();
 
     this._selectedBox = document.createElement('div');
@@ -42,8 +45,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
         return;
       }
 
-      var view = this._selectedView;
-      view.setPos(layout.pos);
+      this._selectedView.setLayout(layout);
     }.bind(this));
   }
 });
@@ -51,9 +53,10 @@ var CreatorPage = Navy.Class(Navy.Page, {
 /**
  * @typedef {{
  *   setViewsFromJS: function,
- *   setJsonOfView: function,
- *   changedLayersToJS: {connect: function},
- *   changedSelectedViewToJS: {connect: function}
+ *   setCurrentViewFromJS: function,
+ *   changedViewsOrderToJS: {connect: function},
+ *   changedSelectedViewToJS: {connect: function},
+ *   changedViewPropertyToJS: {connect: function}
  * }}
  */
 Native;

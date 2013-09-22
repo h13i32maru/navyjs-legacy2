@@ -10,10 +10,21 @@ NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::
 
     hideAllExtraPropWidget();
 
+    connectWidgetToJson();
+}
+
+void NLayoutPropEdit::connectWidgetToJson() {
     connect(ui->posXSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->posYSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->sizeWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->sizeHeightSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
+}
+
+void NLayoutPropEdit::disconnectWidgetToJson() {
+    disconnect(ui->posXSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
+    disconnect(ui->posYSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
+    disconnect(ui->sizeWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
+    disconnect(ui->sizeHeightSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
 }
 
 void NLayoutPropEdit::hideAllExtraPropWidget() {
@@ -40,6 +51,8 @@ void NLayoutPropEdit::setNativeBridge(NativeBridge *native) {
 }
 
 void NLayoutPropEdit::setViewFromJS(const NJson &view) {
+    disconnectWidgetToJson();
+
     mView = view;
     ui->idLabel->setText(view.getStr("id"));
     ui->classLabel->setText(view.getStr("class"));
@@ -50,6 +63,8 @@ void NLayoutPropEdit::setViewFromJS(const NJson &view) {
 
     hideAllExtraPropWidget();
     showExtraPropWidget(view.getStr("class"));
+
+    connectWidgetToJson();
 }
 
 void NLayoutPropEdit::syncWidgetToJson() {

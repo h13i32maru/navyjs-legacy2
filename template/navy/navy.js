@@ -329,18 +329,24 @@ Navy.View.View = Navy.Class({
     this._layout = layout;
     this._element = document.createElement('div');
 
-    if (layout) {
-      var style = {
-        position: 'absolute',
-        left: layout.pos.x + 'px',
-        top: layout.pos.y + 'px',
-        zIndex: layout.pos.z,
-        width: layout.size.width + 'px',
-        height: layout.size.height + 'px',
-        backgroundColor: layout.backgroundColor
-      };
-      this.setRawStyle(style);
+    this.setLayout(layout, callback);
+  },
+
+  setLayout: function(layout, callback) {
+    if (!layout) {
+      return;
     }
+
+    var style = {
+      position: 'absolute',
+      left: layout.pos.x + 'px',
+      top: layout.pos.y + 'px',
+      zIndex: layout.pos.z,
+      width: layout.size.width + 'px',
+      height: layout.size.height + 'px',
+      backgroundColor: layout.backgroundColor
+    };
+    this.setRawStyle(style);
 
     callback && setTimeout(callback.bind(null, this), 0);
   },
@@ -428,11 +434,17 @@ Navy.View.Image = Navy.Class(Navy.View.View, {
   _imgElm: null,
 
   initialize: function($super, layout, callback) {
+    $super(layout, callback);
+  },
+
+  setLayout: function($super, layout, callback) {
     $super(layout);
 
-    var imgElm = document.createElement('img');
-    this._element.appendChild(imgElm);
-    this._imgElm = imgElm;
+    if (!this._imgElm) {
+      var imgElm = document.createElement('img');
+      this._element.appendChild(imgElm);
+      this._imgElm = imgElm;
+    }
 
     Navy.Resource.loadImage(layout.extra.src, function(src){
       this._onLoadImage(src);
@@ -456,9 +468,19 @@ Navy.View.Text = Navy.Class(Navy.View.View, {
    * @param {function} callback
    */
   initialize: function($super, layout, callback) {
+    $super(layout, callback);
+  },
+
+  setLayout: function($super, layout, callback) {
     $super(layout);
 
-    this._element.textContent = layout.extra.text;
+    if (!layout) {
+      return;
+    }
+
+    if (layout.extra) {
+      this._element.textContent = layout.extra.text;
+    }
 
     callback && setTimeout(callback.bind(null, this), 0);
   }
@@ -477,9 +499,13 @@ Navy.ViewGroup.ViewGroup = Navy.Class(Navy.View.View, {
    * @param callback
    */
   initialize: function($super, layout, callback) {
-    $super(layout);
-
     this._views = {};
+
+    $super(layout, callback);
+  },
+
+  setLayout: function($super, layout, callback) {
+    $super(layout);
 
     if (layout && layout.extra.contentLayoutFile) {
       callback = callback || function(){};
@@ -701,10 +727,12 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
   initialize: function($super, layout, callback){
     this._pageStack = [];
 
+    /*
     var notify = new Navy.Notify(3, function(){
       this.nextPage(layout.extra.page, callback.bind(null, this));
     }.bind(this));
     var pass = notify.pass.bind(notify);
+    */
 
     $super(layout, function(){
       var views = this._views;
