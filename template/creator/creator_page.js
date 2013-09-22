@@ -25,6 +25,12 @@ var CreatorPage = Navy.Class(Navy.Page, {
     this._selectedBox = document.createElement('div');
     this._selectedBox.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
 
+    for (var viewId in this._views) {
+      var view = this._views[viewId];
+      var elm = view.getElement();
+      elm.addEventListener('mousedown', this._mouseDown);
+    }
+
     Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, function(layout){
       Native.setViewsFromJS(JSON.stringify(layout));
     });
@@ -38,29 +44,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
       }
     }.bind(this));
 
-    Native.changedSelectedViewToJS.connect(function(viewId){
-      var parentNode = this._selectedBox.parentNode;
-      if (parentNode) {
-        parentNode.removeChild(this._selectedBox);
-      }
-
-      if (this._selectedView) {
-        var elm = this._selectedView.getElement();
-        elm.removeEventListener('mousedown', this._mouseDown);
-        elm.removeEventListener('mousemove', this._mouseMove);
-        elm.removeEventListener('mouseup', this._mouseUp);
-      }
-
-      var view = this._views[viewId];
-      var elm = view.getElement();
-      elm.appendChild(this._selectedBox);
-      elm.addEventListener('mousedown', this._mouseDown);
-      elm.addEventListener('mouseup', this._mouseUp);
-
-      this._selectedView = view;
-
-      Native.setCurrentViewFromJS(JSON.stringify(view._layout));
-    }.bind(this));
+    Native.changedSelectedViewToJS.connect(this._selectView.bind(this));
 
     Native.changedViewPropertyToJS.connect(function(layout){
       if (!this._selectedView) {
@@ -71,7 +55,32 @@ var CreatorPage = Navy.Class(Navy.Page, {
     }.bind(this));
   },
 
+  _selectView: function(viewId) {
+    var parentNode = this._selectedBox.parentNode;
+    if (parentNode) {
+      parentNode.removeChild(this._selectedBox);
+    }
+
+    if (this._selectedView) {
+      var elm = this._selectedView.getElement();
+      elm.removeEventListener('mousedown', this._mouseDown);
+      elm.removeEventListener('mousemove', this._mouseMove);
+      elm.removeEventListener('mouseup', this._mouseUp);
+    }
+
+    var view = this._views[viewId];
+    var elm = view.getElement();
+    elm.appendChild(this._selectedBox);
+    elm.addEventListener('mousedown', this._mouseDown);
+    elm.addEventListener('mouseup', this._mouseUp);
+
+    this._selectedView = view;
+
+    Native.setCurrentViewFromJS(JSON.stringify(view._layout));
+  },
+
   _mouseDown: function(ev) {
+
     this._dragPrevX = ev.clientX;
     this._dragPrevY = ev.clientY;
     this._selectedView.getElement().addEventListener('mousemove', this._mouseMove);
