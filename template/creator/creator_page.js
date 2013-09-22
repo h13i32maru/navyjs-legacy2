@@ -67,6 +67,8 @@ var CreatorPage = Navy.Class(Navy.Page, {
       break;
     case 'Navy.View.Image':
       layout.extra.src = null;
+      layout.size.width = null;
+      layout.size.height = null;
       break;
     case 'Navy.ViewGroup.ViewGroup':
       layout.extra.contentLayoutFile = null;

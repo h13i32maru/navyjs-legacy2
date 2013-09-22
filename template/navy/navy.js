@@ -289,14 +289,16 @@ Navy.Resource = Navy.Class.instance({
 
   loadImage: function(imageFile, callback) {
     if (this._images[imageFile]) {
-      callback && setTimeout(callback.bind(null, imageFile), 0);
+      var width = this._images[imageFile].width;
+      var height = this._images[imageFile].height;
+      callback && setTimeout(callback.bind(null, imageFile, width, height), 0);
       return;
     }
 
     var image = new Image();
     image.onload = function(){
-      this._images[imageFile] = true;
-      callback(imageFile);
+      this._images[imageFile] = {width: image.width, height: image.height};
+      callback(imageFile, image.width, image.height);
     }.bind(this);
     image.src = imageFile;
   },
@@ -400,6 +402,22 @@ Navy.View.View = Navy.Class({
     this._element.style.display = 'none';
   },
 
+  setSize: function(size) {
+    var cssText = '';
+
+    if (typeof size.width === 'number') {
+      this._layout.size.width = size.width;
+      cssText += 'width:' + size.width + 'px;';
+    }
+
+    if (typeof size.height === 'number') {
+      this._layout.size.height = size.height;
+      cssText += 'height:' + size.height + 'px;';
+    }
+
+    this._element.style.cssText += cssText;
+  },
+
   setPos: function(pos) {
     var cssText = '';
 
@@ -446,6 +464,7 @@ Navy.View.Image = Navy.Class(Navy.View.View, {
   CLASSNAME: 'Navy.View.Image',
 
   _imgElm: null,
+  _autoSize: false,
 
   initialize: function($super, layout, callback) {
     $super(layout, callback);
@@ -460,9 +479,15 @@ Navy.View.Image = Navy.Class(Navy.View.View, {
       this._imgElm = imgElm;
     }
 
+    if (layout) {
+      if (layout.size.width === null || layout.size.height === null) {
+        this._autoSize = true;
+      }
+    }
+
     if (layout && layout.extra.src) {
-      Navy.Resource.loadImage(layout.extra.src, function(src){
-        this._onLoadImage(src);
+      Navy.Resource.loadImage(layout.extra.src, function(src, width, height){
+        this._onLoadImage(src, width, height);
         callback && callback(this);
       }.bind(this));
     } else {
@@ -472,9 +497,13 @@ Navy.View.Image = Navy.Class(Navy.View.View, {
     }
   },
 
-  _onLoadImage: function(src){
+  _onLoadImage: function(src, width, height){
     this._layout.extra.src = src;
     this._imgElm.src = src;
+
+    if (this._autoSize) {
+      this.setSize({width: width, height: height});
+    }
   }
 });
 
