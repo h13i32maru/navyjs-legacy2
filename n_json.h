@@ -14,6 +14,7 @@ public:
     NJson(QJsonValue value);
 
     void parse(QByteArray byteArray);
+    void parse(const QString &jsonText);
     bool parseFromFilePath(QString filePath);
     QByteArray stringify();
     int length();
@@ -21,9 +22,9 @@ public:
     QVariant toVariant();
 
     // getter
-    int getInt(QString keysStr);
-    QString getStr(QString keysStr);
-    NJson getObject(QString keysStr);
+    int getInt(const QString &keysStr) const;
+    QString getStr(const QString &keysStr) const;
+    NJson getObject(const QString &keysStr) const;
 
     // setter
     void set(QString keysStr, int value);
@@ -31,7 +32,7 @@ public:
 
 private:
     QJsonValue mRootValue;
-    QJsonValue get(QJsonValue value, QString keysStr);
+    QJsonValue get(const QJsonValue &value, const QString &keysStr) const;
     QJsonValue set(QJsonValue parentValue, QString keysStr, QJsonValue value);
 };
 

@@ -22,7 +22,7 @@ public:
 
 public slots:
     //set json from js to ui
-    void setJsonOfView(const QVariant &json);
+    void setJsonOfView(const NJson &json);
     void syncWidgetToJson();
 
 private:

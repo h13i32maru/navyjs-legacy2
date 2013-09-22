@@ -16,12 +16,10 @@ NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::
 
 void NLayoutPropEdit::setNativeBridge(NativeBridge *native) {
     mNative = native;
-    connect(native, SIGNAL(changedJsonOfView(QVariant)), this, SLOT(setJsonOfView(QVariant)));
+    connect(native, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setJsonOfView(NJson)));
 }
 
-void NLayoutPropEdit::setJsonOfView(const QVariant &variant) {
-    QJsonValue value = QJsonValue::fromVariant(variant);
-    NJson json(value);
+void NLayoutPropEdit::setJsonOfView(const NJson &json) {
     mJson = json;
     ui->idLabel->setText(json.getStr("id"));
     ui->classLabel->setText(json.getStr("class"));

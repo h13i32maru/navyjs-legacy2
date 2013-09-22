@@ -12,18 +12,6 @@ var CreatorPage = Navy.Class(Navy.Page, {
 
     Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, function(layout){
       Native.setViewsFromJS(JSON.stringify(layout));
-      /*
-      for (var i = 0; i < layout.length; i++) {
-        Native.addLayer({
-          id: layout[i].id,
-          class: layout[i].class,
-          width: layout[i].size.width,
-          height: layout[i].size.height,
-          x: layout[i].pos.x,
-          y: layout[i].pos.y
-        }, layout.length);
-      }
-      */
     });
 
     Native.changedLayersToJS.connect(function(layerIds){
@@ -46,7 +34,8 @@ var CreatorPage = Navy.Class(Navy.Page, {
       elm.appendChild(this._selectedBox);
       this._selectedView = view;
 
-      Native.setJsonOfView(view._layout);
+//      Native.setJsonOfView(view._layout);
+      Native.setCurrentViewFromJS(JSON.stringify(view._layout));
     }.bind(this));
 
     Native.updatePropertyToJS.connect(function(layout){
@@ -62,7 +51,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
 
 /**
  * @typedef {{
- *   addLayer: function,
+ *   setViewsFromJS: function,
  *   setJsonOfView: function,
  *   changedLayersToJS: {connect: function},
  *   changedSelectedViewToJS: {connect: function}

@@ -21,6 +21,10 @@ void NJson::parse(QByteArray byteArray)
     }
 }
 
+void NJson::parse(const QString &jsonText) {
+    parse(jsonText.toUtf8());
+}
+
 bool NJson::parseFromFilePath(QString filePath)
 {
     QFile file(filePath);
@@ -65,23 +69,23 @@ QVariant NJson::toVariant() {
     return mRootValue.toVariant();
 }
 
-int NJson::getInt(QString keysStr)
+int NJson::getInt(const QString &keysStr) const
 {
     return (int) get(mRootValue, keysStr).toDouble();
 }
 
-QString NJson::getStr(QString keysStr)
+QString NJson::getStr(const QString &keysStr) const
 {
     return get(mRootValue, keysStr).toString();
 }
 
-NJson NJson::getObject(QString keysStr)
+NJson NJson::getObject(const QString &keysStr) const
 {
     QJsonValue value = get(mRootValue, keysStr);
     return NJson(value);
 }
 
-QJsonValue NJson::get(QJsonValue value, QString keysStr)
+QJsonValue NJson::get(const QJsonValue &value, const QString &keysStr) const
 {
     QStringList keys = keysStr.split(".");
     QString key = keys[0];
