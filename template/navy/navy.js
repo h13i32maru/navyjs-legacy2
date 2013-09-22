@@ -541,6 +541,18 @@ Navy.ViewGroup.ViewGroup = Navy.Class(Navy.View.View, {
     }
   },
 
+  findViewByElement: function(element) {
+    var views = this._views;
+    for (var viewId in views) {
+      var view = views[viewId];
+      if (view.getElement() === element) {
+        return view;
+      }
+    }
+
+    return null;
+  },
+
   addView: function(view) {
     var element = view.getElement();
     this._element.appendChild(element);
