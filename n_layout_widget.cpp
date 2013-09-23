@@ -28,11 +28,15 @@ QWidget *NLayoutWidget::createTabWidget(const QString &filePath) {
     widget->setNativeBridge(native);
     widget->loadFile(mProjectDir->absoluteFilePath("index.html"));
 
+    connect(native, SIGNAL(changedLayoutContent()), this, SLOT(updateTabForCurrentFileContentChanged()));
+
     return widget;
 }
 
-QString NLayoutWidget::editedFileContent(QWidget* /* widget */) {
-    return NULL;
+QString NLayoutWidget::editedFileContent(QWidget* widget) {
+    NLayoutEditWidget *layoutEditWidget = (NLayoutEditWidget *) widget;
+    QString contentLayoutJsonText = layoutEditWidget->contentLayoutJsonText();
+    return contentLayoutJsonText;
 }
 
 

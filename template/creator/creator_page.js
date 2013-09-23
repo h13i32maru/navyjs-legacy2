@@ -14,6 +14,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
 
     document.body.style.background = '#666';
     window.CreatorPageInstance = this;
+    window.getContentLayout = this._getContentLayout.bind(this);
     this._zoom = parseFloat(document.body.style.zoom);
 
     this._mouseUp = this._mouseUp.bind(this);
@@ -38,6 +39,11 @@ var CreatorPage = Navy.Class(Navy.Page, {
     Native.changedViewPropertyToJS.connect(this._updateSelectedViewLayout.bind(this));
     Native.addViewToJS.connect(this._addView.bind(this));
     Native.deleteViewToJS.connect(this._deleteView.bind(this));
+  },
+
+  _getContentLayout: function() {
+    var order = this._getOrderedViews();
+    return JSON.stringify(order);
   },
 
   _getOrderedViews: function() {
@@ -78,6 +84,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     var _class = Navy.Resource.getClass(viewClass);
     var view = new _class(layout, function(){
       this.addView(view);
+      Native.changedLayoutContent();
 
       view.getElement().addEventListener('mousedown', this._mouseDown.bind(this, view));
 
@@ -89,6 +96,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     //FIXME: view groupにfindViewByIdメソッド作ってそれを使うようにする
     var view = this._views[viewId];
     this.removeView(view);
+    Native.changedLayoutContent();
   },
 
   _updateViewsOrder: function(viewIds) {
@@ -98,6 +106,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
       this.removeView(view);
       this.addView(view);
     }
+    Native.changedLayoutContent();
   },
 
   _updateSelectedViewLayout: function(layout) {
@@ -147,6 +156,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     this._selectedView.addPos({x: dx / this._zoom, y: dy/this._zoom});
 
     var pos = this._selectedView.getPos();
+    Native.changedLayoutContent();
     Native.setCurrentViewPosFromJS(pos.x, pos.y);
   },
 

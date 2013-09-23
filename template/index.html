@@ -5,17 +5,17 @@
 <meta charset="utf-8"/>
 <script src="navy/navy.js"></script>
 <script>
-    Navy.App.setInitRootBeforeCallback(function(){
-      var sceneId = Navy.Config.app.start.scene;
-      var scene = Navy.Config.scene[sceneId];
-      scene.extra.contentLayoutFile = null;
+  Navy.App.setInitRootBeforeCallback(function(){
+    var sceneId = Navy.Config.app.start.scene;
+    var scene = Navy.Config.scene[sceneId];
+    scene.extra.contentLayoutFile = null;
 
-      var pageId = scene.extra.page;
-      var page = Navy.Config.page[pageId];
-      page.extra.contentLayoutFile = Native.getLayoutPath();
-      page.class = 'CreatorPage';
-      page.classFile = 'creator/creator_page.js';
-    });
+    var pageId = scene.extra.page;
+    var page = Navy.Config.page[pageId];
+    page.extra.contentLayoutFile = Native.getLayoutPath();
+    page.class = 'CreatorPage';
+    page.classFile = 'creator/creator_page.js';
+  });
 </script>
 </head>
 

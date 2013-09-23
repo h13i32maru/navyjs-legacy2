@@ -23,6 +23,7 @@ public:
     explicit NLayoutEditWidget(QWidget *parent = 0);
     void setNativeBridge(NativeBridge *native);
     void loadFile(QString filePath);
+    QString contentLayoutJsonText() const;
     ~NLayoutEditWidget();
 
 private:

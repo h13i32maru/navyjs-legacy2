@@ -40,6 +40,12 @@ void NLayoutEditWidget::loadFile(QString filePath) {
     webView->load(QUrl(htmlPath));
 }
 
+QString NLayoutEditWidget::contentLayoutJsonText() const {
+    QWebFrame *frame = ui->webView->page()->mainFrame();
+    QVariant variant = frame->evaluateJavaScript("window.getContentLayout();");
+    return variant.toString();
+}
+
 void NLayoutEditWidget::injectNativeBridge (){
     QWebView *webView = ui->webView;
     webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("Native"), mNative);

@@ -28,6 +28,7 @@ signals:
     void viewsFromJS(const QList< QMap<QString, QString> > &views);
     void currentViewFromJS(const NJson &json);
     void currentViewPosFromJS(const int &x, const int &y);
+    void changedLayoutContent();
 
     void changedViewsOrderToJS(const QStringList &viewIds);
     void changedSelectedViewToJS(const QString &viewId);
