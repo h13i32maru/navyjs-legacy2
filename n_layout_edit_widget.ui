@@ -92,6 +92,9 @@
            </item>
            <item>
             <widget class="NTreeWidget" name="layerTreeWidget">
+             <property name="contextMenuPolicy">
+              <enum>Qt::CustomContextMenu</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true"/>
              </property>

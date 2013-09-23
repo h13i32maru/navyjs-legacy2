@@ -4,6 +4,7 @@
 
 #include <QWebFrame>
 #include <QDebug>
+#include <QMenu>
 
 NLayoutEditWidget::NLayoutEditWidget(QWidget *parent) : QWidget(parent), ui(new Ui::NLayoutEditWidget)
 {
@@ -18,6 +19,7 @@ NLayoutEditWidget::NLayoutEditWidget(QWidget *parent) : QWidget(parent), ui(new 
     connect(ui->viewClassTreeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(addViewToJS(QTreeWidgetItem*, int)));
     connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop()), this, SLOT(updateViewsToJS()));
     connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectViewToJS()));
+    connect(ui->layerTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuForViewsTree(QPoint)));
 }
 
 void NLayoutEditWidget::setNativeBridge(NativeBridge *native) {
@@ -43,6 +45,23 @@ void NLayoutEditWidget::injectNativeBridge (){
     webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("Native"), mNative);
 }
 
+void NLayoutEditWidget::contextMenuForViewsTree(const QPoint &point) {
+    QMenu menu(this);
+
+    menu.addAction(tr("&Delete"), this, SLOT(deleteViewToJS()));
+
+    // 選択されたところに行があるときしかメニューを表示しない
+    QModelIndex index = ui->layerTreeWidget->indexAt(point);
+    if (index.isValid()) {
+        menu.exec(QCursor::pos());
+    } else {
+        ui->layerTreeWidget->clearSelection();
+    }
+}
+
+/*******************************************
+ * from js method
+ *******************************************/
 void NLayoutEditWidget::setViewsFromJS(const QList<QMap<QString, QString> > &views) {
     QTreeWidget *layerTreeWidget = ui->layerTreeWidget;
     layerTreeWidget->clear();
@@ -88,7 +107,15 @@ void NLayoutEditWidget::updateViewsToJS() {
 
 void NLayoutEditWidget::selectViewToJS() {
     NTreeWidget *tree = ui->layerTreeWidget;
-    QString viewId = tree->currentItem()->text(ViewsColId);
+
+    QTreeWidgetItem *item = tree->currentItem();
+
+    // viewの削除によって、countは1なのにitemはnullの場合がある
+    if (item == NULL) {
+       return;
+    }
+
+    QString viewId = item->text(ViewsColId);
     emit mNative->changedSelectedViewToJS(viewId);
 }
 
@@ -105,6 +132,16 @@ void NLayoutEditWidget::addViewToJS(QTreeWidgetItem *item, int /* index */) {
     tree->addTopLevelItem(viewsItem);
 
     emit mNative->addViewToJS(viewId, viewClass);
+}
+
+void NLayoutEditWidget::deleteViewToJS() {
+    // delete item from tree;
+    QTreeWidgetItem *item = ui->layerTreeWidget->currentItem();
+    int index = ui->layerTreeWidget->indexOfTopLevelItem(item);
+    ui->layerTreeWidget->takeTopLevelItem(index);
+
+    QString viewId = item->text(ViewsColId);
+    emit mNative->deleteViewToJS(viewId);
 }
 
 NLayoutEditWidget::~NLayoutEditWidget()

@@ -30,11 +30,13 @@ private:
     NativeBridge *mNative;
 
 private slots:
+    void contextMenuForViewsTree(const QPoint &point);
     void injectNativeBridge();
     void setViewsFromJS(const QList< QMap<QString, QString> > &views);
     void updateViewsToJS();
     void selectViewToJS();
     void addViewToJS(QTreeWidgetItem *item, int index);
+    void deleteViewToJS();
     void setCurrentViewFromJS(const NJson &json);
 };
 

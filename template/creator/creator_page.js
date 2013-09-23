@@ -37,6 +37,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     Native.changedSelectedViewToJS.connect(this._selectView.bind(this));
     Native.changedViewPropertyToJS.connect(this._updateSelectedViewLayout.bind(this));
     Native.addViewToJS.connect(this._addView.bind(this));
+    Native.deleteViewToJS.connect(this._deleteView.bind(this));
   },
 
   _getOrderedViews: function() {
@@ -82,6 +83,12 @@ var CreatorPage = Navy.Class(Navy.Page, {
 
       this._selectView(view.getId());
     }.bind(this));
+  },
+
+  _deleteView: function(viewId) {
+    //FIXME: view groupにfindViewByIdメソッド作ってそれを使うようにする
+    var view = this._views[viewId];
+    this.removeView(view);
   },
 
   _updateViewsOrder: function(viewIds) {

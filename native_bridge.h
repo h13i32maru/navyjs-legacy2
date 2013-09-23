@@ -33,6 +33,7 @@ signals:
     void changedSelectedViewToJS(const QString &viewId);
     void changedViewPropertyToJS(const QVariant &json);
     void addViewToJS(const QString &viewId, const QString &viewClass);
+    void deleteViewToJS(const QString &viewId);
 
 public slots:
 
