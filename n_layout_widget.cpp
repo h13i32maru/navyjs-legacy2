@@ -26,7 +26,7 @@ QWidget *NLayoutWidget::createTabWidget(const QString &filePath) {
     native->setLayoutPath(layoutPath);
 
     widget->setNativeBridge(native);
-    widget->loadFile(mProjectDir->absoluteFilePath("index.html"));
+    widget->loadFile(mProjectDir->absoluteFilePath("index_creator.html"));
 
     connect(native, SIGNAL(changedLayoutContent()), this, SLOT(updateTabForCurrentFileContentChanged()));
 

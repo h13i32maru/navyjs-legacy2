@@ -27,6 +27,7 @@ private slots:
     void openProject();
     void newProject();
     void saveAll();
+//    void execNavy();
 };
 
 #endif // MAIN_WINDOW_H

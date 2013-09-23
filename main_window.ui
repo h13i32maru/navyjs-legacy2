@@ -140,7 +140,14 @@
     <addaction name="actionOpenProject"/>
     <addaction name="actionSaveAll"/>
    </widget>
+   <widget class="QMenu" name="menuBuild">
+    <property name="title">
+     <string>Build</string>
+    </property>
+    <addaction name="actionExec"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menuBuild"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -178,6 +185,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionExec">
+   <property name="text">
+    <string>Exec</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>
