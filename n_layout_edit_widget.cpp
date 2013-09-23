@@ -1,10 +1,12 @@
 #include "n_layout_edit_widget.h"
 #include "n_util.h"
 #include "ui_n_layout_edit_widget.h"
+#include "edit_json_dialog.h"
 
 #include <QWebFrame>
 #include <QDebug>
 #include <QMenu>
+#include <QWebInspector>
 
 NLayoutEditWidget::NLayoutEditWidget(QWidget *parent) : QWidget(parent), ui(new Ui::NLayoutEditWidget)
 {
@@ -20,6 +22,7 @@ NLayoutEditWidget::NLayoutEditWidget(QWidget *parent) : QWidget(parent), ui(new 
     connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop()), this, SLOT(updateViewsToJS()));
     connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectViewToJS()));
     connect(ui->layerTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuForViewsTree(QPoint)));
+    connect(ui->webView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuForWebView(QPoint)));
 }
 
 void NLayoutEditWidget::setNativeBridge(NativeBridge *native) {
@@ -35,8 +38,9 @@ void NLayoutEditWidget::setNativeBridge(NativeBridge *native) {
 }
 
 void NLayoutEditWidget::loadFile(QString filePath) {
+    mFilePath = filePath;
     QWebView *webView = ui->webView;
-    QString htmlPath = "file://" + filePath;
+    QString htmlPath = "file://" + mFilePath;
     webView->load(QUrl(htmlPath));
 }
 
@@ -51,6 +55,9 @@ void NLayoutEditWidget::injectNativeBridge (){
     webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("Native"), mNative);
 }
 
+/***************************************************
+ * context menu
+ **************************************************/
 void NLayoutEditWidget::contextMenuForViewsTree(const QPoint &point) {
     QMenu menu(this);
 
@@ -63,6 +70,39 @@ void NLayoutEditWidget::contextMenuForViewsTree(const QPoint &point) {
     } else {
         ui->layerTreeWidget->clearSelection();
     }
+}
+
+void NLayoutEditWidget::contextMenuForWebView(const QPoint &point) {
+    QMenu menu(this);
+
+    menu.addAction(tr("&Reload"), this ,SLOT(reload()));
+    menu.addAction(tr("&Raw Data"), this, SLOT(showRawData()));
+    menu.addAction(tr("&Inspector"), this, SLOT(showInspector()));
+
+    menu.exec(QCursor::pos());
+}
+
+/************************************************
+ * for webview
+ ************************************************/
+void NLayoutEditWidget::reload() {
+    QWebView *webView = ui->webView;
+    QString htmlPath = "file://" + mFilePath;
+    webView->load(QUrl(htmlPath));
+}
+
+void NLayoutEditWidget::showRawData() {
+    QString jsonText = contentLayoutJsonText();
+    EditJsonDialog dialog(this);
+    dialog.setJsonText(jsonText);
+    dialog.exec();
+}
+
+void NLayoutEditWidget::showInspector() {
+    QWebPage *page = ui->webView->page();
+    QWebInspector *inspector = new QWebInspector;
+    inspector->setPage(page);
+    inspector->show();
 }
 
 /*******************************************

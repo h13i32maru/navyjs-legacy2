@@ -43,7 +43,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
 
   _getContentLayout: function() {
     var order = this._getOrderedViews();
-    return JSON.stringify(order);
+    return JSON.stringify(order, null, 2);
   },
 
   _getOrderedViews: function() {

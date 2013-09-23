@@ -422,18 +422,21 @@ Navy.View.View = Navy.Class({
     var cssText = '';
 
     if (typeof pos.x === 'number') {
-      this._layout.pos.x = pos.x;
-      cssText += 'left:' + pos.x + 'px;';
+      var x = parseInt(pos.x, 10);
+      this._layout.pos.x = x;
+      cssText += 'left:' + x + 'px;';
     }
 
     if (typeof pos.y === 'number') {
-      this._layout.pos.y = pos.y;
-      cssText += 'top:' + pos.y + 'px;';
+      var y = parseInt(pos.y, 10);
+      this._layout.pos.y = y;
+      cssText += 'top:' + y + 'px;';
     }
 
     if (typeof pos.z === 'number') {
-      this._layout.pos.z = pos.z;
-      cssText += 'z-index:' + pos.z + ';';
+      var z = parseInt(pos.z, 10);
+      this._layout.pos.z = z;
+      cssText += 'z-index:' + z + ';';
     }
 
     this._element.style.cssText += cssText;

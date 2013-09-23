@@ -38,6 +38,9 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
      </widget>
      <widget class="QWidget" name="widget" native="true">
       <property name="minimumSize">

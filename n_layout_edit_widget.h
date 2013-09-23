@@ -29,9 +29,11 @@ public:
 private:
     Ui::NLayoutEditWidget *ui;
     NativeBridge *mNative;
+    QString mFilePath;
 
 private slots:
     void contextMenuForViewsTree(const QPoint &point);
+    void contextMenuForWebView(const QPoint &point);
     void injectNativeBridge();
     void setViewsFromJS(const QList< QMap<QString, QString> > &views);
     void updateViewsToJS();
@@ -39,6 +41,11 @@ private slots:
     void addViewToJS(QTreeWidgetItem *item, int index);
     void deleteViewToJS();
     void setCurrentViewFromJS(const NJson &json);
+
+    // for webview
+    void reload();
+    void showRawData();
+    void showInspector();
 };
 
 #endif // N_LAYOUT_EDIT_WIDGET_H
