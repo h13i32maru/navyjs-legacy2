@@ -721,8 +721,16 @@ Navy.Root = Navy.Class.instance(Navy.ViewGroup.ViewGroup, {
     document.body.style.zoom = scale;
     document.body.style.width = width + 'px';
     document.body.style.height = height + 'px';
-    document.body.style.left = left + 'px';
-    document.body.style.top = top + 'px';
+
+    // window.NativeはNavyCreatorの場合にのみ存在するオブジェクト
+    // NavyCreatorではzoomを行った場合、left,topにも影響するので補正しておく必要がある
+    if (window.Native) {
+      document.body.style.left = (left / scale) + 'px';
+      document.body.style.top = (top / scale) + 'px';
+    } else {
+      document.body.style.left = left + 'px';
+      document.body.style.top = top + 'px';
+    }
   },
 
   _createScene: function(sceneName, callback) {

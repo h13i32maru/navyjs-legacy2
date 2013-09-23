@@ -28,11 +28,11 @@ NLayoutEditWidget::NLayoutEditWidget(QWidget *parent) : QWidget(parent), ui(new 
 void NLayoutEditWidget::setNativeBridge(NativeBridge *native) {
     mNative = native;
     QWebView *webView = ui->webView;
-    connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(injectNativeBridge()));
     injectNativeBridge();
 
     ui->layoutPropEdit->setNativeBridge(native);
 
+    connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(injectNativeBridge()));
     connect(native, SIGNAL(viewsFromJS(QList<QMap<QString,QString> >)), this, SLOT(setViewsFromJS(QList<QMap<QString,QString> >)));
     connect(native, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setCurrentViewFromJS(NJson)));
 }

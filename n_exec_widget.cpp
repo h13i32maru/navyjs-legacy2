@@ -3,6 +3,8 @@
 #include <QScreen>
 #include <QCursor>
 #include <QWebInspector>
+#include <QWebFrame>
+#include <QWebPage>
 
 NExecWidget::NExecWidget(QWidget *parent) : QMainWindow(parent), ui(new Ui::NExecWidget)
 {
@@ -18,8 +20,18 @@ NExecWidget::NExecWidget(QWidget *parent) : QMainWindow(parent), ui(new Ui::NExe
     settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
     settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 
+    // 本来はブリッジは必要ないのだが、JS側にNavyCreatorから実行されていることを知らせるためにあえてブリッジを入れている
+    mNative = new NativeBridge(this);
+    webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("Native"), mNative);
+
+    connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(injectNativeBridge()));
     connect(ui->webView, SIGNAL(loadFinished(bool)), this, SIGNAL(finishLoad()));
     connect(ui->webView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuForWebView(QPoint)));
+}
+
+void NExecWidget::injectNativeBridge() {
+    QWebView *webView = ui->webView;
+    webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("Native"), mNative);
 }
 
 void NExecWidget::loadFile(const QString &filePath) {

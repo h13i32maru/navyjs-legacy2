@@ -1,6 +1,8 @@
 #ifndef N_EXEC_WIDGET_H
 #define N_EXEC_WIDGET_H
 
+#include "native_bridge.h"
+
 #include <QMainWindow>
 #include <QUrl>
 
@@ -20,11 +22,13 @@ public:
 private:
     Ui::NExecWidget *ui;
     QUrl mUrl;
+    NativeBridge *mNative;
 
 private slots:
     void contextMenuForWebView(const QPoint &point);
     void reload();
     void showInspector();
+    void injectNativeBridge();
 
 signals:
     void finishLoad();
