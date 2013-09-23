@@ -1,9 +1,11 @@
 #include "main_window.h"
 #include "ui_main_window.h"
 #include "n_util.h"
+#include "n_exec_widget.h"
 
 #include <QFileDialog>
 #include <QDebug>
+#include <QScreen>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -11,6 +13,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->topTabWidget->setEnabled(false);
     mProjectDir = new QDir(QDir::homePath());
+
+    mExecWidget = new NExecWidget(this);
+
+    connect(ui->actionNewProject, SIGNAL(triggered(bool)), this, SLOT(newProject()));
+    connect(ui->actionOpenProject, SIGNAL(triggered(bool)), this, SLOT(openProject()));
+    connect(ui->actionSaveAll, SIGNAL(triggered(bool)), this, SLOT(saveAll()));
+    connect(ui->actionExec, SIGNAL(triggered(bool)), this, SLOT(execNavy()));
 }
 
 void MainWindow::setCurrentProject(QString dirPath) {
@@ -42,8 +51,6 @@ void MainWindow::newProject()
 
     NUtil::copyDir(":/template", dirName);
     setCurrentProject(dirName);
-//    ui->webView->load(QUrl("file://" + projectDir->absoluteFilePath("index.html")));
-
 }
 
 void MainWindow::openProject() {
@@ -68,6 +75,17 @@ void MainWindow::saveAll() {
     ui->nConfigWidget->saveConfig();
     ui->nCodeWidget->saveAllFile();
     ui->nLayoutWidget->saveAllFile();
+}
+
+void MainWindow::execNavy() {
+    if (mProjectName.isEmpty()) {
+        return;
+    }
+
+    mExecWidget->loadFile(mProjectDir->absoluteFilePath("index.html"));
+    mExecWidget->activateWindow();
+    mExecWidget->raise();
+    mExecWidget->show();
 }
 
 MainWindow::~MainWindow()

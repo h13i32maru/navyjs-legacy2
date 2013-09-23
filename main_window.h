@@ -1,6 +1,8 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+#include "n_exec_widget.h"
+
 #include <QMainWindow>
 #include <QDir>
 
@@ -20,6 +22,7 @@ private:
     Ui::MainWindow *ui;
     QString mProjectName;
     QDir *mProjectDir;
+    NExecWidget *mExecWidget;
 
     void setCurrentProject(QString dirPath);
 
@@ -27,7 +30,7 @@ private slots:
     void openProject();
     void newProject();
     void saveAll();
-//    void execNavy();
+    void execNavy();
 };
 
 #endif // MAIN_WINDOW_H
