@@ -12,6 +12,7 @@
 
     var pageId = scene.extra.page;
     var page = Navy.Config.page[pageId];
+    page.backgroundColor = null;
     page.extra.contentLayoutFile = Native.getLayoutPath();
     page.class = 'CreatorPage';
     page.classFile = 'creator/creator_page.js';
@@ -20,29 +21,7 @@
 </head>
 
 <body>
-<script>
-  /*
-  window.addEventListener('load', function(){
-    var layoutPath = Native.getLayoutPath();
-    alert(layoutPath);
-  });
-  */
-
-  /*
-  var xhr = new XMLHttpRequest();
-//  xhr.open("GET", "config/app.json", false);
-    xhr.open("GET", "http://h13i32maru.jp/navy/sample/config/app.json", false);
-  xhr.onload = function(ev){
-    var xhr = ev.target;
-    var json = xhr.responseText;
-    alert(json);
-  };
-  xhr.onerror = function(){
-    alert("onerror");
-  };
-  xhr.send();
-  */
-</script>
+<div style="position:absolute; width:100%; height:100%; background:rgba(0,0,0,0.2);"></div>
 </body>
 
 </html>

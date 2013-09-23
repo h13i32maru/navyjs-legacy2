@@ -4,6 +4,10 @@
     "class": "Navy.View.Image",
     "sizePolicy": "wrapContent",
     "pos": {"x": 0, "y": 0},
+    "link": {
+      "type": "page",
+      "id": "Page2"
+    },
     "extra": {
       "src": "image/octocat.png"
     }

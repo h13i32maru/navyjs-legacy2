@@ -59,6 +59,27 @@ void NLayoutPropEdit::disconnectWidgetToJson() {
     disconnect(ui->extraContentLayout, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
 }
 
+void NLayoutPropEdit::syncWidgetToJson() {
+    mView.set("pos.x", ui->posXSpinBox->value());
+    mView.set("pos.y", ui->posYSpinBox->value());
+    mView.set("size.width", ui->sizeWidthSpinBox->value());
+    mView.set("size.height", ui->sizeHeightSpinBox->value());
+    mView.set("backgroundColor", ui->backgroundColor->text());
+
+    QString className = mView.getStr("class");
+    if (className == ClassView) {
+       // nothing
+    } else if (className == ClassText){
+        mView.set("extra.text", ui->extraText->text());
+    } else if (className == ClassImage) {
+        mView.set("extra.src", ui->extraSrc->text());
+    } else if (className == ClassViewGroup) {
+        mView.set("extra.contentLayoutFile", ui->extraContentLayout->text());
+    }
+
+    emit mNative->changedViewPropertyToJS(mView.toVariant());
+}
+
 void NLayoutPropEdit::hideAllExtraPropWidget() {
     ui->imageViewWidget->hide();
     ui->textViewWidget->hide();
@@ -88,6 +109,11 @@ void NLayoutPropEdit::setViewFromJS(const NJson &view) {
     ui->sizeWidthSpinBox->setValue(view.getInt("size.width"));
     ui->sizeHeightSpinBox->setValue(view.getInt("size.height"));
     ui->backgroundColor->setText(view.getStr("backgroundColor"));
+    ui->sizePolicy->setCurrentText(view.getStr("sizePolicy"));
+
+    ui->linkType->setCurrentIndex(0);
+    ui->linkType->setCurrentText(view.getStr("link.type"));
+    ui->linkId->setText(view.getStr("link.id"));
 
 
     QString className = view.getStr("class");
@@ -119,26 +145,6 @@ void NLayoutPropEdit::setViewPosFromJS(const int &x, const int &y) {
     connectWidgetToJson();
 }
 
-void NLayoutPropEdit::syncWidgetToJson() {
-    mView.set("pos.x", ui->posXSpinBox->value());
-    mView.set("pos.y", ui->posYSpinBox->value());
-    mView.set("size.width", ui->sizeWidthSpinBox->value());
-    mView.set("size.height", ui->sizeHeightSpinBox->value());
-    mView.set("backgroundColor", ui->backgroundColor->text());
-
-    QString className = mView.getStr("class");
-    if (className == ClassView) {
-       // nothing
-    } else if (className == ClassText){
-        mView.set("extra.text", ui->extraText->text());
-    } else if (className == ClassImage) {
-        mView.set("extra.src", ui->extraSrc->text());
-    } else if (className == ClassViewGroup) {
-        mView.set("extra.contentLayoutFile", ui->extraContentLayout->text());
-    }
-
-    emit mNative->changedViewPropertyToJS(mView.toVariant());
-}
 
 NLayoutPropEdit::~NLayoutPropEdit()
 {

@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QLabel {
-  min-width: 60px;  
+  min-width: 65px;  
 }</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
@@ -67,6 +67,80 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
+          <item row="6" column="1">
+           <widget class="QLineEdit" name="backgroundColor"/>
+          </item>
+          <item row="2" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_14">
+            <item>
+             <widget class="QSpinBox" name="posXSpinBox">
+              <property name="maximum">
+               <number>9999</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="posYSpinBox">
+              <property name="maximum">
+               <number>9999</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>link</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>size</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_15">
+            <item>
+             <widget class="QSpinBox" name="sizeWidthSpinBox">
+              <property name="maximum">
+               <number>9999</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="sizeHeightSpinBox">
+              <property name="maximum">
+               <number>9999</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>bg color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QComboBox" name="sizePolicy">
+            <item>
+             <property name="text">
+              <string>fixed</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>wrapContent</string>
+             </property>
+            </item>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
@@ -98,58 +172,38 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_14">
-            <item>
-             <widget class="QSpinBox" name="posXSpinBox">
-              <property name="maximum">
-               <number>9999</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="posYSpinBox">
-              <property name="maximum">
-               <number>9999</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
           <item row="3" column="0">
-           <widget class="QLabel" name="label_6">
+           <widget class="QLabel" name="label_9">
             <property name="text">
-             <string>size</string>
+             <string>sizePolicy</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_15">
+          <item row="5" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
-             <widget class="QSpinBox" name="sizeWidthSpinBox">
-              <property name="maximum">
-               <number>9999</number>
-              </property>
+             <widget class="QComboBox" name="linkType">
+              <item>
+               <property name="text">
+                <string>-</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>page</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>scene</string>
+               </property>
+              </item>
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sizeHeightSpinBox">
-              <property name="maximum">
-               <number>9999</number>
-              </property>
-             </widget>
+             <widget class="QLineEdit" name="linkId"/>
             </item>
            </layout>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>bg color</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="backgroundColor"/>
           </item>
          </layout>
         </widget>
