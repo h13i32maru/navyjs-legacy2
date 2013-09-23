@@ -64,7 +64,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
       id: viewId,
       class: viewClass,
       pos: {x: 0, y: 0},
-      size: {width: 100, height: 100},
+      sizePolicy: 'wrapContent',
       extra: {}
     };
 
@@ -74,8 +74,6 @@ var CreatorPage = Navy.Class(Navy.Page, {
       break;
     case 'Navy.View.Image':
       layout.extra.src = null;
-      layout.size.width = null;
-      layout.size.height = null;
       break;
     case 'Navy.ViewGroup.ViewGroup':
       layout.extra.contentLayoutFile = null;
