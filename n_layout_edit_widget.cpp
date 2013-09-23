@@ -17,6 +17,7 @@ NLayoutEditWidget::NLayoutEditWidget(QWidget *parent) : QWidget(parent), ui(new 
     QWebSettings::setObjectCacheCapacities(0, 0, 0);
     settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
     settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+    settings->setAttribute(QWebSettings::AcceleratedCompositingEnabled, false);
 
     connect(ui->viewClassTreeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(addViewToJS(QTreeWidgetItem*, int)));
     connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop()), this, SLOT(updateViewsToJS()));

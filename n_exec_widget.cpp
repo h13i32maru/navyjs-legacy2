@@ -30,6 +30,7 @@ NExecWidget::NExecWidget(QWidget *parent) : QMainWindow(parent), ui(new Ui::NExe
     QWebSettings::setObjectCacheCapacities(0, 0, 0);
     settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
     settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+    settings->setAttribute(QWebSettings::AcceleratedCompositingEnabled, false);
 
     // 本来はブリッジは必要ないのだが、JS側にNavyCreatorから実行されていることを知らせるためにあえてブリッジを入れている
     mNative = new NativeBridge(this);
