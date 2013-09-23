@@ -65,6 +65,11 @@ void MainWindow::openProject() {
     }
 
     setCurrentProject(dirName);
+
+    QDir(mProjectDir->absoluteFilePath("navy")).removeRecursively();
+    QDir(mProjectDir->absoluteFilePath("creator")).removeRecursively();
+    NUtil::copyDir(":/template/navy", mProjectDir->absoluteFilePath("navy"));
+    NUtil::copyDir(":/template/creator", mProjectDir->absoluteFilePath("creator"));
 }
 
 void MainWindow::saveAll() {
