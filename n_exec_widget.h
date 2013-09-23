@@ -21,8 +21,10 @@ private:
     Ui::NExecWidget *ui;
     QUrl mUrl;
 
-public slots:
+private slots:
+    void contextMenuForWebView(const QPoint &point);
     void reload();
+    void showInspector();
 
 signals:
     void finishLoad();
