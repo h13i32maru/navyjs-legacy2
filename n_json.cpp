@@ -154,3 +154,41 @@ QJsonValue NJson::set(QJsonValue parentValue, QString keysStr, QJsonValue value)
         }
     }
 }
+
+void NJson::remove(const QString &keysStr) {
+    mRootValue = remove(mRootValue, keysStr);
+}
+
+QJsonValue NJson::remove(QJsonValue parentValue, const QString &keysStr) {
+    QStringList keys = keysStr.split(".");
+    QString key = keys[0];
+    int index = key.toInt();
+
+    if (keys.size() == 1) {
+        if (parentValue.isArray()) {
+            QJsonArray array = parentValue.toArray();
+            array.removeAt(index);
+            return QJsonValue(array);
+        } else {
+            QJsonObject object = parentValue.toObject();
+            object.remove(key);
+            return QJsonValue(object);
+        }
+    } else {
+        keys.pop_front();
+        if (parentValue.isArray()) {
+            QJsonArray array= parentValue.toArray();
+            QJsonValue newValue = remove(QJsonValue(array[index]), keys.join("."));
+            if (array.size() <= index) {
+                array.insert(index, newValue);
+            } else {
+                array[index] = newValue;
+            }
+            return QJsonValue(array);
+        } else {
+            QJsonObject object = parentValue.toObject();
+            object[key] = remove(QJsonValue(parentValue.toObject()[key]), keys.join("."));
+            return QJsonValue(object);
+        }
+    }
+}

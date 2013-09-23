@@ -31,6 +31,9 @@ void NLayoutPropEdit::connectWidgetToJson() {
     connect(ui->sizeWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->sizeHeightSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->backgroundColor, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+    connect(ui->sizePolicy, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
+    connect(ui->linkType, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
+    connect(ui->linkId, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
 
     // text
     connect(ui->extraText, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
@@ -48,6 +51,9 @@ void NLayoutPropEdit::disconnectWidgetToJson() {
     disconnect(ui->sizeWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     disconnect(ui->sizeHeightSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     disconnect(ui->backgroundColor, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+    disconnect(ui->sizePolicy, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
+    disconnect(ui->linkType, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
+    disconnect(ui->linkId, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
 
     // text
     disconnect(ui->extraText, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
@@ -65,6 +71,14 @@ void NLayoutPropEdit::syncWidgetToJson() {
     mView.set("size.width", ui->sizeWidthSpinBox->value());
     mView.set("size.height", ui->sizeHeightSpinBox->value());
     mView.set("backgroundColor", ui->backgroundColor->text());
+    mView.set("sizePolicy", ui->sizePolicy->currentText());
+
+    if (ui->linkType->currentIndex() != 0) {
+        mView.set("link.type", ui->linkType->currentText());
+        mView.set("link.id", ui->linkId->text());
+    } else {
+        mView.remove("link");
+    }
 
     QString className = mView.getStr("class");
     if (className == ClassView) {

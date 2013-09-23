@@ -31,10 +31,13 @@ public:
     void set(QString keysStr, int value);
     void set(QString keysStr, QString value);
 
+    void remove(const QString &keysStr);
+
 private:
     QJsonValue mRootValue;
     QJsonValue get(const QJsonValue &value, const QString &keysStr) const;
     QJsonValue set(QJsonValue parentValue, QString keysStr, QJsonValue value);
+    QJsonValue remove(QJsonValue parentValue, const QString &keysStr);
 };
 
 #endif // N_JSON_H

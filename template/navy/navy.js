@@ -321,6 +321,8 @@ Navy.View.View = Navy.Class({
   SIZE_POLICY_FIXED: 'fixed',
   SIZE_POLICY_WRAP_CONTENT: 'wrapContent',
 
+  _page: null,
+  _scene: null,
   _layout: null,
   _element: null,
   _parentView: null,
@@ -334,6 +336,8 @@ Navy.View.View = Navy.Class({
     this._layout = layout;
     this._element = document.createElement('div');
 
+    this._execLink = this._execLink.bind(this);
+
     this.setLayout(layout, callback);
   },
 
@@ -341,6 +345,8 @@ Navy.View.View = Navy.Class({
     if (!layout) {
       return;
     }
+
+    this._layout = layout;
 
     var style = {
       position: 'absolute',
@@ -355,6 +361,12 @@ Navy.View.View = Navy.Class({
       style.height = layout.size.height + 'px';
     } else {
       layout.size = {};
+    }
+
+    if (layout.link) {
+      // fixme: とりあえずtouchendで代用してるが、tochstartとかもちゃんと使ってタップ判定すべき.
+      this._element.removeEventListener('touchend', this._execLink);
+      this._element.addEventListener('touchend', this._execLink);
     }
 
     this.setRawStyle(style);
@@ -383,6 +395,20 @@ Navy.View.View = Navy.Class({
     this._element.style.cssText += cssText;
   },
 
+  _execLink: function(ev) {
+    var type = this._layout.link.type;
+    var id = this._layout.link.id;
+
+    switch (type) {
+    case 'page':
+      this.getScene().linkPage(id);
+      break;
+    case 'scene':
+      Navy.Root.linkScene(id);
+      break;
+    }
+  },
+
   addRawEventListener: function(eventName, callback) {
     this._element.addEventListener(eventName, callback);
   },
@@ -393,6 +419,22 @@ Navy.View.View = Navy.Class({
 
   getId: function(){
     return this._layout.id;
+  },
+
+  setPage: function(page) {
+    this._page = page;
+  },
+
+  getPage: function() {
+    return this._page;
+  },
+
+  setScene: function(scene) {
+    this._scene = scene;
+  },
+
+  getScene: function() {
+    return this._scene;
   },
 
   getElement: function(){
@@ -627,11 +669,33 @@ Navy.ViewGroup.ViewGroup = Navy.Class(Navy.View.View, {
     return null;
   },
 
+  setPage: function($super, page) {
+    $super(page);
+
+    var views = this._views;
+    for  (var viewId in views) {
+      var view = views[viewId];
+      view.setPage(page);
+    }
+  },
+
+  setScene: function($super, scene) {
+    $super(scene);
+
+    var views = this._views;
+    for  (var viewId in views) {
+      var view = views[viewId];
+      view.setScene(scene);
+    }
+  },
+
   addView: function(view) {
     var element = view.getElement();
     this._element.appendChild(element);
     this._views[view.getId()] = view;
     view.setParent(this);
+    view.setPage(this.getPage());
+    view.setScene(this.getScene());
   },
 
   removeView: function(view) {
@@ -654,6 +718,14 @@ Navy.Page = Navy.Class(Navy.ViewGroup.ViewGroup, {
     layout.size = {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height};
 
     $super(layout, callback);
+  },
+
+  setPage: function($super, page) {
+    // ignore
+  },
+
+  getPage: function() {
+    return this;
   },
 
   onCreate: function() {
@@ -707,6 +779,15 @@ Navy.Root = Navy.Class.instance(Navy.ViewGroup.ViewGroup, {
 
     var startSceneName = Navy.Config.app.start.scene;
     this.nextScene(startSceneName);
+  },
+
+  // fixme: callbackを実装する.
+  linkScene: function(id) {
+    if (id === '$back') {
+      this.backScene();
+    } else {
+      this.nextScene(id);
+    }
   },
 
   nextScene: function(sceneName) {
@@ -855,25 +936,50 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
       }
       this.nextPage(layout.extra.page, callback.bind(null, this));
 
-      //FIXME: remove debug code
-      views[name].addRawEventListener('touchend', function(ev){
-        ev.stopPropagation();
-        Navy.Root.nextScene('Scene1');
-      });
+//      //FIXME: remove debug code
+//      views[name].addRawEventListener('touchend', function(ev){
+//        ev.stopPropagation();
+//        Navy.Root.nextScene('Scene1');
+//      });
     }.bind(this));
 
     //FIXME: remove debug code
-    var cb = function(){
-      if (this._pageStack.length < 5) {
-        this.nextPage('Page' + (Date.now() % 2 + 1));
-      } else {
-        this._element.removeEventListener('touchend', cb);
-        this._element.addEventListener('touchend', function cb(){
-          this.backPage();
-        }.bind(this));
-      }
-    }.bind(this);
-    this._element.addEventListener('touchend', cb);
+//    var cb = function(){
+//      if (this._pageStack.length < 5) {
+//        this.nextPage('Page' + (Date.now() % 2 + 1));
+//      } else {
+//        this._element.removeEventListener('touchend', cb);
+//        this._element.addEventListener('touchend', function cb(){
+//          this.backPage();
+//        }.bind(this));
+//      }
+//    }.bind(this);
+//    this._element.addEventListener('touchend', cb);
+  },
+
+  setPage: function(page) {
+    // ignore
+  },
+
+  getPage: function() {
+    return null;
+  },
+
+  setScene: function(scene) {
+    // ignore
+  },
+
+  getScene: function() {
+    return this;
+  },
+
+  // fixme: callbackを実装する.
+  linkPage: function(id) {
+    if (id === '$back') {
+      this.backPage();
+    } else {
+      this.nextPage(id);
+    }
   },
 
   nextPage: function(pageName, callback) {
@@ -915,6 +1021,7 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
     console.log('onDestroy', this.CLASSNAME);
   },
 
+  // 不要？
   _getBottomPageLayout: function(layout) {
     var bottomLayout = {
       class: 'Navy.Page',
@@ -929,6 +1036,7 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
     return bottomLayout;
   },
 
+  // 不要？
   _getTopPageLayout: function(layout) {
     var topLayout = {
       class: 'Navy.Page',
