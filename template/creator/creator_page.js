@@ -6,8 +6,8 @@ var CreatorPage = Navy.Class(Navy.Page, {
   _selectedBox: null,
   _selectedView: null,
 
-  _dragPrevX: null,
-  _dragPrevY: null,
+  _mouseDx: null,
+  _mouseDy: null,
 
   onCreate: function($super) {
     $super();
@@ -17,9 +17,8 @@ var CreatorPage = Navy.Class(Navy.Page, {
     window.getContentLayout = this._getContentLayout.bind(this);
     this._zoom = parseFloat(document.body.style.zoom);
 
-    this._mouseUp = this._mouseUp.bind(this);
     this._mouseMove = this._mouseMove.bind(this);
-    document.body.addEventListener('mouseup', this._mouseUp);
+    document.body.addEventListener('mouseup', this._mouseUp.bind(this));
 
     this._selectedBox = document.createElement('div');
     this._selectedBox.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
@@ -127,19 +126,12 @@ var CreatorPage = Navy.Class(Navy.Page, {
       parentNode.removeChild(this._selectedBox);
     }
 
-    if (this._selectedView) {
-      var elm = this._selectedView.getElement();
-      elm.removeEventListener('mousemove', this._mouseMove);
-      elm.removeEventListener('mouseup', this._mouseUp);
-    }
-
     var view = this._views[viewId];
     var size = view.getSize();
     this._selectedBox.style.width = size.width + 'px';
     this._selectedBox.style.height = size.height + 'px';
     var elm = view.getElement();
     elm.appendChild(this._selectedBox);
-    elm.addEventListener('mouseup', this._mouseUp);
 
     this._selectedView = view;
 
@@ -149,18 +141,22 @@ var CreatorPage = Navy.Class(Navy.Page, {
   _mouseDown: function(view, ev) {
     this._selectView(view.getId());
 
-    this._dragPrevX = ev.clientX;
-    this._dragPrevY = ev.clientY;
-    this._selectedView.getElement().addEventListener('mousemove', this._mouseMove);
+    var pos = this._selectedView.getPos();
+    this._mouseDx = ev.clientX/this._zoom - pos.x;
+    this._mouseDy = ev.clientY/this._zoom - pos.y;
+    document.body.addEventListener('mousemove', this._mouseMove);
+
+    this._moving = true;
   },
 
   _mouseMove: function(ev) {
-    var dx = ev.clientX - this._dragPrevX;
-    var dy = ev.clientY - this._dragPrevY;
-    this._dragPrevX = ev.clientX;
-    this._dragPrevY = ev.clientY;
+    if (!this._moving) {
+      return;
+    }
 
-    this._selectedView.addPos({x: dx / this._zoom, y: dy/this._zoom});
+    var x = ev.clientX/this._zoom - this._mouseDx;
+    var y = ev.clientY/this._zoom - this._mouseDy;
+    this._selectedView.setPos({x: x, y: y});
 
     var pos = this._selectedView.getPos();
     Native.changedLayoutContent();
@@ -168,7 +164,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
   },
 
   _mouseUp: function(/* ev */) {
-    this._selectedView.getElement().removeEventListener('mousemove', this._mouseMove);
+    document.body.removeEventListener('mousemove', this._mouseMove);
   }
 });
 
