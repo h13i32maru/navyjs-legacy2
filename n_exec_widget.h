@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 #include <QUrl>
+#include <QWebInspector>
 
 namespace Ui {
 class NExecWidget;
@@ -23,11 +24,11 @@ private:
     Ui::NExecWidget *ui;
     QUrl mUrl;
     NativeBridge *mNative;
+    QWebInspector *mInspector;
 
 private slots:
     void contextMenuForWebView(const QPoint &point);
     void reload();
-    void showInspector();
     void injectNativeBridge();
 
 signals:

@@ -4,6 +4,7 @@
 #include <QCursor>
 #include <QWebInspector>
 #include <QWebFrame>
+#include <QDebug>
 #include <QWebPage>
 
 NExecWidget::NExecWidget(QWidget *parent) : QMainWindow(parent), ui(new Ui::NExecWidget)
@@ -13,6 +14,16 @@ NExecWidget::NExecWidget(QWidget *parent) : QMainWindow(parent), ui(new Ui::NExe
     resize(QGuiApplication::primaryScreen()->availableSize());
     ui->menubar->hide();
     ui->statusbar->hide();
+
+    mInspector = new QWebInspector();
+
+    QWebPage *page = ui->webView->page();
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(mInspector);
+    layout->setMargin(0);
+    ui->inspector->setLayout(layout);
+    mInspector->setPage(page);
+    mInspector->show();
 
     QWebView *webView = ui->webView;
     QWebSettings *settings = webView->settings();
@@ -46,17 +57,9 @@ void NExecWidget::reload() {
     webView->load(mUrl);
 }
 
-void NExecWidget::showInspector() {
-    QWebPage *page = ui->webView->page();
-    QWebInspector *inspector = new QWebInspector();
-    inspector->setPage(page);
-    inspector->show();
-}
-
 void NExecWidget::contextMenuForWebView(const QPoint &/*point*/) {
     QMenu menu(this);
     menu.addAction(tr("&Reload"), this, SLOT(reload()));
-    menu.addAction(tr("&Inspector"), this, SLOT(showInspector()));
     menu.exec(QCursor::pos());
 }
 
