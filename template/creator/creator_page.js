@@ -114,6 +114,11 @@ var CreatorPage = Navy.Class(Navy.Page, {
 
     Native.changedLayoutContent();
     this._selectedView.setLayout(layout);
+
+    var size = this._selectedView.getSize();
+    console.log(size);
+    this._selectedBox.style.width = size.width + 'px';
+    this._selectedBox.style.height = size.height + 'px';
   },
 
   _selectView: function(viewId) {

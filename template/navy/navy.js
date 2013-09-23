@@ -456,10 +456,17 @@ Navy.View.View = Navy.Class({
   getSize: function() {
     switch (this._layout.sizePolicy) {
     case this.SIZE_POLICY_WRAP_CONTENT:
-      return {
-        width: this._element.scrollWidth,
-        height: this._element.scrollHeight
-      };
+      if (this._element.clientWidth || this._element.clientHeight) {
+        return {
+          width: this._element.clientWidth,
+          height: this._element.clientHeight
+        };
+      } else {
+        return {
+          width: this._element.scrollWidth,
+          height: this._element.scrollHeight
+        };
+      }
     case this.SIZE_POLICY_FIXED:
       return {
         width: this._layout.size.width,
