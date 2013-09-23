@@ -1,0 +1,34 @@
+[
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Text",
+    "extra": {
+      "text": "This is SubPage"
+    },
+    "id": "Text1",
+    "pos": {
+      "x": 100,
+      "y": 200
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  },
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Text",
+    "extra": {
+      "text": "Back"
+    },
+    "id": "Text2",
+    "link": {
+      "id": "$back",
+      "type": "scene"
+    },
+    "pos": {
+      "x": 100,
+      "y": 300
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  }
+]

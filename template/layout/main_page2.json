@@ -1,0 +1,70 @@
+[
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Text",
+    "extra": {
+      "text": "This is MainPage2"
+    },
+    "id": "Text1",
+    "pos": {
+      "x": 100,
+      "y": 200
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  },
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Text",
+    "extra": {
+      "text": "Go To MainPage3"
+    },
+    "id": "Text2",
+    "link": {
+      "id": "MainPage3",
+      "type": "page"
+    },
+    "pos": {
+      "x": 100,
+      "y": 300
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  },
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Text",
+    "extra": {
+      "text": "Go To SubScene"
+    },
+    "id": "Text3",
+    "link": {
+      "id": "SubScene",
+      "type": "scene"
+    },
+    "pos": {
+      "x": 100,
+      "y": 400
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  },
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Text",
+    "extra": {
+      "text": "back"
+    },
+    "id": "Text4",
+    "link": {
+      "id": "$back",
+      "type": "page"
+    },
+    "pos": {
+      "x": 100,
+      "y": 500
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  }
+]

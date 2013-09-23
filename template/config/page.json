@@ -1,11 +1,38 @@
 [
-  {
-    "id": "MainPage",
-    "class": "MainPage",
-    "classFile": "code/main_page.js",
-    "backgroundColor": "#aaaaaa",
-    "extra": {
-      "contentLayoutFile": "layout/main_page.json"
+    {
+        "backgroundColor": "#aaaaaa",
+        "class": "SubPage",
+        "classFile": "code/sub_page.js",
+        "extra": {
+            "contentLayoutFile": "layout/sub_page.json"
+        },
+        "id": "SubPage"
+    },
+    {
+        "backgroundColor": "#aaaaff",
+        "class": "MainPage3",
+        "classFile": "code/main_page3.js",
+        "extra": {
+            "contentLayoutFile": "layout/main_page3.json"
+        },
+        "id": "MainPage3"
+    },
+    {
+        "backgroundColor": "#ffaaaa",
+        "class": "MainPage2",
+        "classFile": "code/main_page2.js",
+        "extra": {
+            "contentLayoutFile": "layout/main_page2.json"
+        },
+        "id": "MainPage2"
+    },
+    {
+        "backgroundColor": "#aaffaa",
+        "class": "MainPage1",
+        "classFile": "code/main_page1.js",
+        "extra": {
+            "contentLayoutFile": "layout/main_page1.json"
+        },
+        "id": "MainPage1"
     }
-  }
 ]

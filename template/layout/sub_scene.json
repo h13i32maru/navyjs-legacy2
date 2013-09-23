@@ -1,6 +1,6 @@
 [
   {
-    "backgroundColor": "#aaaaff",
+    "backgroundColor": "#ffaaaa",
     "class": "Navy.View.View",
     "id": "header_bg",
     "pos": {
@@ -14,7 +14,7 @@
     "sizePolicy": "fixed"
   },
   {
-    "backgroundColor": "#0000ff",
+    "backgroundColor": "#ff0000",
     "class": "Navy.View.Text",
     "extra": {
       "text": ""

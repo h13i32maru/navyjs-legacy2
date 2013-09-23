@@ -1,0 +1,62 @@
+[
+  {
+    "backgroundColor": "",
+    "class": "Navy.ViewGroup.ViewGroup",
+    "extra": {
+      "contentLayoutFile": "layout/group.json"
+    },
+    "id": "ViewGroup1",
+    "pos": {
+      "x": 0,
+      "y": 100
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  },
+  {
+    "backgroundColor": "",
+    "class": "Navy.ViewGroup.ViewGroup",
+    "extra": {
+      "contentLayoutFile": "layout/group.json"
+    },
+    "id": "ViewGroup2",
+    "pos": {
+      "x": 5,
+      "y": 367
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  },
+  {
+    "backgroundColor": "",
+    "class": "Navy.ViewGroup.ViewGroup",
+    "extra": {
+      "contentLayoutFile": "layout/group.json"
+    },
+    "id": "ViewGroup3",
+    "pos": {
+      "x": 8,
+      "y": 638
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  },
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Text",
+    "extra": {
+      "text": "back"
+    },
+    "id": "Text4",
+    "link": {
+      "id": "$back",
+      "type": "page"
+    },
+    "pos": {
+      "x": 267,
+      "y": 910
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  }
+]

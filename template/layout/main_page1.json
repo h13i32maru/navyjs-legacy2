@@ -1,0 +1,34 @@
+[
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Text",
+    "extra": {
+      "text": "This is MainPage1"
+    },
+    "id": "Text1",
+    "pos": {
+      "x": 100,
+      "y": 200
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  },
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Text",
+    "extra": {
+      "text": "Go To MainPage2"
+    },
+    "id": "Text2",
+    "link": {
+      "id": "MainPage2",
+      "type": "page"
+    },
+    "pos": {
+      "x": 100,
+      "y": 300
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  }
+]

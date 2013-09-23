@@ -1,11 +1,22 @@
 [
-  {
-    "id": "MainScene",
-    "class": "MainScene",
-    "classFile": "code/main_scene.js",
-    "extra": {
-      "contentLayoutFile": "layout/main_scene.json",
-      "page": "MainPage"
+    {
+        "backgroundColor": "",
+        "class": "SubScene",
+        "classFile": "code/sub_scene.js",
+        "extra": {
+            "contentLayoutFile": "layout/sub_scene.json",
+            "page": "SubPage"
+        },
+        "id": "SubScene"
+    },
+    {
+        "backgroundColor": "",
+        "class": "MainScene",
+        "classFile": "code/main_scene.js",
+        "extra": {
+            "contentLayoutFile": "layout/main_scene.json",
+            "page": "MainPage1"
+        },
+        "id": "MainScene"
     }
-  }
 ]

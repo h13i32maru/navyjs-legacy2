@@ -1,6 +1,9 @@
 {
-  "size": {"width": 640, "height": 1136},
-  "start": {
-    "scene": "MainScene"
-  }
+    "size": {
+        "height": 1136,
+        "width": 640
+    },
+    "start": {
+        "scene": "MainScene"
+    }
 }

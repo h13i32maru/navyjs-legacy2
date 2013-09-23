@@ -1,0 +1,36 @@
+[
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Image",
+    "extra": {
+      "src": "image/octocat.png"
+    },
+    "id": "Image3",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "size": {
+      "width": 256,
+      "height": 256
+    },
+    "sizePolicy": "wrapContent"
+  },
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Image",
+    "extra": {
+      "src": "image/scottocat.jpg"
+    },
+    "id": "Image2",
+    "pos": {
+      "x": 286,
+      "y": -4
+    },
+    "size": {
+      "width": 256,
+      "height": 256
+    },
+    "sizePolicy": "wrapContent"
+  }
+]
