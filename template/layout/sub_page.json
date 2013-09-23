@@ -3,12 +3,13 @@
     "backgroundColor": "",
     "class": "Navy.View.Text",
     "extra": {
+      "fontSize": 30,
       "text": "This is SubPage"
     },
     "id": "Text1",
     "pos": {
-      "x": 100,
-      "y": 200
+      "x": 62,
+      "y": 155
     },
     "size": {},
     "sizePolicy": "wrapContent"
@@ -17,7 +18,8 @@
     "backgroundColor": "",
     "class": "Navy.View.Text",
     "extra": {
-      "text": "Back"
+      "fontSize": 30,
+      "text": ">>Back"
     },
     "id": "Text2",
     "link": {
@@ -25,8 +27,8 @@
       "type": "scene"
     },
     "pos": {
-      "x": 100,
-      "y": 300
+      "x": 98,
+      "y": 234
     },
     "size": {},
     "sizePolicy": "wrapContent"

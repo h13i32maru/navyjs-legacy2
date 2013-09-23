@@ -600,8 +600,11 @@ Navy.View.Text = Navy.Class(Navy.View.View, {
     }
 
     if (layout.extra) {
-      this._layout.extra.text = layout.extra.text;
       this._textElement.textContent = layout.extra.text;
+
+      if (typeof layout.extra.fontSize === "number") {
+        this._textElement.style.fontSize = layout.extra.fontSize + 'px';
+      }
     }
 
     if (layout.sizePolicy == this.SIZE_POLICY_WRAP_CONTENT) {

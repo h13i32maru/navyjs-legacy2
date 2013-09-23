@@ -3,12 +3,13 @@
     "backgroundColor": "",
     "class": "Navy.View.Text",
     "extra": {
-      "text": "This is MainPage2"
+      "fontSize": 50,
+      "text": "MainPage2"
     },
     "id": "Text1",
     "pos": {
-      "x": 100,
-      "y": 200
+      "x": 53,
+      "y": 140
     },
     "size": {},
     "sizePolicy": "wrapContent"
@@ -17,7 +18,8 @@
     "backgroundColor": "",
     "class": "Navy.View.Text",
     "extra": {
-      "text": "Go To MainPage3"
+      "fontSize": 30,
+      "text": ">> Go To MainPage3"
     },
     "id": "Text2",
     "link": {
@@ -25,8 +27,8 @@
       "type": "page"
     },
     "pos": {
-      "x": 100,
-      "y": 300
+      "x": 30,
+      "y": 244
     },
     "size": {},
     "sizePolicy": "wrapContent"
@@ -35,7 +37,8 @@
     "backgroundColor": "",
     "class": "Navy.View.Text",
     "extra": {
-      "text": "Go To SubScene"
+      "fontSize": 30,
+      "text": ">> Go To SubScene"
     },
     "id": "Text3",
     "link": {
@@ -43,8 +46,8 @@
       "type": "scene"
     },
     "pos": {
-      "x": 100,
-      "y": 400
+      "x": 30,
+      "y": 295
     },
     "size": {},
     "sizePolicy": "wrapContent"
@@ -53,7 +56,8 @@
     "backgroundColor": "",
     "class": "Navy.View.Text",
     "extra": {
-      "text": "back"
+      "fontSize": 30,
+      "text": ">> back"
     },
     "id": "Text4",
     "link": {
@@ -61,8 +65,8 @@
       "type": "page"
     },
     "pos": {
-      "x": 100,
-      "y": 500
+      "x": 30,
+      "y": 339
     },
     "size": {},
     "sizePolicy": "wrapContent"

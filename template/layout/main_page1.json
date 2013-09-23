@@ -3,12 +3,13 @@
     "backgroundColor": "",
     "class": "Navy.View.Text",
     "extra": {
-      "text": "This is MainPage1"
+      "fontSize": 50,
+      "text": "MainPage1"
     },
     "id": "Text1",
     "pos": {
-      "x": 100,
-      "y": 200
+      "x": 43,
+      "y": 180
     },
     "size": {},
     "sizePolicy": "wrapContent"
@@ -17,7 +18,8 @@
     "backgroundColor": "",
     "class": "Navy.View.Text",
     "extra": {
-      "text": "Go To MainPage2"
+      "fontSize": 30,
+      "text": ">> Go To MainPage2"
     },
     "id": "Text2",
     "link": {
@@ -25,8 +27,8 @@
       "type": "page"
     },
     "pos": {
-      "x": 100,
-      "y": 300
+      "x": 21,
+      "y": 286
     },
     "size": {},
     "sizePolicy": "wrapContent"

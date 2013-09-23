@@ -8,8 +8,8 @@
       "y": 0
     },
     "size": {
-      "height": 100,
-      "width": 640
+      "height": 50,
+      "width": 320
     },
     "sizePolicy": "fixed"
   },
@@ -21,13 +21,28 @@
     },
     "id": "left_button",
     "pos": {
-      "x": 18,
-      "y": 8
+      "x": 9,
+      "y": 4
     },
     "size": {
-      "height": 80,
-      "width": 80
+      "height": 40,
+      "width": 40
     },
     "sizePolicy": "fixed"
+  },
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Text",
+    "extra": {
+      "fontSize": 30,
+      "text": "SubScene"
+    },
+    "id": "Text3",
+    "pos": {
+      "x": 102,
+      "y": 8
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
   }
 ]

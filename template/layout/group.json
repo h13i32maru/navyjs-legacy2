@@ -11,8 +11,8 @@
       "y": 0
     },
     "size": {
-      "width": 256,
-      "height": 256
+      "width": 128,
+      "height": 128
     },
     "sizePolicy": "wrapContent"
   },
@@ -24,12 +24,12 @@
     },
     "id": "Image2",
     "pos": {
-      "x": 286,
-      "y": -4
+      "x": 128,
+      "y": 0
     },
     "size": {
-      "width": 256,
-      "height": 256
+      "width": 128,
+      "height": 128
     },
     "sizePolicy": "wrapContent"
   }
