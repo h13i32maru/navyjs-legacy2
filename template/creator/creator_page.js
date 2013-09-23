@@ -131,6 +131,9 @@ var CreatorPage = Navy.Class(Navy.Page, {
     }
 
     var view = this._views[viewId];
+    var size = view.getSize();
+    this._selectedBox.style.width = size.width + 'px';
+    this._selectedBox.style.height = size.height + 'px';
     var elm = view.getElement();
     elm.appendChild(this._selectedBox);
     elm.addEventListener('mouseup', this._mouseUp);

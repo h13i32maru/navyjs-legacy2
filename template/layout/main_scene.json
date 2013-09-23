@@ -3,6 +3,7 @@
     "id": "header_bg",
     "class": "Navy.View.View",
     "pos": {"x":0, "y":0},
+    "sizePolicy": "fixed",
     "size": {"width": 640, "height": 100},
     "backgroundColor": "#0000ff"
   },
@@ -10,6 +11,7 @@
     "id": "left_button",
     "class": "Navy.View.Text",
     "pos": {"x": 10, "y": 10},
+    "sizePolicy": "fixed",
     "size": {"width": 80, "height": 80},
     "backgroundColor": "#00ff00",
     "extra": {

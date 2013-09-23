@@ -48,7 +48,7 @@ void NExecWidget::reload() {
 
 void NExecWidget::showInspector() {
     QWebPage *page = ui->webView->page();
-    QWebInspector *inspector = new QWebInspector;
+    QWebInspector *inspector = new QWebInspector();
     inspector->setPage(page);
     inspector->show();
 }

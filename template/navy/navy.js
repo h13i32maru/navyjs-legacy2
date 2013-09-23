@@ -318,6 +318,9 @@ Navy.Resource = Navy.Class.instance({
 Navy.View.View = Navy.Class({
   CLASSNAME: 'Navy.View.View',
 
+  SIZE_POLICY_FIXED: 'fixed',
+  SIZE_POLICY_WRAP_CONTENT: 'wrapContent',
+
   _layout: null,
   _element: null,
   _parentView: null,
@@ -344,10 +347,16 @@ Navy.View.View = Navy.Class({
       left: layout.pos.x + 'px',
       top: layout.pos.y + 'px',
       zIndex: layout.pos.z,
-      width: layout.size.width + 'px',
-      height: layout.size.height + 'px',
       backgroundColor: layout.backgroundColor
     };
+
+    if (layout.sizePolicy == this.SIZE_POLICY_FIXED) {
+      style.width = layout.size.width + 'px';
+      style.height = layout.size.height + 'px';
+    } else {
+      layout.size = {};
+    }
+
     this.setRawStyle(style);
 
     callback && setTimeout(callback.bind(null, this), 0);
@@ -400,6 +409,23 @@ Navy.View.View = Navy.Class({
 
   hide: function() {
     this._element.style.display = 'none';
+  },
+
+  getSize: function() {
+    switch (this._layout.sizePolicy) {
+    case this.SIZE_POLICY_WRAP_CONTENT:
+      return {
+        width: this._element.scrollWidth,
+        height: this._element.scrollHeight
+      };
+    case this.SIZE_POLICY_FIXED:
+      return {
+        width: this._layout.size.width,
+        height: this._layout.size.height
+      };
+    default:
+      throw new Error('unknown size policy. ' + this._layout.sizePolicy);
+    }
   },
 
   setSize: function(size) {
@@ -467,7 +493,6 @@ Navy.View.Image = Navy.Class(Navy.View.View, {
   CLASSNAME: 'Navy.View.Image',
 
   _imgElm: null,
-  _autoSize: false,
 
   initialize: function($super, layout, callback) {
     $super(layout, callback);
@@ -480,12 +505,6 @@ Navy.View.Image = Navy.Class(Navy.View.View, {
       var imgElm = document.createElement('img');
       this._element.appendChild(imgElm);
       this._imgElm = imgElm;
-    }
-
-    if (layout) {
-      if (layout.size.width === null || layout.size.height === null) {
-        this._autoSize = true;
-      }
     }
 
     if (layout && layout.extra.src) {
@@ -504,7 +523,7 @@ Navy.View.Image = Navy.Class(Navy.View.View, {
     this._layout.extra.src = src;
     this._imgElm.src = src;
 
-    if (this._autoSize) {
+    if (this._layout.sizePolicy == this.SIZE_POLICY_WRAP_CONTENT) {
       this.setSize({width: width, height: height});
     }
   }
@@ -538,10 +557,13 @@ Navy.View.Text = Navy.Class(Navy.View.View, {
       this._element.appendChild(this._textElement);
     }
 
-
     if (layout.extra) {
       this._layout.extra.text = layout.extra.text;
       this._textElement.textContent = layout.extra.text;
+    }
+
+    if (layout.sizePolicy == this.SIZE_POLICY_WRAP_CONTENT) {
+      this._element.style.display = 'inline';
     }
 
     callback && setTimeout(callback.bind(null, this), 0);
@@ -628,6 +650,7 @@ Navy.Page = Navy.Class(Navy.ViewGroup.ViewGroup, {
   initialize: function($super, layout, callback) {
     // シーン、ページの場合はsize, posは固定値でよい
     layout.pos = {x:0, y:0};
+    layout.sizePolicy = this.SIZE_POLICY_FIXED;
     layout.size = {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height};
 
     $super(layout, callback);
@@ -822,6 +845,7 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
 
     // シーン、ページの場合はsize, posは固定値でよい
     layout.pos = {x:0, y:0};
+    layout.sizePolicy = this.SIZE_POLICY_FIXED;
     layout.size = {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height};
 
     $super(layout, function(){
