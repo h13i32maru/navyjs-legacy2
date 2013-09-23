@@ -114,6 +114,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
       return;
     }
 
+    Native.changedLayoutContent();
     this._selectedView.setLayout(layout);
   },
 
