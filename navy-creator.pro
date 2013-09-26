@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     n_layout_edit_widget.cpp \
     n_layout_prop_edit.cpp \
     n_tree_widget.cpp \
-    n_exec_widget.cpp
+    n_exec_widget.cpp \
+    n_file_widget.cpp
 
 HEADERS  += main_window.h \
     edit_json_dialog.h \
@@ -43,7 +44,8 @@ HEADERS  += main_window.h \
     n_layout_edit_widget.h \
     n_layout_prop_edit.h \
     n_tree_widget.h \
-    n_exec_widget.h
+    n_exec_widget.h \
+    n_file_widget.h
 
 FORMS    += main_window.ui \
     edit_json_dialog.ui \

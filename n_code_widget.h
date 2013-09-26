@@ -1,26 +1,29 @@
 #ifndef N_CODE_WIDGET_H
 #define N_CODE_WIDGET_H
 
-#include "n_file_tab_editor.h"
+#include "n_file_widget.h"
+
+#include <QTextEdit>
 
 namespace Ui {
 class NCodeWidget;
 }
 
-class NCodeWidget : public NFileTabEditor
+class NCodeWidget : public NFileWidget
 {
     Q_OBJECT
 
 public:
-    explicit NCodeWidget(QWidget *parent = 0);
+    explicit NCodeWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
+    virtual bool save();
     ~NCodeWidget();
 
 private:
     Ui::NCodeWidget *ui;
+    QTextEdit *mTextEdit;
 
-protected:
-    virtual QWidget* createTabWidget(const QString &filePath);
-    virtual QString editedFileContent(QWidget *widget);
+private slots:
+    void proxyChanged();
 };
 
 #endif // N_CODE_WIDGET_H

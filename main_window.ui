@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1106</width>
-    <height>567</height>
+    <width>775</width>
+    <height>578</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,101 +21,79 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
     <property name="leftMargin">
-     <number>12</number>
+     <number>4</number>
     </property>
     <property name="topMargin">
-     <number>12</number>
+     <number>4</number>
+    </property>
+    <property name="rightMargin">
+     <number>4</number>
+    </property>
+    <property name="bottomMargin">
+     <number>4</number>
     </property>
     <item>
-     <widget class="QTabWidget" name="topTabWidget">
-      <property name="styleSheet">
-       <string notr="true">#topTabWidget::tab-bar {
-  alignment: left;
-}
-
-#topTabWidget::pane {
-  padding:0;
-  border:none;
-}</string>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
-      <property name="currentIndex">
-       <number>2</number>
-      </property>
-      <widget class="QWidget" name="configTab">
-       <attribute name="icon">
-        <iconset resource="resource.qrc">
-         <normaloff>:/icon/config.png</normaloff>:/icon/config.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string/>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <property name="leftMargin">
-         <number>12</number>
-        </property>
-        <property name="rightMargin">
-         <number>12</number>
-        </property>
-        <property name="bottomMargin">
-         <number>12</number>
-        </property>
-        <item>
-         <widget class="NConfigWidget" name="nConfigWidget" native="true"/>
-        </item>
-       </layout>
+      <widget class="NTreeView" name="fileTreeView">
+       <property name="maximumSize">
+        <size>
+         <width>300</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::InternalMove</enum>
+       </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="headerHidden">
+        <bool>true</bool>
+       </property>
       </widget>
-      <widget class="QWidget" name="codeTab">
-       <attribute name="icon">
-        <iconset resource="resource.qrc">
-         <normaloff>:/icon/code.png</normaloff>:/icon/code.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string/>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="NCodeWidget" name="nCodeWidget" native="true"/>
+         <widget class="QTabWidget" name="fileTabWidget">
+          <property name="documentMode">
+           <bool>true</bool>
+          </property>
+          <property name="tabsClosable">
+           <bool>true</bool>
+          </property>
+          <property name="movable">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="layoutTab">
-       <attribute name="icon">
-        <iconset resource="resource.qrc">
-         <normaloff>:/icon/layout.png</normaloff>:/icon/layout.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string/>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>4</number>
-        </property>
-        <property name="rightMargin">
-         <number>4</number>
-        </property>
-        <property name="bottomMargin">
-         <number>4</number>
-        </property>
         <item>
-         <widget class="NLayoutWidget" name="nLayoutWidget" native="true"/>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="imageTab">
-       <attribute name="icon">
-        <iconset resource="resource.qrc">
-         <normaloff>:/icon/image.png</normaloff>:/icon/image.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string/>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="NImageWidget" name="nImageWidget" native="true"/>
+         <widget class="QLabel" name="noFileWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>No files are open</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -128,7 +106,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1106</width>
+     <width>775</width>
      <height>22</height>
     </rect>
    </property>
@@ -199,36 +177,15 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>NConfigWidget</class>
-   <extends>QWidget</extends>
-   <header>n_config_widget.h</header>
-   <container>1</container>
+   <class>NTreeView</class>
+   <extends>QTreeView</extends>
+   <header>n_tree_view.h</header>
    <slots>
-    <slot>saveConfig()</slot>
+    <signal>dropped(QString,QString)</signal>
    </slots>
   </customwidget>
-  <customwidget>
-   <class>NCodeWidget</class>
-   <extends>QWidget</extends>
-   <header>n_code_widget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>NImageWidget</class>
-   <extends>QWidget</extends>
-   <header>n_image_widget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>NLayoutWidget</class>
-   <extends>QWidget</extends>
-   <header>n_layout_widget.h</header>
-   <container>1</container>
-  </customwidget>
  </customwidgets>
- <resources>
-  <include location="resource.qrc"/>
- </resources>
+ <resources/>
  <connections/>
  <slots>
   <slot>newProject()</slot>
