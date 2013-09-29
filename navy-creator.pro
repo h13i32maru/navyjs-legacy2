@@ -14,7 +14,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         main_window.cpp \
-    edit_json_dialog.cpp \
     n_code_widget.cpp \
     n_tree_view.cpp \
     n_json.cpp \
@@ -28,10 +27,10 @@ SOURCES += main.cpp\
     n_file_widget.cpp \
     n_config_app_widget.cpp \
     n_config_scene_widget.cpp \
-    n_config_page_widget.cpp
+    n_config_page_widget.cpp \
+    n_text_dialog.cpp
 
 HEADERS  += main_window.h \
-    edit_json_dialog.h \
     n_code_widget.h \
     n_tree_view.h \
     n_json.h \
@@ -45,10 +44,10 @@ HEADERS  += main_window.h \
     n_file_widget.h \
     n_config_app_widget.h \
     n_config_scene_widget.h \
-    n_config_page_widget.h
+    n_config_page_widget.h \
+    n_text_dialog.h
 
 FORMS    += main_window.ui \
-    edit_json_dialog.ui \
     n_code_widget.ui \
     n_image_widget.ui \
     n_file_tab_editor.ui \
@@ -58,7 +57,8 @@ FORMS    += main_window.ui \
     n_exec_widget.ui \
     n_config_app_widget.ui \
     n_config_scene_widget.ui \
-    n_config_page_widget.ui
+    n_config_page_widget.ui \
+    n_text_dialog.ui
 
 RESOURCES += \
     resource.qrc

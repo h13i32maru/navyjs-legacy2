@@ -1,4 +1,4 @@
-#include "edit_json_dialog.h"
+#include "n_text_dialog.h"
 #include "n_config_app_widget.h"
 #include "ui_n_config_app_widget.h"
 
@@ -51,9 +51,9 @@ void NConfigAppWidget::contextMenu(QPoint /*point*/) {
 }
 
 void NConfigAppWidget::showRawData() {
-    EditJsonDialog dialog(this);
+    NTextDialog dialog(this);
     this->syncWidgetToJson();
-    dialog.setJsonText(mConfigApp.stringify());
+    dialog.setText(mConfigApp.stringify());
     dialog.exec();
 }
 

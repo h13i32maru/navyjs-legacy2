@@ -1,4 +1,4 @@
-#include "edit_json_dialog.h"
+#include "n_text_dialog.h"
 #include "n_config_page_widget.h"
 #include "n_util.h"
 #include "ui_n_config_page_widget.h"
@@ -104,9 +104,9 @@ void NConfigPageWidget::syncWidgetToJson() {
 }
 
 void NConfigPageWidget::showRawData() {
-    EditJsonDialog dialog(this);
+    NTextDialog dialog(this);
     this->syncWidgetToJson();
-    dialog.setJsonText(mConfigPage.stringify());
+    dialog.setText(mConfigPage.stringify());
     dialog.exec();
 }
 

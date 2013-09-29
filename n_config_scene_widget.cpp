@@ -1,4 +1,4 @@
-#include "edit_json_dialog.h"
+#include "n_text_dialog.h"
 #include "n_config_scene_widget.h"
 #include "n_util.h"
 #include "ui_n_config_scene_widget.h"
@@ -64,9 +64,9 @@ void NConfigSceneWidget::syncWidgetToJson() {
 }
 
 void NConfigSceneWidget::showRawData() {
-    EditJsonDialog dialog(this);
+    NTextDialog dialog(this);
     this->syncWidgetToJson();
-    dialog.setJsonText(mConfigScene.stringify());
+    dialog.setText(mConfigScene.stringify());
     dialog.exec();
 }
 
