@@ -1,4 +1,4 @@
-#include "n_text_dialog.h"
+#include "window/n_text_dialog.h"
 #include "n_config_app_widget.h"
 #include "ui_n_config_app_widget.h"
 

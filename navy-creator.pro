@@ -28,7 +28,7 @@ SOURCES += main.cpp\
     n_config_app_widget.cpp \
     n_config_scene_widget.cpp \
     n_config_page_widget.cpp \
-    n_text_dialog.cpp
+    window/n_text_dialog.cpp
 
 HEADERS  += main_window.h \
     n_code_widget.h \
@@ -45,7 +45,7 @@ HEADERS  += main_window.h \
     n_config_app_widget.h \
     n_config_scene_widget.h \
     n_config_page_widget.h \
-    n_text_dialog.h
+    window/n_text_dialog.h
 
 FORMS    += main_window.ui \
     n_code_widget.ui \
@@ -57,7 +57,7 @@ FORMS    += main_window.ui \
     n_config_app_widget.ui \
     n_config_scene_widget.ui \
     n_config_page_widget.ui \
-    n_text_dialog.ui
+    window/n_text_dialog.ui
 
 RESOURCES += \
     resource.qrc
