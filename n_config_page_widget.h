@@ -17,8 +17,10 @@ class NConfigPageWidget : public NFileWidget
 public:
     enum PAGE_COL {PAGE_COL_ID, PAGE_COL_CLASS, PAGE_COL_CLASS_FILE, PAGE_COL_LAYOUT, PAGE_COL_BGCOLOR};
     explicit NConfigPageWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
-    virtual bool save();
     ~NConfigPageWidget();
+
+protected:
+    virtual bool innerSave();
 
 private:
     Ui::NConfigPageWidget *ui;

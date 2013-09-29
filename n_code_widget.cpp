@@ -1,6 +1,6 @@
 #include "n_code_widget.h"
 #include "ui_n_code_widget.h"
-#include "n_file_widget.h";
+#include "n_file_widget.h"
 
 #include <QDebug>
 #include <QFile>
@@ -24,7 +24,7 @@ NCodeWidget::NCodeWidget(const QDir &projectDir, const QString &filePath, QWidge
     connect(mTextEdit, SIGNAL(textChanged()), this, SLOT(changed()));
 }
 
-bool NCodeWidget::save() {
+bool NCodeWidget::innerSave() {
     QFile file(mFilePath);
 
     if (!file.open(QFile::WriteOnly | QFile::Text)) {

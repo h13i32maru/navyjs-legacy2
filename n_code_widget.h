@@ -15,8 +15,10 @@ class NCodeWidget : public NFileWidget
 
 public:
     explicit NCodeWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
-    virtual bool save();
     ~NCodeWidget();
+
+protected:
+    virtual bool innerSave();
 
 private:
     Ui::NCodeWidget *ui;

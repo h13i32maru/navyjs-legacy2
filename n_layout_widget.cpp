@@ -41,7 +41,7 @@ NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QW
     connect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setCurrentViewFromJS(NJson)));
 }
 
-bool NLayoutWidget::save() {
+bool NLayoutWidget::innerSave() {
     QString contentLayoutJsonText = this->contentLayoutJsonText();
 
     QFile file(mFilePath);

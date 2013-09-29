@@ -10,7 +10,7 @@ NImageWidget::NImageWidget(const QDir &projectDir, const QString &filePath, QWid
     mImageLabel->setPixmap(QPixmap(filePath));
 }
 
-bool NImageWidget::save() {
+bool NImageWidget::innerSave() {
     return true;
 }
 

@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
 
     mProjectDir = new QDir(QDir::homePath());
+
     mFileSysteMmodel = new QFileSystemModel;
     mFileSysteMmodel->setReadOnly(false);
     mFileTreeView = ui->fileTreeView;
@@ -98,9 +99,10 @@ void MainWindow::saveAll() {
         return;
     }
 
-//    ui->nConfigWidget->saveConfig();
-//    ui->nCodeWidget->saveAllFile();
-//    ui->nLayoutWidget->saveAllFile();
+    QTabWidget *tab = ui->fileTabWidget;
+    for (int i = 0; i < tab->count(); i++) {
+        saveFile(i);
+    }
 }
 
 void MainWindow::execNavy() {
@@ -120,8 +122,8 @@ QList<int> MainWindow::searchTabIndexesByPath(const QString &path, const bool &i
     if (isDir) {
         int tabNum = mFileTabWidget->count();
         for (int i = 0; i < tabNum; i++) {
-            QWidget *widget = mFileTabWidget->widget(i);
-            QString filePath = widget->objectName();
+            NFileWidget *widget = (NFileWidget *)mFileTabWidget->widget(i);
+            QString filePath = widget->filePath();
             if (filePath.indexOf(path) == 0) {
                 indexes.append(i);
             }
@@ -129,8 +131,8 @@ QList<int> MainWindow::searchTabIndexesByPath(const QString &path, const bool &i
     } else {
         int tabNum = mFileTabWidget->count();
         for (int i = 0; i < tabNum; i++) {
-            QWidget *widget = mFileTabWidget->widget(i);
-            QString filePath = widget->objectName();
+            NFileWidget *widget = (NFileWidget *)mFileTabWidget->widget(i);
+            QString filePath = widget->filePath();
             if (QString::compare(path, filePath) == 0) {
                 indexes.append(i);
             }
@@ -146,10 +148,10 @@ void MainWindow::updateTabForPathChanged(const QString &oldPath, const QString &
 
     for (int i = 0; i < indexes.length(); i++) {
         int index = indexes[i];
-        QWidget *widget = mFileTabWidget->widget(index);
-        QString filePath = widget->objectName();
+        NFileWidget *fileWidget = (NFileWidget *)mFileTabWidget->widget(index);
+        QString filePath = fileWidget->filePath();
         filePath = newPath + filePath.remove(0, oldPath.length());
-        widget->setObjectName(filePath);
+        fileWidget->setFilePath(filePath);
 
         QString oldTabText = mFileTabWidget->tabText(index);
         if (oldTabText[oldTabText.length() - 1] == '*') {
@@ -175,8 +177,12 @@ void MainWindow::updateTabForPathDeleted(const QString &path, const bool &isDir)
     }
 }
 
-void MainWindow::updateTabForCurrentFileContentChanged() {
-    int tabIndex = mFileTabWidget->currentIndex();
+void MainWindow::updateTabForFileChanged(NFileWidget *fileWidget) {
+    int tabIndex = mFileTabWidget->indexOf(fileWidget);
+    if (tabIndex == -1) {
+        return;
+    }
+
     QString tabText = mFileTabWidget->tabText(tabIndex);
 
     if (tabText[tabText.length() - 1] != '*') {
@@ -185,14 +191,8 @@ void MainWindow::updateTabForCurrentFileContentChanged() {
 }
 
 bool MainWindow::isFileContentChanged(int tabIndex) {
-    // 内容が編集されているものはタブ名の末尾がアスタリスクとなる
-    // もうちょっとちゃんと管理したほうがよいQMap<QWidget *, bool>のような感じで
-    QString tabName = mFileTabWidget->tabText(tabIndex);
-    if (tabName[tabName.length() - 1] == '*') {
-        return true;
-    } else {
-        return false;
-    }
+    NFileWidget *fileWidget = (NFileWidget *)mFileTabWidget->widget(tabIndex);
+    return fileWidget->isChanged();
 }
 
 void MainWindow::openFile(QModelIndex index) {
@@ -209,37 +209,39 @@ void MainWindow::openFile(QModelIndex index) {
         return;
     }
 
-    QWidget *widget = NULL;
+    NFileWidget *fileWidget = NULL;
     if (filePath == mProjectDir->absoluteFilePath("config/app.json")) {
-        widget = (QWidget*)new NConfigAppWidget(*mProjectDir, filePath);
+        fileWidget = new NConfigAppWidget(*mProjectDir, filePath);
     } else if (filePath == mProjectDir->absoluteFilePath("config/scene.json")) {
-        widget = (QWidget*)new NConfigSceneWidget(*mProjectDir, filePath);
+        fileWidget = new NConfigSceneWidget(*mProjectDir, filePath);
     } else if (filePath == mProjectDir->absoluteFilePath("config/page.json")) {
-        widget = (QWidget*)new NConfigPageWidget(*mProjectDir, filePath);
+        fileWidget = new NConfigPageWidget(*mProjectDir, filePath);
     } else {
         QString ext = QFileInfo(filePath).suffix().toLower();
         if (ext == "js") {
-            widget = (QWidget *) new NCodeWidget(*mProjectDir, filePath);
+            fileWidget = new NCodeWidget(*mProjectDir, filePath);
         } else if (ext == "json") {
-            widget = (QWidget *) new NLayoutWidget(*mProjectDir, filePath);
+            fileWidget = new NLayoutWidget(*mProjectDir, filePath);
         } else if (ext == "png") {
-            widget = (QWidget *) new NImageWidget(*mProjectDir, filePath);
+            fileWidget = new NImageWidget(*mProjectDir, filePath);
         } else if (ext == "jpeg") {
-            widget = (QWidget *) new NImageWidget(*mProjectDir, filePath);
+            fileWidget = new NImageWidget(*mProjectDir, filePath);
         } else if (ext == "jpg") {
-            widget = (QWidget *) new NImageWidget(*mProjectDir, filePath);
+            fileWidget = new NImageWidget(*mProjectDir, filePath);
         } else if (ext == "gif") {
-            widget = (QWidget *) new NImageWidget(*mProjectDir, filePath);
+            fileWidget = new NImageWidget(*mProjectDir, filePath);
         }
     }
 
-    if (widget == NULL) {
+    if (fileWidget == NULL) {
         return;
     }
 
+    connect(fileWidget, SIGNAL(changed(NFileWidget*)), this, SLOT(updateTabForFileChanged(NFileWidget*)));
+
     QString fileName = QFileInfo(filePath).fileName();
-    widget->setObjectName(filePath);
-    int tabIndex = mFileTabWidget->addTab(widget, fileName);
+    fileWidget->setObjectName(filePath);
+    int tabIndex = mFileTabWidget->addTab(fileWidget, fileName);
     mFileTabWidget->setCurrentIndex(tabIndex);
 
     mFileTabWidget->show();
@@ -247,17 +249,31 @@ void MainWindow::openFile(QModelIndex index) {
 }
 
 void MainWindow::closeFile(int tabIndex) {
-    if (!isFileContentChanged(tabIndex)) {
-        mFileTabWidget->removeTab(tabIndex);
-    } else {
-        int ret = QMessageBox::question(this, tr("save file"), tr("do you save this file?"));
-        if (ret == QMessageBox::Yes) {
-            bool ret = saveFile(tabIndex);
-            if (ret) {
-                mFileTabWidget->removeTab(tabIndex);
+    if (isFileContentChanged(tabIndex)) {
+        QMessageBox msgBox;
+        msgBox.setText("this file has been modified.");
+        msgBox.setInformativeText("do you want to save your changes?");
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int ret = msgBox.exec();
+
+        switch (ret) {
+        bool saveResult;
+        case QMessageBox::Save:
+            saveResult = saveFile(tabIndex);
+            if (!saveResult) {
+                return;
             }
+            break;
+        case QMessageBox::Discard:
+            break;
+        case QMessageBox::Cancel:
+            return;
+            break;
         }
     }
+
+    mFileTabWidget->removeTab(tabIndex);
 
     if (mFileTabWidget->count() == 0) {
         mFileTabWidget->hide();
@@ -270,21 +286,10 @@ bool MainWindow::saveFile(int tabIndex) {
         return true;
     }
 
-    QWidget *widget = mFileTabWidget->widget(tabIndex);
-    QString filePath = widget->objectName();
-    QFile file(filePath);
-
-    // fixme:
-//    QString editedFileContent = this->editedFileContent(widget);
-    QString editedFileContent('sample');
-
-    if (!file.open(QFile::WriteOnly | QFile::Text)) {
-        QMessageBox::critical(this, tr("fail save file."), tr("fail open file.") + "\n" + filePath);
-        return false;
-    }
-    int ret = file.write(editedFileContent.toUtf8());
+    NFileWidget *fileWidget = (NFileWidget *)mFileTabWidget->widget(tabIndex);
+    int ret = fileWidget->save();
     if (ret == -1) {
-        QMessageBox::critical(this, tr("fail save file."), tr("fail save file.") + "\n" + filePath);
+        QMessageBox::critical(this, tr("fail save file."), tr("fail save file.") + "\n" + fileWidget->filePath());
         return false;
     }
 
@@ -293,13 +298,6 @@ bool MainWindow::saveFile(int tabIndex) {
     mFileTabWidget->setTabText(tabIndex, tabName.remove(tabName.length() - 1, 1));
 
     return true;
-}
-
-void MainWindow::saveAllFile() {
-    int openFileNum = mFileTabWidget->count();
-    for (int i = 0; i < openFileNum; i++) {
-        saveFile(i);
-    }
 }
 
 void MainWindow::newFile() {
@@ -358,33 +356,58 @@ void MainWindow::copyPath() {
 }
 
 void MainWindow::contextMenu(QPoint point) {
-    QMenu menu(this);
-
-    QMenu *subMenu = menu.addMenu(tr("&New"));
-    //fixme
-    //subMenu->addAction(mContextNewFileLabel, this, SLOT(newFile()));
-    subMenu->addAction("javascript", this, SLOT(newFile()));
-    subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
-    menu.addAction(tr("&Import"), this, SLOT(importPath()));
-
-    menu.addSeparator();
-    QAction *renameAction = menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
-    QAction *copyAction = menu.addAction(tr("&Copy"), this, SLOT(copyPath()));
-    QAction *deleteAction = menu.addAction(tr("&Delete"), this, SLOT(deletePath()));
-
-    // 選択された場所が何もないところだったら、rootを選択したものとみなす
+    // 選択されたところが何もない場所なら、操作を何もさせない
     QModelIndex index = mFileTreeView->indexAt(point);
     if (!index.isValid()) {
         mFileTreeView->setCurrentIndex(mFileTreeView->rootIndex());
         mFileTreeView->clearSelection();
-
-        renameAction->setDisabled(true);
-        copyAction->setDisabled(true);
-        deleteAction->setDisabled(true);
+        return;
     }
 
-    menu.exec(QCursor::pos());
+    QString filePath = mFileSysteMmodel->filePath(index);
+    if (filePath.indexOf(mProjectDir->absoluteFilePath("code")) == 0) {
+        QMenu menu(this);
+        QMenu *subMenu = menu.addMenu(tr("&New"));
+        subMenu->addAction("javascript", this, SLOT(newFile()));
+        subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
+        menu.addAction(tr("&Import"), this, SLOT(importPath()));
+        menu.addSeparator();
+        menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
+        menu.addAction(tr("&Copy"), this, SLOT(copyPath()));
+        menu.addAction(tr("&Delete"), this, SLOT(deletePath()));
 
+        menu.exec(QCursor::pos());
+        return;
+    }
+
+    if (filePath.indexOf(mProjectDir->absoluteFilePath("layout")) == 0) {
+        QMenu menu(this);
+        QMenu *subMenu = menu.addMenu(tr("&New"));
+        subMenu->addAction("layout", this, SLOT(newFile()));
+        subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
+        menu.addAction(tr("&Import"), this, SLOT(importPath()));
+        menu.addSeparator();
+        menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
+        menu.addAction(tr("&Copy"), this, SLOT(copyPath()));
+        menu.addAction(tr("&Delete"), this, SLOT(deletePath()));
+
+        menu.exec(QCursor::pos());
+        return;
+    }
+
+    if (filePath.indexOf(mProjectDir->absoluteFilePath("image")) == 0) {
+        QMenu menu(this);
+        QMenu *subMenu = menu.addMenu(tr("&New"));
+        subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
+        menu.addAction(tr("&Import"), this, SLOT(importPath()));
+        menu.addSeparator();
+        menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
+        menu.addAction(tr("&Copy"), this, SLOT(copyPath()));
+        menu.addAction(tr("&Delete"), this, SLOT(deletePath()));
+
+        menu.exec(QCursor::pos());
+        return;
+    }
 }
 
 MainWindow::~MainWindow()

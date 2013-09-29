@@ -20,8 +20,10 @@ public:
     enum ViewClassCol {ViewClassColName, ViewClassColClass};
 
     explicit NLayoutWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
-    virtual bool save();
     ~NLayoutWidget();
+
+protected:
+    virtual bool innerSave();
 
 private:
     Ui::NLayoutWidget *ui;

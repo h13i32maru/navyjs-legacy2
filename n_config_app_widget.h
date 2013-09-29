@@ -17,8 +17,10 @@ class NConfigAppWidget : public NFileWidget
 
 public:
     explicit NConfigAppWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
-    virtual bool save();
     ~NConfigAppWidget();
+
+protected:
+    virtual bool innerSave();
 
 private:
     Ui::NConfigAppWidget *ui;

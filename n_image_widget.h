@@ -15,8 +15,10 @@ class NImageWidget : public NFileWidget
 
 public:
     explicit NImageWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
-    virtual bool save();
     ~NImageWidget();
+
+protected:
+    virtual bool innerSave();
 
 private:
     Ui::NImageWidget *ui;

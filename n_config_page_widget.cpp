@@ -17,7 +17,7 @@ NConfigPageWidget::NConfigPageWidget(const QDir &projectDir, const QString &file
     connect(ui->pageConfigTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
 }
 
-bool NConfigPageWidget::save() {
+bool NConfigPageWidget::innerSave() {
     syncWidgetToJson();
 
     QFile configPageFile(mFilePath);

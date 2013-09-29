@@ -18,7 +18,7 @@ NConfigAppWidget::NConfigAppWidget(const QDir &projectDir, const QString &filePa
     connect(ui->appStartScene, SIGNAL(textChanged(QString)), this, SLOT(changed()));
 }
 
-bool NConfigAppWidget::save() {
+bool NConfigAppWidget::innerSave() {
     syncWidgetToJson();
 
     QFile configAppFile(mFilePath);

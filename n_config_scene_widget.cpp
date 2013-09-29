@@ -17,7 +17,7 @@ NConfigSceneWidget::NConfigSceneWidget(const QDir &projectDir, const QString &fi
     connect(ui->sceneConfigTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
 }
 
-bool NConfigSceneWidget::save() {
+bool NConfigSceneWidget::innerSave() {
     syncWidgetToJson();
 
     QFile configSceneFile(mFilePath);

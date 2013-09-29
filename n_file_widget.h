@@ -10,18 +10,21 @@ class NFileWidget : public QWidget
 public:
     explicit NFileWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
     bool isChanged();
-    virtual bool save() = 0;
+    bool save();
+    void setFilePath(const QString &filePath);
+    QString filePath();
 
 protected:
     QDir mProjectDir;
     QString mFilePath;
     bool mChanged;
+    virtual bool innerSave() = 0;
 
 protected slots:
     void changed();
 
 signals:
-    void changed(const QString &filePath);
+    void changed(NFileWidget *fileWidget);
 };
 
 #endif // N_FILE_WIDGET_H

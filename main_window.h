@@ -3,6 +3,7 @@
 
 #include "window/n_exec_widget.h"
 #include "extend/n_tree_view.h"
+#include "n_file_widget.h"
 
 #include <QMainWindow>
 #include <QDir>
@@ -34,11 +35,7 @@ private:
     void setCurrentProject(QString dirPath);
     QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
     bool isFileContentChanged(int tabIndex);
-    void saveAllFile();
     bool saveFile(int tabIndex);
-    //fixme:
-    //QWidget *createTabWidget(const QString &filePath) = 0;
-    //QString editedFileContent(QWidget *widget) = 0;
 
 private slots:
     void openProject();
@@ -57,7 +54,7 @@ private slots:
     void updateTabForPathChanged(const QString &oldPath, const QString &newPath);
     void updateTabForDropped(QString dropDirPath, QString selectedFilePath);
     void updateTabForPathDeleted(const QString &path, const bool &isDir);
-    void updateTabForCurrentFileContentChanged();
+    void updateTabForFileChanged(NFileWidget *fileWidget);
 };
 
 #endif // MAIN_WINDOW_H
