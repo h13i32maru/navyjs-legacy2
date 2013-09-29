@@ -254,14 +254,12 @@ void NConfigSceneWidget::removeScene() {
 
     QTreeWidgetItem *item = selectedItems[0];
 
-    QMessageBox msgBox;
-    msgBox.setText(tr("Do you remove scene?"));
-    msgBox.setInformativeText(item->text(SCENE_COL_ID));
-    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Cancel);
-    int ret = msgBox.exec();
-    if (ret == QMessageBox::Ok) {
-        ui->sceneConfigTreeWidget->takeTopLevelItem(ui->sceneConfigTreeWidget->indexOfTopLevelItem(item));
+    int ret = QMessageBox::question(NULL, tr(""), tr("do you remove scene?"));
+
+    if (ret == QMessageBox::Yes) {
+        int index = searchScene(item->text(SCENE_COL_ID));
+        mConfigScene.remove(QString::number(index));
+        syncJsonToTree();
     }
 }
 
