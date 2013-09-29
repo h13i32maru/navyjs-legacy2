@@ -48,6 +48,21 @@ bool NConfigSceneWidget::innerSave() {
     return (ret == -1 ? false: true);
 }
 
+int NConfigSceneWidget::countScene(const QString &sceneId) {
+    int count = 0;
+
+    for (int i = 0; i < mConfigScene.length(); i++) {
+        QString index = QString::number(i);
+        QString id = mConfigScene.getStr(index + ".id");
+
+        if (sceneId == id) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
 int NConfigSceneWidget::searchScene(const QString &sceneId) {
     for (int i = 0; i < mConfigScene.length(); i++) {
         QString index = QString::number(i);
@@ -110,8 +125,21 @@ void NConfigSceneWidget::syncFormToJson() {
 
     // id check
     QString sceneId = ui->idEdit->text();
-    if (searchScene(sceneId) != -1) {
+    int sceneIndex = searchScene(sceneId);
+    int sceneCount = countScene(sceneId);
+    if (sceneCount == 0) {
+        // pass
+    }
+    else if (sceneIndex == mCurrentIndex && sceneCount == 1) {
+        // pass
+    } else {
         QMessageBox::critical(this, tr("exist scene id"), tr("exist scene id"));
+        return;
+    }
+
+    // class check
+    QString class_ = ui->classEdit->text();
+    if (class_.isEmpty()) {
         return;
     }
 
@@ -122,10 +150,21 @@ void NConfigSceneWidget::syncFormToJson() {
         int ret = QMessageBox::question(this, tr("create class file."), tr("do you create class file?"));
         if (ret == QMessageBox::Yes) {
             //FIXME: create file.
+            QFile templateFile(":/template_code/scene.js");
+            templateFile.open(QFile::ReadOnly | QFile::Text);
+            QString templateStr = templateFile.readAll();
+            templateStr.replace("{{class}}", class_);
+            QFile file(mProjectDir.absoluteFilePath(classFile));
+            file.open(QFile::WriteOnly | QFile::Text);
+            file.write(templateStr.toUtf8());
         } else {
             return;
         }
     }
+
+    // layout check
+
+    // page check
 
     QString index = QString::number(mCurrentIndex);
     mConfigScene.set(index + ".id", ui->idEdit->text());

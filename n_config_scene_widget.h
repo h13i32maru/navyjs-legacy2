@@ -30,6 +30,7 @@ private:
     int mCurrentIndex;
 
     int searchScene(const QString &sceneId);
+    int countScene(const QString &sceneId);
 
 private slots:
     void newScene();

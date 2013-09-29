@@ -27,5 +27,6 @@
         <file>template/layout/main_scene.json</file>
         <file>template/code/main_scene.js</file>
         <file>template/index.html</file>
+        <file>template_code/scene.js</file>
     </qresource>
 </RCC>
