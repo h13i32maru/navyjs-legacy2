@@ -33,6 +33,8 @@ NConfigSceneWidget::NConfigSceneWidget(const QDir &projectDir, const QString &fi
         ui->layoutEdit->setCompleter(completer);
     }
 
+    // FIXME: completer for extra.page
+
     connect(ui->sceneConfigTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
     connect(ui->sceneConfigTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)), this, SLOT(syncTreeItemToForm(QTreeWidgetItem*)));
     connect(ui->updateButton, SIGNAL(clicked(bool)), this, SLOT(syncFormToJson()));
