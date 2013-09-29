@@ -147,9 +147,8 @@ void NConfigSceneWidget::syncFormToJson() {
     QString classFile = ui->classFileEdit->text();
     QFileInfo classFileInfo(mProjectDir.absoluteFilePath(classFile));
     if (!classFileInfo.exists()) {
-        int ret = QMessageBox::question(this, tr("create class file."), tr("do you create class file?"));
+        int ret = QMessageBox::question(NULL, tr("create class file."), tr("do you create class file?"));
         if (ret == QMessageBox::Yes) {
-            //FIXME: create file.
             QFile templateFile(":/template_code/scene.js");
             templateFile.open(QFile::ReadOnly | QFile::Text);
             QString templateStr = templateFile.readAll();
@@ -163,6 +162,21 @@ void NConfigSceneWidget::syncFormToJson() {
     }
 
     // layout check
+    QString layoutFile = ui->layoutEdit->text();
+    QFileInfo layoutFileInfo(mProjectDir.absoluteFilePath(layoutFile));
+    if (!layoutFileInfo.exists()) {
+        int ret = QMessageBox::question(NULL, tr("create layout file."), tr("do you create layout file?"));
+        if (ret == QMessageBox::Yes) {
+            QFile templateFile(":/template_code/layout.json");
+            templateFile.open(QFile::ReadOnly | QFile::Text);
+            QString templateStr = templateFile.readAll();
+            QFile file(mProjectDir.absoluteFilePath(layoutFile));
+            file.open(QFile::WriteOnly | QFile::Text);
+            file.write(templateStr.toUtf8());
+        } else {
+            return;
+        }
+    }
 
     // page check
 
