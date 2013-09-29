@@ -21,11 +21,7 @@ NCodeWidget::NCodeWidget(const QDir &projectDir, const QString &filePath, QWidge
     mTextEdit->setText(file.readAll());
     file.close();
 
-    connect(mTextEdit, SIGNAL(textChanged()), this, SLOT(proxyChanged()));
-}
-
-void NCodeWidget::proxyChanged() {
-    emit this->changed(mFilePath);
+    connect(mTextEdit, SIGNAL(textChanged()), this, SLOT(changed()));
 }
 
 bool NCodeWidget::save() {

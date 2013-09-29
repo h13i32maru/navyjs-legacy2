@@ -5,6 +5,9 @@
 #include "n_code_widget.h"
 #include "n_layout_widget.h"
 #include "n_image_widget.h"
+#include "n_config_app_widget.h"
+#include "n_config_scene_widget.h"
+#include "n_config_page_widget.h"
 
 #include <QFileDialog>
 #include <QDebug>
@@ -208,11 +211,11 @@ void MainWindow::openFile(QModelIndex index) {
 
     QWidget *widget = NULL;
     if (filePath == mProjectDir->absoluteFilePath("config/app.json")) {
-        widget = (QWidget*)new QLabel("app.json");
+        widget = (QWidget*)new NConfigAppWidget(*mProjectDir, filePath);
     } else if (filePath == mProjectDir->absoluteFilePath("config/scene.json")) {
-        widget = (QWidget*)new QLabel("scene.json");
+        widget = (QWidget*)new NConfigSceneWidget(*mProjectDir, filePath);
     } else if (filePath == mProjectDir->absoluteFilePath("config/page.json")) {
-        widget = (QWidget*)new QLabel("page.json");
+        widget = (QWidget*)new NConfigPageWidget(*mProjectDir, filePath);
     } else {
         QString ext = QFileInfo(filePath).suffix().toLower();
         if (ext == "js") {

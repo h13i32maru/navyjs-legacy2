@@ -17,11 +17,11 @@ protected:
     QString mFilePath;
     bool mChanged;
 
+protected slots:
+    void changed();
+
 signals:
     void changed(const QString &filePath);
-
-public slots:
-
 };
 
 #endif // N_FILE_WIDGET_H

@@ -21,9 +21,6 @@ public:
 private:
     Ui::NCodeWidget *ui;
     QTextEdit *mTextEdit;
-
-private slots:
-    void proxyChanged();
 };
 
 #endif // N_CODE_WIDGET_H

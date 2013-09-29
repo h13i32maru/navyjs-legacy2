@@ -31,7 +31,6 @@ private:
     QString contentLayoutJsonText() const;
 
 private slots:
-    void proxyChanged();
     void contextMenuForViewsTree(const QPoint &point);
     void contextMenuForWebView(const QPoint &point);
     void injectNativeBridge();

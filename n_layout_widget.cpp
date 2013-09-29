@@ -31,7 +31,7 @@ NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QW
 
     loadFile(mProjectDir.absoluteFilePath("index_creator.html"));
 
-    connect(mNative, SIGNAL(changedLayoutContent()), this, SLOT(proxyChanged()));
+    connect(mNative, SIGNAL(changedLayoutContent()), this, SLOT(changed()));
     connect(ui->viewClassTreeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(addViewToJS(QTreeWidgetItem*, int)));
     connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop()), this, SLOT(updateViewsToJS()));
     connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectViewToJS()));
@@ -58,10 +58,6 @@ bool NLayoutWidget::save() {
     }
 
     return true;
-}
-
-void NLayoutWidget::proxyChanged() {
-    emit this->changed(mFilePath);
 }
 
 void NLayoutWidget::loadFile(QString filePath) {
