@@ -23,7 +23,7 @@ SOURCES += main.cpp\
     native_bridge.cpp \
     n_layout_prop_edit.cpp \
     n_tree_widget.cpp \
-    n_exec_widget.cpp \
+    window/n_exec_widget.cpp \
     n_file_widget.cpp \
     n_config_app_widget.cpp \
     n_config_scene_widget.cpp \
@@ -40,7 +40,7 @@ HEADERS  += main_window.h \
     native_bridge.h \
     n_layout_prop_edit.h \
     n_tree_widget.h \
-    n_exec_widget.h \
+    window/n_exec_widget.h \
     n_file_widget.h \
     n_config_app_widget.h \
     n_config_scene_widget.h \
@@ -53,7 +53,7 @@ FORMS    += main_window.ui \
     n_layout_widget.ui \
     n_layout_edit_widget.ui \
     n_layout_prop_edit.ui \
-    n_exec_widget.ui \
+    window/n_exec_widget.ui \
     n_config_app_widget.ui \
     n_config_scene_widget.ui \
     n_config_page_widget.ui \

@@ -1,7 +1,7 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include "n_exec_widget.h"
+#include "window/n_exec_widget.h"
 #include "n_tree_view.h"
 
 #include <QMainWindow>

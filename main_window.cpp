@@ -1,7 +1,7 @@
 #include "main_window.h"
 #include "ui_main_window.h"
 #include "n_util.h"
-#include "n_exec_widget.h"
+#include "window/n_exec_widget.h"
 #include "n_code_widget.h"
 #include "n_layout_widget.h"
 #include "n_image_widget.h"
@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     mFileTabWidget = ui->fileTabWidget;
     mTabBackgroundWidget = ui->noFileWidget;
 
-//    mExecWidget = new NExecWidget(this);
+    mExecWidget = new NExecWidget(this);
 
     connect(ui->actionNewProject, SIGNAL(triggered(bool)), this, SLOT(newProject()));
     connect(ui->actionOpenProject, SIGNAL(triggered(bool)), this, SLOT(openProject()));
