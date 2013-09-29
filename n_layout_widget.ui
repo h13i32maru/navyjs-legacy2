@@ -20,9 +20,6 @@
    <property name="topMargin">
     <number>0</number>
    </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
    <property name="bottomMargin">
     <number>0</number>
    </property>
@@ -31,66 +28,209 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="NTreeView" name="fileTreeView">
-      <property name="maximumSize">
-       <size>
-        <width>300</width>
-        <height>16777215</height>
-       </size>
+     <widget class="QWebView" name="webView">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="contextMenuPolicy">
        <enum>Qt::CustomContextMenu</enum>
       </property>
-      <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
-      </property>
-      <property name="dragDropMode">
-       <enum>QAbstractItemView::InternalMove</enum>
-      </property>
-      <property name="alternatingRowColors">
-       <bool>true</bool>
-      </property>
-      <property name="headerHidden">
-       <bool>true</bool>
-      </property>
      </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QTabWidget" name="fileTabWidget">
-         <property name="currentIndex">
-          <number>-1</number>
-         </property>
-         <property name="documentMode">
-          <bool>true</bool>
-         </property>
-         <property name="tabsClosable">
-          <bool>true</bool>
-         </property>
-         <property name="movable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="tabBackgroundWidget">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLabel {
-  background:#cccccc;
+     <widget class="QWidget" name="widget" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#propToggleButton, #layerToggleButton, #viewToggleButton {
+  background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(230, 230, 230, 255), stop:1 rgba(200, 200, 200, 255));
+  border: 1px solid #aaaaaa;
+  padding: 0px;
+  margin:0 6px;
 }</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QSplitter" name="splitter">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="text">
-          <string>No files are open.</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
+         <widget class="QWidget" name="layoutWidget">
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <property name="spacing">
+            <number>7</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="layerToggleButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>layer</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="NTreeWidget" name="layerTreeWidget">
+             <property name="contextMenuPolicy">
+              <enum>Qt::CustomContextMenu</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="dragDropMode">
+              <enum>QAbstractItemView::InternalMove</enum>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="indentation">
+              <number>0</number>
+             </property>
+             <attribute name="headerDefaultSectionSize">
+              <number>150</number>
+             </attribute>
+             <attribute name="headerStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string notr="true">id</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string notr="true">class</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="layoutWidget_2">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <property name="spacing">
+            <number>7</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="propToggleButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>property</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="NLayoutPropEdit" name="layoutPropEdit" native="true"/>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="layoutWidget_3">
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <property name="spacing">
+            <number>7</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="viewToggleButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>class</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTreeWidget" name="viewClassTreeWidget">
+             <property name="editTriggers">
+              <set>QAbstractItemView::NoEditTriggers</set>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="indentation">
+              <number>0</number>
+             </property>
+             <attribute name="headerDefaultSectionSize">
+              <number>100</number>
+             </attribute>
+             <attribute name="headerStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>name</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>class</string>
+              </property>
+             </column>
+             <item>
+              <property name="text">
+               <string>View</string>
+              </property>
+              <property name="text">
+               <string>Navy.View.View</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Text</string>
+              </property>
+              <property name="text">
+               <string>Navy.View.Text</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Image</string>
+              </property>
+              <property name="text">
+               <string>Navy.View.Image</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ViewGroup</string>
+              </property>
+              <property name="text">
+               <string>Navy.ViewGroup.ViewGroup</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
       </layout>
@@ -101,12 +241,20 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>NTreeView</class>
-   <extends>QTreeView</extends>
-   <header>n_tree_view.h</header>
-   <slots>
-    <signal>dropped(QString,QString)</signal>
-   </slots>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKitWidgets/QWebView</header>
+  </customwidget>
+  <customwidget>
+   <class>NLayoutPropEdit</class>
+   <extends>QWidget</extends>
+   <header>n_layout_prop_edit.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>NTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>extend/n_tree_widget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

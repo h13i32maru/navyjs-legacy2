@@ -224,3 +224,16 @@ bool NUtil::copyDir(const QString &srcPath, const QString &dstPath)
     return true;
 }
 
+QStringList NUtil::recursiveEntryList(const QString &dirPath, const QString &root) {
+    QDir dir(dirPath);
+    dir.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
+    QStringList list = dir.entryList();
+    for (int i = 0; i < list.length(); i++) {
+        QFileInfo info(dir.absoluteFilePath(list[i]));
+        list[i] = root + list[i];
+        if (info.isDir()) {
+            list.append(recursiveEntryList(info.filePath(), root + info.fileName() + "/"));
+         }
+    }
+    return list;
+}

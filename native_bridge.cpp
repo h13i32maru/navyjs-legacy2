@@ -1,4 +1,4 @@
-#include "n_json.h"
+#include "util/n_json.h"
 #include "native_bridge.h"
 
 #include <QDebug>

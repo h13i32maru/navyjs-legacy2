@@ -1,38 +1,43 @@
 #include "n_code_widget.h"
 #include "ui_n_code_widget.h"
+#include "n_file_widget.h"
 
 #include <QDebug>
+#include <QFile>
+#include <QMessageBox>
 #include <QTextEdit>
 
-NCodeWidget::NCodeWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui::NCodeWidget)
+NCodeWidget::NCodeWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : NFileWidget(projectDir, filePath, parent), ui(new Ui::NCodeWidget)
 {
     ui->setupUi(this);
-    mRootDirName = "code";
-    mFileExtension = "js";
-    mImportFileExtension = "Text (*.js)";
-    mContextNewFileLabel = tr("&JavaScript");
-    init(ui->fileTreeView, ui->fileTabWidget, ui->tabBackgroundWidget);
-}
 
-QString NCodeWidget::editedFileContent(QWidget *widget) {
-    QTextEdit *edit = (QTextEdit *)widget;
-    return edit->toPlainText();
-}
-
-QWidget *NCodeWidget::createTabWidget(const QString &filePath) {
     QFile file(filePath);
 
     if(!file.open(QFile::ReadOnly | QFile::Text)){
-        return NULL;
+        return;
     }
 
-    QTextEdit *textEdit = new QTextEdit();
-    textEdit->setText(file.readAll());
+    mTextEdit = ui->textEdit;
+    mTextEdit->setText(file.readAll());
     file.close();
 
-    connect(textEdit, SIGNAL(textChanged()), this, SLOT(updateTabForCurrentFileContentChanged()));
+    connect(mTextEdit, SIGNAL(textChanged()), this, SLOT(changed()));
+}
 
-    return textEdit;
+bool NCodeWidget::innerSave() {
+    QFile file(mFilePath);
+
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        QMessageBox::critical(this, tr("fail save file."), tr("fail open file.") + "\n" + mFilePath);
+        return false;
+    }
+    int ret = file.write(mTextEdit->toPlainText().toUtf8());
+    if (ret == -1) {
+        QMessageBox::critical(this, tr("fail save file."), tr("fail save file.") + "\n" + mFilePath);
+        return false;
+    }
+
+    return true;
 }
 
 NCodeWidget::~NCodeWidget()

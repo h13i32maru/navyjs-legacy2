@@ -1,7 +1,7 @@
 #ifndef N_LAYOUT_PROP_EDIT_H
 #define N_LAYOUT_PROP_EDIT_H
 
-#include "n_json.h"
+#include "util/n_json.h"
 #include "native_bridge.h"
 
 #include <QWidget>

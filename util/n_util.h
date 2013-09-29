@@ -20,6 +20,7 @@ public:
     static QString renamePath(const QString &srcPath, QString newName, const QString &ext = "");
     static QString copyPath(const QString &srcPath, QString newName, const QString &ext = "");
     static bool copyDir(const QString &srcPath, const QString &dstPath);
+    static QStringList recursiveEntryList(const QString &dirPath, const QString &root);
 };
 
 #endif // N_UTIL_H

@@ -3,29 +3,15 @@
 
 #include <QLabel>
 
-NImageWidget::NImageWidget(QWidget *parent) : NFileTabEditor(parent), ui(new Ui::NImageWidget)
+NImageWidget::NImageWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : NFileWidget(projectDir, filePath, parent), ui(new Ui::NImageWidget)
 {
     ui->setupUi(this);
-
-    mRootDirName = "image";
-    mFileExtension = "";
-    mImportFileExtension = "Image (*.png *.jpg *.jpeg *.gif)";
-    mContextNewFileLabel = "";
-
-    init(ui->fileTreeView, ui->fileTabWidget, ui->tabBackgroundWidget);
+    mImageLabel = ui->imageLabel;
+    mImageLabel->setPixmap(QPixmap(filePath));
 }
 
-QWidget *NImageWidget::createTabWidget(const QString &filePath) {
-    QLabel *label = new QLabel();
-    label->setPixmap(QPixmap(filePath));
-    label->setAlignment(Qt::AlignCenter);
-    label->setStyleSheet("QLabel { background: #ffffff; }");
-
-    return label;
-}
-
-QString NImageWidget::editedFileContent(QWidget* /* widget */) {
-    return NULL;
+bool NImageWidget::innerSave() {
+    return true;
 }
 
 NImageWidget::~NImageWidget()
