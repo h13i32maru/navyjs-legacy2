@@ -71,7 +71,6 @@ void NConfigPageWidget::contextMenu(QPoint /*point*/) {
     menu.exec(QCursor::pos());
 }
 
-
 void NConfigPageWidget::syncJsonToWidget() {
     QList<QTreeWidgetItem *> items;
     for (int i = 0; i < mConfigPage.length(); i++) {
@@ -90,7 +89,6 @@ void NConfigPageWidget::syncJsonToWidget() {
     ui->pageConfigTreeWidget->clear();
     ui->pageConfigTreeWidget->addTopLevelItems(items);
 }
-
 
 void NConfigPageWidget::syncWidgetToJson() {
     mConfigPage.clear();
