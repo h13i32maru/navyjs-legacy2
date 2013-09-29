@@ -2,7 +2,7 @@
 #define MAIN_WINDOW_H
 
 #include "window/n_exec_widget.h"
-#include "n_tree_view.h"
+#include "extend/n_tree_view.h"
 
 #include <QMainWindow>
 #include <QDir>

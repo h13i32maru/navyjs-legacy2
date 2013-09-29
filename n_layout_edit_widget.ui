@@ -257,7 +257,7 @@
   <customwidget>
    <class>NTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>n_tree_widget.h</header>
+   <header>extend/n_tree_widget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

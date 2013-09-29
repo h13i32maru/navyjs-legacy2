@@ -15,14 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         main_window.cpp \
     n_code_widget.cpp \
-    n_tree_view.cpp \
+    extend/n_tree_view.cpp \
     n_json.cpp \
     n_util.cpp \
     n_image_widget.cpp \
     n_layout_widget.cpp \
     native_bridge.cpp \
     n_layout_prop_edit.cpp \
-    n_tree_widget.cpp \
+    extend/n_tree_widget.cpp \
     window/n_exec_widget.cpp \
     n_file_widget.cpp \
     n_config_app_widget.cpp \
@@ -32,14 +32,14 @@ SOURCES += main.cpp\
 
 HEADERS  += main_window.h \
     n_code_widget.h \
-    n_tree_view.h \
+    extend/n_tree_view.h \
     n_json.h \
     n_util.h \
     n_image_widget.h \
     n_layout_widget.h \
     native_bridge.h \
     n_layout_prop_edit.h \
-    n_tree_widget.h \
+    extend/n_tree_widget.h \
     window/n_exec_widget.h \
     n_file_widget.h \
     n_config_app_widget.h \

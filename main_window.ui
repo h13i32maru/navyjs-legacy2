@@ -179,10 +179,7 @@
   <customwidget>
    <class>NTreeView</class>
    <extends>QTreeView</extends>
-   <header>n_tree_view.h</header>
-   <slots>
-    <signal>dropped(QString,QString)</signal>
-   </slots>
+   <header>extend/n_tree_view.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
