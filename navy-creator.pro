@@ -50,7 +50,6 @@ HEADERS  += main_window.h \
 FORMS    += main_window.ui \
     n_code_widget.ui \
     n_image_widget.ui \
-    n_file_tab_editor.ui \
     n_layout_widget.ui \
     n_layout_edit_widget.ui \
     n_layout_prop_edit.ui \
