@@ -1,6 +1,6 @@
 #include "main_window.h"
 #include "ui_main_window.h"
-#include "n_util.h"
+#include "util/n_util.h"
 #include "window/n_exec_widget.h"
 #include "n_code_widget.h"
 #include "n_layout_widget.h"

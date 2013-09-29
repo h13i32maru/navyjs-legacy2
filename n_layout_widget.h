@@ -3,7 +3,7 @@
 
 #include "n_file_widget.h"
 #include "native_bridge.h"
-#include "n_json.h"
+#include "util/n_json.h"
 
 #include <QTreeWidgetItem>
 

@@ -1,6 +1,6 @@
 #include "n_layout_prop_edit.h"
 #include "ui_n_layout_prop_edit.h"
-#include "n_json.h"
+#include "util/n_json.h"
 
 #include <QDebug>
 

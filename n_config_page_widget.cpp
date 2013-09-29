@@ -1,6 +1,6 @@
 #include "window/n_text_dialog.h"
 #include "n_config_page_widget.h"
-#include "n_util.h"
+#include "util/n_util.h"
 #include "ui_n_config_page_widget.h"
 
 #include <QMenu>

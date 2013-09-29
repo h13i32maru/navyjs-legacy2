@@ -16,8 +16,8 @@ SOURCES += main.cpp\
         main_window.cpp \
     n_code_widget.cpp \
     extend/n_tree_view.cpp \
-    n_json.cpp \
-    n_util.cpp \
+    util/n_json.cpp \
+    util/n_util.cpp \
     n_image_widget.cpp \
     n_layout_widget.cpp \
     native_bridge.cpp \
@@ -33,8 +33,8 @@ SOURCES += main.cpp\
 HEADERS  += main_window.h \
     n_code_widget.h \
     extend/n_tree_view.h \
-    n_json.h \
-    n_util.h \
+    util/n_json.h \
+    util/n_util.h \
     n_image_widget.h \
     n_layout_widget.h \
     native_bridge.h \

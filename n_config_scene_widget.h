@@ -2,7 +2,7 @@
 #define N_CONFIG_SCENE_WIDGET_H
 
 #include "n_file_widget.h"
-#include "n_json.h"
+#include "util/n_json.h"
 
 #include <QWidget>
 

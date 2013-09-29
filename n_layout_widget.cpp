@@ -3,7 +3,7 @@
 #include "ui_n_layout_widget.h"
 #include "n_layout_prop_edit.h"
 #include "window/n_text_dialog.h"
-#include "n_util.h"
+#include "util/n_util.h"
 
 #include <QWebView>
 #include <QWebFrame>
