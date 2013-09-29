@@ -300,12 +300,16 @@ bool MainWindow::saveFile(int tabIndex) {
     return true;
 }
 
-void MainWindow::newFile() {
+void MainWindow::newJSFile() {
     QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"));
     QString parentPath = NUtil::selectedPath(mFileTreeView);
-    //fixme
-//    NUtil::newFile(parentPath, fileName, mFileExtension);
     NUtil::newFile(parentPath, fileName, "js");
+}
+
+void MainWindow::newLayoutFile() {
+    QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"));
+    QString parentPath = NUtil::selectedPath(mFileTreeView);
+    NUtil::newFile(parentPath, fileName, "json");
 }
 
 void MainWindow::newDir() {
@@ -314,10 +318,26 @@ void MainWindow::newDir() {
     NUtil::newDir(parentPath, dirName);
 }
 
-void MainWindow::importPath() {
-    //fixme
-//    QStringList files = QFileDialog::getOpenFileNames(this, "Select one or more files to open", QDir::homePath(), mImportFileExtension);
-    QStringList files = QFileDialog::getOpenFileNames(this, "Select one or more files to open", QDir::homePath(), "Image (*.png)");
+void MainWindow::importJS() {
+    QStringList files = QFileDialog::getOpenFileNames(this, "Select one or more files to open", QDir::homePath(), "Text (*.js)");
+
+    QString parentPath = NUtil::selectedPath(mFileTreeView);
+    for (int i = 0; i < files.length(); i++) {
+        NUtil::importFile(parentPath, files[i]);
+    }
+}
+
+void MainWindow::importLayout() {
+    QStringList files = QFileDialog::getOpenFileNames(this, "Select one or more files to open", QDir::homePath(), "Text (*.json)");
+
+    QString parentPath = NUtil::selectedPath(mFileTreeView);
+    for (int i = 0; i < files.length(); i++) {
+        NUtil::importFile(parentPath, files[i]);
+    }
+}
+
+void MainWindow::importImage() {
+    QStringList files = QFileDialog::getOpenFileNames(this, "Select one or more files to open", QDir::homePath(), "Image (*.png *.gif *.jpge *.jpg)");
 
     QString parentPath = NUtil::selectedPath(mFileTreeView);
     for (int i = 0; i < files.length(); i++) {
@@ -368,9 +388,9 @@ void MainWindow::contextMenu(QPoint point) {
     if (filePath.indexOf(mProjectDir->absoluteFilePath("code")) == 0) {
         QMenu menu(this);
         QMenu *subMenu = menu.addMenu(tr("&New"));
-        subMenu->addAction("javascript", this, SLOT(newFile()));
+        subMenu->addAction("javascript", this, SLOT(newJSFile()));
         subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
-        menu.addAction(tr("&Import"), this, SLOT(importPath()));
+        menu.addAction(tr("&Import"), this, SLOT(importJS()));
         menu.addSeparator();
         menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
         menu.addAction(tr("&Copy"), this, SLOT(copyPath()));
@@ -383,9 +403,9 @@ void MainWindow::contextMenu(QPoint point) {
     if (filePath.indexOf(mProjectDir->absoluteFilePath("layout")) == 0) {
         QMenu menu(this);
         QMenu *subMenu = menu.addMenu(tr("&New"));
-        subMenu->addAction("layout", this, SLOT(newFile()));
+        subMenu->addAction("layout", this, SLOT(newLayoutFile()));
         subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
-        menu.addAction(tr("&Import"), this, SLOT(importPath()));
+        menu.addAction(tr("&Import"), this, SLOT(importLayout()));
         menu.addSeparator();
         menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
         menu.addAction(tr("&Copy"), this, SLOT(copyPath()));
@@ -399,7 +419,7 @@ void MainWindow::contextMenu(QPoint point) {
         QMenu menu(this);
         QMenu *subMenu = menu.addMenu(tr("&New"));
         subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
-        menu.addAction(tr("&Import"), this, SLOT(importPath()));
+        menu.addAction(tr("&Import"), this, SLOT(importImage()));
         menu.addSeparator();
         menu.addAction(tr("&Rename"), this, SLOT(renamePath()));
         menu.addAction(tr("&Copy"), this, SLOT(copyPath()));
