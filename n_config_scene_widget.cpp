@@ -179,6 +179,21 @@ void NConfigSceneWidget::syncFormToJson() {
     }
 
     // page check
+    QString pageId = ui->pageEdit->text();
+    bool existPage = false;
+    NJson pageJson;
+    pageJson.parseFromFilePath(mProjectDir.absoluteFilePath("config/page.json"));
+    for (int i = 0; i < pageJson.length(); i++) {
+        QString index = QString::number(i);
+        if (pageJson.getStr(index + ".id") == pageId) {
+            existPage = true;
+            break;
+        }
+    }
+    if (!existPage) {
+        QMessageBox::critical(NULL, tr(""), tr("page is not exist."));
+        return;
+    }
 
     QString index = QString::number(mCurrentIndex);
     mConfigScene.set(index + ".id", ui->idEdit->text());
