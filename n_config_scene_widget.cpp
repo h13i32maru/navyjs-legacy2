@@ -17,11 +17,21 @@ NConfigSceneWidget::NConfigSceneWidget(const QDir &projectDir, const QString &fi
     mConfigScene.parseFromFilePath(filePath);
     syncJsonToTree();
 
-    QStringList codeList = NUtil::recursiveEntryList(mProjectDir.absoluteFilePath("code"), "code/");
-    QCompleter *completer = new QCompleter(codeList, this);
-    completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
-    completer->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->classFileEdit->setCompleter(completer);
+    {
+        QStringList codeList = NUtil::recursiveEntryList(mProjectDir.absoluteFilePath("code"), "code/");
+        QCompleter *completer = new QCompleter(codeList, this);
+        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        ui->classFileEdit->setCompleter(completer);
+    }
+
+    {
+        QStringList layoutList = NUtil::recursiveEntryList(mProjectDir.absoluteFilePath("layout"), "layout/");
+        QCompleter *completer = new QCompleter(layoutList, this);
+        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        ui->layoutEdit->setCompleter(completer);
+    }
 
     connect(ui->sceneConfigTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
     connect(ui->sceneConfigTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)), this, SLOT(syncTreeItemToForm(QTreeWidgetItem*)));
