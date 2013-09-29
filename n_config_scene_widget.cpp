@@ -76,21 +76,13 @@ void NConfigSceneWidget::syncJsonToTree() {
         row[SCENE_COL_LAYOUT] = scene.getStr("extra.contentLayoutFile");
         row[SCENE_COL_PAGE] = scene.getStr("extra.page");
         QTreeWidgetItem *item = new QTreeWidgetItem(row);
-        item->setFlags(item->flags() | Qt::ItemIsEditable);
         items.append(item);
     }
 
     ui->sceneConfigTreeWidget->addTopLevelItems(items);
 }
 
-void NConfigSceneWidget::syncTreeItemToForm(QTreeWidgetItem *item) {
-    // 何も選択されなくなった時はNULLが渡ってくる
-    if (item == NULL) {
-        return;
-    }
-
-    QString sceneId = item->text(SCENE_COL_ID);
-
+void NConfigSceneWidget::syncSceneToForm(const QString &sceneId) {
     mCurrentIndex = searchScene(sceneId);
     QString index = QString::number(mCurrentIndex);
     NJson scene = mConfigScene.getObject(index);
@@ -103,9 +95,39 @@ void NConfigSceneWidget::syncTreeItemToForm(QTreeWidgetItem *item) {
     ui->layoutEdit->setText(scene.getStr("extra.contentLayoutFile"));
 }
 
-void NConfigSceneWidget::syncFormToJson() {
-    QString index = QString::number(mCurrentIndex);
+void NConfigSceneWidget::syncTreeItemToForm(QTreeWidgetItem *item) {
+    // 何も選択されなくなった時はNULLが渡ってくる
+    if (item == NULL) {
+        return;
+    }
 
+    QString sceneId = item->text(SCENE_COL_ID);
+    syncSceneToForm(sceneId);
+}
+
+void NConfigSceneWidget::syncFormToJson() {
+    //FIXME: idの重複チェックが必要
+
+    // id check
+    QString sceneId = ui->idEdit->text();
+    if (searchScene(sceneId) != -1) {
+        QMessageBox::critical(this, tr("exist scene id"), tr("exist scene id"));
+        return;
+    }
+
+    // class file check.
+    QString classFile = ui->classFileEdit->text();
+    QFileInfo classFileInfo(mProjectDir.absoluteFilePath(classFile));
+    if (!classFileInfo.exists()) {
+        int ret = QMessageBox::question(this, tr("create class file."), tr("do you create class file?"));
+        if (ret == QMessageBox::Yes) {
+            //FIXME: create file.
+        } else {
+            return;
+        }
+    }
+
+    QString index = QString::number(mCurrentIndex);
     mConfigScene.set(index + ".id", ui->idEdit->text());
     mConfigScene.set(index + ".class", ui->classEdit->text());
     mConfigScene.set(index + ".classFile", ui->classFileEdit->text());
@@ -114,6 +136,23 @@ void NConfigSceneWidget::syncFormToJson() {
     mConfigScene.set(index + ".extra.page", ui->pageEdit->text());
 
     syncJsonToTree();
+
+    // 編集されたことを伝える
+    changed();
+
+    ui->sceneConfigTreeWidget->setDisabled(false);
+}
+
+void NConfigSceneWidget::selectScene(const QString &sceneId) {
+    QTreeWidget *tree = ui->sceneConfigTreeWidget;
+
+    for (int i = 0; i < tree->topLevelItemCount(); i++) {
+        QTreeWidgetItem * item = tree->topLevelItem(i);
+        QString id = item->text(SCENE_COL_ID);
+        if (id == sceneId) {
+            tree->setCurrentItem(item);
+        }
+    }
 }
 
 void NConfigSceneWidget::showRawData() {
@@ -123,18 +162,20 @@ void NConfigSceneWidget::showRawData() {
 }
 
 void NConfigSceneWidget::newScene() {
-    int count = ui->sceneConfigTreeWidget->topLevelItemCount();
-    QString suffix = QString::number(count);
-    QStringList row;
-    NUtil::expand(row, ui->sceneConfigTreeWidget->columnCount());
-    row[SCENE_COL_ID] = "Scene" + suffix;
-    row[SCENE_COL_CLASS] = "Scene" + suffix;
-    row[SCENE_COL_CLASS_FILE] = "code/scene" + suffix + ".js";
-    row[SCENE_COL_LAYOUT] = "layout/scene" + suffix + ".json";
-    row[SCENE_COL_PAGE] = "Page";
-    QTreeWidgetItem *item = new QTreeWidgetItem(row);
-    item->setFlags(item->flags() | Qt::ItemIsEditable);
-    ui->sceneConfigTreeWidget->insertTopLevelItem(count, item);
+    //FIXME: idの重複チェックが必要
+
+    QString index = QString::number(mConfigScene.length());
+
+    mConfigScene.set(index + ".id", "Scene" + index);
+    mConfigScene.set(index + ".class", "Scene" + index);
+    mConfigScene.set(index + ".classFile", "code/scene" + index + ".js");
+    mConfigScene.set(index + ".extra.contentLayoutFile", "layout/scene" + index + ".json");
+    mConfigScene.set(index + ".extra.page", "Page");
+
+    syncJsonToTree();
+    selectScene("Scene" + index);
+
+    ui->sceneConfigTreeWidget->setDisabled(true);
 }
 
 void NConfigSceneWidget::removeScene() {

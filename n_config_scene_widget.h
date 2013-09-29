@@ -38,7 +38,9 @@ private slots:
     void showRawData();
     void syncJsonToTree();
     void syncFormToJson();
+    void syncSceneToForm(const QString &sceneId);
     void syncTreeItemToForm(QTreeWidgetItem* item);
+    void selectScene(const QString &sceneId);
 };
 
 #endif // N_CONFIG_SCENE_WIDGET_H
