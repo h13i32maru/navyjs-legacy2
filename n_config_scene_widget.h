@@ -4,7 +4,9 @@
 #include "n_file_widget.h"
 #include "util/n_json.h"
 
+#include <QTreeWidgetItem>
 #include <QWidget>
+#include <QList>
 
 namespace Ui {
 class NConfigSceneWidget;
@@ -25,14 +27,18 @@ protected:
 private:
     Ui::NConfigSceneWidget *ui;
     NJson mConfigScene;
+    int mCurrentIndex;
+
+    int searchScene(const QString &sceneId);
 
 private slots:
     void newScene();
     void removeScene();
     void contextMenu(QPoint point);
-    void syncJsonToWidget();
-    void syncWidgetToJson();
     void showRawData();
+    void syncJsonToTree();
+    void syncFormToJson();
+    void syncTreeItemToForm(QTreeWidgetItem* item);
 };
 
 #endif // N_CONFIG_SCENE_WIDGET_H

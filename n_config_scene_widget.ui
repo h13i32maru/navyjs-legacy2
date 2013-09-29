@@ -40,7 +40,7 @@
       </property>
       <property name="minimumSize">
        <size>
-        <width>601</width>
+        <width>701</width>
         <height>0</height>
        </size>
       </property>
@@ -57,17 +57,17 @@
        <bool>true</bool>
       </property>
       <property name="columnCount">
-       <number>6</number>
+       <number>5</number>
       </property>
       <attribute name="headerDefaultSectionSize">
-       <number>200</number>
+       <number>150</number>
       </attribute>
       <attribute name="headerStretchLastSection">
        <bool>true</bool>
       </attribute>
       <column>
        <property name="text">
-        <string>name</string>
+        <string>id</string>
        </property>
       </column>
       <column>
@@ -90,11 +90,6 @@
         <string>page</string>
        </property>
       </column>
-      <column>
-       <property name="text">
-        <string>backgroundColor</string>
-       </property>
-      </column>
      </widget>
      <widget class="QFrame" name="frame_2">
       <property name="frameShape">
@@ -104,9 +99,6 @@
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="lineEdit_2"/>
-       </item>
        <item row="4" column="0">
         <widget class="QLabel" name="label_5">
          <property name="text">
@@ -115,16 +107,16 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QLineEdit" name="lineEdit_5"/>
+        <widget class="QLineEdit" name="pageEdit"/>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="lineEdit"/>
+        <widget class="QLineEdit" name="idEdit"/>
        </item>
        <item row="3" column="1">
-        <widget class="QLineEdit" name="lineEdit_4"/>
+        <widget class="QLineEdit" name="layoutEdit"/>
        </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="lineEdit_6"/>
+       <item row="6" column="1">
+        <widget class="QLineEdit" name="backgroundColorEdit"/>
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_3">
@@ -140,7 +132,10 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="classFileEdit"/>
+       </item>
+       <item row="6" column="0">
         <widget class="QLabel" name="label_6">
          <property name="text">
           <string>b.g. color</string>
@@ -154,9 +149,6 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="lineEdit_3"/>
-       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
@@ -164,7 +156,7 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
+       <item row="8" column="0">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -176,6 +168,35 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="classEdit"/>
+       </item>
+       <item row="7" column="1">
+        <widget class="QWidget" name="widget" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>105</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="updateButton">
+            <property name="text">
+             <string>Update</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </widget>
