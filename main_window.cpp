@@ -54,6 +54,21 @@ void MainWindow::setCurrentProject(QString dirPath) {
     mFileTreeView->setRootIndex(mFileSysteMmodel->index(rootDirPath));
 
     mFileTabWidget->clear();
+
+    // 特定のファイルは非表示にする
+    QModelIndex rootIndex = mFileTreeView->rootIndex();
+    int row;
+    row = mFileSysteMmodel->index(mProjectDir->absoluteFilePath("index.html")).row();
+    mFileTreeView->setRowHidden(row, rootIndex, true);
+
+    row = mFileSysteMmodel->index(mProjectDir->absoluteFilePath("index_creator.html")).row();
+    mFileTreeView->setRowHidden(row, rootIndex, true);
+
+    row = mFileSysteMmodel->index(mProjectDir->absoluteFilePath("creator")).row();
+    mFileTreeView->setRowHidden(row, rootIndex, true);
+
+    row = mFileSysteMmodel->index(mProjectDir->absoluteFilePath("navy")).row();
+    mFileTreeView->setRowHidden(row, rootIndex, true);
 }
 
 void MainWindow::newProject()
