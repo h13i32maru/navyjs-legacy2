@@ -1,7 +1,7 @@
 #ifndef NATIVE_BRIDGE_H
 #define NATIVE_BRIDGE_H
 
-#include "n_json.h"
+#include "util/n_json.h"
 
 #include <QObject>
 #include <QList>
