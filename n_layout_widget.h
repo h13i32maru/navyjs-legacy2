@@ -18,6 +18,7 @@ class NLayoutWidget : public NFileWidget
 public:
     enum ViewsCol {ViewsColId, ViewsColClass};
     enum ViewClassCol {ViewClassColName, ViewClassColClass};
+    static const QString HtmlFilePath;
 
     explicit NLayoutWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
     ~NLayoutWidget();
@@ -29,7 +30,6 @@ private:
     Ui::NLayoutWidget *ui;
     NativeBridge *mNative;
 
-    void loadFile(QString filePath);
     QString contentLayoutJsonText() const;
 
 private slots:

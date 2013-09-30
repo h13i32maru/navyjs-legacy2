@@ -10,6 +10,9 @@
 #include <QMessageBox>
 #include <QMenu>
 #include <QWebInspector>
+#include <QDebug>
+
+const QString NLayoutWidget::HtmlFilePath = "index_creator.html";
 
 NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : NFileWidget(projectDir, filePath, parent), ui(new Ui::NLayoutWidget)
 {
@@ -28,7 +31,7 @@ NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QW
     injectNativeBridge();
     ui->layoutPropEdit->setNativeBridge(mNative);
 
-    loadFile(mProjectDir.absoluteFilePath("index_creator.html"));
+    reload();
 
     connect(mNative, SIGNAL(changedLayoutContent()), this, SLOT(changed()));
     connect(ui->viewClassTreeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(addViewToJS(QTreeWidgetItem*, int)));
@@ -57,13 +60,6 @@ bool NLayoutWidget::innerSave() {
     }
 
     return true;
-}
-
-void NLayoutWidget::loadFile(QString filePath) {
-    mFilePath = filePath;
-    QWebView *webView = ui->webView;
-    QString htmlPath = "file://" + mFilePath;
-    webView->load(QUrl(htmlPath));
 }
 
 QString NLayoutWidget::contentLayoutJsonText() const {
@@ -109,7 +105,7 @@ void NLayoutWidget::contextMenuForWebView(const QPoint &/*point*/) {
  ************************************************/
 void NLayoutWidget::reload() {
     QWebView *webView = ui->webView;
-    QString htmlPath = "file://" + mFilePath;
+    QString htmlPath = "file://" + mProjectDir.absoluteFilePath(HtmlFilePath);
     webView->load(QUrl(htmlPath));
 }
 
