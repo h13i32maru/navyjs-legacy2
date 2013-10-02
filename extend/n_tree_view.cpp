@@ -9,6 +9,13 @@ NTreeView::NTreeView(QWidget *parent) : QTreeView(parent)
 {
 }
 
+/*
+ * 要素をドロップした時にドロップ先とドロップした要素の情報を
+ * シグナルとして送信するためにオーバーライドしている.
+ *
+ * ModelとしてQFileSystemModelを使用していることを前提としている.
+ * TODO: クラス名をNFileSystemViewとかに変えたほうが良さそう.
+ */
 void NTreeView::dropEvent(QDropEvent *event) {
     QFileSystemModel *model = (QFileSystemModel *)this->model();
 
@@ -23,7 +30,11 @@ void NTreeView::dropEvent(QDropEvent *event) {
         return;
     }
 
-    // ドロップされた座標からドロップされた場所のディレクトリパスを取得する
+    /*
+     * ドロップされた座標からドロップされた場所のディレクトリパスを取得する.
+     * AbobeItem, BelowItemの場合、ドロップ先はindexAtで取得されたものの親要素となる.
+     * これはもとのQTreeViewのロジックをみて持ってきた.
+     */
     QModelIndex dropIndex = QTreeView::indexAt(event->pos());
     switch (dropIndicatorPosition()) {
     case QAbstractItemView::AboveItem:
@@ -42,7 +53,8 @@ void NTreeView::dropEvent(QDropEvent *event) {
         } else {
             dropPath = model->filePath(dropIndex);
         }
-    } else { // ドロップがModelIndexの領域外になった場合は、ルートディレクトリへのドロップである
+    } else {
+        // ドロップがModelIndexの領域外になった場合は、ルートディレクトリへのドロップである
         dropPath = model->rootPath();
     }
 
