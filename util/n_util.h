@@ -3,6 +3,7 @@
 
 #include <QStringList>
 #include <QTreeView>
+#include <QMap>
 
 class NUtil
 {
@@ -21,6 +22,8 @@ public:
     static QString copyPath(const QString &srcPath, QString newName, const QString &ext = "");
     static bool copyDir(const QString &srcPath, const QString &dstPath);
     static QStringList recursiveEntryList(const QString &dirPath, const QString &root);
+    static bool createFileFromTemplate(const QString &templateFilePath, const QString &distFilePath, const QMap<QString, QString> &replaceMap);
+    static bool createFileFromTemplate(const QString &templateFilePath, const QString &distFilePath);
 };
 
 #endif // N_UTIL_H

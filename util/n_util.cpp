@@ -237,3 +237,29 @@ QStringList NUtil::recursiveEntryList(const QString &dirPath, const QString &roo
     }
     return list;
 }
+
+bool NUtil::createFileFromTemplate(const QString &templateFilePath, const QString &distFilePath, const QMap<QString, QString> &replaceMap) {
+    QFile templateFile(templateFilePath);
+    if (!templateFile.open(QFile::ReadOnly | QFile::Text)){
+        return false;
+    }
+    QString templateStr = templateFile.readAll();
+
+    foreach (const QString &key, replaceMap.keys()) {
+        templateStr.replace(key, replaceMap[key]);
+    }
+
+    QFile file(distFilePath);
+    QDir::root().mkpath(QFileInfo(distFilePath).dir().absolutePath());
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        return false;
+    }
+    file.write(templateStr.toUtf8());
+
+    return true;
+}
+
+bool NUtil::createFileFromTemplate(const QString &templateFilePath, const QString &distFilePath) {
+    QMap<QString, QString> empty;
+    return createFileFromTemplate(templateFilePath, distFilePath, empty);
+}

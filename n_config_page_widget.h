@@ -4,6 +4,7 @@
 #include "n_file_widget.h"
 #include "util/n_json.h"
 
+#include <QTreeWidgetItem>
 #include <QWidget>
 
 namespace Ui {
@@ -25,14 +26,21 @@ protected:
 private:
     Ui::NConfigPageWidget *ui;
     NJson mConfigPage;
+    int mCurrentIndex;
+
+    int searchPage(const QString &pageId);
+    int countPage(const QString &pageId);
 
 private slots:
     void newPage();
     void removePage();
     void contextMenu(QPoint point);
-    void syncJsonToWidget();
-    void syncWidgetToJson();
     void showRawData();
+    void syncJsonToTree();
+    void syncFormToJson();
+    void syncPageToForm(const QString &pageId);
+    void syncTreeItemToForm(QTreeWidgetItem* item);
+    void selectPage(const QString &pageId);
 };
 
 #endif // N_CONFIG_PAGE_WIDGET_H

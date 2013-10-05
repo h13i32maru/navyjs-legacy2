@@ -136,8 +136,6 @@ void NConfigSceneWidget::syncTreeItemToForm(QTreeWidgetItem *item) {
 }
 
 void NConfigSceneWidget::syncFormToJson() {
-    //FIXME: idの重複チェックが必要
-
     // id check
     QString sceneId = ui->idEdit->text();
     int sceneIndex = searchScene(sceneId);
