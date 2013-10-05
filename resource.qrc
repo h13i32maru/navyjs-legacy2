@@ -8,18 +8,7 @@
         <file>template/navy/navy.min.js</file>
         <file>template/creator/creator_page.js</file>
         <file>template/index_creator.html</file>
-        <file>template/code/main_page1.js</file>
-        <file>template/code/main_page2.js</file>
-        <file>template/code/main_page3.js</file>
-        <file>template/code/sub_page.js</file>
-        <file>template/code/sub_scene.js</file>
         <file>template/image/scottocat.jpg</file>
-        <file>template/layout/group.json</file>
-        <file>template/layout/main_page1.json</file>
-        <file>template/layout/main_page2.json</file>
-        <file>template/layout/main_page3.json</file>
-        <file>template/layout/sub_page.json</file>
-        <file>template/layout/sub_scene.json</file>
         <file>template/image/octocat.png</file>
         <file>template/config/app.json</file>
         <file>template/config/page.json</file>
@@ -30,5 +19,7 @@
         <file>template_code/scene.js</file>
         <file>template_code/layout.json</file>
         <file>template_code/page.js</file>
+        <file>template/code/main_page.js</file>
+        <file>template/layout/main_page.json</file>
     </qresource>
 </RCC>

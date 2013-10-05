@@ -1,0 +1,17 @@
+[
+  {
+    "backgroundColor": "",
+    "class": "Navy.View.Text",
+    "extra": {
+      "fontSize": 50,
+      "text": "MainPage"
+    },
+    "id": "Text1",
+    "pos": {
+      "x": 43,
+      "y": 180
+    },
+    "size": {},
+    "sizePolicy": "wrapContent"
+  }
+]
