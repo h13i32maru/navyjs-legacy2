@@ -142,12 +142,14 @@ void NConfigPageWidget::syncFormToJson() {
     QFileInfo classFileInfo(mProjectDir.absoluteFilePath(classFile));
     if (!classFileInfo.exists()) {
         int ret = QMessageBox::question(NULL, tr("create class file."), tr("do you create class file?"));
-        if (ret == QMessageBox::Yes) {
-            QString path = mProjectDir.absoluteFilePath(classFile);
-            QMap<QString, QString> replace;
-            replace["{{class}}"] = class_;
-            NUtil::createFileFromTemplate(":/template_code/page.js", path, replace);
-        } else {
+        if (ret != QMessageBox::Yes) {
+            return;
+        }
+
+        QString path = mProjectDir.absoluteFilePath(classFile);
+        QMap<QString, QString> replace;
+        replace["{{class}}"] = class_;
+        if (!NUtil::createFileFromTemplate(":/template_code/page.js", path, replace)) {
             return;
         }
     }
@@ -157,10 +159,12 @@ void NConfigPageWidget::syncFormToJson() {
     QFileInfo layoutFileInfo(mProjectDir.absoluteFilePath(layoutFile));
     if (!layoutFileInfo.exists()) {
         int ret = QMessageBox::question(NULL, tr("create layout file."), tr("do you create layout file?"));
-        if (ret == QMessageBox::Yes) {
-            QString path = mProjectDir.absoluteFilePath(layoutFile);
-            NUtil::createFileFromTemplate(":/template_code/layout.json", path);
-        } else {
+        if (ret != QMessageBox::Yes) {
+            return;
+        }
+
+        QString path = mProjectDir.absoluteFilePath(layoutFile);
+        if(!NUtil::createFileFromTemplate(":/template_code/layout.json", path)) {
             return;
         }
     }

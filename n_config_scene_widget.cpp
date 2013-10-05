@@ -161,15 +161,14 @@ void NConfigSceneWidget::syncFormToJson() {
     QFileInfo classFileInfo(mProjectDir.absoluteFilePath(classFile));
     if (!classFileInfo.exists()) {
         int ret = QMessageBox::question(NULL, tr("create class file."), tr("do you create class file?"));
-        if (ret == QMessageBox::Yes) {
-            QFile templateFile(":/template_code/scene.js");
-            templateFile.open(QFile::ReadOnly | QFile::Text);
-            QString templateStr = templateFile.readAll();
-            templateStr.replace("{{class}}", class_);
-            QFile file(mProjectDir.absoluteFilePath(classFile));
-            file.open(QFile::WriteOnly | QFile::Text);
-            file.write(templateStr.toUtf8());
-        } else {
+        if (ret != QMessageBox::Yes) {
+            return;
+        }
+
+        QString path = mProjectDir.absoluteFilePath(classFile);
+        QMap<QString, QString> replace;
+        replace["{{class}}"] = class_;
+        if (!NUtil::createFileFromTemplate(":/template_code/scene.js", path, replace)) {
             return;
         }
     }
@@ -179,14 +178,12 @@ void NConfigSceneWidget::syncFormToJson() {
     QFileInfo layoutFileInfo(mProjectDir.absoluteFilePath(layoutFile));
     if (!layoutFileInfo.exists()) {
         int ret = QMessageBox::question(NULL, tr("create layout file."), tr("do you create layout file?"));
-        if (ret == QMessageBox::Yes) {
-            QFile templateFile(":/template_code/layout.json");
-            templateFile.open(QFile::ReadOnly | QFile::Text);
-            QString templateStr = templateFile.readAll();
-            QFile file(mProjectDir.absoluteFilePath(layoutFile));
-            file.open(QFile::WriteOnly | QFile::Text);
-            file.write(templateStr.toUtf8());
-        } else {
+        if (ret != QMessageBox::Yes) {
+            return;
+        }
+
+        QString path = mProjectDir.absoluteFilePath(layoutFile);
+        if (!NUtil::createFileFromTemplate(":/template_code/layout.json", path)) {
             return;
         }
     }
