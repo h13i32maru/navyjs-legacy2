@@ -33,7 +33,20 @@ NConfigSceneWidget::NConfigSceneWidget(const QDir &projectDir, const QString &fi
         ui->layoutEdit->setCompleter(completer);
     }
 
-    // FIXME: completer for extra.page
+    {
+        NJson pageJson;
+        pageJson.parseFromFilePath(mProjectDir.absoluteFilePath("config/page.json"));
+        QStringList pageList;
+        for (int i = 0; i < pageJson.length(); i++) {
+            QString index = QString::number(i);
+            pageList.append(pageJson.getStr(index + ".id"));
+        }
+
+        QCompleter *completer = new QCompleter(pageList, this);
+        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        ui->pageEdit->setCompleter(completer);
+    }
 
     connect(ui->sceneConfigTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
     connect(ui->sceneConfigTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)), this, SLOT(syncTreeItemToForm(QTreeWidgetItem*)));
