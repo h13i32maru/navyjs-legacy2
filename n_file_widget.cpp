@@ -4,6 +4,7 @@ NFileWidget::NFileWidget(const QDir &projectDir, const QString &filePath, QWidge
 {
     mProjectDir = projectDir;
     mFilePath = filePath;
+    mChanged = false;
 }
 
 QString NFileWidget::filePath() {
