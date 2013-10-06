@@ -40,6 +40,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionSaveAll, SIGNAL(triggered(bool)), this, SLOT(saveAll()));
     connect(ui->actionExec, SIGNAL(triggered(bool)), this, SLOT(execNavy()));
     connect(ui->actionCloseTab, SIGNAL(triggered(bool)), this, SLOT(closeCurrentFile()));
+    connect(ui->actionNextTab, SIGNAL(triggered(bool)), this, SLOT(nextFile()));
+    connect(ui->actionPrevTab, SIGNAL(triggered(bool)), this, SLOT(prevFile()));
+
     connect(mFileTreeView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
     connect(mFileTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(openFile(QModelIndex)));
     connect(mFileTreeView, SIGNAL(dropped(QString,QString)), this, SLOT(updateTabForDropped(QString,QString)));
@@ -304,6 +307,20 @@ void MainWindow::closeFile(int tabIndex) {
 void MainWindow::closeCurrentFile() {
     int index = mFileTabWidget->currentIndex();
     closeFile(index);
+}
+
+void MainWindow::nextFile() {
+    int index = mFileTabWidget->currentIndex();
+    if (index + 1 < mFileTabWidget->count()) {
+        mFileTabWidget->setCurrentIndex(index + 1);
+    }
+}
+
+void MainWindow::prevFile() {
+    int index = mFileTabWidget->currentIndex();
+    if (index - 1 >= 0 ) {
+        mFileTabWidget->setCurrentIndex(index - 1);
+    }
 }
 
 bool MainWindow::saveFile(int tabIndex) {

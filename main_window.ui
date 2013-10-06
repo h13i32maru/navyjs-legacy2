@@ -129,6 +129,8 @@
      <string>Window</string>
     </property>
     <addaction name="actionCloseTab"/>
+    <addaction name="actionNextTab"/>
+    <addaction name="actionPrevTab"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menuBuild"/>
@@ -186,6 +188,22 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionNextTab">
+   <property name="text">
+    <string>Next Tab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+Right</string>
+   </property>
+  </action>
+  <action name="actionPrevTab">
+   <property name="text">
+    <string>Prev Tab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+Left</string>
    </property>
   </action>
  </widget>

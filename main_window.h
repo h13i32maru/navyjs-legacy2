@@ -46,6 +46,8 @@ private slots:
     void openFile(QModelIndex index);
     void closeFile(int tabIndex);
     void closeCurrentFile();
+    void nextFile();
+    void prevFile();
     void newJSFile();
     void newLayoutFile();
     void newDir();
