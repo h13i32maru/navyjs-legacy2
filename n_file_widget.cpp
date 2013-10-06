@@ -14,6 +14,10 @@ void NFileWidget::setFilePath(const QString &filePath) {
     mFilePath = filePath;
 }
 
+void NFileWidget::refreshForActive() {
+
+}
+
 bool NFileWidget::save() {
     bool ret = innerSave();
 

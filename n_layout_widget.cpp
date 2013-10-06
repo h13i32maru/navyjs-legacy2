@@ -62,6 +62,10 @@ bool NLayoutWidget::innerSave() {
     return true;
 }
 
+void NLayoutWidget::refreshForActive() {
+    ui->layoutPropEdit->refreshForActive();
+}
+
 QString NLayoutWidget::contentLayoutJsonText() const {
     QWebFrame *frame = ui->webView->page()->mainFrame();
     QVariant variant = frame->evaluateJavaScript("window.getContentLayout();");

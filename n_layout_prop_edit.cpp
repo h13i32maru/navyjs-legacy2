@@ -16,27 +16,37 @@ NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::
 {
     ui->setupUi(this);
 
-    {
-        QStringList imageList = NProject::instance()->images();
-        ui->extraSrc->addItems(imageList);
-        QCompleter *completer = new QCompleter(imageList, this);
-        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
-        completer->setCaseSensitivity(Qt::CaseInsensitive);
-        ui->extraSrc->setCompleter(completer);
-    }
-
-    {
-        QStringList layoutList = NProject::instance()->layouts();
-        ui->extraContentLayout->addItems(layoutList);
-        QCompleter *completer = new QCompleter(layoutList, this);
-        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
-        completer->setCaseSensitivity(Qt::CaseInsensitive);
-        ui->extraContentLayout->setCompleter(completer);
-    }
+    refreshForActive();
 
     hideAllExtraPropWidget();
 
     connectWidgetToJson();
+}
+
+void NLayoutPropEdit::refreshForActive() {
+
+    {
+        QComboBox *src = ui->extraSrc;
+        QStringList imageList = NProject::instance()->images();
+        src->clear();
+        src->addItems(imageList);
+        QCompleter *completer = new QCompleter(imageList, src);
+        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        src->setCompleter(completer);
+    }
+
+    {
+        QComboBox *layout =  ui->extraContentLayout;
+        QStringList layoutList = NProject::instance()->layouts();
+        layout->clear();
+        layout->addItems(layoutList);
+        QCompleter *completer = new QCompleter(layoutList, layout);
+        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        layout->setCompleter(completer);
+    }
+
 }
 
 void NLayoutPropEdit::setNativeBridge(NativeBridge *native) {

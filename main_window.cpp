@@ -43,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(mFileTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(openFile(QModelIndex)));
     connect(mFileTreeView, SIGNAL(dropped(QString,QString)), this, SLOT(updateTabForDropped(QString,QString)));
     connect(mFileTabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeFile(int)));
+    connect(mFileTabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 }
 
 void MainWindow::setCurrentProject(QString dirPath) {
@@ -452,6 +453,15 @@ void MainWindow::contextMenu(QPoint point) {
         menu.exec(QCursor::pos());
         return;
     }
+}
+
+void MainWindow::tabChanged(int index) {
+    NFileWidget *widget = (NFileWidget *)mFileTabWidget->widget(index);
+    if (widget == NULL) {
+        return;
+    }
+
+    widget->refreshForActive();
 }
 
 MainWindow::~MainWindow()

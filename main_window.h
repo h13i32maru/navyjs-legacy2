@@ -58,6 +58,7 @@ private slots:
     void updateTabForDropped(QString dropDirPath, QString selectedFilePath);
     void updateTabForPathDeleted(const QString &path, const bool &isDir);
     void updateTabForFileChanged(NFileWidget *fileWidget);
+    void tabChanged(int index);
 };
 
 #endif // MAIN_WINDOW_H

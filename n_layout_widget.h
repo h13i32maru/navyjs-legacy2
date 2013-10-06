@@ -21,6 +21,7 @@ public:
     static const QString HtmlFilePath;
 
     explicit NLayoutWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
+    virtual void refreshForActive();
     ~NLayoutWidget();
 
 protected:

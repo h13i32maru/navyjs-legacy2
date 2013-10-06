@@ -13,6 +13,7 @@ public:
     bool save();
     void setFilePath(const QString &filePath);
     QString filePath();
+    virtual void refreshForActive();
 
 protected:
     QDir mProjectDir;

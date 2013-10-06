@@ -24,6 +24,7 @@ public:
 public:
     explicit NLayoutPropEdit(QWidget *parent = 0);
     void setNativeBridge(NativeBridge *native);
+    void refreshForActive();
     ~NLayoutPropEdit();
 
 public slots:
