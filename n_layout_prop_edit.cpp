@@ -1,6 +1,8 @@
 #include "n_layout_prop_edit.h"
 #include "ui_n_layout_prop_edit.h"
 #include "util/n_json.h"
+#include "util/n_util.h"
+#include "n_project.h"
 
 #include <QDebug>
 
@@ -12,6 +14,8 @@ const QString NLayoutPropEdit::ClassViewGroup = "Navy.ViewGroup.ViewGroup";
 NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::NLayoutPropEdit)
 {
     ui->setupUi(this);
+
+    ui->extraSrc->addItems(NProject::instance()->images());
 
     hideAllExtraPropWidget();
 
@@ -40,7 +44,7 @@ void NLayoutPropEdit::connectWidgetToJson() {
     connect(ui->extraFontSize, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
 
     // image
-    connect(ui->extraSrc, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+    connect(ui->extraSrc, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
 
     // view group
     connect(ui->extraContentLayout, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
@@ -61,7 +65,7 @@ void NLayoutPropEdit::disconnectWidgetToJson() {
     disconnect(ui->extraFontSize, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
 
     // image
-    disconnect(ui->extraSrc, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+    disconnect(ui->extraSrc, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
 
     // view group
     disconnect(ui->extraContentLayout, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
@@ -89,7 +93,7 @@ void NLayoutPropEdit::syncWidgetToJson() {
         mView.set("extra.text", ui->extraText->text());
         mView.set("extra.fontSize", ui->extraFontSize->value());
     } else if (className == ClassImage) {
-        mView.set("extra.src", ui->extraSrc->text());
+        mView.set("extra.src", ui->extraSrc->currentText());
     } else if (className == ClassViewGroup) {
         mView.set("extra.contentLayoutFile", ui->extraContentLayout->text());
     }
@@ -140,7 +144,7 @@ void NLayoutPropEdit::setViewFromJS(const NJson &view) {
         ui->extraText->setText(view.getStr("extra.text"));
         ui->extraFontSize->setValue(view.getInt("extra.fontSize"));
     } else if (className == ClassImage) {
-        ui->extraSrc->setText(view.getStr("extra.src"));
+        ui->extraSrc->setCurrentText(view.getStr("extra.src"));
     } else if (className == ClassViewGroup) {
         ui->extraContentLayout->setText(view.getStr("extra.contentLayoutFile"));
     }

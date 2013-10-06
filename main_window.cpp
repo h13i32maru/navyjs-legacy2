@@ -8,6 +8,7 @@
 #include "n_config_app_widget.h"
 #include "n_config_scene_widget.h"
 #include "n_config_page_widget.h"
+#include "n_project.h"
 
 #include <QFileDialog>
 #include <QDebug>
@@ -47,6 +48,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 void MainWindow::setCurrentProject(QString dirPath) {
     mProjectDir->setPath(dirPath);
     mProjectName = mProjectDir->dirName();
+
+    NProject::instance()->setProject(mProjectDir->absolutePath());
 
     QString rootDirPath = mProjectDir->absolutePath();
     mFileSysteMmodel->setRootPath(rootDirPath);
