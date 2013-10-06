@@ -20,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
 
+    ui->mainToolBar->hide();
+    ui->statusBar->hide();
+
     mProjectDir = new QDir(QDir::homePath());
 
     mFileSysteMmodel = new QFileSystemModel;
