@@ -14,6 +14,7 @@ public:
 
     // file util
     static QString selectedPath(QTreeView *treeView);
+    static QString createFilePath(const QString &parentPath, QString fileName, const QString &ext);
     static QString newFile(const QString &parentPath, QString fileName, const QString &ext = "");
     static QString newDir(const QString &parentPath, const QString &dirName);
     static QString importFile(const QString &parentPath, const QString &filePath);

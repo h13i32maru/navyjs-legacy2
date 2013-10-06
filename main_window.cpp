@@ -324,7 +324,13 @@ void MainWindow::newJSFile() {
 void MainWindow::newLayoutFile() {
     QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"));
     QString parentPath = NUtil::selectedPath(mFileTreeView);
-    NUtil::newFile(parentPath, fileName, "json");
+
+    QString filePath = NUtil::createFilePath(parentPath, fileName, "json");
+    if (filePath.isEmpty()) {
+        return;
+    }
+
+    NUtil::createFileFromTemplate(":/template_code/layout.json", filePath);
 }
 
 void MainWindow::newDir() {

@@ -26,6 +26,33 @@ QString NUtil::selectedPath(QTreeView *treeView) {
     return model->filePath(index);
 }
 
+QString NUtil::createFilePath(const QString &parentPath, QString fileName, const QString &ext) {
+    if (fileName.isEmpty()){
+        return "";
+    }
+
+    if (fileName.contains(QDir::separator())) {
+        QMessageBox::critical(NULL, tr("file name error"), tr("contains directory separator.") + "\n" + fileName);
+        return "";
+    }
+
+    if (!ext.isEmpty() && QFileInfo(fileName).suffix() != ext) {
+        fileName += "." + ext;
+    }
+
+    QFileInfo parentInfo(parentPath);
+    QDir parentDir;
+    if (parentInfo.isDir()) {
+        parentDir.setPath(parentPath);
+    } else {
+        parentDir.setPath(parentInfo.dir().absolutePath());
+    }
+
+    QString filePath = parentDir.absoluteFilePath(fileName);
+
+    return filePath;
+}
+
 QString NUtil::newFile(const QString &parentPath, QString fileName, const QString &ext) {
     if (fileName.isEmpty()){
         return "";
