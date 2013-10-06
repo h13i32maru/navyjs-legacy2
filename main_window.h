@@ -45,6 +45,7 @@ private slots:
     void contextMenu(QPoint point);
     void openFile(QModelIndex index);
     void closeFile(int tabIndex);
+    void closeCurrentFile();
     void newJSFile();
     void newLayoutFile();
     void newDir();

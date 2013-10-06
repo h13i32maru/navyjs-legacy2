@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionOpenProject, SIGNAL(triggered(bool)), this, SLOT(openProject()));
     connect(ui->actionSaveAll, SIGNAL(triggered(bool)), this, SLOT(saveAll()));
     connect(ui->actionExec, SIGNAL(triggered(bool)), this, SLOT(execNavy()));
+    connect(ui->actionCloseTab, SIGNAL(triggered(bool)), this, SLOT(closeCurrentFile()));
     connect(mFileTreeView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
     connect(mFileTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(openFile(QModelIndex)));
     connect(mFileTreeView, SIGNAL(dropped(QString,QString)), this, SLOT(updateTabForDropped(QString,QString)));
@@ -298,6 +299,11 @@ void MainWindow::closeFile(int tabIndex) {
         mFileTabWidget->hide();
         mTabBackgroundWidget->show();
     }
+}
+
+void MainWindow::closeCurrentFile() {
+    int index = mFileTabWidget->currentIndex();
+    closeFile(index);
 }
 
 bool MainWindow::saveFile(int tabIndex) {
