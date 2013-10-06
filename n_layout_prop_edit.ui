@@ -273,8 +273,21 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="extraContentLayout">
+            <property name="editable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_8">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="toolTip">
              <string>content layout file</string>
             </property>
@@ -282,9 +295,6 @@
              <string>layout</string>
             </property>
            </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLineEdit" name="extraContentLayout"/>
           </item>
          </layout>
         </widget>

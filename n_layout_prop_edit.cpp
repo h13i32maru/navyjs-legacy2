@@ -4,6 +4,7 @@
 #include "util/n_util.h"
 #include "n_project.h"
 
+#include <QCompleter>
 #include <QDebug>
 
 const QString NLayoutPropEdit::ClassView = "Navy.View.View";
@@ -15,7 +16,23 @@ NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::
 {
     ui->setupUi(this);
 
-    ui->extraSrc->addItems(NProject::instance()->images());
+    {
+        QStringList imageList = NProject::instance()->images();
+        ui->extraSrc->addItems(imageList);
+        QCompleter *completer = new QCompleter(imageList, this);
+        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        ui->extraSrc->setCompleter(completer);
+    }
+
+    {
+        QStringList layoutList = NProject::instance()->layouts();
+        ui->extraContentLayout->addItems(layoutList);
+        QCompleter *completer = new QCompleter(layoutList, this);
+        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        ui->extraContentLayout->setCompleter(completer);
+    }
 
     hideAllExtraPropWidget();
 
@@ -47,7 +64,7 @@ void NLayoutPropEdit::connectWidgetToJson() {
     connect(ui->extraSrc, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
 
     // view group
-    connect(ui->extraContentLayout, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+    connect(ui->extraContentLayout, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
 }
 
 void NLayoutPropEdit::disconnectWidgetToJson() {
@@ -68,7 +85,7 @@ void NLayoutPropEdit::disconnectWidgetToJson() {
     disconnect(ui->extraSrc, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
 
     // view group
-    disconnect(ui->extraContentLayout, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+    disconnect(ui->extraContentLayout, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
 }
 
 void NLayoutPropEdit::syncWidgetToJson() {
@@ -95,7 +112,7 @@ void NLayoutPropEdit::syncWidgetToJson() {
     } else if (className == ClassImage) {
         mView.set("extra.src", ui->extraSrc->currentText());
     } else if (className == ClassViewGroup) {
-        mView.set("extra.contentLayoutFile", ui->extraContentLayout->text());
+        mView.set("extra.contentLayoutFile", ui->extraContentLayout->currentText());
     }
 
     emit mNative->changedViewPropertyToJS(mView.toVariant());
@@ -146,7 +163,7 @@ void NLayoutPropEdit::setViewFromJS(const NJson &view) {
     } else if (className == ClassImage) {
         ui->extraSrc->setCurrentText(view.getStr("extra.src"));
     } else if (className == ClassViewGroup) {
-        ui->extraContentLayout->setText(view.getStr("extra.contentLayoutFile"));
+        ui->extraContentLayout->setCurrentText(view.getStr("extra.contentLayoutFile"));
     }
 
 
