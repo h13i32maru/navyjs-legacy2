@@ -24,8 +24,6 @@ private:
     TYPE mType;
     NJson &mConfigScene;
     int mSceneIndex;
-    int countScene(const QString &sceneId);
-    int searchScene(const QString &sceneId);
 
 private slots:
     void checkClassFile(const QString &path);

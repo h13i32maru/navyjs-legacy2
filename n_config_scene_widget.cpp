@@ -92,22 +92,12 @@ void NConfigSceneWidget::removeScene() {
 
     int ret = QMessageBox::question(NULL, tr(""), tr("do you remove scene?"));
 
-    if (ret != QMessageBox::Yes) {
-        return;
+    if (ret == QMessageBox::Yes) {
+        int index = mConfigScene.searchValue("id", item->text(SCENE_COL_ID));
+        mConfigScene.remove(QString::number(index));
+        syncJsonToTree();
+        changed();
     }
-
-    QString sceneId = item->text(SCENE_COL_ID);
-    QString index;
-    for (int i = 0; i < mConfigScene.length(); i++) {
-        index = QString::number(i);
-        QString id = mConfigScene.getStr(index + ".id");
-        if (sceneId == id) {
-            mConfigScene.remove(index);
-            syncJsonToTree();
-            changed();
-        }
-    }
-
 }
 
 void NConfigSceneWidget::contextMenu(QPoint /*point*/) {

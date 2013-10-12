@@ -59,36 +59,8 @@ void NSceneDialog::checkPage(const QString &page) {
     }
 }
 
-int NSceneDialog::countScene(const QString &sceneId) {
-    int count = 0;
-
-    for (int i = 0; i < mConfigScene.length(); i++) {
-        QString index = QString::number(i);
-        QString id = mConfigScene.getStr(index + ".id");
-
-        if (sceneId == id) {
-            count++;
-        }
-    }
-
-    return count;
-}
-
-int NSceneDialog::searchScene(const QString &sceneId) {
-    for (int i = 0; i < mConfigScene.length(); i++) {
-        QString index = QString::number(i);
-        QString id = mConfigScene.getStr(index + ".id");
-
-        if (sceneId == id) {
-            return i;
-        }
-    }
-
-    return -1;
-}
-
 void NSceneDialog::setSceneId(const QString &sceneId) {
-    mSceneIndex = searchScene(sceneId);
+    mSceneIndex = mConfigScene.searchValue("id", sceneId);
     NJson scene = mConfigScene.getObject(QString::number(mSceneIndex));
 
     ui->id->setText(scene.getStr("id"));
@@ -102,8 +74,8 @@ void NSceneDialog::setSceneId(const QString &sceneId) {
 void NSceneDialog::updateScene() {
     // id check
     QString sceneId = ui->id->text();
-    int sceneIndex = searchScene(sceneId);
-    int sceneCount = countScene(sceneId);
+    int sceneIndex = mConfigScene.searchValue("id", sceneId);
+    int sceneCount = mConfigScene.countValue("id", sceneId);
     switch (mType) {
     case TYPE_CREATE:
         if (sceneCount == 0) {
