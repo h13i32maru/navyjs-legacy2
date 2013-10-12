@@ -6,6 +6,9 @@
 
 #include <QWidget>
 #include <QVariantMap>
+#include <QCompleter>
+#include <QStringListModel>
+#include <QSortFilterProxyModel>
 
 namespace Ui {
 class NLayoutPropEdit;

@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     n_config_scene_widget.cpp \
     n_config_page_widget.cpp \
     window/n_text_dialog.cpp \
-    n_project.cpp
+    n_project.cpp \
+    extend/n_completer.cpp
 
 HEADERS  += main_window.h \
     n_code_widget.h \
@@ -47,7 +48,8 @@ HEADERS  += main_window.h \
     n_config_scene_widget.h \
     n_config_page_widget.h \
     window/n_text_dialog.h \
-    n_project.h
+    n_project.h \
+    extend/n_completer.h
 
 FORMS    += main_window.ui \
     n_code_widget.ui \

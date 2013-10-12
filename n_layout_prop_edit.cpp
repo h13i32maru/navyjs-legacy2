@@ -3,9 +3,12 @@
 #include "util/n_json.h"
 #include "util/n_util.h"
 #include "n_project.h"
+#include <extend/n_completer.h>
 
 #include <QCompleter>
 #include <QDebug>
+#include <QListView>
+#include <QSortFilterProxyModel>
 
 const QString NLayoutPropEdit::ClassView = "Navy.View.View";
 const QString NLayoutPropEdit::ClassText = "Navy.View.Text";
@@ -41,10 +44,8 @@ void NLayoutPropEdit::refreshForActive() {
         QStringList layoutList = NProject::instance()->layouts();
         layout->clear();
         layout->addItems(layoutList);
-        QCompleter *completer = new QCompleter(layoutList, layout);
-        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
-        completer->setCaseSensitivity(Qt::CaseInsensitive);
-        layout->setCompleter(completer);
+        NCompleter *completer = new NCompleter(layoutList, layout);
+        completer->setComboBox(layout);
     }
 
 }
