@@ -364,13 +364,13 @@ bool MainWindow::saveFile(int tabIndex) {
 }
 
 void MainWindow::newJSFile() {
-    QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"));
+    QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"), QLineEdit::Normal, "code.js");
     QString parentPath = NUtil::selectedPath(mFileTreeView);
     NUtil::newFile(parentPath, fileName, "js");
 }
 
 void MainWindow::newLayoutFile() {
-    QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"));
+    QString fileName = QInputDialog::getText(this, tr("New File"), tr("create new file"), QLineEdit::Normal, "layout.json");
     QString parentPath = NUtil::selectedPath(mFileTreeView);
 
     QString filePath = NUtil::createFilePath(parentPath, fileName, "json");
@@ -382,7 +382,7 @@ void MainWindow::newLayoutFile() {
 }
 
 void MainWindow::newDir() {
-    QString dirName = QInputDialog::getText(this, tr("New Directory"), tr("create new directory"));
+    QString dirName = QInputDialog::getText(this, tr("New Directory"), tr("create new directory"), QLineEdit::Normal, "directory");
     QString parentPath = NUtil::selectedPath(mFileTreeView);
     NUtil::newDir(parentPath, dirName);
 }
@@ -438,9 +438,11 @@ void MainWindow::renamePath() {
 }
 
 void MainWindow::copyPath() {
-    QString newName = QInputDialog::getText(this, tr("Copy File"), tr("enter copy name"));
     QString srcPath = NUtil::selectedPath(mFileTreeView);
     QString ext = QFileInfo(srcPath).suffix();
+    QString fileName = "copy_" + QFileInfo(srcPath).fileName();
+
+    QString newName = QInputDialog::getText(this, tr("Copy File"), tr("enter copy name"), QLineEdit::Normal, fileName);
     NUtil::copyPath(srcPath, newName, ext);
 }
 
