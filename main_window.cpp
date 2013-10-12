@@ -58,16 +58,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 }
 
-void MainWindow::showFileOpener() {
-    NFileOpener opener(this);
-    opener.setModal(true);
-    int ret = opener.exec();
-    if (ret == NFileOpener::Accepted) {
-        QString filePath = mProjectDir->absoluteFilePath(opener.filePath());
-        openFile(filePath);
-    }
-}
-
 void MainWindow::setCurrentProject(QString dirPath) {
     mProjectDir->setPath(dirPath);
     mProjectName = mProjectDir->dirName();
@@ -133,6 +123,16 @@ void MainWindow::openProject() {
     QDir(mProjectDir->absoluteFilePath("creator")).removeRecursively();
     NUtil::copyDir(":/template/navy", mProjectDir->absoluteFilePath("navy"));
     NUtil::copyDir(":/template/creator", mProjectDir->absoluteFilePath("creator"));
+}
+
+void MainWindow::showFileOpener() {
+    NFileOpener opener(this);
+    opener.setModal(true);
+    int ret = opener.exec();
+    if (ret == NFileOpener::Accepted) {
+        QString filePath = mProjectDir->absoluteFilePath(opener.filePath());
+        openFile(filePath);
+    }
 }
 
 void MainWindow::saveAll() {
@@ -241,7 +241,6 @@ void MainWindow::openFile(QModelIndex index) {
 }
 
 void MainWindow::openFile(const QString &filePath) {
-    qDebug() << filePath;
     if (QFileInfo(filePath).isDir()) {
         return;
     }
