@@ -35,6 +35,9 @@ public slots:
     void setViewPosFromJS(const int &x, const int &y);
     void syncWidgetToJson();
 
+private slots:
+    void setLinkIdList();
+
 private:
     Ui::NLayoutPropEdit *ui;
     NJson mView;

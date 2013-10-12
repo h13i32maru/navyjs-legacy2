@@ -183,6 +183,18 @@
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QComboBox" name="linkType">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>0</height>
+               </size>
+              </property>
               <item>
                <property name="text">
                 <string>-</string>
@@ -201,7 +213,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="linkId"/>
+             <widget class="NComboBox" name="linkId">
+              <property name="editable">
+               <bool>true</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -258,7 +274,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QComboBox" name="extraSrc">
+           <widget class="NComboBox" name="extraSrc">
             <property name="editable">
              <bool>true</bool>
             </property>
@@ -274,7 +290,7 @@
            <number>0</number>
           </property>
           <item row="1" column="1">
-           <widget class="QComboBox" name="extraContentLayout">
+           <widget class="NComboBox" name="extraContentLayout">
             <property name="editable">
              <bool>true</bool>
             </property>
@@ -318,6 +334,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>NComboBox</class>
+   <extends>QComboBox</extends>
+   <header>extend/n_combo_box.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

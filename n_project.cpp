@@ -52,7 +52,6 @@ QStringList NProject::pages() {
     return pages;
 }
 
-
 QStringList NProject::images() {
     QStringList images =  NUtil::recursiveEntryList(mProject.absoluteFilePath("image"), "image/");
     return images;

@@ -27,27 +27,8 @@ NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::
 }
 
 void NLayoutPropEdit::refreshForActive() {
-
-    {
-        QComboBox *src = ui->extraSrc;
-        QStringList imageList = NProject::instance()->images();
-        src->clear();
-        src->addItems(imageList);
-        QCompleter *completer = new QCompleter(imageList, src);
-        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
-        completer->setCaseSensitivity(Qt::CaseInsensitive);
-        src->setCompleter(completer);
-    }
-
-    {
-        QComboBox *layout =  ui->extraContentLayout;
-        QStringList layoutList = NProject::instance()->layouts();
-        layout->clear();
-        layout->addItems(layoutList);
-        NCompleter *completer = new NCompleter(layoutList, layout);
-//        completer->setComboBox(layout);
-    }
-
+    ui->extraSrc->setList(NProject::instance()->images());
+    ui->extraContentLayout->setList(NProject::instance()->layouts());
 }
 
 void NLayoutPropEdit::setNativeBridge(NativeBridge *native) {
@@ -65,7 +46,8 @@ void NLayoutPropEdit::connectWidgetToJson() {
     connect(ui->backgroundColor, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
     connect(ui->sizePolicy, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->linkType, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
-    connect(ui->linkId, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+    connect(ui->linkType, SIGNAL(currentIndexChanged(int)), this, SLOT(setLinkIdList()));
+    connect(ui->linkId, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
 
     // text
     connect(ui->extraText, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
@@ -86,7 +68,7 @@ void NLayoutPropEdit::disconnectWidgetToJson() {
     disconnect(ui->backgroundColor, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
     disconnect(ui->sizePolicy, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
     disconnect(ui->linkType, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
-    disconnect(ui->linkId, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
+    disconnect(ui->linkId, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
 
     // text
     disconnect(ui->extraText, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
@@ -109,7 +91,7 @@ void NLayoutPropEdit::syncWidgetToJson() {
 
     if (ui->linkType->currentIndex() != 0) {
         mView.set("link.type", ui->linkType->currentText());
-        mView.set("link.id", ui->linkId->text());
+        mView.set("link.id", ui->linkId->currentText());
     } else {
         mView.remove("link");
     }
@@ -162,7 +144,7 @@ void NLayoutPropEdit::setViewFromJS(const NJson &view) {
 
     ui->linkType->setCurrentIndex(0);
     ui->linkType->setCurrentText(view.getStr("link.type"));
-    ui->linkId->setText(view.getStr("link.id"));
+    ui->linkId->setCurrentText(view.getStr("link.id"));
 
 
     QString className = view.getStr("class");
@@ -195,6 +177,14 @@ void NLayoutPropEdit::setViewPosFromJS(const int &x, const int &y) {
     connectWidgetToJson();
 }
 
+void NLayoutPropEdit::setLinkIdList() {
+    QString type = ui->linkType->currentText();
+    if (type == "page") {
+        ui->linkId->setList(NProject::instance()->pages());
+    } else if(type == "scene") {
+        ui->linkId->setList(NProject::instance()->scenes());
+    }
+}
 
 NLayoutPropEdit::~NLayoutPropEdit()
 {
