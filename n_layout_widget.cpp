@@ -11,6 +11,7 @@
 #include <QMenu>
 #include <QWebInspector>
 #include <QDebug>
+#include <QList>
 
 const QString NLayoutWidget::HtmlFilePath = "index_creator.html";
 
@@ -189,7 +190,19 @@ void NLayoutWidget::selectViewToJS() {
 
 void NLayoutWidget::addViewToJS(QTreeWidgetItem *item, int /* index */) {
     QTreeWidget *tree = ui->layerTreeWidget;
-    QString viewId = item->text(ViewClassColName) + QString::number(tree->topLevelItemCount() + 1);
+
+    // viewIdがかぶってしまうのを防ぐためにループを回す
+    QString viewId;
+    {
+        int suffix = 1;
+        while (true) {
+            viewId = item->text(ViewClassColName) + QString::number(tree->topLevelItemCount() + suffix);
+            if (tree->findItems(viewId, Qt::MatchFixedString | Qt::MatchCaseSensitive).length() == 0) {
+                break;
+            }
+            suffix++;
+        }
+    }
     QString viewClass = item->text(ViewClassColClass);
 
     QStringList row;
