@@ -7,6 +7,8 @@
 #include <QMenu>
 #include <QMessageBox>
 
+#include <window/n_page_dialog.h>
+
 NConfigPageWidget::NConfigPageWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : NFileWidget(projectDir, filePath, parent), ui(new Ui::NConfigPageWidget)
 {
     ui->setupUi(this);
@@ -14,25 +16,24 @@ NConfigPageWidget::NConfigPageWidget(const QDir &projectDir, const QString &file
     mConfigPage.parseFromFilePath(filePath);
     syncJsonToTree();
 
-    {
-        QStringList codeList = NUtil::recursiveEntryList(mProjectDir.absoluteFilePath("code"), "code/");
-        QCompleter *completer = new QCompleter(codeList, this);
-        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
-        completer->setCaseSensitivity(Qt::CaseInsensitive);
-        ui->classFileEdit->setCompleter(completer);
-    }
-
-    {
-        QStringList layoutList = NUtil::recursiveEntryList(mProjectDir.absoluteFilePath("layout"), "layout/");
-        QCompleter *completer = new QCompleter(layoutList, this);
-        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
-        completer->setCaseSensitivity(Qt::CaseInsensitive);
-        ui->layoutEdit->setCompleter(completer);
-    }
-
     connect(ui->pageConfigTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
-    connect(ui->pageConfigTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)), this, SLOT(syncTreeItemToForm(QTreeWidgetItem*)));
-    connect(ui->updateButton, SIGNAL(clicked(bool)), this, SLOT(syncFormToJson()));
+    connect(ui->pageConfigTreeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(showPageDialog(QModelIndex)));
+}
+
+void NConfigPageWidget::showPageDialog(const QModelIndex &/*index*/) {
+    QTreeWidgetItem *item = ui->pageConfigTreeWidget->currentItem();
+    if (item == NULL) {
+        return;
+    }
+
+    QString pageId = item->text(PAGE_COL_ID);
+    NPageDialog dialog(NPageDialog::TYPE_UPDATE, mConfigPage, this);
+    dialog.setPageId(pageId);
+    int ret = dialog.exec();
+    if (ret == NPageDialog::Accepted) {
+        syncJsonToTree();
+        changed();
+    }
 }
 
 bool NConfigPageWidget::innerSave() {
@@ -45,33 +46,7 @@ bool NConfigPageWidget::innerSave() {
     return (ret == -1 ? false: true);
 }
 
-int NConfigPageWidget::countPage(const QString &pageId) {
-    int count = 0;
 
-    for (int i = 0; i < mConfigPage.length(); i++) {
-        QString index = QString::number(i);
-        QString id = mConfigPage.getStr(index + ".id");
-
-        if (pageId == id) {
-            count++;
-        }
-    }
-
-    return count;
-}
-
-int NConfigPageWidget::searchPage(const QString &pageId) {
-    for (int i = 0; i < mConfigPage.length(); i++) {
-        QString index = QString::number(i);
-        QString id = mConfigPage.getStr(index + ".id");
-
-        if (pageId == id) {
-            return i;
-        }
-    }
-
-    return -1;
-}
 
 void NConfigPageWidget::syncJsonToTree() {
     ui->pageConfigTreeWidget->clear();
@@ -94,108 +69,6 @@ void NConfigPageWidget::syncJsonToTree() {
     ui->pageConfigTreeWidget->addTopLevelItems(items);
 }
 
-void NConfigPageWidget::syncPageToForm(const QString &pageId) {
-    mCurrentIndex = searchPage(pageId);
-    QString index = QString::number(mCurrentIndex);
-    NJson page = mConfigPage.getObject(index);
-
-    ui->idEdit->setText(page.getStr("id"));
-    ui->classEdit->setText(page.getStr("class"));
-    ui->classFileEdit->setText(page.getStr("classFile"));
-    ui->backgroundColorEdit->setText(page.getStr("backgroundColor"));
-    ui->layoutEdit->setText(page.getStr("extra.contentLayoutFile"));
-}
-
-void NConfigPageWidget::syncTreeItemToForm(QTreeWidgetItem *item) {
-    // 何も選択されなくなった時はNULLが渡ってくる
-    if (item == NULL) {
-        return;
-    }
-
-    QString pageId = item->text(PAGE_COL_ID);
-    syncPageToForm(pageId);
-}
-
-void NConfigPageWidget::syncFormToJson() {
-    // id check
-    QString pageId = ui->idEdit->text();
-    int pageIndex = searchPage(pageId);
-    int pageCount = countPage(pageId);
-    if (pageCount == 0) {
-        // pass
-    }
-    else if (pageIndex == mCurrentIndex && pageCount == 1) {
-        // pass
-    } else {
-        QMessageBox::critical(this, tr("exist page id"), tr("exist page id"));
-        return;
-    }
-
-    // class check
-    QString class_ = ui->classEdit->text();
-    if (class_.isEmpty()) {
-        return;
-    }
-
-    // class file check.
-    QString classFile = ui->classFileEdit->text();
-    QFileInfo classFileInfo(mProjectDir.absoluteFilePath(classFile));
-    if (!classFileInfo.exists()) {
-        int ret = QMessageBox::question(NULL, tr("create class file."), tr("do you create class file?"));
-        if (ret != QMessageBox::Yes) {
-            return;
-        }
-
-        QString path = mProjectDir.absoluteFilePath(classFile);
-        QMap<QString, QString> replace;
-        replace["{{class}}"] = class_;
-        if (!NUtil::createFileFromTemplate(":/template_code/page.js", path, replace)) {
-            return;
-        }
-    }
-
-    // layout check
-    QString layoutFile = ui->layoutEdit->text();
-    QFileInfo layoutFileInfo(mProjectDir.absoluteFilePath(layoutFile));
-    if (!layoutFileInfo.exists()) {
-        int ret = QMessageBox::question(NULL, tr("create layout file."), tr("do you create layout file?"));
-        if (ret != QMessageBox::Yes) {
-            return;
-        }
-
-        QString path = mProjectDir.absoluteFilePath(layoutFile);
-        if(!NUtil::createFileFromTemplate(":/template_code/layout.json", path)) {
-            return;
-        }
-    }
-
-    QString index = QString::number(mCurrentIndex);
-    mConfigPage.set(index + ".id", ui->idEdit->text());
-    mConfigPage.set(index + ".class", ui->classEdit->text());
-    mConfigPage.set(index + ".classFile", ui->classFileEdit->text());
-    mConfigPage.set(index + ".backgroundColor", ui->backgroundColorEdit->text());
-    mConfigPage.set(index + ".extra.contentLayoutFile", ui->layoutEdit->text());
-
-    syncJsonToTree();
-
-    // 編集されたことを伝える
-    changed();
-
-    ui->pageConfigTreeWidget->setDisabled(false);
-}
-
-void NConfigPageWidget::selectPage(const QString &pageId) {
-    QTreeWidget *tree = ui->pageConfigTreeWidget;
-
-    for (int i = 0; i < tree->topLevelItemCount(); i++) {
-        QTreeWidgetItem * item = tree->topLevelItem(i);
-        QString id = item->text(PAGE_COL_ID);
-        if (id == pageId) {
-            tree->setCurrentItem(item);
-        }
-    }
-}
-
 void NConfigPageWidget::showRawData() {
     NTextDialog dialog(this);
     dialog.setText(mConfigPage.stringify());
@@ -203,19 +76,12 @@ void NConfigPageWidget::showRawData() {
 }
 
 void NConfigPageWidget::newPage() {
-    //FIXME: idの重複チェックが必要
-
-    QString index = QString::number(mConfigPage.length());
-
-    mConfigPage.set(index + ".id", "Page" + index);
-    mConfigPage.set(index + ".class", "Page" + index);
-    mConfigPage.set(index + ".classFile", "code/page" + index + ".js");
-    mConfigPage.set(index + ".extra.contentLayoutFile", "layout/page" + index + ".json");
-
-    syncJsonToTree();
-    selectPage("Page" + index);
-
-    ui->pageConfigTreeWidget->setDisabled(true);
+    NPageDialog dialog(NPageDialog::TYPE_CREATE, mConfigPage, this);
+    int ret = dialog.exec();
+    if (ret == NPageDialog::Accepted) {
+        syncJsonToTree();
+        changed();
+    }
 }
 
 void NConfigPageWidget::removePage() {
@@ -231,9 +97,10 @@ void NConfigPageWidget::removePage() {
     int ret = QMessageBox::question(NULL, tr(""), tr("do you remove page?"));
 
     if (ret == QMessageBox::Yes) {
-        int index = searchPage(item->text(PAGE_COL_ID));
+        int index = mConfigPage.searchValue("id", item->text(PAGE_COL_ID));
         mConfigPage.remove(QString::number(index));
         syncJsonToTree();
+        changed();
     }
 }
 

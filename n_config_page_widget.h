@@ -26,10 +26,6 @@ protected:
 private:
     Ui::NConfigPageWidget *ui;
     NJson mConfigPage;
-    int mCurrentIndex;
-
-    int searchPage(const QString &pageId);
-    int countPage(const QString &pageId);
 
 private slots:
     void newPage();
@@ -37,10 +33,7 @@ private slots:
     void contextMenu(QPoint point);
     void showRawData();
     void syncJsonToTree();
-    void syncFormToJson();
-    void syncPageToForm(const QString &pageId);
-    void syncTreeItemToForm(QTreeWidgetItem* item);
-    void selectPage(const QString &pageId);
+    void showPageDialog(const QModelIndex &/*index*/);
 };
 
 #endif // N_CONFIG_PAGE_WIDGET_H

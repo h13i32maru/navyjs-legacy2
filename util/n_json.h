@@ -33,6 +33,8 @@ public:
 
     void remove(const QString &keysStr);
 
+    int searchValue(const QString &key, const QString &value);
+    int countValue(const QString &key, const QString &value);
 private:
     QJsonValue mRootValue;
     QJsonValue get(const QJsonValue &value, const QString &keysStr) const;

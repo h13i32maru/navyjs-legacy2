@@ -192,3 +192,30 @@ QJsonValue NJson::remove(QJsonValue parentValue, const QString &keysStr) {
         }
     }
 }
+
+int NJson::searchValue(const QString &key, const QString &value) {
+    for (int i = 0; i < length(); i++) {
+        QString index = QString::number(i);
+        QString v = getStr(index + "." + key);
+        if (v == value) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+int NJson::countValue(const QString &key, const QString &value) {
+    int count = 0;
+
+    for (int i = 0; i < length(); i++) {
+        QString index = QString::number(i);
+        QString v = getStr(index + "." + key);
+
+        if (v == value) {
+            count++;
+        }
+    }
+
+    return count;
+}
