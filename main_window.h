@@ -40,10 +40,12 @@ private:
 private slots:
     void openProject();
     void newProject();
+    void showFileOpener();
     void saveAll();
     void execNavy();
     void contextMenu(QPoint point);
     void openFile(QModelIndex index);
+    void openFile(const QString &filePath);
     void closeFile(int tabIndex);
     void closeCurrentFile();
     void nextFile();

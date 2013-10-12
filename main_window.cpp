@@ -16,6 +16,8 @@
 #include <QMessageBox>
 #include <QInputDialog>
 
+#include <window/n_file_opener.h>
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -41,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(ui->actionNewProject, SIGNAL(triggered(bool)), this, SLOT(newProject()));
     connect(ui->actionOpenProject, SIGNAL(triggered(bool)), this, SLOT(openProject()));
+    connect(ui->actionOpenFile, SIGNAL(triggered(bool)), this, SLOT(showFileOpener()));
     connect(ui->actionSaveAll, SIGNAL(triggered(bool)), this, SLOT(saveAll()));
     connect(ui->actionExec, SIGNAL(triggered(bool)), this, SLOT(execNavy()));
     connect(ui->actionCloseTab, SIGNAL(triggered(bool)), this, SLOT(closeCurrentFile()));
@@ -52,6 +55,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(mFileTreeView, SIGNAL(dropped(QString,QString)), this, SLOT(updateTabForDropped(QString,QString)));
     connect(mFileTabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeFile(int)));
     connect(mFileTabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+
+}
+
+void MainWindow::showFileOpener() {
+    NFileOpener opener(this);
+    opener.setModal(true);
+    int ret = opener.exec();
+    if (ret == NFileOpener::Accepted) {
+        QString filePath = mProjectDir->absoluteFilePath(opener.filePath());
+        openFile(filePath);
+    }
 }
 
 void MainWindow::setCurrentProject(QString dirPath) {
@@ -221,9 +235,13 @@ bool MainWindow::isFileContentChanged(int tabIndex) {
     NFileWidget *fileWidget = (NFileWidget *)mFileTabWidget->widget(tabIndex);
     return fileWidget->isChanged();
 }
-
 void MainWindow::openFile(QModelIndex index) {
     QString filePath = ((QFileSystemModel *) mFileTreeView->model())->filePath(index);
+    openFile(filePath);
+}
+
+void MainWindow::openFile(const QString &filePath) {
+    qDebug() << filePath;
     if (QFileInfo(filePath).isDir()) {
         return;
     }

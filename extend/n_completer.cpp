@@ -19,6 +19,8 @@ void NCompleter::setStringList(const QStringList &list) {
 void NCompleter::update(const QString &word) {
     if (mList.indexOf(word) == -1) {
         QStringList filtered = mList.filter(word, caseSensitivity());
-        mModel->setStringList(filtered);
+        if (filtered.length() != 0) {
+            mModel->setStringList(filtered);
+        }
     }
 }

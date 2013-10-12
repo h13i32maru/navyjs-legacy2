@@ -22,6 +22,7 @@ public:
     QStringList images();
     QStringList codes();
     QStringList layouts();
+    QStringList files();
     bool existsFile(const QString &relativePath);
     bool existsPage(const QString &page);
     QString absoluteFilePath(const QString &relativePath);

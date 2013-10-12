@@ -116,6 +116,7 @@
     </property>
     <addaction name="actionNewProject"/>
     <addaction name="actionOpenProject"/>
+    <addaction name="actionOpenFile"/>
     <addaction name="actionSaveAll"/>
    </widget>
    <widget class="QMenu" name="menuBuild">
@@ -158,7 +159,7 @@
     <string>Open Project</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+O</string>
+    <string>Ctrl+Shift+O</string>
    </property>
   </action>
   <action name="actionAddScene">
@@ -204,6 +205,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Alt+Left</string>
+   </property>
+  </action>
+  <action name="actionOpenFile">
+   <property name="text">
+    <string>Open File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
  </widget>

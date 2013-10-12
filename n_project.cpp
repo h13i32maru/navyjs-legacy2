@@ -68,6 +68,14 @@ QStringList NProject::layouts() {
     return layouts;
 }
 
+QStringList NProject::files() {
+    QStringList list;
+    list.append(images());
+    list.append(codes());
+    list.append(layouts());
+    return list;
+}
+
 bool NProject::existsFile(const QString &relativePath) {
     QString path = mProject.absoluteFilePath(relativePath);
     return QFileInfo(path).exists();
