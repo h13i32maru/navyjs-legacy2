@@ -10,7 +10,7 @@ class NCompleter : public QCompleter
     Q_OBJECT
 public:
     explicit NCompleter(const QStringList &list, QObject *parent = 0);
-    void setComboBox(QComboBox *combo);
+    void setStringList(const QStringList &list);
 
 private:
     QStringList mList;

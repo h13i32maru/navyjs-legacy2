@@ -18,6 +18,7 @@ class NConfigAppWidget : public NFileWidget
 public:
     explicit NConfigAppWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
     ~NConfigAppWidget();
+    virtual void refreshForActive();
 
 protected:
     virtual bool innerSave();

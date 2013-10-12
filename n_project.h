@@ -17,6 +17,7 @@ private:
 
 public:
     void setProject(const QString &projectDirPath);
+    QStringList scenes();
     QStringList images();
     QStringList codes();
     QStringList layouts();

@@ -45,7 +45,7 @@ void NLayoutPropEdit::refreshForActive() {
         layout->clear();
         layout->addItems(layoutList);
         NCompleter *completer = new NCompleter(layoutList, layout);
-        completer->setComboBox(layout);
+//        completer->setComboBox(layout);
     }
 
 }

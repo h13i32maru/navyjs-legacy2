@@ -1,8 +1,11 @@
+#include "n_project.h"
 #include "window/n_text_dialog.h"
 #include "n_config_app_widget.h"
 #include "ui_n_config_app_widget.h"
+#include "extend/n_completer.h"
 
 #include <QMenu>
+#include <QDebug>
 
 NConfigAppWidget::NConfigAppWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : NFileWidget(projectDir, filePath, parent), ui(new Ui::NConfigAppWidget)
 {
@@ -10,12 +13,24 @@ NConfigAppWidget::NConfigAppWidget(const QDir &projectDir, const QString &filePa
 
     mConfigApp.parseFromFilePath(filePath);
 
+
     syncJsonToWidget();
 
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
     connect(ui->appSizeWidth, SIGNAL(valueChanged(int)), this, SLOT(changed()));
     connect(ui->appSizeHeight, SIGNAL(valueChanged(int)), this, SLOT(changed()));
-    connect(ui->appStartScene, SIGNAL(textChanged(QString)), this, SLOT(changed()));
+    connect(ui->appStartScene, SIGNAL(currentTextChanged(QString)), this, SLOT(changed()));
+
+    refreshForActive();
+}
+
+void NConfigAppWidget::refreshForActive() {
+    {
+        disconnect(ui->appStartScene, SIGNAL(currentTextChanged(QString)), this, SLOT(changed()));
+        QStringList sceneList = NProject::instance()->scenes();
+        ui->appStartScene->setList(sceneList);
+        connect(ui->appStartScene, SIGNAL(currentTextChanged(QString)), this, SLOT(changed()));
+    }
 }
 
 bool NConfigAppWidget::innerSave() {
@@ -34,13 +49,13 @@ bool NConfigAppWidget::innerSave() {
 void NConfigAppWidget::syncJsonToWidget() {
     ui->appSizeWidth->setValue(mConfigApp.getInt("size.width"));
     ui->appSizeHeight->setValue(mConfigApp.getInt("size.height"));
-    ui->appStartScene->setText(mConfigApp.getStr("start.scene"));
+    ui->appStartScene->setCurrentText(mConfigApp.getStr("start.scene"));
 }
 
 void NConfigAppWidget::syncWidgetToJson() {
     mConfigApp.set("size.width", ui->appSizeWidth->value());
     mConfigApp.set("size.height", ui->appSizeHeight->value());
-    mConfigApp.set("start.scene", ui->appStartScene->text());
+    mConfigApp.set("start.scene", ui->appStartScene->currentText());
 }
 
 void NConfigAppWidget::contextMenu(QPoint /*point*/) {

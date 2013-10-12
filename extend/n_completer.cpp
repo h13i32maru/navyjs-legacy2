@@ -11,9 +11,9 @@ NCompleter::NCompleter(const QStringList &list, QObject *parent) : QCompleter(pa
     setCaseSensitivity(Qt::CaseInsensitive);
 }
 
-void NCompleter::setComboBox(QComboBox *combo) {
-    combo->setCompleter((QCompleter*)this);
-    connect(combo, SIGNAL(currentTextChanged(QString)), this, SLOT(update(QString)));
+void NCompleter::setStringList(const QStringList &list) {
+    mList = list;
+    mModel->setStringList(list);
 }
 
 void NCompleter::update(const QString &word) {
