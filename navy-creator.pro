@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     window/n_text_dialog.cpp \
     n_project.cpp \
     extend/n_completer.cpp \
-    extend/n_combo_box.cpp
+    extend/n_combo_box.cpp \
+    window/n_scene_dialog.cpp
 
 HEADERS  += main_window.h \
     n_code_widget.h \
@@ -51,7 +52,8 @@ HEADERS  += main_window.h \
     window/n_text_dialog.h \
     n_project.h \
     extend/n_completer.h \
-    extend/n_combo_box.h
+    extend/n_combo_box.h \
+    window/n_scene_dialog.h
 
 FORMS    += main_window.ui \
     n_code_widget.ui \
@@ -63,7 +65,8 @@ FORMS    += main_window.ui \
     n_config_app_widget.ui \
     n_config_scene_widget.ui \
     n_config_page_widget.ui \
-    window/n_text_dialog.ui
+    window/n_text_dialog.ui \
+    window/n_scene_dialog.ui
 
 RESOURCES += \
     resource.qrc

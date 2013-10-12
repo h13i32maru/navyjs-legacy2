@@ -18,9 +18,13 @@ private:
 public:
     void setProject(const QString &projectDirPath);
     QStringList scenes();
+    QStringList pages();
     QStringList images();
     QStringList codes();
     QStringList layouts();
+    bool existsFile(const QString &relativePath);
+    bool existsPage(const QString &page);
+    QString absoluteFilePath(const QString &relativePath);
 };
 
 #endif // N_PROJECT_H
