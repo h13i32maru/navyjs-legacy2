@@ -27,163 +27,59 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QSplitter" name="splitter">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+    <widget class="QTreeWidget" name="pageConfigTreeWidget">
+     <property name="minimumSize">
+      <size>
+       <width>600</width>
+       <height>0</height>
+      </size>
      </property>
-     <widget class="QTreeWidget" name="pageConfigTreeWidget">
-      <property name="minimumSize">
-       <size>
-        <width>600</width>
-        <height>0</height>
-       </size>
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="indentation">
+      <number>0</number>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="columnCount">
+      <number>5</number>
+     </property>
+     <attribute name="headerDefaultSectionSize">
+      <number>200</number>
+     </attribute>
+     <attribute name="headerStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>name</string>
       </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::CustomContextMenu</enum>
+     </column>
+     <column>
+      <property name="text">
+       <string>class</string>
       </property>
-      <property name="alternatingRowColors">
-       <bool>true</bool>
+     </column>
+     <column>
+      <property name="text">
+       <string>class file</string>
       </property>
-      <property name="indentation">
-       <number>0</number>
+     </column>
+     <column>
+      <property name="text">
+       <string>layout</string>
       </property>
-      <property name="sortingEnabled">
-       <bool>true</bool>
+     </column>
+     <column>
+      <property name="text">
+       <string>backgroundColor</string>
       </property>
-      <property name="columnCount">
-       <number>5</number>
-      </property>
-      <attribute name="headerDefaultSectionSize">
-       <number>200</number>
-      </attribute>
-      <attribute name="headerStretchLastSection">
-       <bool>true</bool>
-      </attribute>
-      <column>
-       <property name="text">
-        <string>name</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>class</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>class file</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>layout</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>backgroundColor</string>
-       </property>
-      </column>
-     </widget>
-     <widget class="QFrame" name="frame">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="idEdit"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>b.g. color</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>class file</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>id</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="classEdit"/>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="layoutEdit"/>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="backgroundColorEdit"/>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>layout</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>class</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="classFileEdit"/>
-       </item>
-       <item row="5" column="1">
-        <widget class="QWidget" name="widget" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="updateButton">
-            <property name="text">
-             <string>Update</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+     </column>
     </widget>
    </item>
   </layout>
