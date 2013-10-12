@@ -35,6 +35,7 @@ signals:
     void changedViewPropertyToJS(const QVariant &json);
     void addViewToJS(const QString &viewId, const QString &viewClass);
     void deleteViewToJS(const QString &viewId);
+    void setScreenToJS(const QString &sceneId, const QString &pageId);
 
 public slots:
 

@@ -38,6 +38,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     Native.changedViewPropertyToJS.connect(this._updateSelectedViewLayout.bind(this));
     Native.addViewToJS.connect(this._addView.bind(this));
     Native.deleteViewToJS.connect(this._deleteView.bind(this));
+    Native.setScreenToJS.connect(this._setScreen.bind(this));
   },
 
   _getContentLayout: function() {
@@ -94,6 +95,39 @@ var CreatorPage = Navy.Class(Navy.Page, {
     var view = this._views[viewId];
     this.removeView(view);
     Native.changedLayoutContent();
+  },
+
+  _setScreen: function(sceneId, pageId) {
+    if (sceneId && Navy.Config.scene[sceneId]) {
+      var sceneLayout = JSON.parse(JSON.stringify(Navy.Config.scene[sceneId]));
+    }
+
+    if (pageId && Navy.Config.page[pageId]) {
+      var pageLayout = JSON.parse(JSON.stringify(Navy.Config.page[pageId]));
+    }
+
+    if (sceneLayout && pageLayout) {
+      var scene = this.getScene();
+
+      //FIXME: 本来はレイアウトの設定でIDが変わらないようにNavyを修正すべき
+      sceneLayout.id = scene.getId();
+
+      //レイアウトを再設定するのでPage以外のviewを削除しておく
+      var views = scene.getAllViews();
+      for (var viewId in views) {
+        var view = views[viewId];
+        if (view !== this) {
+          scene.removeView(view);
+        }
+      }
+      scene.setLayout(sceneLayout);
+
+      this.setBackgroundColor(pageLayout.backgroundColor);
+    } else if (sceneLayout) {
+      console.log(sceneLayout);
+      var scene = this.getScene();
+      scene.setBackgroundColor(sceneLayout.backgroundColor);
+    }
   },
 
   _updateViewsOrder: function(viewIds) {

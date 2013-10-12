@@ -4,6 +4,7 @@
 #include "n_layout_prop_edit.h"
 #include "window/n_text_dialog.h"
 #include "util/n_util.h"
+#include "n_project.h"
 
 #include <QWebView>
 #include <QWebFrame>
@@ -18,6 +19,8 @@ const QString NLayoutWidget::HtmlFilePath = "index_creator.html";
 NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : NFileWidget(projectDir, filePath, parent), ui(new Ui::NLayoutWidget)
 {
     ui->setupUi(this);
+
+    refreshForActive();
 
     QWebView *webView = ui->webView;
     QWebSettings *settings = webView->settings();
@@ -39,6 +42,8 @@ NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QW
     connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop()), this, SLOT(updateViewsToJS()));
     connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectViewToJS()));
     connect(ui->layerTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuForViewsTree(QPoint)));
+    connect(ui->screenScene, SIGNAL(currentTextChanged(QString)), this, SLOT(setScreenToJS()));
+    connect(ui->screenPage, SIGNAL(currentTextChanged(QString)), this, SLOT(setScreenToJS()));
     connect(ui->webView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuForWebView(QPoint)));
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(injectNativeBridge()));
     connect(mNative, SIGNAL(viewsFromJS(QList<QMap<QString,QString> >)), this, SLOT(setViewsFromJS(QList<QMap<QString,QString> >)));
@@ -64,6 +69,8 @@ bool NLayoutWidget::innerSave() {
 }
 
 void NLayoutWidget::refreshForActive() {
+    ui->screenScene->setList(NProject::instance()->scenes());
+    ui->screenPage->setList(NProject::instance()->pages());
     ui->layoutPropEdit->refreshForActive();
 }
 
@@ -223,6 +230,13 @@ void NLayoutWidget::deleteViewToJS() {
 
     QString viewId = item->text(ViewsColId);
     emit mNative->deleteViewToJS(viewId);
+}
+
+void NLayoutWidget::setScreenToJS() {
+    QString sceneId = ui->screenScene->currentText();
+    QString pageId = ui->screenPage->currentText();
+
+    emit mNative->setScreenToJS(sceneId, pageId);
 }
 
 NLayoutWidget::~NLayoutWidget()

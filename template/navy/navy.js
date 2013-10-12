@@ -453,6 +453,12 @@ Navy.View.View = Navy.Class({
     this._element.style.display = 'none';
   },
 
+  setBackgroundColor: function(backgroundColor) {
+    this._layout.backgroundColor = backgroundColor;
+
+    this.setRawStyle({backgroundColor: backgroundColor});
+  },
+
   getSize: function() {
     switch (this._layout.sizePolicy) {
     case this.SIZE_POLICY_WRAP_CONTENT:
@@ -699,6 +705,14 @@ Navy.ViewGroup.ViewGroup = Navy.Class(Navy.View.View, {
     }
   },
 
+  getAllViews: function() {
+    var result = {};
+    for (var viewId in this._views) {
+      result[viewId] = this._views[viewId];
+    }
+    return result;
+  },
+
   addView: function(view) {
     var element = view.getElement();
     this._element.appendChild(element);
@@ -714,6 +728,18 @@ Navy.ViewGroup.ViewGroup = Navy.Class(Navy.View.View, {
     this._views[view.getId()] = null;
     delete this._views[view.getId()];
     view.setParent(null);
+  },
+
+  removeAllViews: function() {
+    var views = this._views;
+    var viewIds = Object.keys(views);
+
+    // removeViewを行うとviewsの要素数が変わるのでid配列に対してのループにしている
+    for (var i = 0; i < viewIds.length; i++) {
+      var viewId = viewIds[i];
+      var view = views[viewId];
+      this.removeView(view);
+    }
   }
 });
 
@@ -934,11 +960,6 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
   initialize: function($super, layout, callback){
     this._pageStack = [];
 
-    // シーン、ページの場合はsize, posは固定値でよい
-    layout.pos = {x:0, y:0};
-    layout.sizePolicy = this.SIZE_POLICY_FIXED;
-    layout.size = {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height};
-
     $super(layout, function(){
       var views = this._views;
       for (var name in views) {
@@ -965,6 +986,15 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
 //      }
 //    }.bind(this);
 //    this._element.addEventListener('touchend', cb);
+  },
+
+  setLayout: function($super, layout, callback) {
+    // シーン、ページの場合はsize, posは固定値でよい
+    layout.pos = {x:0, y:0};
+    layout.sizePolicy = this.SIZE_POLICY_FIXED;
+    layout.size = {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height};
+
+    $super(layout, callback);
   },
 
   setPage: function(page) {

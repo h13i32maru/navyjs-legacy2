@@ -63,7 +63,6 @@ FORMS    += main_window.ui \
     n_code_widget.ui \
     n_image_widget.ui \
     n_layout_widget.ui \
-    n_layout_edit_widget.ui \
     n_layout_prop_edit.ui \
     window/n_exec_widget.ui \
     n_config_app_widget.ui \

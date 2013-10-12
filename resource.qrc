@@ -21,5 +21,6 @@
         <file>template_code/scene.js</file>
         <file>template_code/layout.json</file>
         <file>template_code/page.js</file>
+        <file>template/creator/creator_scene.js</file>
     </qresource>
 </RCC>

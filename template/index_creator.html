@@ -6,22 +6,38 @@
 <script src="navy/navy.js"></script>
 <script>
   Navy.App.setInitRootBeforeCallback(function(){
-    var sceneId = Navy.Config.app.start.scene;
-    var scene = Navy.Config.scene[sceneId];
-    scene.extra.contentLayoutFile = null;
+    var pageId = '$CreatorPage';
+    var pageLayout = {
+      id: pageId,
+      class: 'CreatorPage',
+      classFile: 'creator/creator_page.js',
+      backgroundColor: 'transparent',
+      extra: {
+        contentLayoutFile: Native.getLayoutPath()
+      }
+    };
 
-    var pageId = scene.extra.page;
-    var page = Navy.Config.page[pageId];
-    page.backgroundColor = null;
-    page.extra.contentLayoutFile = Native.getLayoutPath();
-    page.class = 'CreatorPage';
-    page.classFile = 'creator/creator_page.js';
+    var sceneId = '$CreatorScene';
+    var sceneLayout = {
+      id: sceneId,
+      class: 'CreatorScene',
+      classFile: 'creator/creator_scene.js',
+      backgroundColor: 'transparent',
+      extra: {
+        page: pageId,
+        contentLayoutFile: null
+      }
+    };
+
+    Navy.Config.app.start.scene = sceneId;
+    Navy.Config.scene[sceneId] = sceneLayout;
+    Navy.Config.page[pageId] = pageLayout;
   });
 </script>
 </head>
 
 <body>
-<div style="position:absolute; width:100%; height:100%; background:rgba(0,0,0,0.2);"></div>
+<div style="position:absolute; width:100%; height:100%; border:solid 1px rgba(0,0,0,0.2);"></div>
 </body>
 
 </html>
