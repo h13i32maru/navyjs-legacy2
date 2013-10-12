@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->mainToolBar->hide();
     ui->statusBar->hide();
+    ui->fileTabWidget->hide();
 
     mProjectDir = new QDir(QDir::homePath());
 
