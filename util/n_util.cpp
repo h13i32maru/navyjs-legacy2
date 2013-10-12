@@ -20,6 +20,20 @@ void NUtil::expand(QStringList &list, int size) {
     }
 }
 
+QWidgetList NUtil::recursiveWidgetChildren(const QWidget *widget) {
+    QObjectList tmp = widget->children();
+    QWidgetList list;
+    for (int i = 0; i < tmp.length(); i++) {
+        if (tmp[i]->isWidgetType()) {
+            QWidget *w = (QWidget *)tmp[i];
+            list.append(w);
+            list.append(recursiveWidgetChildren(w));
+        }
+    }
+
+    return list;
+}
+
 QString NUtil::selectedPath(QTreeView *treeView) {
     QFileSystemModel *model = (QFileSystemModel *)treeView->model();
     QModelIndex index = treeView->currentIndex();

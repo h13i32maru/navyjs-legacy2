@@ -19,6 +19,9 @@ NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::
 {
     ui->setupUi(this);
 
+    mWidgetSignalBlocked = false;
+    mWidgetList = NUtil::recursiveWidgetChildren(ui->scrollArea);
+
     refreshForActive();
 
     hideAllExtraPropWidget();
@@ -36,6 +39,18 @@ void NLayoutPropEdit::setNativeBridge(NativeBridge *native) {
 
     connect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setViewFromJS(NJson)));
     connect(mNative, SIGNAL(currentViewPosFromJS(int,int)), this, SLOT(setViewPosFromJS(int,int)));
+}
+
+void NLayoutPropEdit::blockAllSignals(bool block) {
+    if (block == mWidgetSignalBlocked) {
+        return;
+    }
+
+    mWidgetSignalBlocked = block;
+    int len = mWidgetList.length();
+    for (int i = 0; i < len; i++) {
+        mWidgetList[i]->blockSignals(block);
+    }
 }
 
 void NLayoutPropEdit::connectWidgetToJson() {
@@ -58,27 +73,6 @@ void NLayoutPropEdit::connectWidgetToJson() {
 
     // view group
     connect(ui->extraContentLayout, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
-}
-
-void NLayoutPropEdit::disconnectWidgetToJson() {
-    disconnect(ui->posXSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
-    disconnect(ui->posYSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
-    disconnect(ui->sizeWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
-    disconnect(ui->sizeHeightSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
-    disconnect(ui->backgroundColor, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
-    disconnect(ui->sizePolicy, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
-    disconnect(ui->linkType, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
-    disconnect(ui->linkId, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
-
-    // text
-    disconnect(ui->extraText, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
-    disconnect(ui->extraFontSize, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
-
-    // image
-    disconnect(ui->extraSrc, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
-
-    // view group
-    disconnect(ui->extraContentLayout, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
 }
 
 void NLayoutPropEdit::syncWidgetToJson() {
@@ -130,7 +124,7 @@ void NLayoutPropEdit::showExtraPropWidget(QString className) {
 }
 
 void NLayoutPropEdit::setViewFromJS(const NJson &view) {
-    disconnectWidgetToJson();
+    blockAllSignals(true);
 
     mView = view;
     ui->idLabel->setText(view.getStr("id"));
@@ -165,16 +159,16 @@ void NLayoutPropEdit::setViewFromJS(const NJson &view) {
     hideAllExtraPropWidget();
     showExtraPropWidget(view.getStr("class"));
 
-    connectWidgetToJson();
+    blockAllSignals(false);
 }
 
 void NLayoutPropEdit::setViewPosFromJS(const int &x, const int &y) {
-    disconnectWidgetToJson();
+    blockAllSignals(true);
 
     ui->posXSpinBox->setValue(x);
     ui->posYSpinBox->setValue(y);
 
-    connectWidgetToJson();
+    blockAllSignals(false);
 }
 
 void NLayoutPropEdit::setLinkIdList() {

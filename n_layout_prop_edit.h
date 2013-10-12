@@ -42,11 +42,13 @@ private:
     Ui::NLayoutPropEdit *ui;
     NJson mView;
     NativeBridge *mNative;
+    bool mWidgetSignalBlocked;
+    QWidgetList mWidgetList;
 
     void hideAllExtraPropWidget();
     void showExtraPropWidget(QString className);
     void connectWidgetToJson();
-    void disconnectWidgetToJson();
+    void blockAllSignals(bool block);
 };
 
 #endif // N_LAYOUT_PROP_EDIT_H

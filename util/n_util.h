@@ -11,6 +11,7 @@ public:
     NUtil();
     static void expand(QStringList &list, int size);
     static QString tr(const char *s) { return QObject::tr(s); }
+    static QWidgetList recursiveWidgetChildren(const QWidget *widget);
 
     // file util
     static QString selectedPath(QTreeView *treeView);
