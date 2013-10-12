@@ -9,6 +9,8 @@ NComboBox::NComboBox(QWidget *parent) : QComboBox(parent) {
 }
 
 void NComboBox::setList(const QStringList &list) {
+    blockSignals(true);
+
     QString current = currentText();
     clear();
     addItems(list);
@@ -19,4 +21,6 @@ void NComboBox::setList(const QStringList &list) {
         setCompleter(mCompleter);
         connect(this, SIGNAL(currentTextChanged(QString)), mCompleter, SLOT(update(QString)));
     }
+
+    blockSignals(false);
 }

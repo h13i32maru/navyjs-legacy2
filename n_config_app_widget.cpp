@@ -26,10 +26,8 @@ NConfigAppWidget::NConfigAppWidget(const QDir &projectDir, const QString &filePa
 
 void NConfigAppWidget::refreshForActive() {
     {
-        disconnect(ui->appStartScene, SIGNAL(currentTextChanged(QString)), this, SLOT(changed()));
         QStringList sceneList = NProject::instance()->scenes();
         ui->appStartScene->setList(sceneList);
-        connect(ui->appStartScene, SIGNAL(currentTextChanged(QString)), this, SLOT(changed()));
     }
 }
 
