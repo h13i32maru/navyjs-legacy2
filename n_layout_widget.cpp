@@ -218,6 +218,7 @@ void NLayoutWidget::addViewToJS(QTreeWidgetItem *item, int /* index */) {
     row[ViewsColId] = viewId;
     row[ViewsColClass] = viewClass;
     QTreeWidgetItem *viewsItem = new QTreeWidgetItem(row);
+    viewsItem->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemNeverHasChildren);
     tree->addTopLevelItem(viewsItem);
 
     emit mNative->addViewToJS(viewId, viewClass);
