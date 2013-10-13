@@ -24,6 +24,8 @@ NPageDialog::NPageDialog(TYPE type, NJson &configPage, QWidget *parent) :
     QStringList layoutList = NProject::instance()->layouts();
     ui->layout->setList(layoutList);
 
+    ui->backgroundColor->setText("#000000");
+
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(updatePage()));
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
     connect(ui->classFile, SIGNAL(currentTextChanged(QString)), this, SLOT(checkClassFile(QString)));
