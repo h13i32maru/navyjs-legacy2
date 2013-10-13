@@ -14,7 +14,7 @@ protected:
     virtual void dropEvent(QDropEvent * event);
 
 signals:
-    void changedTreeByDrop();
+    void changedTreeByDrop(QTreeWidgetItem *droppedItem);
 
 public slots:
 

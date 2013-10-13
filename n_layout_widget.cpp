@@ -39,7 +39,7 @@ NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QW
 
     connect(mNative, SIGNAL(changedLayoutContent()), this, SLOT(changed()));
     connect(ui->viewClassTreeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(addViewToJS(QTreeWidgetItem*, int)));
-    connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop()), this, SLOT(updateViewsToJS()));
+    connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop(QTreeWidgetItem *)), this, SLOT(updateViewsToJS(QTreeWidgetItem*)));
     connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectViewToJS()));
     connect(ui->layerTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuForViewsTree(QPoint)));
     connect(ui->screenEnable, SIGNAL(toggled(bool)), this, SLOT(setScreenEnable(bool)));
@@ -172,7 +172,7 @@ void NLayoutWidget::setCurrentViewFromJS(const NJson &json) {
 /*************************************************
  * to js method
  *************************************************/
-void NLayoutWidget::updateViewsToJS() {
+void NLayoutWidget::updateViewsToJS(QTreeWidgetItem *droppedItem) {
     NTreeWidget *tree = ui->layerTreeWidget;
     int layerNum = tree->topLevelItemCount();
     QStringList viewIds;
@@ -180,6 +180,9 @@ void NLayoutWidget::updateViewsToJS() {
         viewIds.append(tree->topLevelItem(i)->text(ViewsColId));
     }
     emit mNative->changedViewsOrderToJS(viewIds);
+
+    // ドロップすることで選択されているviewが変更されるのでドロップされてviewを選択状態に戻す
+    tree->setCurrentItem(droppedItem);
 }
 
 void NLayoutWidget::selectViewToJS() {
