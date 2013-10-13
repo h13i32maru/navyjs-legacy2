@@ -39,6 +39,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     Native.addViewToJS.connect(this._addView.bind(this));
     Native.deleteViewToJS.connect(this._deleteView.bind(this));
     Native.setScreenToJS.connect(this._setScreen.bind(this));
+    Native.setScreenEnableToJS.connect(this._setScreenEnable.bind(this));
   },
 
   _getContentLayout: function() {
@@ -124,9 +125,29 @@ var CreatorPage = Navy.Class(Navy.Page, {
 
       this.setBackgroundColor(pageLayout.backgroundColor);
     } else if (sceneLayout) {
-      console.log(sceneLayout);
       var scene = this.getScene();
       scene.setBackgroundColor(sceneLayout.backgroundColor);
+    }
+  },
+
+  _setScreenEnable: function(enable) {
+    var funcName = enable ? 'show' : 'hide';
+    var scene = this.getScene();
+    var views = scene.getAllViews();
+    for (var viewId in views) {
+      var view = views[viewId];
+      if (view !== this) {
+        view[funcName]();
+      }
+    }
+
+    /*
+     * 無効にする場合は背景も合わせて透明にしておく.
+     * 有効にする場合、Creator側で再度setScreenToJSを発行してもらうため元の背景色を復元させなくてもよい.
+     */
+    if (!enable) {
+      this.setBackgroundColor('transparent');
+      scene.setBackgroundColor('transparent');
     }
   },
 

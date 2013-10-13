@@ -42,6 +42,7 @@ NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QW
     connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop()), this, SLOT(updateViewsToJS()));
     connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectViewToJS()));
     connect(ui->layerTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuForViewsTree(QPoint)));
+    connect(ui->screenEnable, SIGNAL(toggled(bool)), this, SLOT(setScreenEnable(bool)));
     connect(ui->screenScene, SIGNAL(currentTextChanged(QString)), this, SLOT(setScreenToJS()));
     connect(ui->screenPage, SIGNAL(currentTextChanged(QString)), this, SLOT(setScreenToJS()));
     connect(ui->webView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuForWebView(QPoint)));
@@ -237,6 +238,18 @@ void NLayoutWidget::setScreenToJS() {
     QString pageId = ui->screenPage->currentText();
 
     emit mNative->setScreenToJS(sceneId, pageId);
+}
+
+void NLayoutWidget::setScreenEnable(bool enable) {
+    ui->screenPage->setEnabled(enable);
+    ui->screenScene->setEnabled(enable);
+
+    if (enable) {
+        emit mNative->setScreenEnableToJS(true);
+        setScreenToJS();
+    } else {
+        emit mNative->setScreenEnableToJS(false);
+    }
 }
 
 NLayoutWidget::~NLayoutWidget()

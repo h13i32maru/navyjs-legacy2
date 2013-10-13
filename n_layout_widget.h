@@ -44,6 +44,7 @@ private slots:
     void deleteViewToJS();
     void setScreenToJS();
     void setCurrentViewFromJS(const NJson &json);
+    void setScreenEnable(bool enable);
 
     // for webview
     void reload();
