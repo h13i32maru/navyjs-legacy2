@@ -31,6 +31,7 @@ bool NProject::validate() {
     {
         QStringList codeList = codes();
         QStringList layoutList = layouts();
+        QStringList pageList = pages();
 
         NJson sceneConfig;
         sceneConfig.parseFromFilePath(mProject.absoluteFilePath("config/scene.json"));
@@ -47,9 +48,31 @@ bool NProject::validate() {
             if (layoutList.indexOf(layoutPath) == -1) {
                 result << QString("error: layout[%1] used by scene[%2] is not exists.").arg(layoutPath).arg(sceneId);
             }
+
+            QString page = sceneConfig.getStr(index + ".extra.page");
+            if (pageList.indexOf(page) == -1) {
+                result << QString("error: page[%1] used by scene[%2] is not exists.").arg(page).arg(sceneId);
+            }
+
+        }
+
+        NJson pageConfig;
+        pageConfig.parseFromFilePath(mProject.absoluteFilePath("config/page.json"));
+        for (int i = 0; i < sceneConfig.length(); i++) {
+            QString index = QString::number(i);
+            QString pageId = pageConfig.getStr(index + ".id");
+
+            QString classFilePath = pageConfig.getStr(index + ".classFile");
+            if (codeList.indexOf(classFilePath) == -1) {
+                result << QString("error: code[%1] used by page[%2] is not exists.").arg(classFilePath).arg(pageId);
+            }
+
+            QString layoutPath = pageConfig.getStr(index + ".extra.contentLayoutFile");
+            if (layoutList.indexOf(layoutPath) == -1) {
+                result << QString("error: layout[%1] used by page[%2] is not exists.").arg(layoutPath).arg(pageId);
+            }
         }
     }
-
 
     if (result.length() != 0) {
         NBuildErrorDialog dialog;
