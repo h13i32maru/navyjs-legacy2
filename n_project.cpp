@@ -3,6 +3,7 @@
 #include "util/n_json.h"
 
 #include <QFileInfo>
+#include <QDebug>
 
 NProject* NProject::mInstance = NULL;
 
@@ -24,6 +25,29 @@ void NProject::setProject(const QString &projectDirPath) {
 
 QStringList NProject::validate() {
     QStringList result;
+
+    {
+        QStringList codeList = codes();
+        QStringList layoutList = layouts();
+
+        NJson sceneConfig;
+        sceneConfig.parseFromFilePath(mProject.absoluteFilePath("config/scene.json"));
+        for (int i = 0; i < sceneConfig.length(); i++) {
+            QString index = QString::number(i);
+            QString sceneId = sceneConfig.getStr(index + ".id");
+
+            QString classFilePath = sceneConfig.getStr(index + ".classFile");
+            if (codeList.indexOf(classFilePath) == -1) {
+                result << QString("error: code[%1] used by scene[%2] is not exists.").arg(classFilePath).arg(sceneId);
+            }
+
+            QString layoutPath = sceneConfig.getStr(index + ".extra.contentLayoutFile");
+            if (layoutList.indexOf(layoutPath) == -1) {
+                result << QString("error: layout[%1] used by scene[%2] is not exists.").arg(layoutPath).arg(sceneId);
+            }
+        }
+    }
+
 
     return result;
 }

@@ -154,6 +154,7 @@ void MainWindow::execNavy() {
     {
         QStringList result = NProject::instance()->validate();
         if (result.length() != 0) {
+            qDebug() << result;
             return;
         }
     }
