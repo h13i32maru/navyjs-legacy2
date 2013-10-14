@@ -9,6 +9,7 @@ NComboBox::NComboBox(QWidget *parent) : QComboBox(parent) {
 }
 
 void NComboBox::setList(const QStringList &list) {
+    // リスト変更時に不要なシグナルが発生して補完がおかしくなるのでシグナルを一時止める
     blockSignals(true);
 
     QString current = currentText();
@@ -17,6 +18,8 @@ void NComboBox::setList(const QStringList &list) {
     setCurrentText(current);
 
     mCompleter->setStringList(list);
+
+    // コンストラクタでcompleterを設定しても何故かQComboBox組み込みのcompleterに上書きされてしまうので、ここで設定している
     if (mCompleter != completer()) {
         setCompleter(mCompleter);
         connect(this, SIGNAL(currentTextChanged(QString)), mCompleter, SLOT(update(QString)));
