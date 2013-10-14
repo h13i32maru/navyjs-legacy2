@@ -151,6 +151,13 @@ void MainWindow::execNavy() {
         return;
     }
 
+    {
+        QStringList result = NProject::instance()->validate();
+        if (result.length() != 0) {
+            return;
+        }
+    }
+
     mExecWidget->loadFile(mProjectDir->absoluteFilePath("index.html"));
     mExecWidget->activateWindow();
     mExecWidget->raise();

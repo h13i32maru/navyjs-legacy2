@@ -22,6 +22,12 @@ void NProject::setProject(const QString &projectDirPath) {
     mProject.setPath(projectDirPath);
 }
 
+QStringList NProject::validate() {
+    QStringList result;
+
+    return result;
+}
+
 QStringList NProject::scenes() {
     QString path = mProject.absoluteFilePath("config/scene.json");
     NJson sceneConfig;
