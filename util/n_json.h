@@ -7,6 +7,23 @@
 #include <QJsonDocument>
 #include <QVariant>
 
+/**
+ * JSONを簡単に扱うためのクラス.
+ * (効率が悪い方法になっていると思うので、速度が問題になってきたら内部を改良すべき)
+ *
+ * @example
+ * NJson json;
+ * json.parseFromFilePath("foo.json"); //{id: "abc", detail: {title: "foo"}}
+ * QString id = json.getStr("id");
+ * QString title = json.getStr("detail.title");
+ *
+ * @example
+ * NJson json;
+ * json.parseFromFilePath("bar.json"); // [{num: 10}, {num: 20}]
+ * int num = json.getInt("0.num");
+ * json.set(QString::number(json.length()) + ".num", 100);
+ */
+
 class NJson
 {
 public:

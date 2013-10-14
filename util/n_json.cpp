@@ -89,6 +89,7 @@ NJson NJson::getObject(const QString &keysStr) const
     return NJson(value);
 }
 
+// 再帰を利用して目的の値を取り出す
 QJsonValue NJson::get(const QJsonValue &value, const QString &keysStr) const
 {
     QStringList keys = keysStr.split(".");
@@ -120,6 +121,9 @@ void NJson::set(QString keysStr, QString value)
     mRootValue = set(mRootValue, keysStr, QJsonValue(value));
 }
 
+
+// 再帰を利用して値を更新する
+// QJsonValueなどは基本的にリファレンスで値を保持しているわけではないので、値を更新する場合は再帰的に値を更新していく必要がある
 QJsonValue NJson::set(QJsonValue parentValue, QString keysStr, QJsonValue value)
 {
     QStringList keys = keysStr.split(".");

@@ -9,6 +9,11 @@ NUtil::NUtil()
 {
 }
 
+/**
+ * リストのサイズを指定したサイズに拡張する.
+ * @param list 対象のリスト.
+ * @param size 拡張するサイズ.
+ */
 void NUtil::expand(QStringList &list, int size) {
     int s = size - list.size();
     if (s <= 0) {
@@ -20,6 +25,11 @@ void NUtil::expand(QStringList &list, int size) {
     }
 }
 
+/**
+ * widgetの子要素を再帰的に取得する.
+ * @param widget 対象のwidget.
+ * @return 子要素のリスト.
+ */
 QWidgetList NUtil::recursiveWidgetChildren(const QWidget *widget) {
     QObjectList tmp = widget->children();
     QWidgetList list;
@@ -34,12 +44,18 @@ QWidgetList NUtil::recursiveWidgetChildren(const QWidget *widget) {
     return list;
 }
 
+/**
+ * @obsolete
+ */
 QString NUtil::selectedPath(QTreeView *treeView) {
     QFileSystemModel *model = (QFileSystemModel *)treeView->model();
     QModelIndex index = treeView->currentIndex();
     return model->filePath(index);
 }
 
+/**
+ * ファイルのパスを生成する
+ */
 QString NUtil::createFilePath(const QString &parentPath, QString fileName, const QString &ext) {
     if (fileName.isEmpty()){
         return "";
@@ -67,6 +83,13 @@ QString NUtil::createFilePath(const QString &parentPath, QString fileName, const
     return filePath;
 }
 
+/**
+ * 指定されたパスにファイルを作成する
+ * @param parentPath ファイルを作成するパス. ファイルのパスを指定した場合はそのファイルと同じディレクトリにファイルを作成する.
+ * @param fileName 作成するファイルの名前
+ * @param ext 拡張子を必ず指定したものにしたい場合に指定する.(例えば"js"を指定すればfileNameの末尾が".js"でなければかならず".js"をつけてファイルを作成する)
+ * @return ファイルの作成に成功した場合はそのファイルのパス. 失敗した場合は空文字.
+ */
 QString NUtil::newFile(const QString &parentPath, QString fileName, const QString &ext) {
     if (fileName.isEmpty()){
         return "";
@@ -105,6 +128,12 @@ QString NUtil::newFile(const QString &parentPath, QString fileName, const QStrin
     return filePath;
 }
 
+/**
+ * 指定したディレクトリを作成する.
+ * @param parentPath ディレクトリを作成するパス. ファイルのパスを指定した場合はそのファイルと同じディレクトリにディレクトリを作成する.
+ * @param dirName 作成するディレクトリの名前
+ * @return ディレクトリの作成に成功した場合はそのディレクトリのパス. 失敗した場合は空文字.
+ */
 QString NUtil::newDir(const QString &parentPath, const QString &dirName) {
     if (dirName.isEmpty()) {
         return "";
@@ -134,6 +163,12 @@ QString NUtil::newDir(const QString &parentPath, const QString &dirName) {
     return ret ? dirPath : "";
 }
 
+/**
+ * 指定したパスに指定したファイルをインポートする.
+ * @param parentPath ファイルをインポートするパス. ファイルのパスを指定した場合はそのファイルと同じディレクトリにファイルを作成する.
+ * @param filePath インポート対象のファイルパス.
+ * @return インポートに成功したらインポート後のファイルパス. 失敗した場合は空文字.
+ */
 QString NUtil::importFile(const QString &parentPath, const QString &filePath) {
     if (filePath.isEmpty()) {
         return "";
@@ -163,6 +198,11 @@ QString NUtil::importFile(const QString &parentPath, const QString &filePath) {
     }
 }
 
+/**
+ * ファイル、ディレクトリを削除する.
+ * @param path 削除対象のパス. ディレクトリ、ファイルのどちらを指定することもできる.
+ * @return 削除に成功したらtrue.
+ */
 bool NUtil::deletePath(const QString &path) {
     int ret = QMessageBox::question(NULL, tr("delete file"), tr("do you delete this file?") + "\n" + path);
     if (ret != QMessageBox::Yes) {
@@ -177,6 +217,13 @@ bool NUtil::deletePath(const QString &path) {
     }
 }
 
+/**
+ * 指定したファイル、ディレクトリの名前を変更する. 変更されたファイルは元と同じディレクトリに保存される.
+ * @param srcPath 変更対象のパス. ファイル、ディレクトリのどちらも指定することができる.
+ * @param newName 変更後のファイル名.
+ * @param ext newNameがext拡張子で終わっていなければextを拡張子としてつける.
+ * @return 名前変更に成功したら成功後のパス. 失敗したら空文字.
+ */
 QString NUtil::renamePath(const QString &srcPath, QString newName, const QString &ext) {
     if (newName.isEmpty()) {
         return "";
@@ -205,6 +252,13 @@ QString NUtil::renamePath(const QString &srcPath, QString newName, const QString
     return ret ? parentDir.absoluteFilePath(newName) : "";
 }
 
+/**
+ * 指定したファイル、ディレクトリのコピーする. コピーされたファイルは元と同じディレクトリに保存される.
+ * @param srcPath コピー対象のパス. ファイル、ディレクトリのどちらも指定することができる.
+ * @param newName コピー先の名前.
+ * @param ext newNameがext拡張子で終わっていなければextを拡張子としてつける.
+ * @return コピーに成功したら成功後のパス. 失敗したら空文字.
+ */
 QString NUtil::copyPath(const QString &srcPath, QString newName, const QString &ext) {
     if (newName.isEmpty()) {
         return "";
@@ -239,6 +293,12 @@ QString NUtil::copyPath(const QString &srcPath, QString newName, const QString &
     }
 }
 
+/**
+ * 指定したディレクトリを再帰的にコピーする.
+ * @param srcPath コピー元のディレクトリパス.
+ * @param dstPath コピー先のディレクトリパス.
+ * @return 成功したらtrue.
+ */
 bool NUtil::copyDir(const QString &srcPath, const QString &dstPath)
 {
     QDir parentDstDir(QFileInfo(dstPath).path());
@@ -265,6 +325,12 @@ bool NUtil::copyDir(const QString &srcPath, const QString &dstPath)
     return true;
 }
 
+/**
+ * ディレクトリ内のエントリ(ファイル、ディレクトリ)を再帰的に取得する.
+ * @param dirPath 対象のディレクトリパス.
+ * @param root 取得したエントリの先頭ディレクトリを指定する.
+ * @return エントリリスト.
+ */
 QStringList NUtil::recursiveEntryList(const QString &dirPath, const QString &root) {
     QDir dir(dirPath);
     dir.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
@@ -279,6 +345,13 @@ QStringList NUtil::recursiveEntryList(const QString &dirPath, const QString &roo
     return list;
 }
 
+/**
+ * テンプレートからファイルを作成する.
+ * @param templateFilePath テンプレートファイルのパス.
+ * @param distFilePath 作成先のファイルパス.
+ * @param replaceMap テンプレート内で置き換える文字の名前と値のマップ.
+ * @return 作成に成功したらtrue.
+ */
 bool NUtil::createFileFromTemplate(const QString &templateFilePath, const QString &distFilePath, const QMap<QString, QString> &replaceMap) {
     QFile templateFile(templateFilePath);
     if (!templateFile.open(QFile::ReadOnly | QFile::Text)){
@@ -300,6 +373,12 @@ bool NUtil::createFileFromTemplate(const QString &templateFilePath, const QStrin
     return true;
 }
 
+/**
+ * テンプレートからファイルを作成する.
+ * @param templateFilePath テンプレートファイルのパス.
+ * @param distFilePath 作成先のファイルパス.
+ * @return 作成に成功したらtrue.
+ */
 bool NUtil::createFileFromTemplate(const QString &templateFilePath, const QString &distFilePath) {
     QMap<QString, QString> empty;
     return createFileFromTemplate(templateFilePath, distFilePath, empty);
