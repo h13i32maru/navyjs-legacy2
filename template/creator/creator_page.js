@@ -139,6 +139,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
       box.__view__ = view;
       view.__box__ = box;
 
+      this._unselectAllView();
       this._selectView(view.getId());
     }.bind(this));
   },
