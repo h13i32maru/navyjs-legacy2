@@ -4,6 +4,10 @@
 #include <QTreeWidget>
 #include <QDropEvent>
 
+/**
+ * 要素がドロップされてツリーの内容が変わったことを
+ * シグナルとして送信するためにQTreeWidgetをカスタマイズしている.
+ */
 class NTreeWidget : public QTreeWidget
 {
     Q_OBJECT

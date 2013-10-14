@@ -9,13 +9,6 @@ NTreeView::NTreeView(QWidget *parent) : QTreeView(parent)
 {
 }
 
-/*
- * 要素をドロップした時にドロップ先とドロップした要素の情報を
- * シグナルとして送信するためにオーバーライドしている.
- *
- * ModelとしてQFileSystemModelを使用していることを前提としている.
- * TODO: クラス名をNFileSystemViewとかに変えたほうが良さそう.
- */
 void NTreeView::dropEvent(QDropEvent *event) {
     QFileSystemModel *model = (QFileSystemModel *)this->model();
 

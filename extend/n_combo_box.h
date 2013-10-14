@@ -4,6 +4,17 @@
 #include <QComboBox>
 #include "extend/n_completer.h"
 
+/**
+ * 補完機能を部分一致に変更したComboBox
+ *
+ * @example
+ *
+ * QStringList list;
+ * list << "book" << "this is book" << "cook";
+ * NComboBox c = new ComboBox(this);
+ * c->setList(list);
+ */
+
 class NComboBox : public QComboBox
 {
     Q_OBJECT

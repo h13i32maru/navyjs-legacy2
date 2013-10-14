@@ -5,6 +5,20 @@
 #include <QComboBox>
 #include <QStringListModel>
 
+/**
+ * 部分一致を行うCompleter
+ *
+ * @example
+ *
+ * QLineEdit *e = new QLineEdit(this);
+ * NCompleter *c = new NCompleter(e);
+ * QStringList list;
+ * list << "book" << "this is book" << "cook";
+ * c->setStringList(list);
+ * e->setCompleter(c);
+ * connect(e, SIGNAL(textChanged(QString)), c, SLOT(update(QString));
+ */
+
 class NCompleter : public QCompleter
 {
     Q_OBJECT
