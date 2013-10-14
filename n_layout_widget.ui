@@ -73,7 +73,7 @@
        <item>
         <widget class="QTabWidget" name="tabWidget">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
@@ -161,6 +161,9 @@
                  </property>
                  <property name="alternatingRowColors">
                   <bool>true</bool>
+                 </property>
+                 <property name="selectionMode">
+                  <enum>QAbstractItemView::ExtendedSelection</enum>
                  </property>
                  <property name="indentation">
                   <number>0</number>

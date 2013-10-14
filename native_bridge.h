@@ -41,7 +41,7 @@ signals:
     void changedViewsOrderToJS(const QStringList &viewIds);
 
     // Viewが選択されたときにJSに送信される
-    void changedSelectedViewToJS(const QString &viewId);
+    void changedSelectedViewToJS(const QStringList &viewIds);
 
     // viewをすべて非選択状態にする
     void unselectAllViewsToJS();

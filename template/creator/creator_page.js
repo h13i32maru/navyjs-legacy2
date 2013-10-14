@@ -45,7 +45,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     });
 
     Native.changedViewsOrderToJS.connect(this._updateViewsOrder.bind(this));
-    Native.changedSelectedViewToJS.connect(this._selectView.bind(this));
+    Native.changedSelectedViewToJS.connect(this._selectViews.bind(this));
     Native.changedViewPropertyToJS.connect(this._updateSelectedViewLayout.bind(this));
     Native.addViewToJS.connect(this._addView.bind(this));
     Native.deleteViewToJS.connect(this._deleteView.bind(this));
@@ -242,6 +242,12 @@ var CreatorPage = Navy.Class(Navy.Page, {
     this._selectedViews.push(view);
 
     Native.setCurrentViewFromJS(JSON.stringify(view._layout));
+  },
+
+  _selectViews: function(viewIds) {
+    for (var i = 0; i < viewIds.length; i++) {
+      this._selectView(viewIds[i]);
+    }
   },
 
   _unselectView: function(viewId) {

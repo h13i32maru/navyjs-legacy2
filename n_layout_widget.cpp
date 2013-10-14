@@ -189,19 +189,16 @@ void NLayoutWidget::updateViewsToJS(QTreeWidgetItem *droppedItem) {
 }
 
 void NLayoutWidget::selectViewToJS() {
-    NTreeWidget *tree = ui->layerTreeWidget;
-
-    QTreeWidgetItem *item = tree->currentItem();
-
-    // viewの削除によって、countは1なのにitemはnullの場合がある
-    if (item == NULL) {
-       return;
+    QList <QTreeWidgetItem *> items = ui->layerTreeWidget->selectedItems();
+    QStringList viewIds;
+    for (int i = 0; i< items.length(); i++) {
+        viewIds.append(items[i]->text(ViewsColId));
     }
 
+    disconnect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setCurrentViewFromJS(NJson)));
     emit mNative->unselectAllViewsToJS();
-
-    QString viewId = item->text(ViewsColId);
-    emit mNative->changedSelectedViewToJS(viewId);
+    emit mNative->changedSelectedViewToJS(viewIds);
+    connect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setCurrentViewFromJS(NJson)));
 }
 
 void NLayoutWidget::addViewToJS(QTreeWidgetItem *item, int /* index */) {
