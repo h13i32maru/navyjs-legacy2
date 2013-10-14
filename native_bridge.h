@@ -43,6 +43,9 @@ signals:
     // Viewが選択されたときにJSに送信される
     void changedSelectedViewToJS(const QString &viewId);
 
+    // viewをすべて非選択状態にする
+    void unselectAllViewsToJS();
+
     // Viewのプロパティが変更された時にJSに送信される
     void changedViewPropertyToJS(const QVariant &json);
 

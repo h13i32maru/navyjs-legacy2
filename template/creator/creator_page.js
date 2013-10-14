@@ -10,7 +10,8 @@
  *   deleteViewToJS: {connect: function},
  *   setScreenToJS: {connect: function},
  *   setScreenEnableToJS: {connect: function},
- *   changedLayoutContentFromJS: function
+ *   changedLayoutContentFromJS: function,
+ *   unselectAllViewsToJS: {connect: function}
  * }}
  */
 Native;
@@ -50,6 +51,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     Native.deleteViewToJS.connect(this._deleteView.bind(this));
     Native.setScreenToJS.connect(this._setScreen.bind(this));
     Native.setScreenEnableToJS.connect(this._setScreenEnable.bind(this));
+    Native.unselectAllViewsToJS.connect(this._unselectAllView.bind(this));
   },
 
   onResumeAfter: function($super) {
@@ -276,7 +278,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     }
   },
 
-  _click: function(view, ev) {
+  _click: function(view /* , ev */) {
     if (!this._unselectAllViewForClick) {
       return;
     }

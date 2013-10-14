@@ -198,6 +198,8 @@ void NLayoutWidget::selectViewToJS() {
        return;
     }
 
+    emit mNative->unselectAllViewsToJS();
+
     QString viewId = item->text(ViewsColId);
     emit mNative->changedSelectedViewToJS(viewId);
 }
