@@ -18,7 +18,7 @@ public:
     void parse(const QString &jsonText);
     bool parseFromFilePath(QString filePath);
     QByteArray stringify();
-    int length();
+    int length() const;
     void clear();
     QVariant toVariant();
 

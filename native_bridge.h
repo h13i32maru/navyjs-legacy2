@@ -25,13 +25,13 @@ private:
     QString mLayoutPath;
 
 signals:
-    // すべてのViewの情報がJSから送信される. [{id: "hoge", class: "hoge",,,,},,,,]
-    void viewsFromJS(const QList< QMap<QString, QString> > &views);
+    // すべてのViewの情報がJSから送信される(proxy)
+    void viewsFromJS(const NJson &views);
 
-    // 選択されたViewがJSから送信される
+    // 選択されたViewがJSから送信される(proxy)
     void currentViewFromJS(const NJson &json);
 
-    // 現在選択されているViewの座標が移動した場合にJSから送信される
+    // 現在選択されているViewの座標が移動した場合にJSから送信される(proxy)
     void currentViewPosFromJS(const int &x, const int &y);
 
     // レイアウトの中が変更されたときに送信される

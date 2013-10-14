@@ -37,7 +37,6 @@ NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QW
 
     reload();
 
-    connect(mNative, SIGNAL(changedLayoutContentFromJS()), this, SLOT(changed()));
     connect(ui->viewClassTreeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(addViewToJS(QTreeWidgetItem*, int)));
     connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop(QTreeWidgetItem *)), this, SLOT(updateViewsToJS(QTreeWidgetItem*)));
     connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectViewToJS()));
@@ -47,7 +46,8 @@ NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QW
     connect(ui->screenPage, SIGNAL(currentTextChanged(QString)), this, SLOT(setScreenToJS()));
     connect(ui->webView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuForWebView(QPoint)));
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(injectNativeBridge()));
-    connect(mNative, SIGNAL(viewsFromJS(QList<QMap<QString,QString> >)), this, SLOT(setViewsFromJS(QList<QMap<QString,QString> >)));
+    connect(mNative, SIGNAL(changedLayoutContentFromJS()), this, SLOT(changed()));
+    connect(mNative, SIGNAL(viewsFromJS(NJson)), this, SLOT(setViewsFromJS(NJson)));
     connect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setCurrentViewFromJS(NJson)));
 }
 
@@ -139,14 +139,15 @@ void NLayoutWidget::showInspector() {
 /*******************************************
  * from js method
  *******************************************/
-void NLayoutWidget::setViewsFromJS(const QList<QMap<QString, QString> > &views) {
+void NLayoutWidget::setViewsFromJS(const NJson &views) {
     QTreeWidget *layerTreeWidget = ui->layerTreeWidget;
     layerTreeWidget->clear();
     for (int i = 0; i < views.length(); i++) {
         QStringList row;
         NUtil::expand(row, 2);
-        row[ViewsColId] = views[i]["id"];
-        row[ViewsColClass] = views[i]["class"];
+        QString index = QString::number(i);
+        row[ViewsColId] = views.getStr(index + ".id");
+        row[ViewsColClass] = views.getStr(index + ".class");
 
         QTreeWidgetItem *item = new QTreeWidgetItem(row);
         item->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemNeverHasChildren);

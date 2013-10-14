@@ -37,7 +37,7 @@ private slots:
     void contextMenuForViewsTree(const QPoint &point);
     void contextMenuForWebView(const QPoint &point);
     void injectNativeBridge();
-    void setViewsFromJS(const QList< QMap<QString, QString> > &views);
+    void setViewsFromJS(const NJson &views);
     void updateViewsToJS(QTreeWidgetItem *droppedItem);
     void selectViewToJS();
     void addViewToJS(QTreeWidgetItem *item, int index);

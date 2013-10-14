@@ -52,7 +52,7 @@ QByteArray NJson::stringify()
     return doc.toJson();
 }
 
-int NJson::length()
+int NJson::length() const
 {
     if (mRootValue.isArray()) {
         return mRootValue.toArray().size();
