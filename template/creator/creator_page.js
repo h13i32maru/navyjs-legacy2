@@ -20,11 +20,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
 
   _zoom: null,
 
-  _selectedBox: null,
-  _selectedView: null,
-
-  _mouseDx: null,
-  _mouseDy: null,
+  _selectedViews: null,
 
   onCreate: function($super) {
     $super();
@@ -36,26 +32,11 @@ var CreatorPage = Navy.Class(Navy.Page, {
     this._zoom = parseFloat(document.body.style.zoom);
     // --
 
-    // 要素選択時のboxの初期化
-    this._selectedBox = document.createElement('div');
-    this._selectedBox.id = 'creator_selected_box';
-    this._selectedBox.style.cssText = 'position:absolute; top:0; left:0; width:0; height:0; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
-    document.body.appendChild(this._selectedBox);
-    // --
+    this._selectedViews = [];
 
     // 要素を移動させるためのマウス操作の追跡
     document.body.addEventListener('mouseup', this._mouseUp.bind(this));
-
-    this._selectedBox.addEventListener('mousedown', function(ev){
-      this._mouseDown(this._selectedView, ev);
-    }.bind(this));
-
     this._mouseMove = this._mouseMove.bind(this);
-    for (var viewId in this._views) {
-      var view = this._views[viewId];
-      var elm = view.getElement();
-      elm.addEventListener('mousedown', this._mouseDown.bind(this, view));
-    }
     // --
 
     Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, function(layout){
@@ -69,6 +50,34 @@ var CreatorPage = Navy.Class(Navy.Page, {
     Native.deleteViewToJS.connect(this._deleteView.bind(this));
     Native.setScreenToJS.connect(this._setScreen.bind(this));
     Native.setScreenEnableToJS.connect(this._setScreenEnable.bind(this));
+  },
+
+  onResumeAfter: function($super) {
+    $super();
+    /**
+     * FIXME: Sceneのレジュームされるまでviewの大きさがわからないので無理やりやっている.
+     * Sceneにイベントを登録できるようにするか、pageのレジュームの呼び出しタイミングを修正する必要あり.
+     */
+    this.getScene().onResumeAfter = function(){
+      for (var viewId in this._views) {
+        var view = this._views[viewId];
+        var size = view.getSize();
+        var pos = view.getPos();
+        var box  = document.createElement('div');
+        box.className = 'creator_selected_box';
+        box.style.cssText = 'opacity:0; position:absolute; border:solid 4px blue; background-color: rgba(0,0,0,0.3)';
+        box.style.width = size.width + 'px';
+        box.style.height = size.height + 'px';
+        box.style.left = pos.x + 'px';
+        box.style.top = pos.y + 'px';
+        document.body.appendChild(box);
+        box.addEventListener('mousedown', this._mouseDown.bind(this, view));
+        box.addEventListener('click', this._click.bind(this, view));
+        box.__view__ = view;
+        view.__box__ = box;
+      }
+    }.bind(this);
+
   },
 
   _getContentLayout: function() {
@@ -114,7 +123,21 @@ var CreatorPage = Navy.Class(Navy.Page, {
       this.addView(view);
       Native.changedLayoutContentFromJS();
 
-      view.getElement().addEventListener('mousedown', this._mouseDown.bind(this, view));
+      // FIXME: ここリファクタする.
+      var size = view.getSize();
+      var pos = view.getPos();
+      var box  = document.createElement('div');
+      box.className = 'creator_selected_box';
+      box.style.cssText = 'opacity:0; position:absolute; border:solid 4px blue; background-color: rgba(0,0,0,0.3)';
+      box.style.width = size.width + 'px';
+      box.style.height = size.height + 'px';
+      box.style.left = pos.x + 'px';
+      box.style.top = pos.y + 'px';
+      document.body.appendChild(box);
+      box.addEventListener('mousedown', this._mouseDown.bind(this, view));
+      box.addEventListener('click', this._click.bind(this, view));
+      box.__view__ = view;
+      view.__box__ = box;
 
       this._selectView(view.getId());
     }.bind(this));
@@ -191,50 +214,129 @@ var CreatorPage = Navy.Class(Navy.Page, {
   },
 
   _updateSelectedViewLayout: function(layout) {
-    if (!this._selectedView) {
+    if (this._selectedViews.length === 0) {
       return;
     }
 
-    Native.changedLayoutContentFromJS();
-    this._selectedView.setLayout(layout);
+    var view = this._selectedViews[this._selectedViews.length - 1];
+    view.setLayout(layout);
 
-    var size = this._selectedView.getSize();
-    this._selectedBox.style.width = size.width + 'px';
-    this._selectedBox.style.height = size.height + 'px';
+    var size = view.getSize();
+    var pos = view.getPos();
+    var box = view.__box__;
+    box.style.width = size.width + 'px';
+    box.style.height = size.height + 'px';
+    box.style.left = pos.x + 'px';
+    box.style.top = pos.y + 'px';
+
+    Native.changedLayoutContentFromJS();
   },
 
   _selectView: function(viewId) {
     var view = this._views[viewId];
-    var size = view.getSize();
-    var pos = view.getPos();
-    this._selectedBox.style.width = size.width + 'px';
-    this._selectedBox.style.height = size.height + 'px';
-    this._selectedBox.style.left = pos.x + 'px';
-    this._selectedBox.style.top = pos.y + 'px';
-
-    this._selectedView = view;
+    var box = view.__box__;
+    box.style.opacity = '1';
+    this._selectedViews.push(view);
 
     Native.setCurrentViewFromJS(JSON.stringify(view._layout));
   },
 
-  _mouseDown: function(view, ev) {
-    this._selectView(view.getId());
+  _unselectView: function(viewId) {
+    //FIXME: findViewByIdを実装する
+    var view = this._views[viewId];
+    var box = view.__box__;
+    box.style.opacity = '0';
+    var index = this._selectedViews.indexOf(view);
+    this._selectedViews.splice(index, 1);
+  },
 
-    var pos = this._selectedView.getPos();
-    this._mouseDx = ev.clientX/this._zoom - pos.x;
-    this._mouseDy = ev.clientY/this._zoom - pos.y;
+  _unselectAllView: function() {
+    for (var i = 0; i < this._selectedViews.length; i++) {
+      var box = this._selectedViews[i].__box__;
+      box.style.opacity = '0';
+    }
+    this._selectedViews = [];
+  },
+
+  _isSelectedView: function(viewId) {
+    var view = this._views[viewId];
+    var index = this._selectedViews.indexOf(view);
+    return index !== -1;
+  },
+
+  _updateSelectedViewMouseDistance: function(ev) {
+    var clientX = ev.clientX/this._zoom;
+    var clientY = ev.clientY/this._zoom;
+    for (var i = 0; i < this._selectedViews.length; i++) {
+      var pos = this._selectedViews[i].getPos();
+      var box = this._selectedViews[i].__box__;
+      box.__mouseDx__ = clientX - pos.x;
+      box.__mouseDy__ = clientY - pos.y;
+    }
+  },
+
+  _click: function(view, ev) {
+    if (!this._unselectAllViewForClick) {
+      return;
+    }
+
+    if (this._movingSelectedView) {
+      return;
+    }
+
+    this._unselectAllView();
+    this._selectView(view.getId());
+  },
+
+  _mouseDown: function(view, ev) {
+    var viewId = view.getId();
+
+    // クリックイベントで選択要素をすべてリセットして、対象の要素だけを選択状態にするかどうか
+    this._unselectAllViewForClick = false;
+    this._movingSelectedView = false;
+
+    if (ev.ctrlKey) {
+      if (this._isSelectedView(viewId)) {
+        this._unselectView(viewId);
+      } else {
+        // viewを選択状態にする
+        this._selectView(viewId);
+        this._updateSelectedViewMouseDistance(ev);
+      }
+    } else {
+      if (this._isSelectedView(viewId)) {
+        // viewを移動させようとしているので選択されているすべてのviewのdx,dyを更新する
+        this._updateSelectedViewMouseDistance(ev);
+        this._unselectAllViewForClick = true;
+      } else {
+        // 現在選択されているviewをすべてリセットして新たにviewを選択する
+        this._unselectAllView();
+        this._selectView(viewId);
+        this._updateSelectedViewMouseDistance(ev);
+      }
+    }
     document.body.addEventListener('mousemove', this._mouseMove);
   },
 
   _mouseMove: function(ev) {
-    var x = ev.clientX/this._zoom - this._mouseDx;
-    var y = ev.clientY/this._zoom - this._mouseDy;
-    this._selectedView.setPos({x: x, y: y});
+    this._movingSelectedView = true;
 
-    var pos = this._selectedView.getPos();
+    var clientX = ev.clientX / this._zoom;
+    var clientY = ev.clientY / this._zoom;
+    var selectedViews = this._selectedViews;
 
-    this._selectedBox.style.left = pos.x + 'px';
-    this._selectedBox.style.top = pos.y + 'px';
+    for (var i = 0; i < selectedViews.length; i++) {
+      var view = selectedViews[i];
+      var box = view.__box__;
+      var x = clientX - box.__mouseDx__;
+      var y = clientY - box.__mouseDy__;
+
+      view.setPos({x: x, y: y});
+      var pos = view.getPos();
+
+      box.style.left = pos.x + 'px';
+      box.style.top = pos.y + 'px';
+    }
 
     Native.changedLayoutContentFromJS();
     Native.setCurrentViewPosFromJS(pos.x, pos.y);

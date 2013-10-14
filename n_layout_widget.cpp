@@ -164,7 +164,9 @@ void NLayoutWidget::setCurrentViewFromJS(const NJson &json) {
         QTreeWidgetItem *item = tree->topLevelItem(i);
         QString _viewId = item->text(ViewsColId);
         if (_viewId == viewId) {
+            tree->blockSignals(true);
             tree->setCurrentItem(item);
+            tree->blockSignals(false);
             return;
         }
     }
