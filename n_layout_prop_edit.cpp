@@ -123,8 +123,12 @@ void NLayoutPropEdit::showExtraPropWidget(QString className) {
     }
 }
 
-void NLayoutPropEdit::setViewFromJS(const NJson &view) {
+void NLayoutPropEdit::setViewFromJS(const NJson &views) {
     blockAllSignals(true);
+
+    // 複数のviewが選択されている場合があるので、最後に選択されたものを対象とする
+    QString last = QString::number(views.length() - 1);
+    NJson view = views.getObject(last);
 
     mView = view;
     ui->idLabel->setText(view.getStr("id"));

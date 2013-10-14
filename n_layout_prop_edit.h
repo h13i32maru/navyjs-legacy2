@@ -31,7 +31,7 @@ public:
     ~NLayoutPropEdit();
 
 public slots:
-    void setViewFromJS(const NJson &view);
+    void setViewFromJS(const NJson &views);
     void setViewPosFromJS(const int &x, const int &y);
     void syncWidgetToJson();
 
