@@ -25,17 +25,37 @@ private:
     QString mLayoutPath;
 
 signals:
+    // すべてのViewの情報がJSから送信される. [{id: "hoge", class: "hoge",,,,},,,,]
     void viewsFromJS(const QList< QMap<QString, QString> > &views);
-    void currentViewFromJS(const NJson &json);
-    void currentViewPosFromJS(const int &x, const int &y);
-    void changedLayoutContent();
 
+    // 選択されたViewがJSから送信される
+    void currentViewFromJS(const NJson &json);
+
+    // 現在選択されているViewの座標が移動した場合にJSから送信される
+    void currentViewPosFromJS(const int &x, const int &y);
+
+    // レイアウトの中が変更されたときに送信される
+    void changedLayoutContentFromJS();
+
+    // Viewのレイヤー順が変更された時にJSに送信される
     void changedViewsOrderToJS(const QStringList &viewIds);
+
+    // Viewが選択されたときにJSに送信される
     void changedSelectedViewToJS(const QString &viewId);
+
+    // Viewのプロパティが変更された時にJSに送信される
     void changedViewPropertyToJS(const QVariant &json);
+
+    // Viewが追加されたときにJSに送信される
     void addViewToJS(const QString &viewId, const QString &viewClass);
+
+    // Viewが削除された時にJSに送信される
     void deleteViewToJS(const QString &viewId);
+
+    // Scene, Pageの設定が変更された時にJSに送信される
     void setScreenToJS(const QString &sceneId, const QString &pageId);
+
+    // Scene, Pageの有効無効が切り替わった時にJSに送信される
     void setScreenEnableToJS(const bool &enable);
 
 public slots:

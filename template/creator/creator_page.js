@@ -10,7 +10,7 @@
  *   deleteViewToJS: {connect: function},
  *   setScreenToJS: {connect: function},
  *   setScreenEnableToJS: {connect: function},
- *  changedLayoutContent: function
+ *   changedLayoutContentFromJS: function
  * }}
  */
 Native;
@@ -112,7 +112,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     var _class = Navy.Resource.getClass(viewClass);
     var view = new _class(layout, function(){
       this.addView(view);
-      Native.changedLayoutContent();
+      Native.changedLayoutContentFromJS();
 
       view.getElement().addEventListener('mousedown', this._mouseDown.bind(this, view));
 
@@ -124,7 +124,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     //FIXME: view groupにfindViewByIdメソッド作ってそれを使うようにする
     var view = this._views[viewId];
     this.removeView(view);
-    Native.changedLayoutContent();
+    Native.changedLayoutContentFromJS();
   },
 
   _setScreen: function(sceneId, pageId) {
@@ -187,7 +187,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
       this.removeView(view);
       this.addView(view);
     }
-    Native.changedLayoutContent();
+    Native.changedLayoutContentFromJS();
   },
 
   _updateSelectedViewLayout: function(layout) {
@@ -195,7 +195,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
       return;
     }
 
-    Native.changedLayoutContent();
+    Native.changedLayoutContentFromJS();
     this._selectedView.setLayout(layout);
 
     var size = this._selectedView.getSize();
@@ -236,7 +236,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     this._selectedBox.style.left = pos.x + 'px';
     this._selectedBox.style.top = pos.y + 'px';
 
-    Native.changedLayoutContent();
+    Native.changedLayoutContentFromJS();
     Native.setCurrentViewPosFromJS(pos.x, pos.y);
   },
 

@@ -37,7 +37,7 @@ NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QW
 
     reload();
 
-    connect(mNative, SIGNAL(changedLayoutContent()), this, SLOT(changed()));
+    connect(mNative, SIGNAL(changedLayoutContentFromJS()), this, SLOT(changed()));
     connect(ui->viewClassTreeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(addViewToJS(QTreeWidgetItem*, int)));
     connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop(QTreeWidgetItem *)), this, SLOT(updateViewsToJS(QTreeWidgetItem*)));
     connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectViewToJS()));
