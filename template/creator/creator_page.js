@@ -17,17 +17,25 @@ var CreatorPage = Navy.Class(Navy.Page, {
     window.getContentLayout = this._getContentLayout.bind(this);
     this._zoom = parseFloat(document.body.style.zoom);
 
-    this._mouseMove = this._mouseMove.bind(this);
+    this._selectedBox = document.createElement('div');
+    this._selectedBox.id = 'creator_selected_box';
+    this._selectedBox.style.cssText = 'position:absolute; top:0; left:0; width:0; height:0; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
+    document.body.appendChild(this._selectedBox);
+
+    // mouse tracking
     document.body.addEventListener('mouseup', this._mouseUp.bind(this));
 
-    this._selectedBox = document.createElement('div');
-    this._selectedBox.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
+    this._selectedBox.addEventListener('mousedown', function(ev){
+      this._mouseDown(this._selectedView, ev);
+    }.bind(this));
 
+    this._mouseMove = this._mouseMove.bind(this);
     for (var viewId in this._views) {
       var view = this._views[viewId];
       var elm = view.getElement();
       elm.addEventListener('mousedown', this._mouseDown.bind(this, view));
     }
+    // --
 
     Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, function(layout){
       Native.setViewsFromJS(JSON.stringify(layout));
@@ -170,23 +178,18 @@ var CreatorPage = Navy.Class(Navy.Page, {
     this._selectedView.setLayout(layout);
 
     var size = this._selectedView.getSize();
-    console.log(size);
     this._selectedBox.style.width = size.width + 'px';
     this._selectedBox.style.height = size.height + 'px';
   },
 
   _selectView: function(viewId) {
-    var parentNode = this._selectedBox.parentNode;
-    if (parentNode) {
-      parentNode.removeChild(this._selectedBox);
-    }
-
     var view = this._views[viewId];
     var size = view.getSize();
+    var pos = view.getPos();
     this._selectedBox.style.width = size.width + 'px';
     this._selectedBox.style.height = size.height + 'px';
-    var elm = view.getElement();
-    elm.appendChild(this._selectedBox);
+    this._selectedBox.style.left = pos.x + 'px';
+    this._selectedBox.style.top = pos.y + 'px';
 
     this._selectedView = view;
 
@@ -200,20 +203,18 @@ var CreatorPage = Navy.Class(Navy.Page, {
     this._mouseDx = ev.clientX/this._zoom - pos.x;
     this._mouseDy = ev.clientY/this._zoom - pos.y;
     document.body.addEventListener('mousemove', this._mouseMove);
-
-    this._moving = true;
   },
 
   _mouseMove: function(ev) {
-    if (!this._moving) {
-      return;
-    }
-
     var x = ev.clientX/this._zoom - this._mouseDx;
     var y = ev.clientY/this._zoom - this._mouseDy;
     this._selectedView.setPos({x: x, y: y});
 
     var pos = this._selectedView.getPos();
+
+    this._selectedBox.style.left = pos.x + 'px';
+    this._selectedBox.style.top = pos.y + 'px';
+
     Native.changedLayoutContent();
     Native.setCurrentViewPosFromJS(pos.x, pos.y);
   },
