@@ -65,7 +65,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
         var pos = view.getPos();
         var box  = document.createElement('div');
         box.className = 'creator_selected_box';
-        box.style.cssText = 'opacity:0; position:absolute; border:solid 4px blue; background-color: rgba(0,0,0,0.3)';
+        box.style.cssText = 'opacity:0; position:absolute; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
         box.style.width = size.width + 'px';
         box.style.height = size.height + 'px';
         box.style.left = pos.x + 'px';
@@ -128,7 +128,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
       var pos = view.getPos();
       var box  = document.createElement('div');
       box.className = 'creator_selected_box';
-      box.style.cssText = 'opacity:0; position:absolute; border:solid 4px blue; background-color: rgba(0,0,0,0.3)';
+      box.style.cssText = 'opacity:0; position:absolute; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
       box.style.width = size.width + 'px';
       box.style.height = size.height + 'px';
       box.style.left = pos.x + 'px';
@@ -220,15 +220,15 @@ var CreatorPage = Navy.Class(Navy.Page, {
     }
 
     var view = this._selectedViews[this._selectedViews.length - 1];
-    view.setLayout(layout);
-
-    var size = view.getSize();
-    var pos = view.getPos();
-    var box = view.__box__;
-    box.style.width = size.width + 'px';
-    box.style.height = size.height + 'px';
-    box.style.left = pos.x + 'px';
-    box.style.top = pos.y + 'px';
+    view.setLayout(layout, function(){
+      var size = view.getSize();
+      var pos = view.getPos();
+      var box = view.__box__;
+      box.style.width = size.width + 'px';
+      box.style.height = size.height + 'px';
+      box.style.left = pos.x + 'px';
+      box.style.top = pos.y + 'px';
+    }.bind(this));
 
     Native.changedLayoutContentFromJS();
   },
