@@ -1,3 +1,20 @@
+/**
+ * @typedef {{
+ *   setViewsFromJS: function,
+ *   setCurrentViewFromJS: function,
+ *   setCurrentViewPosFromJS: function,
+ *   changedViewsOrderToJS: {connect: function},
+ *   changedSelectedViewToJS: {connect: function},
+ *   changedViewPropertyToJS: {connect: function},
+ *   addViewToJS: {connect: function},
+ *   deleteViewToJS: {connect: function},
+ *   setScreenToJS: {connect: function},
+ *   setScreenEnableToJS: {connect: function},
+ *  changedLayoutContent: function
+ * }}
+ */
+Native;
+
 var CreatorPage = Navy.Class(Navy.Page, {
   CLASSNAME: 'CreatorPage',
 
@@ -12,17 +29,21 @@ var CreatorPage = Navy.Class(Navy.Page, {
   onCreate: function($super) {
     $super();
 
+    // 雑多な設定
     document.body.style.background = '#666';
     window.CreatorPageInstance = this;
     window.getContentLayout = this._getContentLayout.bind(this);
     this._zoom = parseFloat(document.body.style.zoom);
+    // --
 
+    // 要素選択時のboxの初期化
     this._selectedBox = document.createElement('div');
     this._selectedBox.id = 'creator_selected_box';
     this._selectedBox.style.cssText = 'position:absolute; top:0; left:0; width:0; height:0; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
     document.body.appendChild(this._selectedBox);
+    // --
 
-    // mouse tracking
+    // 要素を移動させるためのマウス操作の追跡
     document.body.addEventListener('mouseup', this._mouseUp.bind(this));
 
     this._selectedBox.addEventListener('mousedown', function(ev){
@@ -223,15 +244,3 @@ var CreatorPage = Navy.Class(Navy.Page, {
     document.body.removeEventListener('mousemove', this._mouseMove);
   }
 });
-
-/**
- * @typedef {{
- *   setViewsFromJS: function,
- *   setCurrentViewFromJS: function,
- *   setCurrentViewPosFromJS: function,
- *   changedViewsOrderToJS: {connect: function},
- *   changedSelectedViewToJS: {connect: function},
- *   changedViewPropertyToJS: {connect: function}
- * }}
- */
-Native;
