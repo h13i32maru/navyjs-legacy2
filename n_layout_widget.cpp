@@ -156,19 +156,25 @@ void NLayoutWidget::setViewsFromJS(const NJson &views) {
     }
 }
 
-void NLayoutWidget::setCurrentViewFromJS(const NJson &json) {
-    QString viewId = json.getStr("id");
-
+void NLayoutWidget::setCurrentViewFromJS(const NJson &views) {
     QTreeWidget *tree = ui->layerTreeWidget;
-    for (int i = 0; i < tree->topLevelItemCount(); i++) {
-        QTreeWidgetItem *item = tree->topLevelItem(i);
-        QString _viewId = item->text(ViewsColId);
-        if (_viewId == viewId) {
-            tree->blockSignals(true);
-            tree->setCurrentItem(item);
-            tree->blockSignals(false);
-            return;
-        }
+    tree->blockSignals(true);
+
+    tree->clearSelection();
+    for (int i = 0; i < views.length(); i++) {
+        QString index = QString::number(i);
+        QString viewId = views.getStr(index + ".id");
+        QTreeWidgetItem *item = tree->findItems(viewId, Qt::MatchFixedString, 0)[0];
+        tree->setCurrentItem(item);
+    }
+
+    tree->blockSignals(false);
+
+    // 複数選択しているときはプロパティの設定をできないようにする
+    if (views.length() >= 2) {
+        ui->layoutPropEdit->setEnabled(false);
+    } else {
+        ui->layoutPropEdit->setEnabled(true);
     }
 }
 
@@ -193,6 +199,13 @@ void NLayoutWidget::selectViewToJS() {
     QStringList viewIds;
     for (int i = 0; i< items.length(); i++) {
         viewIds.append(items[i]->text(ViewsColId));
+    }
+
+    // 複数選択しているときはプロパティの設定をできないようにする
+    if (items.length() >= 2) {
+        ui->layoutPropEdit->setEnabled(false);
+    } else {
+        ui->layoutPropEdit->setEnabled(true);
     }
 
     disconnect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setCurrentViewFromJS(NJson)));

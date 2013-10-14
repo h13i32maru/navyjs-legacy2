@@ -241,7 +241,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
     box.style.opacity = '1';
     this._selectedViews.push(view);
 
-    Native.setCurrentViewFromJS(JSON.stringify(view._layout));
+    Native.setCurrentViewFromJS(JSON.stringify(this._selectedViews));
   },
 
   _selectViews: function(viewIds) {
@@ -257,6 +257,8 @@ var CreatorPage = Navy.Class(Navy.Page, {
     box.style.opacity = '0';
     var index = this._selectedViews.indexOf(view);
     this._selectedViews.splice(index, 1);
+
+    Native.setCurrentViewFromJS(JSON.stringify(this._selectedViews));
   },
 
   _unselectAllView: function() {
@@ -265,6 +267,8 @@ var CreatorPage = Navy.Class(Navy.Page, {
       box.style.opacity = '0';
     }
     this._selectedViews = [];
+
+    Native.setCurrentViewFromJS(JSON.stringify(this._selectedViews));
   },
 
   _isSelectedView: function(viewId) {
