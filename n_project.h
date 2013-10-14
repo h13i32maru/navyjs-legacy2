@@ -17,7 +17,7 @@ private:
 
 public:
     void setProject(const QString &projectDirPath);
-    QStringList validate();
+    bool validate();
     QStringList scenes();
     QStringList pages();
     QStringList images();

@@ -5,6 +5,8 @@
 #include <QFileInfo>
 #include <QDebug>
 
+#include <window/n_build_error_dialog.h>
+
 NProject* NProject::mInstance = NULL;
 
 NProject* NProject::instance() {
@@ -23,7 +25,7 @@ void NProject::setProject(const QString &projectDirPath) {
     mProject.setPath(projectDirPath);
 }
 
-QStringList NProject::validate() {
+bool NProject::validate() {
     QStringList result;
 
     {
@@ -49,7 +51,14 @@ QStringList NProject::validate() {
     }
 
 
-    return result;
+    if (result.length() != 0) {
+        NBuildErrorDialog dialog;
+        dialog.setError(result);
+        dialog.exec();
+        return false;
+    }
+
+    return true;
 }
 
 QStringList NProject::scenes() {
