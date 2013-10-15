@@ -126,7 +126,7 @@
    </widget>
    <widget class="QMenu" name="menuBuild">
     <property name="title">
-     <string>Build</string>
+     <string>Preview</string>
     </property>
     <addaction name="actionExec"/>
    </widget>
