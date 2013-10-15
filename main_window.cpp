@@ -1,7 +1,6 @@
 #include "main_window.h"
 #include "ui_main_window.h"
 #include "util/n_util.h"
-#include "window/n_exec_widget.h"
 #include "n_code_widget.h"
 #include "n_layout_widget.h"
 #include "n_image_widget.h"
@@ -15,6 +14,7 @@
 #include <QScreen>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QProcess>
 
 #include <window/n_file_opener.h>
 
@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     mFileTabWidget = ui->fileTabWidget;
     mTabBackgroundWidget = ui->noFileWidget;
 
-    mExecWidget = new NExecWidget(this);
+    mGoogleChromeProcess = new QProcess(this);
 
     connect(ui->actionNewProject, SIGNAL(triggered(bool)), this, SLOT(newProject()));
     connect(ui->actionOpenProject, SIGNAL(triggered(bool)), this, SLOT(openProject()));
@@ -158,10 +158,15 @@ void MainWindow::execNavy() {
         }
     }
 
-    mExecWidget->loadFile(mProjectDir->absoluteFilePath("index.html"));
-    mExecWidget->activateWindow();
-    mExecWidget->raise();
-    mExecWidget->show();
+
+    // FIXME: プログラムのパスとホームディレクトリはアプリの設定で保存できるようにする
+    QString program = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+    QStringList arguments;
+    arguments.append("--allow-file-access-from-files");
+    arguments.append("--disable-web-security");
+    arguments.append("--user-data-dir=\"~/.navy_creator_chrome\"");
+    arguments.append(mProjectDir->absoluteFilePath("index.html"));
+    mGoogleChromeProcess->start(program, arguments);
 }
 
 QList<int> MainWindow::searchTabIndexesByPath(const QString &path, const bool &isDir) {

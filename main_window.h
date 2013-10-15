@@ -1,13 +1,13 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include "window/n_exec_widget.h"
 #include "extend/n_tree_view.h"
 #include "n_file_widget.h"
 
 #include <QMainWindow>
 #include <QDir>
 #include <QFileSystemModel>
+#include <QProcess>
 
 namespace Ui {
 class MainWindow;
@@ -25,11 +25,11 @@ private:
     Ui::MainWindow *ui;
     QString mProjectName;
     QDir *mProjectDir;
-    NExecWidget *mExecWidget;
     NTreeView *mFileTreeView;
     QTabWidget *mFileTabWidget;
     QWidget *mTabBackgroundWidget;
     QFileSystemModel *mFileSysteMmodel;
+    QProcess *mGoogleChromeProcess;
 
 private:
     void setCurrentProject(QString dirPath);
