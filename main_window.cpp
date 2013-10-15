@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     mFileTabWidget = ui->fileTabWidget;
     mTabBackgroundWidget = ui->noFileWidget;
 
-    mGoogleChromeProcess = new QProcess(this);
+    mGoogleChromeProcess = new QProcess();
 
     connect(ui->actionNewProject, SIGNAL(triggered(bool)), this, SLOT(newProject()));
     connect(ui->actionOpenProject, SIGNAL(triggered(bool)), this, SLOT(openProject()));
