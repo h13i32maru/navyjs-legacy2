@@ -9,6 +9,8 @@
 #include <QFileSystemModel>
 #include <QProcess>
 
+#include <window/n_pref_dialog.h>
+
 namespace Ui {
 class MainWindow;
 }
@@ -30,6 +32,7 @@ private:
     QWidget *mTabBackgroundWidget;
     QFileSystemModel *mFileSysteMmodel;
     QProcess *mGoogleChromeProcess;
+    NPrefDialog *mPrefDialog;
 
 private:
     void setCurrentProject(QString dirPath);

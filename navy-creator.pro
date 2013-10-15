@@ -35,7 +35,8 @@ SOURCES += main.cpp\
     window/n_scene_dialog.cpp \
     window/n_page_dialog.cpp \
     window/n_file_opener.cpp \
-    window/n_build_error_dialog.cpp
+    window/n_build_error_dialog.cpp \
+    window/n_pref_dialog.cpp
 
 HEADERS  += main_window.h \
     n_code_widget.h \
@@ -59,7 +60,8 @@ HEADERS  += main_window.h \
     window/n_scene_dialog.h \
     window/n_page_dialog.h \
     window/n_file_opener.h \
-    window/n_build_error_dialog.h
+    window/n_build_error_dialog.h \
+    window/n_pref_dialog.h
 
 FORMS    += main_window.ui \
     n_code_widget.ui \
@@ -74,7 +76,8 @@ FORMS    += main_window.ui \
     window/n_scene_dialog.ui \
     window/n_page_dialog.ui \
     window/n_file_opener.ui \
-    window/n_build_error_dialog.ui
+    window/n_build_error_dialog.ui \
+    window/n_pref_dialog.ui
 
 RESOURCES += \
     resource.qrc

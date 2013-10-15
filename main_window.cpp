@@ -39,8 +39,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     mFileTabWidget = ui->fileTabWidget;
     mTabBackgroundWidget = ui->noFileWidget;
 
+    mPrefDialog = new NPrefDialog();
     mGoogleChromeProcess = new QProcess();
 
+    connect(ui->actionPreferences, SIGNAL(triggered()), mPrefDialog, SLOT(exec()));
     connect(ui->actionNewProject, SIGNAL(triggered(bool)), this, SLOT(newProject()));
     connect(ui->actionOpenProject, SIGNAL(triggered(bool)), this, SLOT(openProject()));
     connect(ui->actionOpenFile, SIGNAL(triggered(bool)), this, SLOT(showFileOpener()));
@@ -158,15 +160,31 @@ void MainWindow::execNavy() {
         }
     }
 
+    {
+        QSettings *s = mPrefDialog->getSettings();
+        QString program = s->value(NPrefDialog::PREVIEW_GOOGLE_CHROME_PATH).toString();
 
-    // FIXME: プログラムのパスとホームディレクトリはアプリの設定で保存できるようにする
-    QString program = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-    QStringList arguments;
-    arguments.append("--allow-file-access-from-files");
-    arguments.append("--disable-web-security");
-    arguments.append("--user-data-dir=\"~/.navy_creator_chrome\"");
-    arguments.append(mProjectDir->absoluteFilePath("index.html"));
-    mGoogleChromeProcess->start(program, arguments);
+        QStringList arguments;
+        if (s->value(NPrefDialog::PREVIEW_ALLOW_FILE_ACCESS_FROM_FILE).toBool()) {
+            arguments.append("--allow-file-access-from-files");
+        }
+
+        if (s->value(NPrefDialog::PREVIEW_DISABLE_WEB_SECURITY).toBool()) {
+            arguments.append("--disable-web-security");
+        }
+
+        QString dirPath = s->value(NPrefDialog::PREVIEW_USER_DATA_DIR).toString();
+        if (dirPath.isEmpty()) {
+            dirPath = "~/.navy_creator_chrome";
+        }
+        arguments.append("--user-data-dir=\"" + dirPath + "\"");
+
+        arguments.append(mProjectDir->absoluteFilePath("index.html"));
+
+        mGoogleChromeProcess->start(program, arguments);
+    }
+
+
 }
 
 QList<int> MainWindow::searchTabIndexesByPath(const QString &path, const bool &isDir) {

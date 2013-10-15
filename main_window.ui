@@ -123,6 +123,7 @@
     <addaction name="actionOpenProject"/>
     <addaction name="actionOpenFile"/>
     <addaction name="actionSaveAll"/>
+    <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuBuild">
     <property name="title">
@@ -218,6 +219,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
  </widget>
