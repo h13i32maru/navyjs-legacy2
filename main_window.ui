@@ -129,7 +129,8 @@
     <property name="title">
      <string>Preview</string>
     </property>
-    <addaction name="actionExec"/>
+    <addaction name="actionLaunchGoogleChrome"/>
+    <addaction name="actionValidate"/>
    </widget>
    <widget class="QMenu" name="menuWindow">
     <property name="title">
@@ -181,12 +182,9 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actionExec">
+  <action name="actionLaunchGoogleChrome">
    <property name="text">
-    <string>Exec</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+R</string>
+    <string>Launch Google Chrome</string>
    </property>
   </action>
   <action name="actionCloseTab">
@@ -227,6 +225,11 @@
    </property>
    <property name="menuRole">
     <enum>QAction::PreferencesRole</enum>
+   </property>
+  </action>
+  <action name="actionValidate">
+   <property name="text">
+    <string>Validate</string>
    </property>
   </action>
  </widget>

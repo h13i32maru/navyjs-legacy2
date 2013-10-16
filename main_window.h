@@ -45,7 +45,8 @@ private slots:
     void newProject();
     void showFileOpener();
     void saveAll();
-    void execNavy();
+    void launchGoogleChrome();
+    void validate();
     void contextMenu(QPoint point);
     void openFile(QModelIndex index);
     void openFile(const QString &filePath);

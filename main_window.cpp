@@ -47,7 +47,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionOpenProject, SIGNAL(triggered(bool)), this, SLOT(openProject()));
     connect(ui->actionOpenFile, SIGNAL(triggered(bool)), this, SLOT(showFileOpener()));
     connect(ui->actionSaveAll, SIGNAL(triggered(bool)), this, SLOT(saveAll()));
-    connect(ui->actionExec, SIGNAL(triggered(bool)), this, SLOT(execNavy()));
+    connect(ui->actionLaunchGoogleChrome, SIGNAL(triggered(bool)), this, SLOT(launchGoogleChrome()));
+    connect(ui->actionValidate, SIGNAL(triggered()), this, SLOT(validate()));
     connect(ui->actionCloseTab, SIGNAL(triggered(bool)), this, SLOT(closeCurrentFile()));
     connect(ui->actionNextTab, SIGNAL(triggered(bool)), this, SLOT(nextFile()));
     connect(ui->actionPrevTab, SIGNAL(triggered(bool)), this, SLOT(prevFile()));
@@ -148,63 +149,62 @@ void MainWindow::saveAll() {
     }
 }
 
-void MainWindow::execNavy() {
+void MainWindow::launchGoogleChrome() {
     if (mProjectName.isEmpty()) {
         return;
     }
 
-    {
-        bool result = NProject::instance()->validate();
-        if (!result) {
-            return;
-        }
+    int ret = QMessageBox::question(this, tr(""),
+                tr("Do you want to launch the Google Chrome that enable cross-domain access and local file access?"));
+    if (ret != QMessageBox::Yes) {
+        return;
     }
 
-    {
-        int ret = QMessageBox::question(this, tr(""),
-                    tr("Do you want to launch the Google Chrome that enable cross-domain access and local file access?"));
-        if (ret != QMessageBox::Yes) {
-            return;
-        }
+    QSettings *s = mPrefDialog->getSettings();
+    QString program = s->value(NPrefDialog::PREVIEW_GOOGLE_CHROME_PATH).toString();
 
-        QSettings *s = mPrefDialog->getSettings();
-        QString program = s->value(NPrefDialog::PREVIEW_GOOGLE_CHROME_PATH).toString();
+    QStringList arguments;
+    if (s->value(NPrefDialog::PREVIEW_ALLOW_FILE_ACCESS_FROM_FILE).toBool()) {
+        arguments.append("--allow-file-access-from-files");
+    }
 
-        QStringList arguments;
-        if (s->value(NPrefDialog::PREVIEW_ALLOW_FILE_ACCESS_FROM_FILE).toBool()) {
-            arguments.append("--allow-file-access-from-files");
-        }
+    if (s->value(NPrefDialog::PREVIEW_DISABLE_WEB_SECURITY).toBool()) {
+        arguments.append("--disable-web-security");
+    }
 
-        if (s->value(NPrefDialog::PREVIEW_DISABLE_WEB_SECURITY).toBool()) {
-            arguments.append("--disable-web-security");
-        }
+    if (!s->value(NPrefDialog::PREVIEW_USER_DATA_DIR).toString().isEmpty()) {
+        QString dirPath = s->value(NPrefDialog::PREVIEW_USER_DATA_DIR).toString();
+        arguments.append("--user-data-dir=\"" + dirPath + "\"");
+    }
 
-        if (!s->value(NPrefDialog::PREVIEW_USER_DATA_DIR).toString().isEmpty()) {
-            QString dirPath = s->value(NPrefDialog::PREVIEW_USER_DATA_DIR).toString();
-            arguments.append("--user-data-dir=\"" + dirPath + "\"");
-        }
+    if (!s->value((NPrefDialog::PREVIEW_OTHER_OPTIONS)).toString().isEmpty()) {
+        QStringList options = s->value(NPrefDialog::PREVIEW_OTHER_OPTIONS).toString().split(" ");
+        arguments.append(options);
+    }
 
-        if (!s->value((NPrefDialog::PREVIEW_OTHER_OPTIONS)).toString().isEmpty()) {
-            QStringList options = s->value(NPrefDialog::PREVIEW_OTHER_OPTIONS).toString().split(" ");
-            arguments.append(options);
-        }
+    QString filePath = "file://" + mProjectDir->absoluteFilePath("index.html");
+    arguments.append(filePath);
 
-        QString filePath = "file://" + mProjectDir->absoluteFilePath("index.html");
-        arguments.append(filePath);
+    if (mGoogleChromeProcess->state() == QProcess::NotRunning) {
+        mGoogleChromeProcess->start(program, arguments);
+        mGoogleChromeProcess->waitForFinished(1000);
 
         if (mGoogleChromeProcess->state() == QProcess::NotRunning) {
-            mGoogleChromeProcess->start(program, arguments);
-            mGoogleChromeProcess->waitForFinished(1000);
-
-            if (mGoogleChromeProcess->state() == QProcess::NotRunning) {
-                QMessageBox::information(this, tr(""),
-                    tr("Google Chrome is already running. Please close Google Chrome."));
-            }
-        } else {
             QMessageBox::information(this, tr(""),
-                tr("Google Chrome is already running. Please read the following URL to switch to Google Chrome.\n\n") + filePath);
+                tr("Google Chrome is already running. Please close Google Chrome."));
         }
+    } else {
+        QMessageBox::information(this, tr(""),
+            tr("Google Chrome is already running. Please read the following URL to switch to Google Chrome.\n\n") + filePath);
     }
+}
+
+void MainWindow::validate() {
+    if (mProjectName.isEmpty()) {
+        return;
+    }
+
+    NProject::instance()->validate();
 }
 
 QList<int> MainWindow::searchTabIndexesByPath(const QString &path, const bool &isDir) {
