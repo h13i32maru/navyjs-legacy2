@@ -161,7 +161,8 @@ void MainWindow::execNavy() {
     }
 
     {
-        int ret = QMessageBox::question(this, tr(""), tr("Do you want to launch the Google Chrome that enable cross-domain access and local file access?"));
+        int ret = QMessageBox::question(this, tr(""),
+                    tr("Do you want to launch the Google Chrome that enable cross-domain access and local file access?"));
         if (ret != QMessageBox::Yes) {
             return;
         }
