@@ -161,6 +161,11 @@ void MainWindow::execNavy() {
     }
 
     {
+        int ret = QMessageBox::question(this, tr(""), tr("Do you want to launch the Google Chrome that enable cross-domain access and local file access?"));
+        if (ret != QMessageBox::Yes) {
+            return;
+        }
+
         QSettings *s = mPrefDialog->getSettings();
         QString program = s->value(NPrefDialog::PREVIEW_GOOGLE_CHROME_PATH).toString();
 
@@ -178,12 +183,22 @@ void MainWindow::execNavy() {
             arguments.append("--user-data-dir=\"" + dirPath + "\"");
         }
 
-        arguments.append(mProjectDir->absoluteFilePath("index.html"));
+        QString filePath = "file://" + mProjectDir->absoluteFilePath("index.html");
+        arguments.append(filePath);
 
-        mGoogleChromeProcess->start(program, arguments);
+        if (mGoogleChromeProcess->state() == QProcess::NotRunning) {
+            mGoogleChromeProcess->start(program, arguments);
+            mGoogleChromeProcess->waitForFinished(1000);
+
+            if (mGoogleChromeProcess->state() == QProcess::NotRunning) {
+                QMessageBox::information(this, tr(""),
+                    tr("Google Chrome is already running. Please close Google Chrome."));
+            }
+        } else {
+            QMessageBox::information(this, tr(""),
+                tr("Google Chrome is already running. Please read the following URL to switch to Google Chrome.\n\n") + filePath);
+        }
     }
-
-
 }
 
 QList<int> MainWindow::searchTabIndexesByPath(const QString &path, const bool &isDir) {
