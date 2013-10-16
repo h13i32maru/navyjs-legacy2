@@ -183,6 +183,11 @@ void MainWindow::execNavy() {
             arguments.append("--user-data-dir=\"" + dirPath + "\"");
         }
 
+        if (!s->value((NPrefDialog::PREVIEW_OTHER_OPTIONS)).toString().isEmpty()) {
+            QStringList options = s->value(NPrefDialog::PREVIEW_OTHER_OPTIONS).toString().split(" ");
+            arguments.append(options);
+        }
+
         QString filePath = "file://" + mProjectDir->absoluteFilePath("index.html");
         arguments.append(filePath);
 
