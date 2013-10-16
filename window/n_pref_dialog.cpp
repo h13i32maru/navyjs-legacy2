@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QSettings>
 #include <QVariant>
+#include <QDebug>
 
 const QString NPrefDialog::DONE_PREFERENCE = "donePrefrence";
 const QString NPrefDialog::PREVIEW_GOOGLE_CHROME_PATH = "preview/googleChromePath";
@@ -21,11 +22,20 @@ NPrefDialog::NPrefDialog(QWidget *parent) :
     ui->setupUi(this);
 
     if (!mSettings.value(DONE_PREFERENCE).toBool()) {
-        this->syncWidgetToSettings();
+        this->setDefault();
     }
 
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(ui->defaultButton, SIGNAL(clicked()), this, SLOT(setDefault()));
+}
+
+void NPrefDialog::setDefault() {
+    ui->googleChromeEdit->setText("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
+    ui->allowFileAccessFromFileCheck->setChecked(true);
+    ui->disableWebSecurityCheck->setChecked(true);
+    ui->userDataDirEdit->setText(QDir::homePath() + "/.navy_creator_chrome");
+    ui->otherOptionsEdit->setText("");
 }
 
 void NPrefDialog::syncSettingsToWidget() {
@@ -49,9 +59,24 @@ bool NPrefDialog::validate() {
         return false;
     }
 
-    // FIXME: 親ディレクトリが存在するかチェック
-    if (ui->userDataDirEdit->text().isEmpty()) {
-        return false;
+    /*
+     * ディレクトリが指定されていればそのディレクトリが存在するか確認する.
+     * 存在しない場合はディレクトリ作成する.
+     */
+    QString userDataDirPath = ui->userDataDirEdit->text();
+    if (!userDataDirPath.isEmpty()) {
+        if (!QFileInfo(userDataDirPath).exists()) {
+            QString dirName = QFileInfo(userDataDirPath).fileName();
+            QDir parentDir = QFileInfo(userDataDirPath).dir();
+            if (!parentDir.exists()) {
+                return false;
+            }
+
+            bool ret = parentDir.mkdir(dirName);
+            if (!ret) {
+                return ret;
+            }
+        }
     }
 
     return true;

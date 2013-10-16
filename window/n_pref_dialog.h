@@ -36,6 +36,9 @@ private:
     void syncSettingsToWidget();
     void syncWidgetToSettings();
     bool validate();
+
+private slots:
+    void setDefault();
 };
 
 #endif // N_PREF_DIALOG_H

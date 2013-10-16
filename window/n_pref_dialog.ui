@@ -61,14 +61,14 @@
       <item row="3" column="1">
        <widget class="QLineEdit" name="userDataDirEdit">
         <property name="text">
-         <string>~/.navy_creator_chrome</string>
+         <string/>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="googleChromeEdit">
         <property name="text">
-         <string>/Applications/Google Chrome.app/Contents/MacOS/Google Chrome</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -108,6 +108,13 @@
    <item>
     <widget class="QWidget" name="widget_2" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="defaultButton">
+        <property name="text">
+         <string>Default</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">

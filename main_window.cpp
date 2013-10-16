@@ -173,11 +173,10 @@ void MainWindow::execNavy() {
             arguments.append("--disable-web-security");
         }
 
-        QString dirPath = s->value(NPrefDialog::PREVIEW_USER_DATA_DIR).toString();
-        if (dirPath.isEmpty()) {
-            dirPath = "~/.navy_creator_chrome";
+        if (!s->value(NPrefDialog::PREVIEW_USER_DATA_DIR).toString().isEmpty()) {
+            QString dirPath = s->value(NPrefDialog::PREVIEW_USER_DATA_DIR).toString();
+            arguments.append("--user-data-dir=\"" + dirPath + "\"");
         }
-        arguments.append("--user-data-dir=\"" + dirPath + "\"");
 
         arguments.append(mProjectDir->absoluteFilePath("index.html"));
 
