@@ -23,6 +23,10 @@ NNewProjectDialog::NNewProjectDialog(QWidget *parent) :
     connect(ui->selectDirButton, SIGNAL(clicked()), this, SLOT(showDirDialog()));
 }
 
+QString NNewProjectDialog::projectName() const {
+    return mProjectName;
+}
+
 QString NNewProjectDialog::projectDirPath() const {
     return mProjectDirPath;
 }
@@ -52,6 +56,7 @@ void NNewProjectDialog::create() {
 
     NUtil::copyDir(":/template", dirPath);
 
+    mProjectName = projectName;
     mProjectDirPath = dirPath;
 
     accept();

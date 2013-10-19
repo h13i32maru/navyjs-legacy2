@@ -33,7 +33,7 @@ private:
     NPrefDialog *mPrefDialog;
 
 private:
-    void setCurrentProject(QString dirPath);
+    void setCurrentProject(QString dirPath, QString projectName = QString());
     QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
     bool isFileContentChanged(int tabIndex);
     bool saveFile(int tabIndex);

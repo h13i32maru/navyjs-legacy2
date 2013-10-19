@@ -30,7 +30,7 @@ private:
     QString mProjectName;
 
 public:
-    void setProject(const QString &projectDirPath);
+    void setProject(const QString &projectDirPath, const QString &projectName);
     QString projectName() const;
 
     TYPE fileType(const QString &contentsFilePath) const;

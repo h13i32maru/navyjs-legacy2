@@ -34,7 +34,8 @@ public:
     void parse(QByteArray byteArray);
     void parse(const QString &jsonText);
     bool parseFromFilePath(QString filePath);
-    QByteArray stringify();
+    bool writeToFile(const QString &filePath) const;
+    QByteArray stringify() const;
     int length() const;
     void clear();
     QVariant toVariant();

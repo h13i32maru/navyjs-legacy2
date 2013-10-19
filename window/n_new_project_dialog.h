@@ -13,11 +13,13 @@ class NNewProjectDialog : public QDialog
 
 public:
     explicit NNewProjectDialog(QWidget *parent = 0);
+    QString projectName() const;
     QString projectDirPath() const;
     ~NNewProjectDialog();
 
 private:
     Ui::NNewProjectDialog *ui;
+    QString mProjectName;
     QString mProjectDirPath;
 
 private slots:

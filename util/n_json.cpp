@@ -40,7 +40,16 @@ bool NJson::parseFromFilePath(QString filePath)
     return true;
 }
 
-QByteArray NJson::stringify()
+bool NJson::writeToFile(const QString &filePath) const {
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        return false;
+    }
+
+    return file.write(stringify());
+}
+
+QByteArray NJson::stringify() const
 {
     QJsonDocument doc;
     if (mRootValue.isArray()) {

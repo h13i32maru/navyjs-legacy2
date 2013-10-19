@@ -23,13 +23,34 @@ NProject::NProject()
 }
 
 void NProject::showSettingDialog() {
+    QString projectFilePath = mProjectDir.absoluteFilePath("project.ncproject");
+    NJson projectJson;
+    projectJson.parseFromFilePath(projectFilePath);
+
     NProjectDialog dialog;
-    dialog.exec();
+    dialog.setProjectJson(projectJson);
+    int ret = dialog.exec();
+
+    if (ret == NProjectDialog::Accepted) {
+        projectJson = dialog.getProjectJson();
+        projectJson.writeToFile(projectFilePath);
+    }
 }
 
-void NProject::setProject(const QString &projectDirPath) {
+void NProject::setProject(const QString &projectDirPath, const QString &projectName) {
     mProjectDir.setPath(projectDirPath);
-    mProjectName = mProjectDir.dirName();
+
+    if (projectName.isEmpty()) {
+        NJson projectJson;
+        projectJson.parseFromFilePath(mProjectDir.absoluteFilePath("project.ncproject"));
+        mProjectName = projectJson.getStr("projectName");
+    } else {
+        NJson projectJson;
+        projectJson.parseFromFilePath(mProjectDir.absoluteFilePath("project.ncproject"));
+        projectJson.set("projectName", projectName);
+        projectJson.writeToFile(mProjectDir.absoluteFilePath("project.ncproject"));
+        mProjectName = projectName;
+    }
 }
 
 QString NProject::projectName() const {

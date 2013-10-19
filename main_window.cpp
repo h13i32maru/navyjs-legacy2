@@ -64,8 +64,9 @@ void MainWindow::showProjectSetting() {
     NProject::instance()->showSettingDialog();
 }
 
-void MainWindow::setCurrentProject(QString dirPath) {
-    NProject::instance()->setProject(dirPath);
+void MainWindow::setCurrentProject(QString dirPath, QString projectName) {
+    NProject::instance()->setProject(dirPath, projectName);
+    setWindowTitle(NProject::instance()->projectName() + " - [" + dirPath + "]");
 
     QString rootDirPath = NProject::instance()->contentsDirPath();
     mFileSysteMmodel->setRootPath(rootDirPath);
@@ -96,8 +97,9 @@ void MainWindow::newProject()
     NNewProjectDialog dialog(this);
     int ret = dialog.exec();
     if (ret == NNewProjectDialog::Accepted) {
+        QString projectName = dialog.projectName();
         QString dirPath = dialog.projectDirPath();
-        setCurrentProject(dirPath);
+        setCurrentProject(dirPath, projectName);
     }
 }
 
