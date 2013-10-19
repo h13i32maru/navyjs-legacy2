@@ -13,10 +13,20 @@ private:
 
 private:
     NProject();
-    QDir mProject;
+    QDir mProjectDir;
 
 public:
     void setProject(const QString &projectDirPath);
+
+    bool isConfigApp(const QString &filePath) const;
+    bool isConfigScene(const QString &filePath) const;
+    bool isConfigPage(const QString &filePath) const;
+    bool isCode(const QString &filePath) const;
+    bool isLayout(const QString &filePath) const;
+    bool isImage(const QString &filePath) const;
+
+    QString filePath(const QString &relativePath) const;
+
     bool validate();
     QStringList scenes();
     QStringList pages();

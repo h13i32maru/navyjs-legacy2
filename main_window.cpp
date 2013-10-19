@@ -304,30 +304,20 @@ void MainWindow::openFile(const QString &filePath) {
     }
 
     NFileWidget *fileWidget = NULL;
-    if (filePath == mProjectDir->absoluteFilePath("config/app.json")) {
+    NProject *project = NProject::instance();
+    if (project->isConfigApp(filePath)) {
         fileWidget = new NConfigAppWidget(*mProjectDir, filePath);
-    } else if (filePath == mProjectDir->absoluteFilePath("config/scene.json")) {
+    } else if (project->isConfigScene(filePath)) {
         fileWidget = new NConfigSceneWidget(*mProjectDir, filePath);
-    } else if (filePath == mProjectDir->absoluteFilePath("config/page.json")) {
+    } else if (project->isConfigPage(filePath)) {
         fileWidget = new NConfigPageWidget(*mProjectDir, filePath);
+    } else if (project->isCode(filePath)) {
+        fileWidget = new NCodeWidget(*mProjectDir, filePath);
+    } else if (project->isLayout(filePath)) {
+        fileWidget = new NLayoutWidget(*mProjectDir, filePath);
+    } else if (project->isImage(filePath)) {
+        fileWidget = new NImageWidget(*mProjectDir, filePath);
     } else {
-        QString ext = QFileInfo(filePath).suffix().toLower();
-        if (ext == "js") {
-            fileWidget = new NCodeWidget(*mProjectDir, filePath);
-        } else if (ext == "json") {
-            fileWidget = new NLayoutWidget(*mProjectDir, filePath);
-        } else if (ext == "png") {
-            fileWidget = new NImageWidget(*mProjectDir, filePath);
-        } else if (ext == "jpeg") {
-            fileWidget = new NImageWidget(*mProjectDir, filePath);
-        } else if (ext == "jpg") {
-            fileWidget = new NImageWidget(*mProjectDir, filePath);
-        } else if (ext == "gif") {
-            fileWidget = new NImageWidget(*mProjectDir, filePath);
-        }
-    }
-
-    if (fileWidget == NULL) {
         return;
     }
 
