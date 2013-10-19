@@ -17,6 +17,7 @@
 #include <QProcess>
 
 #include <window/n_file_opener.h>
+#include <window/n_new_project_dialog.h>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -88,21 +89,12 @@ void MainWindow::setCurrentProject(QString dirPath) {
 
 void MainWindow::newProject()
 {
-    QString dirName = QFileDialog::getSaveFileName(this, tr("New Project"), QDir::homePath() + "/Desktop");
-
-    if (dirName.isEmpty()) {
-        return;
+    NNewProjectDialog dialog(this);
+    int ret = dialog.exec();
+    if (ret == NNewProjectDialog::Accepted) {
+        QString dirPath = dialog.projectDirPath();
+        setCurrentProject(dirPath);
     }
-
-    //FIXME: remove this code.
-    if (QFile::exists(dirName)) {
-        if (!QDir(dirName).removeRecursively()){
-            return;
-        }
-    }
-
-    NUtil::copyDir(":/template", dirName);
-    setCurrentProject(dirName);
 }
 
 void MainWindow::openProject() {
