@@ -305,12 +305,12 @@ void MainWindow::openFile(const QString &filePath) {
 
     NFileWidget *fileWidget = NULL;
     switch(NProject::instance()->fileType(filePath)) {
-    case NProject::FILE_TYPE_CONFIG_APP:    fileWidget = new NConfigAppWidget(filePath); break;
-    case NProject::FILE_TYPE_CONFIG_SCENE:  fileWidget = new NConfigSceneWidget(filePath); break;
-    case NProject::FILE_TYPE_CONFIG_PAGE:   fileWidget = new NConfigPageWidget(filePath); break;
-    case NProject::FILE_TYPE_CODE:          fileWidget = new NCodeWidget(filePath); break;
-    case NProject::FILE_TYPE_LAYOUT:        fileWidget = new NLayoutWidget(filePath); break;
-    case NProject::FILE_TYPE_IMAGE:         fileWidget = new NImageWidget(filePath); break;
+    case NProject::TYPE_CONFIG_APP:    fileWidget = new NConfigAppWidget(filePath); break;
+    case NProject::TYPE_CONFIG_SCENE:  fileWidget = new NConfigSceneWidget(filePath); break;
+    case NProject::TYPE_CONFIG_PAGE:   fileWidget = new NConfigPageWidget(filePath); break;
+    case NProject::TYPE_CODE:          fileWidget = new NCodeWidget(filePath); break;
+    case NProject::TYPE_LAYOUT:        fileWidget = new NLayoutWidget(filePath); break;
+    case NProject::TYPE_IMAGE:         fileWidget = new NImageWidget(filePath); break;
     default: return;
     }
 
@@ -489,9 +489,12 @@ void MainWindow::contextMenu(QPoint point) {
     }
 
     QString filePath = mFileSysteMmodel->filePath(index);
-    if (filePath.indexOf(mProjectDir->absoluteFilePath("code")) == 0) {
-        QMenu menu(this);
-        QMenu *subMenu = menu.addMenu(tr("&New"));
+
+    QMenu menu(this);
+    QMenu *subMenu = menu.addMenu(tr("&New"));
+    switch(NProject::instance()->fileType(filePath)) {
+    case NProject::TYPE_CODE_DIR:
+    case NProject::TYPE_CODE:
         subMenu->addAction("javascript", this, SLOT(newJSFile()));
         subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
         menu.addAction(tr("&Import"), this, SLOT(importJS()));
@@ -501,12 +504,9 @@ void MainWindow::contextMenu(QPoint point) {
         menu.addAction(tr("&Delete"), this, SLOT(deletePath()));
 
         menu.exec(QCursor::pos());
-        return;
-    }
-
-    if (filePath.indexOf(mProjectDir->absoluteFilePath("layout")) == 0) {
-        QMenu menu(this);
-        QMenu *subMenu = menu.addMenu(tr("&New"));
+        break;
+    case NProject::TYPE_LAYOUT_DIR:
+    case NProject::TYPE_LAYOUT:
         subMenu->addAction("layout", this, SLOT(newLayoutFile()));
         subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
         menu.addAction(tr("&Import"), this, SLOT(importLayout()));
@@ -516,12 +516,9 @@ void MainWindow::contextMenu(QPoint point) {
         menu.addAction(tr("&Delete"), this, SLOT(deletePath()));
 
         menu.exec(QCursor::pos());
-        return;
-    }
-
-    if (filePath.indexOf(mProjectDir->absoluteFilePath("image")) == 0) {
-        QMenu menu(this);
-        QMenu *subMenu = menu.addMenu(tr("&New"));
+        break;
+    case NProject::TYPE_IMAGE_DIR:
+    case NProject::TYPE_IMAGE:
         subMenu->addAction(tr("&Directory"), this, SLOT(newDir()));
         menu.addAction(tr("&Import"), this, SLOT(importImage()));
         menu.addSeparator();
@@ -530,6 +527,8 @@ void MainWindow::contextMenu(QPoint point) {
         menu.addAction(tr("&Delete"), this, SLOT(deletePath()));
 
         menu.exec(QCursor::pos());
+        break;
+    default:
         return;
     }
 }

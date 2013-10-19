@@ -25,39 +25,51 @@ void NProject::setProject(const QString &projectDirPath) {
     mProjectDir.setPath(projectDirPath);
 }
 
-NProject::FILE_TYPE NProject::fileType(const QString &filePath) const {
+NProject::TYPE NProject::fileType(const QString &filePath) const {
     if (filePath == mProjectDir.absoluteFilePath("config/app.json")) {
-        return FILE_TYPE_CONFIG_APP;
+        return TYPE_CONFIG_APP;
     }
 
     if (filePath == mProjectDir.absoluteFilePath("config/scene.json")) {
-        return FILE_TYPE_CONFIG_SCENE;
+        return TYPE_CONFIG_SCENE;
     }
 
     if (filePath == mProjectDir.absoluteFilePath("config/page.json")) {
-        return FILE_TYPE_CONFIG_PAGE;
+        return TYPE_CONFIG_PAGE;
     }
 
     QString ext = QFileInfo(filePath).suffix().toLower();
-
     QString codeDirPath = mProjectDir.absoluteFilePath("code");
-    if (ext == "js" && filePath.indexOf(codeDirPath) != -1) {
-        return FILE_TYPE_CODE;
-    }
-
     QString layoutDirPath = mProjectDir.absoluteFilePath("layout");
-    if (ext == "json" && filePath.indexOf(layoutDirPath) != -1) {
-        return FILE_TYPE_LAYOUT;
+    QString imageDirPath = mProjectDir.absoluteFilePath("image");
+
+    if (filePath == codeDirPath) {
+        return TYPE_CODE_DIR;
     }
 
-    QString imageDirPath = mProjectDir.absoluteFilePath("image");
+    if (filePath == layoutDirPath) {
+        return TYPE_LAYOUT_DIR;
+    }
+
+    if (filePath == imageDirPath) {
+        return TYPE_IMAGE_DIR;
+    }
+
+    if (ext == "js" && filePath.indexOf(codeDirPath) != -1) {
+        return TYPE_CODE;
+    }
+
+    if (ext == "json" && filePath.indexOf(layoutDirPath) != -1) {
+        return TYPE_LAYOUT;
+    }
+
     if (ext == "png" || ext == "jpeg" || ext == "jpg" || ext == "gif") {
         if (filePath.indexOf(imageDirPath) != -1) {
-            return FILE_TYPE_IMAGE;
+            return TYPE_IMAGE;
         }
     }
 
-    return FILE_TYPE_UNKNOWN;
+    return TYPE_UNKNOWN;
 }
 
 QString NProject::filePath(const QString &relativePath) const {
@@ -65,7 +77,7 @@ QString NProject::filePath(const QString &relativePath) const {
 }
 
 QString NProject::relativeLayoutFilePath(const QString &filePath) const {
-    if (fileType(filePath) != FILE_TYPE_LAYOUT) {
+    if (fileType(filePath) != TYPE_LAYOUT) {
         qDebug() << "file is not layout file." << filePath;
         return "";
     }
