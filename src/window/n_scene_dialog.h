@@ -26,6 +26,7 @@ private:
     int mSceneIndex;
 
 private slots:
+    void autoInputWithId();
     void checkClassFile(const QString &path);
     void checkLayoutFile(const QString &path);
     void checkPage(const QString &page);

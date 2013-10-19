@@ -26,6 +26,7 @@ NPageDialog::NPageDialog(TYPE type, NJson &configPage, QWidget *parent) :
 
     ui->backgroundColor->setText("#000000");
 
+    connect(ui->id, SIGNAL(textChanged(QString)), this, SLOT(autoInputWithId()));
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(updatePage()));
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
     connect(ui->classFile, SIGNAL(currentTextChanged(QString)), this, SLOT(checkClassFile(QString)));
@@ -59,8 +60,21 @@ void NPageDialog::setPageId(const QString &pageId) {
     ui->backgroundColor->setText(page.getStr("backgroundColor"));
 }
 
+void NPageDialog::autoInputWithId() {
+    QString id = ui->id->text();
+    QString className = id;
+    QString fileName = QString(id).replace(QRegExp("([a-z])([A-Z])"), "\\1_\\2").replace(QRegExp("([A-Z])([A-Z])([a-z])"), "\\1_\\2\\3").replace(".", "/").toLower();
+    QString codeFilePath = QString("code/") + fileName + ".js";
+    QString layoutFilePath = QString("layout/") + fileName + ".json";
+
+    ui->className->setText(className);
+    ui->classFile->setCurrentText(codeFilePath);
+    ui->layout->setCurrentText(layoutFilePath);
+}
+
 void NPageDialog::updatePage() {
     // id check
+    // FIXME: 文字種のチェックを行う
     QString pageId = ui->id->text();
     int pageIndex = mConfigPage.searchValue("id", pageId);
     int pageCount = mConfigPage.countValue("id", pageId);

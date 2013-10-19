@@ -25,6 +25,7 @@ private:
     int mPageIndex;
 
 private slots:
+    void autoInputWithId();
     void checkClassFile(const QString &path);
     void checkLayoutFile(const QString &path);
     void updatePage();
