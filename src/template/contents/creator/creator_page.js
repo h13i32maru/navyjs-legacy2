@@ -16,9 +16,7 @@
  */
 Native;
 
-var CreatorPage = Navy.Class(Navy.Page, {
-  CLASSNAME: 'CreatorPage',
-
+Navy.Class('CreatorPage', Navy.Page, {
   _zoom: null,
 
   _selectedViews: null,
@@ -186,6 +184,15 @@ var CreatorPage = Navy.Class(Navy.Page, {
   },
 
   _setScreenEnable: function(enable) {
+    var scene = this.getScene();
+    var views = scene.getAllViews();
+    for (var viewId in views) {
+      var view = views[viewId];
+      if (view !== this) {
+        view.setVisible(enable);
+      }
+    }
+    /*
     var funcName = enable ? 'show' : 'hide';
     var scene = this.getScene();
     var views = scene.getAllViews();
@@ -195,6 +202,7 @@ var CreatorPage = Navy.Class(Navy.Page, {
         view[funcName]();
       }
     }
+    */
 
     /*
      * 無効にする場合は背景も合わせて透明にしておく.

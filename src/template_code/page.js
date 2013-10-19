@@ -1,3 +1,2 @@
-{{class}} = Navy.Class(Navy.Page, {
-  CLASSNAME: "{{class}}"
+Navy.Class('{{class}}', Navy.Page, {
 });

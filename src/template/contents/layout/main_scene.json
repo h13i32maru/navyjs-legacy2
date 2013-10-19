@@ -1,5 +1,6 @@
 [
   {
+    "visible": true,
     "backgroundColor": "#aaaaff",
     "class": "Navy.View.View",
     "id": "header_bg",
@@ -14,6 +15,7 @@
     "sizePolicy": "fixed"
   },
   {
+    "visible": true,
     "backgroundColor": "#0000ff",
     "class": "Navy.View.Text",
     "extra": {
@@ -31,6 +33,7 @@
     "sizePolicy": "fixed"
   },
   {
+    "visible": true,
     "backgroundColor": "",
     "class": "Navy.View.Text",
     "extra": {

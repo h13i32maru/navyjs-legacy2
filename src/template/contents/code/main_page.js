@@ -1,3 +1,2 @@
-MainPage = Navy.Class(Navy.Page, {
-  CLASSNAME: "MainPage"
+Navy.Class('MainPage', Navy.Page, {
 });

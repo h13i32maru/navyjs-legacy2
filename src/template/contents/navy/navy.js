@@ -4,44 +4,49 @@
 'use strict';
 
 // file: src/init.js
-window.Navy = {
-  View: {},
-  ViewGroup: {},
-  Transition: {}
-};
+window.Navy = {};
 
 window.addEventListener('DOMContentLoaded', function(){
   Navy.App.initialize();
 });
 
 // file: src/lib/class.js
-Navy.Class = function(){
+Navy.Class = function(var_args){
+  var className;
   var protoObj;
   var superClass;
+
   switch (arguments.length) {
-  case 1:
-    superClass = Navy.Class._RootClass;
-    protoObj = arguments[0];
-    break;
   case 2:
-    if (typeof arguments[0] === 'function') {
-      superClass = arguments[0];
-    } else {
-      superClass = arguments[0].constructor;
-    }
+    superClass = Navy.Class._RootClass;
+    className = arguments[0];
     protoObj = arguments[1];
     break;
+  case 3:
+    if (typeof arguments[1] === 'function') {
+      superClass = arguments[1];
+    } else {
+      superClass = arguments[1].constructor;
+    }
+    className = arguments[0];
+    protoObj = arguments[2];
+    break;
   default:
-    throw new Error('arguments of Navy.Class is 1 or 2.');
+    throw new Error('arguments of Navy.Class is 2 or 3.');
   }
 
-  return Navy.Class._create(superClass, protoObj);
+  var _class = Navy.Class._create(className, superClass, protoObj);
+  Navy.Class._setByReflection(className, _class);
+  return _class;
 };
 
 Navy.Class.instance = function instance(var_args) {
   var _class = Navy.Class.apply(Navy, arguments);
   _class.__manualInitialize__ = true;
   var obj = new _class();
+  var className = arguments[0];
+  Navy.Class._setByReflection(className, obj);
+
   return obj;
 };
 
@@ -51,9 +56,34 @@ Navy.Class.instance = function instance(var_args) {
 Navy.Class._RootClass = function _RootClass() {};
 Navy.Class._RootClass.prototype.initialize = function() {};
 
-Navy.Class._create = function _create(superClass, protoObj){
-  var name = protoObj.CLASSNAME || 'Constructor';
-  name = name.replace(/[.]/g, '$');
+Navy.Class._getByReflection = function _getByReflection(propertyName) {
+  var names = propertyName.split('.');
+
+  var obj = window;
+  for (var i = 0; i < names.length; i++) {
+    obj = obj[names[i]];
+  }
+
+  return obj;
+};
+
+Navy.Class._setByReflection = function _setByReflection(propertyName, value) {
+  var names = propertyName.split('.');
+
+  var obj = window;
+  for (var i = 0; i < names.length - 1; i++) {
+    if (!(names[i] in obj)) {
+      obj[names[i]] = {};
+    }
+
+    obj = obj[names[i]];
+  }
+
+  obj[names[i]] = value;
+};
+
+Navy.Class._create = function _create(className, superClass, protoObj){
+  var name = className.replace(/[.]/g, '$');
   var Constructor = new Function("return function " +  name + " () { if (typeof this.initialize === 'function' && !this.constructor.__manualInitialize__) { this.initialize.apply(this, arguments); } }")();
 
   function EmptySuperClass(){}
@@ -65,6 +95,21 @@ Navy.Class._create = function _create(superClass, protoObj){
 
   var key;
   var value;
+
+  if (protoObj.$static) {
+    for (key in protoObj.$static) {
+      var value = protoObj.$static[key];
+      if (typeof value === 'function') {
+        if (Navy.Class._argumentNames(value)[0] === '$super') {
+          value = Navy.Class._wrapFunction(superClass, key, value);
+        }
+      }
+      Constructor[key] = value;
+    }
+
+    delete protoObj.$static;
+  }
+
   for (key in protoObj) {
     value = protoObj[key];
 
@@ -83,6 +128,8 @@ Navy.Class._create = function _create(superClass, protoObj){
   }
 
   Constructor.prototype.constructor = Constructor;
+  Constructor.prototype.$className = className;
+  Constructor.prototype.$class = Constructor;
 
   return Constructor;
 };
@@ -120,9 +167,7 @@ Navy.Class._wrapFunction = function _wrapFunction(superObj, funcname, func) {
 };
 
 // file: src/lib/notify.js
-Navy.Notify = Navy.Class({
-  CLASSNAME: 'Navy.Notify',
-
+Navy.Class('Navy.Notify', {
   _count: null,
   _callback: null,
 
@@ -151,9 +196,7 @@ Navy.Notify = Navy.Class({
 });
 
 // file: src/core/app.js
-Navy.App = Navy.Class.instance({
-  CLASSNAME: 'Navy.App',
-
+Navy.Class.instance('Navy.App', {
   _initRootBeforeCallback: null,
 
   initialize: function(){
@@ -173,9 +216,7 @@ Navy.App = Navy.Class.instance({
 });
 
 // file: src/core/config.js
-Navy.Config = Navy.Class.instance({
-  CLASSNAME: 'Navy.Config',
-
+Navy.Class.instance('Navy.Config', {
   app: null,
   scene: null,
   page: null,
@@ -239,9 +280,7 @@ Navy.Config = Navy.Class.instance({
 });
 
 // file: src/core/resource.js
-Navy.Resource = Navy.Class.instance({
-  CLASSNAME: 'Navy.Resource',
-
+Navy.Class.instance('Navy.Resource', {
   _layouts: null,
   _scripts: null,
   _images: null,
@@ -315,12 +354,11 @@ Navy.Resource = Navy.Class.instance({
 });
 
 // file: src/view/view.js
-Navy.View.View = Navy.Class({
-  CLASSNAME: 'Navy.View.View',
-
+Navy.Class('Navy.View.View', {
   SIZE_POLICY_FIXED: 'fixed',
   SIZE_POLICY_WRAP_CONTENT: 'wrapContent',
 
+  _id: null,
   _page: null,
   _scene: null,
   _layout: null,
@@ -333,8 +371,14 @@ Navy.View.View = Navy.Class({
    * @param {ViewLayout} layout
    */
   initialize: function(layout, callback) {
+    if (layout) {
+      this._id = layout.id;
+    }
+
     this._layout = layout;
-    this._element = document.createElement('div');
+
+    this._createElement(layout);
+    this._createExtraElement(layout);
 
     this._execLink = this._execLink.bind(this);
 
@@ -348,33 +392,50 @@ Navy.View.View = Navy.Class({
 
     this._layout = layout;
 
-    var style = {
-      position: 'absolute',
-      left: layout.pos.x + 'px',
-      top: layout.pos.y + 'px',
-      zIndex: layout.pos.z,
-      backgroundColor: layout.backgroundColor
-    };
+    var notify = new Navy.Notify(2, function(){
+      this._applyLayout(layout);
+      this._applyExtraLayout(layout);
+      callback && callback(this);
+    }.bind(this));
 
-    if (layout.sizePolicy == this.SIZE_POLICY_FIXED) {
-      style.width = layout.size.width + 'px';
-      style.height = layout.size.height + 'px';
-    } else {
-      layout.size = {};
-    }
+    var pass = notify.pass.bind(notify);
 
-    if (layout.link) {
-      // fixme: とりあえずtouchendで代用してるが、tochstartとかもちゃんと使ってタップ判定すべき.
-      this._element.removeEventListener('touchend', this._execLink);
-      this._element.addEventListener('touchend', this._execLink);
-    }
-
-    this.setRawStyle(style);
-
-    callback && setTimeout(callback.bind(null, this), 0);
+    this._loadResource(layout, pass);
+    this._loadExtraResource(layout, pass);
   },
 
-  setRawStyle: function(style) {
+  _createElement: function(layout) {
+    this._element = document.createElement('div');
+  },
+
+  _applyLayout: function(layout) {
+    this._element.style.position = 'absolute';
+
+    this.setVisible(layout.visible);
+    this.setPos(layout.pos);
+    this.setSizePolicy(layout.sizePolicy);
+    this.setSize(layout.size);
+    this.setBackgroundColor(layout.backgroundColor);
+    this.setLink(layout.link);
+  },
+
+  _loadResource: function(layout, callback) {
+    callback && setTimeout(callback, 0);
+  },
+
+  _createExtraElement: function(layout) {
+    // pass
+  },
+
+  _applyExtraLayout: function(layout) {
+    // pass
+  },
+
+  _loadExtraResource: function(layout, callback) {
+    callback && setTimeout(callback, 0);
+  },
+
+  _setRawStyle: function(style) {
     var cssText = '';
     for (var key in style) {
       var value = style[key];
@@ -418,7 +479,7 @@ Navy.View.View = Navy.Class({
   },
 
   getId: function(){
-    return this._layout.id;
+    return this._id;
   },
 
   setPage: function(page) {
@@ -445,47 +506,116 @@ Navy.View.View = Navy.Class({
     this._parentView = parentView;
   },
 
-  show: function() {
-    this._element.style.display = '';
+  getParent: function() {
+    return this._parentView;
   },
 
-  hide: function() {
-    this._element.style.display = 'none';
+  destroy: function() {
+    this._parentView.removeView(this);
+
+    var names = Object.getOwnPropertyNames(this);
+    for (var i = 0; i < names.length; i++) {
+      this[names[i]] = null;
+    }
+  },
+
+  toJSON: function() {
+    return this._layout;
+  },
+
+  _cloneObject: function(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  },
+
+  /*
+   * Viewのレイアウトに関するメソッド群
+   */
+
+  isVisible: function() {
+    if (!this._layout.visible) {
+      return false;
+    }
+
+    for (var parent = this.getParent(); parent; parent = parent.getParent()) {
+      if (!parent.isVisible()) {
+        return false;
+      }
+    }
+
+    return true;
+  },
+
+  setVisible: function(visible) {
+    this._layout.visible = visible;
+
+    if (visible) {
+      this.setSizePolicy(this._layout.sizePolicy);
+    } else {
+      this._element.style.display = 'none';
+    }
   },
 
   setBackgroundColor: function(backgroundColor) {
     this._layout.backgroundColor = backgroundColor;
-
-    this.setRawStyle({backgroundColor: backgroundColor});
+    this._element.style.backgroundColor = backgroundColor;
   },
 
-  //FIXME: getBackgroundColorつくる
+  getBackgroundColor: function() {
+    return this._layout.backgroundColor;
+  },
+
+  setSizePolicy: function(sizePolicy) {
+    if (!this.isVisible()) {
+      return;
+    }
+
+    switch(sizePolicy) {
+    case this.SIZE_POLICY_FIXED:
+      this._element.style.display = 'block';
+      break;
+    case this.SIZE_POLICY_WRAP_CONTENT:
+      this._element.style.display = 'inline';
+      break;
+    default:
+      throw new Error('unknown size policy. ' + this._layout.sizePolicy);
+    }
+
+    this._layout.sizePolicy = sizePolicy;
+  },
+
+  getSizePolicy: function() {
+    return this._layout.sizePolicy;
+  },
 
   getSize: function() {
     switch (this._layout.sizePolicy) {
     case this.SIZE_POLICY_WRAP_CONTENT:
+      if (!this.isVisible()) {
+        return {width: -1, height: -1};
+      }
+
+      // FIXME: view groupの場合clientではサイズがとれずscrollでとれる. 調査必要.
       if (this._element.clientWidth || this._element.clientHeight) {
-        return {
-          width: this._element.clientWidth,
-          height: this._element.clientHeight
-        };
+        return {width: this._element.clientWidth, height: this._element.clientHeight};
       } else {
-        return {
-          width: this._element.scrollWidth,
-          height: this._element.scrollHeight
-        };
+        return {width: this._element.scrollWidth, height: this._element.scrollHeight};
       }
     case this.SIZE_POLICY_FIXED:
-      return {
-        width: this._layout.size.width,
-        height: this._layout.size.height
-      };
+      return {width: this._layout.size.width, height: this._layout.size.height};
     default:
       throw new Error('unknown size policy. ' + this._layout.sizePolicy);
     }
   },
 
   setSize: function(size) {
+    if (!size) {
+      return;
+    }
+
+    if (!this._layout.size) {
+      this._layout.size = {};
+    }
+
     var cssText = '';
 
     if (typeof size.width === 'number') {
@@ -532,64 +662,77 @@ Navy.View.View = Navy.Class({
   },
 
   getPos: function() {
-    return {x: this._layout.pos.x, y: this._layout.pos.y, z: this._layout.pos.z};
+    return this._cloneObject(this._layout.pos);
   },
 
-  destroy: function() {
-    this._parentView.removeView(this);
-    this._element = null;
+  setLink: function(link) {
+    this._layout.link = link;
+
+    if (link) {
+      this._element.addEventListener('touchend', this._execLink);
+    } else {
+      this._element.removeEventListener('touchend', this._execLink);
+    }
   },
 
-  toJSON: function() {
-    return this._layout;
+  getLink: function() {
+    return this._cloneObject(this._layout.link);
   }
 });
 
 // file: src/view/image.js
-Navy.View.Image = Navy.Class(Navy.View.View, {
-  CLASSNAME: 'Navy.View.Image',
-
+Navy.Class('Navy.View.Image', Navy.View.View, {
   _imgElm: null,
 
   initialize: function($super, layout, callback) {
     $super(layout, callback);
   },
 
-  setLayout: function($super, layout, callback) {
+  _createExtraElement: function($super, layout) {
     $super(layout);
 
-    if (!this._imgElm) {
-      var imgElm = document.createElement('img');
-      this._element.appendChild(imgElm);
-      this._imgElm = imgElm;
-    }
+    var imgElm = document.createElement('img');
+    this._element.appendChild(imgElm);
+    this._imgElm = imgElm;
+  },
 
+  _applyExtraLayout: function($super, layout) {
+    // pass
+  },
+
+  _loadExtraResource: function($super, layout, callback) {
     if (layout && layout.extra.src) {
-      Navy.Resource.loadImage(layout.extra.src, function(src, width, height){
-        this._onLoadImage(src, width, height);
-        callback && callback(this);
-      }.bind(this));
+      this.setSrc(layout.extra.src, function(){
+        $super(layout, callback);
+      });
     } else {
-      this._layout.extra.src = null;
-      this._imgElm.src = '';
-      callback && setTimeout(callback, 0);
+      $super(layout, callback);
     }
   },
 
   _onLoadImage: function(src, width, height){
-    this._layout.extra.src = src;
     this._imgElm.src = src;
 
     if (this._layout.sizePolicy == this.SIZE_POLICY_WRAP_CONTENT) {
       this.setSize({width: width, height: height});
     }
+  },
+
+  setSrc: function(src, callback) {
+    this._layout.extra.src = src;
+    Navy.Resource.loadImage(src, function(src, width, height){
+      this._onLoadImage(src, width, height);
+      callback && callback();
+    }.bind(this));
+  },
+
+  getSrc: function() {
+    return this._layout.src;
   }
 });
 
 // file: src/view/text.js
-Navy.View.Text = Navy.Class(Navy.View.View, {
-  CLASSNAME: 'Navy.View.Text',
-
+Navy.Class('Navy.View.Text', Navy.View.View, {
   _textElement: null,
 
   /**
@@ -602,38 +745,50 @@ Navy.View.Text = Navy.Class(Navy.View.View, {
     $super(layout, callback);
   },
 
-  setLayout: function($super, layout, callback) {
+  _createExtraElement: function($super, layout) {
     $super(layout);
 
-    if (!layout) {
+    this._textElement = document.createElement('span');
+    this._element.appendChild(this._textElement);
+  },
+
+  _applyExtraLayout: function($super, layout) {
+    $super(layout);
+
+    if (!layout.extra) {
       return;
     }
 
-    if (!this._textElement) {
-      this._textElement = document.createElement('span');
-      this._element.appendChild(this._textElement);
-    }
+    this.setFontSize(layout.extra.fontSize);
+  },
 
-    if (layout.extra) {
-      this._textElement.textContent = layout.extra.text;
+  _loadExtraResource: function($super, layout, callback) {
+    this.setText(layout.extra.text);
 
-      if (typeof layout.extra.fontSize === "number") {
-        this._textElement.style.fontSize = layout.extra.fontSize + 'px';
-      }
-    }
+    $super(layout, callback);
+  },
 
-    if (layout.sizePolicy == this.SIZE_POLICY_WRAP_CONTENT) {
-      this._element.style.display = 'inline';
-    }
+  setText: function(text) {
+    this._layout.extra.text = text;
+    this._textElement.textContent = text;
+  },
 
-    callback && setTimeout(callback.bind(null, this), 0);
+  getText: function() {
+    return this._layout.extra.text;
+  },
+
+  setFontSize: function(fontSize) {
+    this._layout.extra.fontSize = fontSize;
+    this._element.style.fontSize = fontSize + 'px';
+  },
+
+  getFontSize: function() {
+    return this._layout.extra.fontSize;
   }
 });
 
 // file: src/view_group/view_group.js
-Navy.ViewGroup.ViewGroup = Navy.Class(Navy.View.View, {
-  CLASSNAME: 'Navy.ViewGroup.ViewGroup',
-
+Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   _views: null,
   _initCallback: null,
 
@@ -648,18 +803,17 @@ Navy.ViewGroup.ViewGroup = Navy.Class(Navy.View.View, {
     $super(layout, callback);
   },
 
-  setLayout: function($super, layout, callback) {
-    $super(layout);
-
+  _loadExtraResource: function($super, layout, callback) {
     if (layout && layout.extra.contentLayoutFile) {
       this._layout.extra.contentLayoutFile = layout.extra.contentLayoutFile;
-      callback = callback || function(){};
-      this._initCallback = callback.bind(null, this);
+      this._initCallback = function() {
+        $super(layout, callback);
+      };
       Navy.Resource.loadLayout(layout.extra.contentLayoutFile, this._onLoadContentLayout.bind(this));
     } else {
       // rootは_layoutがnull
       this._layout && (this._layout.extra.contentLayoutFile = null);
-      callback && setTimeout(callback.bind(null, this), 0);
+      $super(layout, callback);
     }
   },
 
@@ -675,16 +829,13 @@ Navy.ViewGroup.ViewGroup = Navy.Class(Navy.View.View, {
     }
   },
 
-  findViewByElement: function(element) {
-    var views = this._views;
-    for (var viewId in views) {
-      var view = views[viewId];
-      if (view.getElement() === element) {
-        return view;
-      }
+  destroy: function($super) {
+    for (var viewId in this._views) {
+      var view = this._views[viewId];
+      view.destroy();
     }
 
-    return null;
+    $super();
   },
 
   setPage: function($super, page) {
@@ -705,6 +856,53 @@ Navy.ViewGroup.ViewGroup = Navy.Class(Navy.View.View, {
       var view = views[viewId];
       view.setScene(scene);
     }
+  },
+
+  findViewById: function(id) {
+    var ids = id.split('.');
+
+    var view = this._views[ids[0]] || null;
+
+    if (view) {
+      if (ids.length === 1) {
+        return view;
+      } else {
+        ids.shift();
+        return view.findViewById(ids.join("."));
+      }
+    }
+
+    var views = this._views;
+    for (var viewId in views) {
+      var view = views[viewId];
+      if (view.findViewById) {
+        var result = view.findViewById(id);
+        if (result) {
+          return result;
+        }
+      }
+    }
+
+    return null;
+  },
+
+  findViewByElement: function(element) {
+    var views = this._views;
+    for (var viewId in views) {
+      var view = views[viewId];
+      if (view.getElement() === element) {
+        return view;
+      }
+
+      if (view.findViewByElement) {
+        var result = view.findViewByElement(element);
+        if (result) {
+          return result;
+        }
+      }
+    }
+
+    return null;
   },
 
   getAllViews: function() {
@@ -746,11 +944,14 @@ Navy.ViewGroup.ViewGroup = Navy.Class(Navy.View.View, {
 });
 
 // file: src/view_screen/page.js
-Navy.Page = Navy.Class(Navy.ViewGroup.ViewGroup, {
-  CLASSNAME: 'Navy.Page',
-
+Navy.Class('Navy.Page', Navy.ViewGroup.ViewGroup, {
   initialize: function($super, layout, callback) {
+    $super(layout, callback);
+  },
+
+  setLayout: function($super, layout, callback) {
     // シーン、ページの場合はsize, posは固定値でよい
+    layout.visible = true;
     layout.pos = {x:0, y:0};
     layout.sizePolicy = this.SIZE_POLICY_FIXED;
     layout.size = {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height};
@@ -767,34 +968,32 @@ Navy.Page = Navy.Class(Navy.ViewGroup.ViewGroup, {
   },
 
   onCreate: function() {
-    console.log('onCreate', this.CLASSNAME);
+    console.log('onCreate', this.$className);
   },
 
   onResumeBefore: function(){
-    console.log('onResumeBefore', this.CLASSNAME);
+    console.log('onResumeBefore', this.$className);
   },
 
   onResumeAfter: function(){
-    console.log('onResumeAfter', this.CLASSNAME);
+    console.log('onResumeAfter', this.$className);
   },
 
   onPauseBefore: function(){
-    console.log('onPauseBefore', this.CLASSNAME);
+    console.log('onPauseBefore', this.$className);
   },
 
   onPauseAfter: function(){
-    console.log('onPauseAfter', this.CLASSNAME);
+    console.log('onPauseAfter', this.$className);
   },
 
   onDestroy: function(){
-    console.log('onDestroy', this.CLASSNAME);
+    console.log('onDestroy', this.$className);
   }
 });
 
 // file: src/view_screen/root.js
-Navy.Root = Navy.Class.instance(Navy.ViewGroup.ViewGroup, {
-  CLASSNAME: 'Navy.Root',
-
+Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   _sceneStack: null,
 
   /**
@@ -803,20 +1002,28 @@ Navy.Root = Navy.Class.instance(Navy.ViewGroup.ViewGroup, {
   initialize: function($super) {
     $super();
 
+    this._id = '$root';
+    this._layout = {visible: true};
+
     this._initDocument();
-
-    var parentElm = document.body;
-
-    this._sceneStack = [];
-
     var rootElm = document.createElement('div');
     rootElm.style.cssText = 'position:absolute; width:100%; height:100%; overflow:hidden;';
-    parentElm.appendChild(rootElm);
-
+    document.body.appendChild(rootElm);
     this._element = rootElm;
 
+    this._sceneStack = [];
     var startSceneName = Navy.Config.app.start.scene;
     this.nextScene(startSceneName);
+  },
+
+  getCurrentScene: function() {
+    var currentStackObj = this._getCurrentStack();
+    return currentStackObj.scene;
+  },
+
+  getCurrentPage: function() {
+    var scene = this.getCurrentScene();
+    return scene.getCurrentPage();
   },
 
   // fixme: callbackを実装する.
@@ -949,9 +1156,7 @@ Navy.Root = Navy.Class.instance(Navy.ViewGroup.ViewGroup, {
 });
 
 // file: src/view_screen/scene.js
-Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
-  CLASSNAME: 'Navy.Scene',
-
+Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   _pageStack: null,
 
   initialize: function($super, layout, callback){
@@ -963,30 +1168,12 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
         views[name].setPos({z: 100});
       }
       this.nextPage(layout.extra.page, callback.bind(null, this));
-
-//      //FIXME: remove debug code
-//      views[name].addRawEventListener('touchend', function(ev){
-//        ev.stopPropagation();
-//        Navy.Root.nextScene('Scene1');
-//      });
     }.bind(this));
-
-    //FIXME: remove debug code
-//    var cb = function(){
-//      if (this._pageStack.length < 5) {
-//        this.nextPage('Page' + (Date.now() % 2 + 1));
-//      } else {
-//        this._element.removeEventListener('touchend', cb);
-//        this._element.addEventListener('touchend', function cb(){
-//          this.backPage();
-//        }.bind(this));
-//      }
-//    }.bind(this);
-//    this._element.addEventListener('touchend', cb);
   },
 
   setLayout: function($super, layout, callback) {
     // シーン、ページの場合はsize, posは固定値でよい
+    layout.visible = true;
     layout.pos = {x:0, y:0};
     layout.sizePolicy = this.SIZE_POLICY_FIXED;
     layout.size = {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height};
@@ -1008,6 +1195,11 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
 
   getScene: function() {
     return this;
+  },
+
+  getCurrentPage: function() {
+    var currentStackObj = this._getCurrentStack();
+    return currentStackObj.page;
   },
 
   // fixme: callbackを実装する.
@@ -1035,27 +1227,27 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
   },
 
   onCreate: function() {
-    console.log('onCreate', this.CLASSNAME);
+    console.log('onCreate', this.$className);
   },
 
   onResumeBefore: function(){
-    console.log('onResumeBefore', this.CLASSNAME);
+    console.log('onResumeBefore', this.$className);
   },
 
   onResumeAfter: function(){
-    console.log('onResumeAfter', this.CLASSNAME);
+    console.log('onResumeAfter', this.$className);
   },
 
   onPauseBefore: function(){
-    console.log('onPauseBefore', this.CLASSNAME);
+    console.log('onPauseBefore', this.$className);
   },
 
   onPauseAfter: function(){
-    console.log('onPauseAfter', this.CLASSNAME);
+    console.log('onPauseAfter', this.$className);
   },
 
   onDestroy: function(){
-    console.log('onDestroy', this.CLASSNAME);
+    console.log('onDestroy', this.$className);
   },
 
   // 不要？
@@ -1168,9 +1360,7 @@ Navy.Scene = Navy.Class(Navy.ViewGroup.ViewGroup, {
 });
 
 // file: src/transition/transition.js
-Navy.Transition.Transition = Navy.Class({
-  CLASSNAME: 'Navy.Transition.Transition',
-
+Navy.Class('Navy.Transition.Transition', {
   initialize: function(beforeView, afterView){
   },
 
@@ -1182,9 +1372,7 @@ Navy.Transition.Transition = Navy.Class({
 });
 
 // file: src/transition/fade.js
-Navy.Transition.Fade = Navy.Class(Navy.Transition.Transition, {
-  CLASSNAME: 'Navy.Transition.Fade',
-
+Navy.Class('Navy.Transition.Fade', Navy.Transition.Transition, {
   $static: {
     initAnimationStyle: false
   },
@@ -1196,13 +1384,13 @@ Navy.Transition.Fade = Navy.Class(Navy.Transition.Transition, {
     this._beforeView = beforeView;
     this._afterView = afterView;
 
-    if (!this.$static.initAnimationStyle) {
+    if (!this.$class.initAnimationStyle) {
       this._addAnimationStyle();
-      this.$static.initAnimationStyle = true;
+      this.$class.initAnimationStyle = true;
     }
 
-    beforeView && beforeView.setRawStyle({webkitAnimation: '0.5s'});
-    afterView && afterView.setRawStyle({webkitAnimation: '0.5s', opacity: 0});
+    beforeView && beforeView._setRawStyle({webkitAnimation: '0.5s'});
+    afterView && afterView._setRawStyle({webkitAnimation: '0.5s', opacity: 0});
   },
 
   _addAnimationStyle: function(){
@@ -1215,28 +1403,28 @@ Navy.Transition.Fade = Navy.Class(Navy.Transition.Transition, {
 
   start: function(callback) {
     if (!this._beforeView) {
-      this._afterView.setRawStyle({opacity: ''});
+      this._afterView._setRawStyle({opacity: ''});
       callback && callback();
       return;
     }
 
     var cb1 = function(){
-      this._beforeView.hide();
-      this._beforeView.setRawStyle({webkitAnimationName: ''});
+      this._beforeView.setVisible(false);
+      this._beforeView._setRawStyle({webkitAnimationName: ''});
       this._beforeView.removeRawEventListener('webkitAnimationEnd', cb1);
 
       this._afterView.addRawEventListener('webkitAnimationEnd', cb2);
-      this._afterView.setRawStyle({opacity:0, webkitAnimationName: 'fade_in'});
+      this._afterView._setRawStyle({opacity:0, webkitAnimationName: 'fade_in'});
     }.bind(this);
 
     var cb2 = function(){
       this._afterView.removeRawEventListener('webkitAnimationEnd', cb2);
-      this._afterView.setRawStyle({opacity: '', webkitAnimationName: 'none'});
+      this._afterView._setRawStyle({opacity: '', webkitAnimationName: 'none'});
       callback && callback();
     }.bind(this);
 
     this._beforeView.addRawEventListener('webkitAnimationEnd', cb1);
-    this._beforeView.setRawStyle({webkitAnimationName: 'fade_out'});
+    this._beforeView._setRawStyle({webkitAnimationName: 'fade_out'});
   },
 
   back: function(callback) {
@@ -1246,31 +1434,29 @@ Navy.Transition.Fade = Navy.Class(Navy.Transition.Transition, {
     }
 
     var cb1 = function(){
-      this._afterView.hide();
+      this._afterView.setVisible(false);
       this._afterView.removeRawEventListener('webkitAnimationEnd', cb1);
-      this._afterView.setRawStyle({webkitAnimationName: 'none'});
+      this._afterView._setRawStyle({webkitAnimationName: 'none'});
 
       this._beforeView.addRawEventListener('webkitAnimationEnd', cb2);
-      this._beforeView.setRawStyle({opacity: 0, webkitAnimationName: 'fade_in'});
-      this._beforeView.show();
+      this._beforeView._setRawStyle({opacity: 0, webkitAnimationName: 'fade_in'});
+      this._beforeView.setVisible(true);
     }.bind(this);
 
     var cb2 = function(){
       this._beforeView.removeRawEventListener('webkitAnimationEnd', cb2);
-      this._beforeView.setRawStyle({opacity: '', webkitAnimationName: 'none'});
+      this._beforeView._setRawStyle({opacity: '', webkitAnimationName: 'none'});
       callback && callback();
     }.bind(this);
 
     this._afterView.addRawEventListener('webkitAnimationEnd', cb1);
-    this._afterView.setRawStyle({webkitAnimationName: 'fade_out'});
+    this._afterView._setRawStyle({webkitAnimationName: 'fade_out'});
   }
 });
 
 
 // file: src/transition/slide_over.js
-Navy.Transition.SlideOver = Navy.Class(Navy.Transition.Transition, {
-  CLASSNAME: 'Navy.Transition.SlideOver',
-
+Navy.Class('Navy.Transition.SlideOver', Navy.Transition.Transition, {
   $static: {
     initAnimationStyle: false
   },
@@ -1282,13 +1468,13 @@ Navy.Transition.SlideOver = Navy.Class(Navy.Transition.Transition, {
     this._beforeView = beforeView;
     this._afterView = afterView;
 
-    if (!this.$static.initAnimationStyle) {
+    if (!this.$class.initAnimationStyle) {
       this._addAnimationStyle();
-      this.$static.initAnimationStyle = true;
+      this.$class.initAnimationStyle = true;
     }
 
     var width = Navy.Config.app.size.width;
-    afterView.setRawStyle({webkitAnimation: '0.5s', webkitTransform: 'translateX(' + width + 'px)'});
+    afterView._setRawStyle({webkitAnimation: '0.5s', webkitTransform: 'translateX(' + width + 'px)'});
   },
 
   _addAnimationStyle: function(){
@@ -1302,20 +1488,20 @@ Navy.Transition.SlideOver = Navy.Class(Navy.Transition.Transition, {
 
   start: function(callback) {
     if (!this._beforeView) {
-      this._afterView.setRawStyle({webkitTransform: 'none'});
+      this._afterView._setRawStyle({webkitTransform: 'none'});
       callback && callback();
       return;
     }
 
     var cb = function(){
-      this._beforeView.hide();
+      this._beforeView.setVisible(false);
       this._afterView.removeRawEventListener('webkitAnimationEnd', cb);
-      this._afterView.setRawStyle({webkitTransform: 'none', webkitAnimationName: 'none'});
+      this._afterView._setRawStyle({webkitTransform: 'none', webkitAnimationName: 'none'});
       callback && callback();
     }.bind(this);
 
     this._afterView.addRawEventListener('webkitAnimationEnd', cb);
-    this._afterView.setRawStyle({webkitAnimationName: 'slide_over_in'});
+    this._afterView._setRawStyle({webkitAnimationName: 'slide_over_in'});
   },
 
   back: function(callback) {
@@ -1329,9 +1515,9 @@ Navy.Transition.SlideOver = Navy.Class(Navy.Transition.Transition, {
       callback && callback();
     }.bind(this);
 
-    this._beforeView.show();
+    this._beforeView.setVisible(true);
     this._afterView.addRawEventListener('webkitAnimationEnd', cb);
-    this._afterView.setRawStyle({webkitAnimationName: 'slide_over_out'});
+    this._afterView._setRawStyle({webkitAnimationName: 'slide_over_out'});
   }
 });
 

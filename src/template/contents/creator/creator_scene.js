@@ -1,3 +1,2 @@
-var CreatorScene = Navy.Class(Navy.Scene, {
-  CLASSNAME: 'CreatorScene'
+Navy.Class('CreatorScene', Navy.Scene, {
 });

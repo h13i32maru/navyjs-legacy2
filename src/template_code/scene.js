@@ -1,3 +1,2 @@
-{{class}} = Navy.Class(Navy.Scene, {
-  CLASSNAME: '{{class}}'
+Navy.Class('{{class}}', Navy.Scene, {
 });

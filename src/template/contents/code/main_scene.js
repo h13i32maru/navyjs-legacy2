@@ -1,3 +1,2 @@
-MainScene = Navy.Class(Navy.Scene, {
-  CLASSNAME: 'MainScene'
+Navy.Class('MainScene', Navy.Scene, {
 });
