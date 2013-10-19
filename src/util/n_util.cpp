@@ -335,13 +335,15 @@ QStringList NUtil::recursiveEntryList(const QString &dirPath, const QString &roo
     QDir dir(dirPath);
     dir.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
     QStringList list = dir.entryList();
+    QStringList tmp;
     for (int i = 0; i < list.length(); i++) {
         QFileInfo info(dir.absoluteFilePath(list[i]));
         list[i] = root + list[i];
         if (info.isDir()) {
-            list.append(recursiveEntryList(info.filePath(), root + info.fileName() + "/"));
+            tmp.append(recursiveEntryList(info.filePath(), root + info.fileName() + "/"));
          }
     }
+    list.append(tmp);
     return list;
 }
 

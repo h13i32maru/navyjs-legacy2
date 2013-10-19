@@ -243,7 +243,3 @@ bool NProject::existsPage(const QString &page) {
     int index = pages.indexOf(page);
     return index == -1 ? false : true;
 }
-
-//QString NProject::absoluteContentsFilePath(const QString &relativePath) {
-//    return contentsFilePath(relativePath);
-//}
