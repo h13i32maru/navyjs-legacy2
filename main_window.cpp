@@ -74,16 +74,16 @@ void MainWindow::setCurrentProject(QString dirPath) {
     NProject *project = NProject::instance();
     QModelIndex rootIndex = mFileTreeView->rootIndex();
     int row;
-    row = mFileSysteMmodel->index(project->filePath("index.html")).row();
+    row = mFileSysteMmodel->index(project->contentsFilePath("index.html")).row();
     mFileTreeView->setRowHidden(row, rootIndex, true);
 
-    row = mFileSysteMmodel->index(project->filePath("index_creator.html")).row();
+    row = mFileSysteMmodel->index(project->contentsFilePath("index_creator.html")).row();
     mFileTreeView->setRowHidden(row, rootIndex, true);
 
-    row = mFileSysteMmodel->index(project->filePath("creator")).row();
+    row = mFileSysteMmodel->index(project->contentsFilePath("creator")).row();
     mFileTreeView->setRowHidden(row, rootIndex, true);
 
-    row = mFileSysteMmodel->index(project->filePath("navy")).row();
+    row = mFileSysteMmodel->index(project->contentsFilePath("navy")).row();
     mFileTreeView->setRowHidden(row, rootIndex, true);
 }
 
@@ -112,10 +112,10 @@ void MainWindow::openProject() {
 
     // FIXME: remove this debug code.
     NProject *project = NProject::instance();
-    QDir(project->filePath("navy")).removeRecursively();
-    QDir(project->filePath("creator")).removeRecursively();
-    NUtil::copyDir(":/template/navy", project->filePath("navy"));
-    NUtil::copyDir(":/template/creator", project->filePath("creator"));
+    QDir(project->contentsFilePath("navy")).removeRecursively();
+    QDir(project->contentsFilePath("creator")).removeRecursively();
+    NUtil::copyDir(":/template/navy", project->contentsFilePath("navy"));
+    NUtil::copyDir(":/template/creator", project->contentsFilePath("creator"));
 }
 
 void MainWindow::showFileOpener() {
@@ -123,7 +123,7 @@ void MainWindow::showFileOpener() {
     opener.setModal(true);
     int ret = opener.exec();
     if (ret == NFileOpener::Accepted) {
-        QString filePath = NProject::instance()->filePath(opener.filePath());
+        QString filePath = NProject::instance()->contentsFilePath(opener.filePath());
         openFile(filePath);
     }
 }
@@ -172,7 +172,7 @@ void MainWindow::launchGoogleChrome() {
         arguments.append(options);
     }
 
-    QString filePath = "file://" + NProject::instance()->filePath("index.html");
+    QString filePath = "file://" + NProject::instance()->contentsFilePath("index.html");
     arguments.append(filePath);
 
     if (mGoogleChromeProcess->state() == QProcess::NotRunning) {

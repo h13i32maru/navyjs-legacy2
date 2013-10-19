@@ -33,9 +33,9 @@ public:
     void setProject(const QString &projectDirPath);
     QString projectName() const;
 
-    TYPE fileType(const QString &filePath) const;
-    QString filePath(const QString &relativePath) const;
-    QString relativeLayoutFilePath(const QString &filePath) const;
+    TYPE fileType(const QString &contentsFilePath) const;
+    QString contentsFilePath(const QString &relativePath) const;
+    QString relativeLayoutFilePath(const QString &contentsFilePath) const;
     QString contentsDirPath() const;
 
     bool validate();
@@ -45,9 +45,9 @@ public:
     QStringList codes();
     QStringList layouts();
     QStringList files();
-    bool existsFile(const QString &relativePath);
+    bool existsContentsFile(const QString &relativePath);
     bool existsPage(const QString &page);
-    QString absoluteFilePath(const QString &relativePath);
+//    QString absoluteContentsFilePath(const QString &relativePath);
 };
 
 #endif // N_PROJECT_H

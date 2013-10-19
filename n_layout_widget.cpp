@@ -118,7 +118,7 @@ void NLayoutWidget::contextMenuForWebView(const QPoint &/*point*/) {
  ************************************************/
 void NLayoutWidget::reload() {
     QWebView *webView = ui->webView;
-    QString htmlPath = "file://" + NProject::instance()->filePath(HtmlFilePath);
+    QString htmlPath = "file://" + NProject::instance()->contentsFilePath(HtmlFilePath);
     webView->load(QUrl(htmlPath));
 }
 

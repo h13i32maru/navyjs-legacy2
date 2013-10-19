@@ -33,7 +33,7 @@ NPageDialog::NPageDialog(TYPE type, NJson &configPage, QWidget *parent) :
 }
 
 void NPageDialog::checkClassFile(const QString &path) {
-    if (NProject::instance()->existsFile(path)) {
+    if (NProject::instance()->existsContentsFile(path)) {
         ui->classFileLabel->setStyleSheet("");
     } else {
         ui->classFileLabel->setStyleSheet("QLabel { color: #ff0000; }");
@@ -41,7 +41,7 @@ void NPageDialog::checkClassFile(const QString &path) {
 }
 
 void NPageDialog::checkLayoutFile(const QString &path) {
-    if (NProject::instance()->existsFile(path)) {
+    if (NProject::instance()->existsContentsFile(path)) {
         ui->layoutLabel->setStyleSheet("");
     } else {
         ui->layoutLabel->setStyleSheet("QLabel { color: #ff0000; }");
@@ -88,8 +88,8 @@ void NPageDialog::updatePage() {
 
     // class file check.
     QString classFile = ui->classFile->currentText();
-    if (!NProject::instance()->existsFile(classFile)) {
-        QString path = NProject::instance()->absoluteFilePath(classFile);
+    if (!NProject::instance()->existsContentsFile(classFile)) {
+        QString path = NProject::instance()->contentsFilePath(classFile);
         QMap<QString, QString> replace;
         replace["{{class}}"] = className;
         if (!NUtil::createFileFromTemplate(":/template_code/page.js", path, replace)) {
@@ -99,8 +99,8 @@ void NPageDialog::updatePage() {
 
     // layout check
     QString layoutFile = ui->layout->currentText();
-    if (!NProject::instance()->existsFile(layoutFile)) {
-        QString path = NProject::instance()->absoluteFilePath(layoutFile);
+    if (!NProject::instance()->existsContentsFile(layoutFile)) {
+        QString path = NProject::instance()->contentsFilePath(layoutFile);
         if (!NUtil::createFileFromTemplate(":/template_code/layout.json", path)) {
             return;
         }

@@ -38,7 +38,7 @@ NSceneDialog::NSceneDialog(TYPE type, NJson &configScene, QWidget *parent) :
 }
 
 void NSceneDialog::checkClassFile(const QString &path) {
-    if (NProject::instance()->existsFile(path)) {
+    if (NProject::instance()->existsContentsFile(path)) {
         ui->classFileLabel->setStyleSheet("");
     } else {
         ui->classFileLabel->setStyleSheet("QLabel { color: #ff0000; }");
@@ -46,7 +46,7 @@ void NSceneDialog::checkClassFile(const QString &path) {
 }
 
 void NSceneDialog::checkLayoutFile(const QString &path) {
-    if (NProject::instance()->existsFile(path)) {
+    if (NProject::instance()->existsContentsFile(path)) {
         ui->layoutLabel->setStyleSheet("");
     } else {
         ui->layoutLabel->setStyleSheet("QLabel { color: #ff0000; }");
@@ -102,8 +102,8 @@ void NSceneDialog::updateScene() {
 
     // class file check.
     QString classFile = ui->classFile->currentText();
-    if (!NProject::instance()->existsFile(classFile)) {
-        QString path = NProject::instance()->absoluteFilePath(classFile);
+    if (!NProject::instance()->existsContentsFile(classFile)) {
+        QString path = NProject::instance()->contentsFilePath(classFile);
         QMap<QString, QString> replace;
         replace["{{class}}"] = className;
         if (!NUtil::createFileFromTemplate(":/template_code/scene.js", path, replace)) {
@@ -113,8 +113,8 @@ void NSceneDialog::updateScene() {
 
     // layout check
     QString layoutFile = ui->layout->currentText();
-    if (!NProject::instance()->existsFile(layoutFile)) {
-        QString path = NProject::instance()->absoluteFilePath(layoutFile);
+    if (!NProject::instance()->existsContentsFile(layoutFile)) {
+        QString path = NProject::instance()->contentsFilePath(layoutFile);
         if (!NUtil::createFileFromTemplate(":/template_code/layout.json", path)) {
             return;
         }

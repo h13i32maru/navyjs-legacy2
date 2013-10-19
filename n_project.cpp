@@ -31,22 +31,22 @@ QString NProject::projectName() const {
 }
 
 NProject::TYPE NProject::fileType(const QString &filePath) const {
-    if (filePath == mProjectDir.absoluteFilePath("config/app.json")) {
+    if (filePath == contentsFilePath("config/app.json")) {
         return TYPE_CONFIG_APP;
     }
 
-    if (filePath == mProjectDir.absoluteFilePath("config/scene.json")) {
+    if (filePath == contentsFilePath("config/scene.json")) {
         return TYPE_CONFIG_SCENE;
     }
 
-    if (filePath == mProjectDir.absoluteFilePath("config/page.json")) {
+    if (filePath == contentsFilePath("config/page.json")) {
         return TYPE_CONFIG_PAGE;
     }
 
     QString ext = QFileInfo(filePath).suffix().toLower();
-    QString codeDirPath = mProjectDir.absoluteFilePath("code");
-    QString layoutDirPath = mProjectDir.absoluteFilePath("layout");
-    QString imageDirPath = mProjectDir.absoluteFilePath("image");
+    QString codeDirPath = contentsFilePath("code");
+    QString layoutDirPath = contentsFilePath("layout");
+    QString imageDirPath = contentsFilePath("image");
 
     if (filePath == codeDirPath) {
         return TYPE_CODE_DIR;
@@ -77,8 +77,17 @@ NProject::TYPE NProject::fileType(const QString &filePath) const {
     return TYPE_UNKNOWN;
 }
 
-QString NProject::filePath(const QString &relativePath) const {
-    return mProjectDir.absoluteFilePath(relativePath);
+QString NProject::contentsFilePath(const QString &relativePath) const {
+    return mProjectDir.absoluteFilePath("contents/" + relativePath);
+}
+
+QString NProject::contentsDirPath() const {
+    return mProjectDir.absoluteFilePath("contents");
+}
+
+bool NProject::existsContentsFile(const QString &relativePath) {
+    QString path = contentsFilePath(relativePath);
+    return QFileInfo(path).exists();
 }
 
 QString NProject::relativeLayoutFilePath(const QString &filePath) const {
@@ -87,11 +96,7 @@ QString NProject::relativeLayoutFilePath(const QString &filePath) const {
         return "";
     }
 
-    return QString(filePath).remove(0, mProjectDir.absolutePath().length() + 1);
-}
-
-QString NProject::contentsDirPath() const {
-    return mProjectDir.absolutePath();
+    return QString(filePath).remove(0, contentsDirPath().length() + 1);
 }
 
 bool NProject::validate() {
@@ -103,7 +108,7 @@ bool NProject::validate() {
         QStringList pageList = pages();
 
         NJson sceneConfig;
-        sceneConfig.parseFromFilePath(mProjectDir.absoluteFilePath("config/scene.json"));
+        sceneConfig.parseFromFilePath(contentsFilePath("config/scene.json"));
         for (int i = 0; i < sceneConfig.length(); i++) {
             QString index = QString::number(i);
             QString sceneId = sceneConfig.getStr(index + ".id");
@@ -126,7 +131,7 @@ bool NProject::validate() {
         }
 
         NJson pageConfig;
-        pageConfig.parseFromFilePath(mProjectDir.absoluteFilePath("config/page.json"));
+        pageConfig.parseFromFilePath(contentsFilePath("config/page.json"));
         for (int i = 0; i < sceneConfig.length(); i++) {
             QString index = QString::number(i);
             QString pageId = pageConfig.getStr(index + ".id");
@@ -154,7 +159,7 @@ bool NProject::validate() {
 }
 
 QStringList NProject::scenes() {
-    QString path = mProjectDir.absoluteFilePath("config/scene.json");
+    QString path = contentsFilePath("config/scene.json");
     NJson sceneConfig;
     sceneConfig.parseFromFilePath(path);
 
@@ -169,7 +174,7 @@ QStringList NProject::scenes() {
 }
 
 QStringList NProject::pages() {
-    QString path = mProjectDir.absoluteFilePath("config/page.json");
+    QString path = contentsFilePath("config/page.json");
     NJson pageConfig;
     pageConfig.parseFromFilePath(path);
 
@@ -184,17 +189,17 @@ QStringList NProject::pages() {
 }
 
 QStringList NProject::images() {
-    QStringList images =  NUtil::recursiveEntryList(mProjectDir.absoluteFilePath("image"), "image/");
+    QStringList images =  NUtil::recursiveEntryList(contentsFilePath("image"), "image/");
     return images;
 }
 
 QStringList NProject::codes() {
-    QStringList codes =  NUtil::recursiveEntryList(mProjectDir.absoluteFilePath("code"), "code/");
+    QStringList codes =  NUtil::recursiveEntryList(contentsFilePath("code"), "code/");
     return codes;
 }
 
 QStringList NProject::layouts() {
-    QStringList layouts =  NUtil::recursiveEntryList(mProjectDir.absoluteFilePath("layout"), "layout/");
+    QStringList layouts =  NUtil::recursiveEntryList(contentsFilePath("layout"), "layout/");
     return layouts;
 }
 
@@ -206,17 +211,12 @@ QStringList NProject::files() {
     return list;
 }
 
-bool NProject::existsFile(const QString &relativePath) {
-    QString path = mProjectDir.absoluteFilePath(relativePath);
-    return QFileInfo(path).exists();
-}
-
 bool NProject::existsPage(const QString &page) {
     QStringList pages = this->pages();
     int index = pages.indexOf(page);
     return index == -1 ? false : true;
 }
 
-QString NProject::absoluteFilePath(const QString &relativePath) {
-    return mProjectDir.absoluteFilePath(relativePath);
-}
+//QString NProject::absoluteContentsFilePath(const QString &relativePath) {
+//    return contentsFilePath(relativePath);
+//}
