@@ -30,7 +30,7 @@ NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QW
     settings->setAttribute(QWebSettings::AcceleratedCompositingEnabled, false);
 
     mNative = new NativeBridge(this);
-    QString layoutPath = QString(filePath).remove(0, mProjectDir.absolutePath().length() + 1);
+    QString layoutPath = NProject::instance()->relativeLayoutFilePath(filePath);
     mNative->setLayoutPath(layoutPath);
     injectNativeBridge();
     ui->layoutPropEdit->setNativeBridge(mNative);

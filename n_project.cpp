@@ -89,6 +89,15 @@ QString NProject::filePath(const QString &relativePath) const {
     return mProjectDir.absoluteFilePath(relativePath);
 }
 
+QString NProject::relativeLayoutFilePath(const QString &filePath) const {
+    if (!isLayout(filePath)) {
+        qDebug() << "file is not layout file." << filePath;
+        return "";
+    }
+
+    return QString(filePath).remove(0, mProjectDir.absolutePath().length() + 1);
+}
+
 bool NProject::validate() {
     QStringList result;
 

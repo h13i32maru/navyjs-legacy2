@@ -37,6 +37,7 @@ public:
     bool isImage(const QString &filePath) const;
 
     QString filePath(const QString &relativePath) const;
+    QString relativeLayoutFilePath(const QString &filePath) const;
 
     bool validate();
     QStringList scenes();
