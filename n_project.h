@@ -29,13 +29,6 @@ public:
     void setProject(const QString &projectDirPath);
 
     FILE_TYPE fileType(const QString &filePath) const;
-    bool isConfigApp(const QString &filePath) const;
-    bool isConfigScene(const QString &filePath) const;
-    bool isConfigPage(const QString &filePath) const;
-    bool isCode(const QString &filePath) const;
-    bool isLayout(const QString &filePath) const;
-    bool isImage(const QString &filePath) const;
-
     QString filePath(const QString &relativePath) const;
     QString relativeLayoutFilePath(const QString &filePath) const;
 

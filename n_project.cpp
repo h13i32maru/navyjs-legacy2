@@ -26,63 +26,38 @@ void NProject::setProject(const QString &projectDirPath) {
 }
 
 NProject::FILE_TYPE NProject::fileType(const QString &filePath) const {
-    if (isConfigApp(filePath)) {
+    if (filePath == mProjectDir.absoluteFilePath("config/app.json")) {
         return FILE_TYPE_CONFIG_APP;
-    } else if (isConfigScene(filePath)) {
+    }
+
+    if (filePath == mProjectDir.absoluteFilePath("config/scene.json")) {
         return FILE_TYPE_CONFIG_SCENE;
-    } else if (isConfigPage(filePath)) {
+    }
+
+    if (filePath == mProjectDir.absoluteFilePath("config/page.json")) {
         return FILE_TYPE_CONFIG_PAGE;
-    } else if (isCode(filePath)) {
-        return FILE_TYPE_CODE;
-    } else if (isLayout(filePath)) {
-        return FILE_TYPE_LAYOUT;
-    } else if (isImage(filePath)) {
-        return FILE_TYPE_IMAGE;
-    } else {
-        return FILE_TYPE_UNKNOWN;
     }
-}
 
-bool NProject::isConfigApp(const QString &filePath) const {
-    return filePath == mProjectDir.absoluteFilePath("config/app.json");
-}
-
-bool NProject::isConfigScene(const QString &filePath) const {
-    return filePath == mProjectDir.absoluteFilePath("config/scene.json");
-}
-
-bool NProject::isConfigPage(const QString &filePath) const {
-    return filePath == mProjectDir.absoluteFilePath("config/page.json");
-}
-
-bool NProject::isCode(const QString &filePath) const {
     QString ext = QFileInfo(filePath).suffix().toLower();
-    if (ext != "js") {
-        return false;
-    }
 
     QString codeDirPath = mProjectDir.absoluteFilePath("code");
-    return filePath.indexOf(codeDirPath) != -1;
-}
-
-bool NProject::isLayout(const QString &filePath) const {
-    QString ext = QFileInfo(filePath).suffix().toLower();
-    if (ext != "json") {
-        return false;
+    if (ext == "js" && filePath.indexOf(codeDirPath) != -1) {
+        return FILE_TYPE_CODE;
     }
 
     QString layoutDirPath = mProjectDir.absoluteFilePath("layout");
-    return filePath.indexOf(layoutDirPath) != -1;
-}
-
-bool NProject::isImage(const QString &filePath) const {
-    QString ext = QFileInfo(filePath).suffix().toLower();
-    if (ext != "png" && ext != "jpeg" && ext != "jpg" && ext != "gif") {
-        return false;
+    if (ext == "json" && filePath.indexOf(layoutDirPath) != -1) {
+        return FILE_TYPE_LAYOUT;
     }
 
     QString imageDirPath = mProjectDir.absoluteFilePath("image");
-    return filePath.indexOf(imageDirPath) != -1;
+    if (ext == "png" || ext == "jpeg" || ext == "jpg" || ext == "gif") {
+        if (filePath.indexOf(imageDirPath) != -1) {
+            return FILE_TYPE_IMAGE;
+        }
+    }
+
+    return FILE_TYPE_UNKNOWN;
 }
 
 QString NProject::filePath(const QString &relativePath) const {
@@ -90,7 +65,7 @@ QString NProject::filePath(const QString &relativePath) const {
 }
 
 QString NProject::relativeLayoutFilePath(const QString &filePath) const {
-    if (!isLayout(filePath)) {
+    if (fileType(filePath) != FILE_TYPE_LAYOUT) {
         qDebug() << "file is not layout file." << filePath;
         return "";
     }
