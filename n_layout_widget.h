@@ -20,7 +20,7 @@ public:
     enum ViewClassCol {ViewClassColName, ViewClassColClass};
     static const QString HtmlFilePath;
 
-    explicit NLayoutWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
+    explicit NLayoutWidget(const QString &filePath, QWidget *parent = 0);
     virtual void refreshForActive();
     ~NLayoutWidget();
 

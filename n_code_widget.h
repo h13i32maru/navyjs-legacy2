@@ -14,7 +14,7 @@ class NCodeWidget : public NFileWidget
     Q_OBJECT
 
 public:
-    explicit NCodeWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
+    explicit NCodeWidget(const QString &filePath, QWidget *parent = 0);
     ~NCodeWidget();
 
 protected:

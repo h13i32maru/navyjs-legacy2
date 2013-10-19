@@ -3,7 +3,7 @@
 
 #include <QLabel>
 
-NImageWidget::NImageWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : NFileWidget(projectDir, filePath, parent), ui(new Ui::NImageWidget)
+NImageWidget::NImageWidget(const QString &filePath, QWidget *parent) : NFileWidget(filePath, parent), ui(new Ui::NImageWidget)
 {
     ui->setupUi(this);
     mImageLabel = ui->imageLabel;

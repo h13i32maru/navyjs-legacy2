@@ -16,7 +16,7 @@
 
 const QString NLayoutWidget::HtmlFilePath = "index_creator.html";
 
-NLayoutWidget::NLayoutWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : NFileWidget(projectDir, filePath, parent), ui(new Ui::NLayoutWidget)
+NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWidget(filePath, parent), ui(new Ui::NLayoutWidget)
 {
     ui->setupUi(this);
 

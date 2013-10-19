@@ -7,7 +7,7 @@
 #include <QMenu>
 #include <QDebug>
 
-NConfigAppWidget::NConfigAppWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : NFileWidget(projectDir, filePath, parent), ui(new Ui::NConfigAppWidget)
+NConfigAppWidget::NConfigAppWidget(const QString &filePath, QWidget *parent) : NFileWidget(filePath, parent), ui(new Ui::NConfigAppWidget)
 {
     ui->setupUi(this);
 

@@ -305,12 +305,12 @@ void MainWindow::openFile(const QString &filePath) {
 
     NFileWidget *fileWidget = NULL;
     switch(NProject::instance()->fileType(filePath)) {
-    case NProject::FILE_TYPE_CONFIG_APP:    fileWidget = new NConfigAppWidget(*mProjectDir, filePath); break;
-    case NProject::FILE_TYPE_CONFIG_SCENE:  fileWidget = new NConfigSceneWidget(*mProjectDir, filePath); break;
-    case NProject::FILE_TYPE_CONFIG_PAGE:   fileWidget = new NConfigPageWidget(*mProjectDir, filePath); break;
-    case NProject::FILE_TYPE_CODE:          fileWidget = new NCodeWidget(*mProjectDir, filePath); break;
-    case NProject::FILE_TYPE_LAYOUT:        fileWidget = new NLayoutWidget(*mProjectDir, filePath); break;
-    case NProject::FILE_TYPE_IMAGE:         fileWidget = new NImageWidget(*mProjectDir, filePath); break;
+    case NProject::FILE_TYPE_CONFIG_APP:    fileWidget = new NConfigAppWidget(filePath); break;
+    case NProject::FILE_TYPE_CONFIG_SCENE:  fileWidget = new NConfigSceneWidget(filePath); break;
+    case NProject::FILE_TYPE_CONFIG_PAGE:   fileWidget = new NConfigPageWidget(filePath); break;
+    case NProject::FILE_TYPE_CODE:          fileWidget = new NCodeWidget(filePath); break;
+    case NProject::FILE_TYPE_LAYOUT:        fileWidget = new NLayoutWidget(filePath); break;
+    case NProject::FILE_TYPE_IMAGE:         fileWidget = new NImageWidget(filePath); break;
     default: return;
     }
 

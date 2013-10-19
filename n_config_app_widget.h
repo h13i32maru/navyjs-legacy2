@@ -16,7 +16,7 @@ class NConfigAppWidget : public NFileWidget
     Q_OBJECT
 
 public:
-    explicit NConfigAppWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
+    explicit NConfigAppWidget(const QString &filePath, QWidget *parent = 0);
     ~NConfigAppWidget();
     virtual void refreshForActive();
 

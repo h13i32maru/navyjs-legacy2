@@ -8,7 +8,7 @@ class NFileWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit NFileWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
+    explicit NFileWidget(const QString &filePath, QWidget *parent = 0);
     bool isChanged();
     bool save();
     void setFilePath(const QString &filePath);
@@ -16,7 +16,6 @@ public:
     virtual void refreshForActive();
 
 protected:
-    QDir mProjectDir;
     QString mFilePath;
     bool mChanged;
     virtual bool innerSave() = 0;

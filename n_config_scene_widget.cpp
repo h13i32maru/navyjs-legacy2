@@ -9,7 +9,7 @@
 
 #include <window/n_scene_dialog.h>
 
-NConfigSceneWidget::NConfigSceneWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : NFileWidget(projectDir, filePath, parent), ui(new Ui::NConfigSceneWidget)
+NConfigSceneWidget::NConfigSceneWidget(const QString &filePath, QWidget *parent) : NFileWidget(filePath, parent), ui(new Ui::NConfigSceneWidget)
 {
     ui->setupUi(this);
 

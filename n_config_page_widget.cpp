@@ -9,7 +9,7 @@
 
 #include <window/n_page_dialog.h>
 
-NConfigPageWidget::NConfigPageWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : NFileWidget(projectDir, filePath, parent), ui(new Ui::NConfigPageWidget)
+NConfigPageWidget::NConfigPageWidget(const QString &filePath, QWidget *parent) : NFileWidget(filePath, parent), ui(new Ui::NConfigPageWidget)
 {
     ui->setupUi(this);
 

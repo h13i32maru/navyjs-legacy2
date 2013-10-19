@@ -14,7 +14,7 @@ class NImageWidget : public NFileWidget
     Q_OBJECT
 
 public:
-    explicit NImageWidget(const QDir &projectDir, const QString &filePath, QWidget *parent = 0);
+    explicit NImageWidget(const QString &filePath, QWidget *parent = 0);
     ~NImageWidget();
 
 protected:

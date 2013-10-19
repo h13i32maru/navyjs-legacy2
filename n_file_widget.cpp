@@ -1,8 +1,7 @@
 #include "n_file_widget.h"
 
-NFileWidget::NFileWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : QWidget(parent)
+NFileWidget::NFileWidget(const QString &filePath, QWidget *parent) : QWidget(parent)
 {
-    mProjectDir = projectDir;
     mFilePath = filePath;
     mChanged = false;
 }

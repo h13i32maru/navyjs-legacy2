@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include <QTextEdit>
 
-NCodeWidget::NCodeWidget(const QDir &projectDir, const QString &filePath, QWidget *parent) : NFileWidget(projectDir, filePath, parent), ui(new Ui::NCodeWidget)
+NCodeWidget::NCodeWidget(const QString &filePath, QWidget *parent) : NFileWidget(filePath, parent), ui(new Ui::NCodeWidget)
 {
     ui->setupUi(this);
 
