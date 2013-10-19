@@ -48,6 +48,9 @@ public:
     bool existsContentsFile(const QString &relativePath);
     bool existsPage(const QString &page);
 //    QString absoluteContentsFilePath(const QString &relativePath);
+
+public slots:
+    void showSettingDialog();
 };
 
 #endif // N_PROJECT_H

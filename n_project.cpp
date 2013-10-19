@@ -6,6 +6,7 @@
 #include <QDebug>
 
 #include <window/n_build_error_dialog.h>
+#include <window/n_project_dialog.h>
 
 NProject* NProject::mInstance = NULL;
 
@@ -19,6 +20,11 @@ NProject* NProject::instance() {
 
 NProject::NProject()
 {
+}
+
+void NProject::showSettingDialog() {
+    NProjectDialog dialog;
+    dialog.exec();
 }
 
 void NProject::setProject(const QString &projectDirPath) {

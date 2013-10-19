@@ -41,6 +41,7 @@ private:
 private slots:
     void openProject();
     void newProject();
+    void showProjectSetting();
     void showFileOpener();
     void saveAll();
     void launchGoogleChrome();

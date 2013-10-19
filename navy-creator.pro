@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     window/n_file_opener.cpp \
     window/n_build_error_dialog.cpp \
     window/n_pref_dialog.cpp \
-    window/n_new_project_dialog.cpp
+    window/n_new_project_dialog.cpp \
+    window/n_project_dialog.cpp
 
 HEADERS  += main_window.h \
     n_code_widget.h \
@@ -63,7 +64,8 @@ HEADERS  += main_window.h \
     window/n_file_opener.h \
     window/n_build_error_dialog.h \
     window/n_pref_dialog.h \
-    window/n_new_project_dialog.h
+    window/n_new_project_dialog.h \
+    window/n_project_dialog.h
 
 FORMS    += main_window.ui \
     n_code_widget.ui \
@@ -80,7 +82,8 @@ FORMS    += main_window.ui \
     window/n_file_opener.ui \
     window/n_build_error_dialog.ui \
     window/n_pref_dialog.ui \
-    window/n_new_project_dialog.ui
+    window/n_new_project_dialog.ui \
+    window/n_project_dialog.ui
 
 RESOURCES += \
     resource.qrc

@@ -123,7 +123,7 @@
     <addaction name="actionOpenProject"/>
     <addaction name="actionPreferences"/>
     <addaction name="separator"/>
-    <addaction name="actionProject_Setting"/>
+    <addaction name="actionProjectSetting"/>
     <addaction name="actionOpenFile"/>
     <addaction name="actionSaveAll"/>
    </widget>
@@ -234,7 +234,7 @@
     <string>Validate</string>
    </property>
   </action>
-  <action name="actionProject_Setting">
+  <action name="actionProjectSetting">
    <property name="text">
     <string>Project Setting</string>
    </property>

@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionPreferences, SIGNAL(triggered()), mPrefDialog, SLOT(exec()));
     connect(ui->actionNewProject, SIGNAL(triggered(bool)), this, SLOT(newProject()));
     connect(ui->actionOpenProject, SIGNAL(triggered(bool)), this, SLOT(openProject()));
+    connect(ui->actionProjectSetting, SIGNAL(triggered()), this, SLOT(showProjectSetting()));
     connect(ui->actionOpenFile, SIGNAL(triggered(bool)), this, SLOT(showFileOpener()));
     connect(ui->actionSaveAll, SIGNAL(triggered(bool)), this, SLOT(saveAll()));
     connect(ui->actionLaunchGoogleChrome, SIGNAL(triggered(bool)), this, SLOT(launchGoogleChrome()));
@@ -57,7 +58,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(mFileTreeView, SIGNAL(dropped(QString,QString)), this, SLOT(updateTabForDropped(QString,QString)));
     connect(mFileTabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeFile(int)));
     connect(mFileTabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+}
 
+void MainWindow::showProjectSetting() {
+    NProject::instance()->showSettingDialog();
 }
 
 void MainWindow::setCurrentProject(QString dirPath) {
