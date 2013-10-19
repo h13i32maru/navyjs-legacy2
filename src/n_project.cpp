@@ -70,34 +70,35 @@ NProject::TYPE NProject::fileType(const QString &filePath) const {
         return TYPE_CONFIG_PAGE;
     }
 
-    QString ext = QFileInfo(filePath).suffix().toLower();
+    QFileInfo info(filePath);
+    QString ext = info.suffix().toLower();
     QString codeDirPath = contentsFilePath("code");
     QString layoutDirPath = contentsFilePath("layout");
     QString imageDirPath = contentsFilePath("image");
 
-    if (filePath == codeDirPath) {
-        return TYPE_CODE_DIR;
+    if (filePath.indexOf(codeDirPath) != -1) {
+        if (info.isFile() && ext == "js") {
+            return TYPE_CODE;
+        } else if(info.isDir()) {
+            return TYPE_CODE_DIR;
+        }
     }
 
-    if (filePath == layoutDirPath) {
-        return TYPE_LAYOUT_DIR;
+    if (filePath.indexOf(layoutDirPath) != -1) {
+        if (info.isFile() && ext == "json") {
+            return TYPE_LAYOUT;
+        } else if (info.isDir()) {
+            return TYPE_LAYOUT_DIR;
+        }
     }
 
-    if (filePath == imageDirPath) {
-        return TYPE_IMAGE_DIR;
-    }
-
-    if (ext == "js" && filePath.indexOf(codeDirPath) != -1) {
-        return TYPE_CODE;
-    }
-
-    if (ext == "json" && filePath.indexOf(layoutDirPath) != -1) {
-        return TYPE_LAYOUT;
-    }
-
-    if (ext == "png" || ext == "jpeg" || ext == "jpg" || ext == "gif") {
-        if (filePath.indexOf(imageDirPath) != -1) {
-            return TYPE_IMAGE;
+    if (filePath.indexOf(imageDirPath) != -1) {
+        if (info.isFile()) {
+            if (ext == "png" || ext == "jpeg" || ext == "jpg" || ext == "gif") {
+                return TYPE_IMAGE;
+            }
+        } else if(info.isDir()) {
+            return TYPE_IMAGE_DIR;
         }
     }
 
