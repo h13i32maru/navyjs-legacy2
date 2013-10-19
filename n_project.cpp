@@ -90,6 +90,10 @@ QString NProject::relativeLayoutFilePath(const QString &filePath) const {
     return QString(filePath).remove(0, mProjectDir.absolutePath().length() + 1);
 }
 
+QString NProject::contentsDirPath() const {
+    return mProjectDir.absolutePath();
+}
+
 bool NProject::validate() {
     QStringList result;
 

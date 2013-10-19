@@ -26,8 +26,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->statusBar->hide();
     ui->fileTabWidget->hide();
 
-    mProjectDir = new QDir(QDir::homePath());
-
     mFileSysteMmodel = new QFileSystemModel;
     mFileSysteMmodel->setReadOnly(false);
     mFileTreeView = ui->fileTreeView;
@@ -62,11 +60,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 }
 
 void MainWindow::setCurrentProject(QString dirPath) {
-    mProjectDir->setPath(dirPath);
+    NProject::instance()->setProject(dirPath);
 
-    NProject::instance()->setProject(mProjectDir->absolutePath());
-
-    QString rootDirPath = mProjectDir->absolutePath();
+    QString rootDirPath = NProject::instance()->contentsDirPath();
     mFileSysteMmodel->setRootPath(rootDirPath);
     //特定のディレクトリ以降のみを表示するための設定
     mFileTreeView->setRootIndex(mFileSysteMmodel->index(rootDirPath));

@@ -36,6 +36,7 @@ public:
     TYPE fileType(const QString &filePath) const;
     QString filePath(const QString &relativePath) const;
     QString relativeLayoutFilePath(const QString &filePath) const;
+    QString contentsDirPath() const;
 
     bool validate();
     QStringList scenes();

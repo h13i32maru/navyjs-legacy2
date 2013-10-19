@@ -25,7 +25,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QDir *mProjectDir;
     NTreeView *mFileTreeView;
     QTabWidget *mFileTabWidget;
     QWidget *mTabBackgroundWidget;
