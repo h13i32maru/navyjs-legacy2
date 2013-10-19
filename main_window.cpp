@@ -98,24 +98,24 @@ void MainWindow::newProject()
 }
 
 void MainWindow::openProject() {
-    QString dirName = QFileDialog::getExistingDirectory(this, tr("Open Project"), QDir::homePath() + "/Desktop");
-
-    if (dirName.isEmpty()) {
+    QString projectFilePath = QFileDialog::getOpenFileName(this, tr("Open Project"), QDir::homePath() + "/Desktop");
+    if (projectFilePath.isEmpty()) {
         return;
     }
 
-    if (!QFile::exists(dirName)) {
+    if (!QFile::exists(projectFilePath)) {
         return;
     }
 
-    setCurrentProject(dirName);
+    QString projectDirPath = QFileInfo(projectFilePath).dir().absolutePath();
+    setCurrentProject(projectDirPath);
 
     // FIXME: remove this debug code.
     NProject *project = NProject::instance();
     QDir(project->contentsFilePath("navy")).removeRecursively();
     QDir(project->contentsFilePath("creator")).removeRecursively();
-    NUtil::copyDir(":/template/navy", project->contentsFilePath("navy"));
-    NUtil::copyDir(":/template/creator", project->contentsFilePath("creator"));
+    NUtil::copyDir(":/template/contents/navy", project->contentsFilePath("navy"));
+    NUtil::copyDir(":/template/contents/creator", project->contentsFilePath("creator"));
 }
 
 void MainWindow::showFileOpener() {

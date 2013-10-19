@@ -121,9 +121,11 @@
     </property>
     <addaction name="actionNewProject"/>
     <addaction name="actionOpenProject"/>
+    <addaction name="actionPreferences"/>
+    <addaction name="separator"/>
+    <addaction name="actionProject_Setting"/>
     <addaction name="actionOpenFile"/>
     <addaction name="actionSaveAll"/>
-    <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuBuild">
     <property name="title">
@@ -230,6 +232,11 @@
   <action name="actionValidate">
    <property name="text">
     <string>Validate</string>
+   </property>
+  </action>
+  <action name="actionProject_Setting">
+   <property name="text">
+    <string>Project Setting</string>
    </property>
   </action>
  </widget>
