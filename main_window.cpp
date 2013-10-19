@@ -75,18 +75,19 @@ void MainWindow::setCurrentProject(QString dirPath) {
     mFileTabWidget->clear();
 
     // 特定のファイルは非表示にする
+    NProject *project = NProject::instance();
     QModelIndex rootIndex = mFileTreeView->rootIndex();
     int row;
-    row = mFileSysteMmodel->index(mProjectDir->absoluteFilePath("index.html")).row();
+    row = mFileSysteMmodel->index(project->filePath("index.html")).row();
     mFileTreeView->setRowHidden(row, rootIndex, true);
 
-    row = mFileSysteMmodel->index(mProjectDir->absoluteFilePath("index_creator.html")).row();
+    row = mFileSysteMmodel->index(project->filePath("index_creator.html")).row();
     mFileTreeView->setRowHidden(row, rootIndex, true);
 
-    row = mFileSysteMmodel->index(mProjectDir->absoluteFilePath("creator")).row();
+    row = mFileSysteMmodel->index(project->filePath("creator")).row();
     mFileTreeView->setRowHidden(row, rootIndex, true);
 
-    row = mFileSysteMmodel->index(mProjectDir->absoluteFilePath("navy")).row();
+    row = mFileSysteMmodel->index(project->filePath("navy")).row();
     mFileTreeView->setRowHidden(row, rootIndex, true);
 }
 
@@ -122,10 +123,12 @@ void MainWindow::openProject() {
 
     setCurrentProject(dirName);
 
-    QDir(mProjectDir->absoluteFilePath("navy")).removeRecursively();
-    QDir(mProjectDir->absoluteFilePath("creator")).removeRecursively();
-    NUtil::copyDir(":/template/navy", mProjectDir->absoluteFilePath("navy"));
-    NUtil::copyDir(":/template/creator", mProjectDir->absoluteFilePath("creator"));
+    // FIXME: remove this debug code.
+    NProject *project = NProject::instance();
+    QDir(project->filePath("navy")).removeRecursively();
+    QDir(project->filePath("creator")).removeRecursively();
+    NUtil::copyDir(":/template/navy", project->filePath("navy"));
+    NUtil::copyDir(":/template/creator", project->filePath("creator"));
 }
 
 void MainWindow::showFileOpener() {
@@ -133,7 +136,7 @@ void MainWindow::showFileOpener() {
     opener.setModal(true);
     int ret = opener.exec();
     if (ret == NFileOpener::Accepted) {
-        QString filePath = mProjectDir->absoluteFilePath(opener.filePath());
+        QString filePath = NProject::instance()->filePath(opener.filePath());
         openFile(filePath);
     }
 }
