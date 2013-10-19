@@ -41,11 +41,13 @@ public:
     QVariant toVariant();
 
     // getter
+    bool getBool(const QString &keysStr) const;
     int getInt(const QString &keysStr) const;
     QString getStr(const QString &keysStr) const;
     NJson getObject(const QString &keysStr) const;
 
     // setter
+    void set(QString keysStr, bool value);
     void set(QString keysStr, int value);
     void set(QString keysStr, QString value);
 

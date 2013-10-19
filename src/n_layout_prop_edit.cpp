@@ -54,6 +54,7 @@ void NLayoutPropEdit::blockAllSignals(bool block) {
 }
 
 void NLayoutPropEdit::connectWidgetToJson() {
+    connect(ui->visible, SIGNAL(toggled(bool)), this, SLOT(syncWidgetToJson()));
     connect(ui->posXSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->posYSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->sizeWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
@@ -76,6 +77,7 @@ void NLayoutPropEdit::connectWidgetToJson() {
 }
 
 void NLayoutPropEdit::syncWidgetToJson() {
+    mView.set("visible", ui->visible->isChecked());
     mView.set("pos.x", ui->posXSpinBox->value());
     mView.set("pos.y", ui->posYSpinBox->value());
     mView.set("size.width", ui->sizeWidthSpinBox->value());
@@ -133,6 +135,7 @@ void NLayoutPropEdit::setViewFromJS(const NJson &views) {
     mView = view;
     ui->idLabel->setText(view.getStr("id"));
     ui->classLabel->setText(view.getStr("class"));
+    ui->visible->setChecked(view.getBool("visible"));
     ui->posXSpinBox->setValue(view.getInt("pos.x"));
     ui->posYSpinBox->setValue(view.getInt("pos.y"));
     ui->sizeWidthSpinBox->setValue(view.getInt("size.width"));

@@ -82,6 +82,10 @@ QVariant NJson::toVariant() {
     return mRootValue.toVariant();
 }
 
+bool NJson::getBool(const QString &keysStr) const {
+    return get(mRootValue, keysStr).toBool();
+}
+
 int NJson::getInt(const QString &keysStr) const
 {
     return (int) get(mRootValue, keysStr).toDouble();
@@ -118,6 +122,10 @@ QJsonValue NJson::get(const QJsonValue &value, const QString &keysStr) const
         keys.pop_front();
         return get(nextValue, keys.join("."));
     }
+}
+
+void NJson::set(QString keysStr, bool value) {
+    mRootValue = set(mRootValue, keysStr, QJsonValue(value));
 }
 
 void NJson::set(QString keysStr, int value)

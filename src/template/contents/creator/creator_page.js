@@ -102,6 +102,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     var layout = {
       id: viewId,
       class: viewClass,
+      visible: true,
       pos: {x: 0, y: 0},
       sizePolicy: 'wrapContent',
       extra: {}
