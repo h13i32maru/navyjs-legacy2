@@ -6,6 +6,16 @@
 class NProject
 {
 public:
+    enum FILE_TYPE {
+        FILE_TYPE_UNKNOWN,
+        FILE_TYPE_CONFIG_APP,
+        FILE_TYPE_CONFIG_SCENE,
+        FILE_TYPE_CONFIG_PAGE,
+        FILE_TYPE_CODE,
+        FILE_TYPE_LAYOUT,
+        FILE_TYPE_IMAGE
+    };
+
     static NProject *instance();
 
 private:
@@ -18,6 +28,7 @@ private:
 public:
     void setProject(const QString &projectDirPath);
 
+    FILE_TYPE fileType(const QString &filePath) const;
     bool isConfigApp(const QString &filePath) const;
     bool isConfigScene(const QString &filePath) const;
     bool isConfigPage(const QString &filePath) const;

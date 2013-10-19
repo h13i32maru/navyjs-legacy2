@@ -25,6 +25,24 @@ void NProject::setProject(const QString &projectDirPath) {
     mProjectDir.setPath(projectDirPath);
 }
 
+NProject::FILE_TYPE NProject::fileType(const QString &filePath) const {
+    if (isConfigApp(filePath)) {
+        return FILE_TYPE_CONFIG_APP;
+    } else if (isConfigScene(filePath)) {
+        return FILE_TYPE_CONFIG_SCENE;
+    } else if (isConfigPage(filePath)) {
+        return FILE_TYPE_CONFIG_PAGE;
+    } else if (isCode(filePath)) {
+        return FILE_TYPE_CODE;
+    } else if (isLayout(filePath)) {
+        return FILE_TYPE_LAYOUT;
+    } else if (isImage(filePath)) {
+        return FILE_TYPE_IMAGE;
+    } else {
+        return FILE_TYPE_UNKNOWN;
+    }
+}
+
 bool NProject::isConfigApp(const QString &filePath) const {
     return filePath == mProjectDir.absoluteFilePath("config/app.json");
 }

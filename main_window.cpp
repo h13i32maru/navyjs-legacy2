@@ -304,21 +304,14 @@ void MainWindow::openFile(const QString &filePath) {
     }
 
     NFileWidget *fileWidget = NULL;
-    NProject *project = NProject::instance();
-    if (project->isConfigApp(filePath)) {
-        fileWidget = new NConfigAppWidget(*mProjectDir, filePath);
-    } else if (project->isConfigScene(filePath)) {
-        fileWidget = new NConfigSceneWidget(*mProjectDir, filePath);
-    } else if (project->isConfigPage(filePath)) {
-        fileWidget = new NConfigPageWidget(*mProjectDir, filePath);
-    } else if (project->isCode(filePath)) {
-        fileWidget = new NCodeWidget(*mProjectDir, filePath);
-    } else if (project->isLayout(filePath)) {
-        fileWidget = new NLayoutWidget(*mProjectDir, filePath);
-    } else if (project->isImage(filePath)) {
-        fileWidget = new NImageWidget(*mProjectDir, filePath);
-    } else {
-        return;
+    switch(NProject::instance()->fileType(filePath)) {
+    case NProject::FILE_TYPE_CONFIG_APP:    fileWidget = new NConfigAppWidget(*mProjectDir, filePath); break;
+    case NProject::FILE_TYPE_CONFIG_SCENE:  fileWidget = new NConfigSceneWidget(*mProjectDir, filePath); break;
+    case NProject::FILE_TYPE_CONFIG_PAGE:   fileWidget = new NConfigPageWidget(*mProjectDir, filePath); break;
+    case NProject::FILE_TYPE_CODE:          fileWidget = new NCodeWidget(*mProjectDir, filePath); break;
+    case NProject::FILE_TYPE_LAYOUT:        fileWidget = new NLayoutWidget(*mProjectDir, filePath); break;
+    case NProject::FILE_TYPE_IMAGE:         fileWidget = new NImageWidget(*mProjectDir, filePath); break;
+    default: return;
     }
 
     connect(fileWidget, SIGNAL(changed(NFileWidget*)), this, SLOT(updateTabForFileChanged(NFileWidget*)));
