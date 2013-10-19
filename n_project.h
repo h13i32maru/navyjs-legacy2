@@ -27,9 +27,11 @@ private:
 private:
     NProject();
     QDir mProjectDir;
+    QString mProjectName;
 
 public:
     void setProject(const QString &projectDirPath);
+    QString projectName() const;
 
     TYPE fileType(const QString &filePath) const;
     QString filePath(const QString &relativePath) const;

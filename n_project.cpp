@@ -23,6 +23,11 @@ NProject::NProject()
 
 void NProject::setProject(const QString &projectDirPath) {
     mProjectDir.setPath(projectDirPath);
+    mProjectName = mProjectDir.dirName();
+}
+
+QString NProject::projectName() const {
+    return mProjectName;
 }
 
 NProject::TYPE NProject::fileType(const QString &filePath) const {

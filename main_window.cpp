@@ -63,7 +63,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::setCurrentProject(QString dirPath) {
     mProjectDir->setPath(dirPath);
-    mProjectName = mProjectDir->dirName();
 
     NProject::instance()->setProject(mProjectDir->absolutePath());
 
@@ -142,7 +141,7 @@ void MainWindow::showFileOpener() {
 }
 
 void MainWindow::saveAll() {
-    if (mProjectName.isEmpty()) {
+    if (NProject::instance()->projectName().isEmpty()) {
         return;
     }
 
@@ -153,7 +152,7 @@ void MainWindow::saveAll() {
 }
 
 void MainWindow::launchGoogleChrome() {
-    if (mProjectName.isEmpty()) {
+    if (NProject::instance()->projectName().isEmpty()) {
         return;
     }
 
@@ -185,7 +184,7 @@ void MainWindow::launchGoogleChrome() {
         arguments.append(options);
     }
 
-    QString filePath = "file://" + mProjectDir->absoluteFilePath("index.html");
+    QString filePath = "file://" + NProject::instance()->filePath("index.html");
     arguments.append(filePath);
 
     if (mGoogleChromeProcess->state() == QProcess::NotRunning) {
@@ -203,7 +202,7 @@ void MainWindow::launchGoogleChrome() {
 }
 
 void MainWindow::validate() {
-    if (mProjectName.isEmpty()) {
+    if (NProject::instance()->projectName().isEmpty()) {
         return;
     }
 
