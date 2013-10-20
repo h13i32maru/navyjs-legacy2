@@ -46,12 +46,12 @@ private slots:
     void setCurrentViewFromJS(const NJson &json);
     void setScreenEnable(bool enable);
 
-    void alignTopToJS() { emit mNative->alignViewToJS("TOP"); }
-    void alignVCenterToJS(){ emit mNative->alignViewToJS("V_CENTER"); }
-    void alignBottomToJS() { emit mNative->alignViewToJS("BOTTOM"); }
-    void alignLeftToJS() { emit mNative->alignViewToJS("LEFT"); }
-    void alignHCenterToJS() { emit mNative->alignViewToJS("H_CENTER"); }
-    void alignRightToJS() { emit mNative->alignViewToJS("RIGHT"); }
+    void alignTopToJS() { emit mNative->alignSelectedViewsToJS("TOP"); }
+    void alignVCenterToJS(){ emit mNative->alignSelectedViewsToJS("V_CENTER"); }
+    void alignBottomToJS() { emit mNative->alignSelectedViewsToJS("BOTTOM"); }
+    void alignLeftToJS() { emit mNative->alignSelectedViewsToJS("LEFT"); }
+    void alignHCenterToJS() { emit mNative->alignSelectedViewsToJS("H_CENTER"); }
+    void alignRightToJS() { emit mNative->alignSelectedViewsToJS("RIGHT"); }
 
     void arrangeHorizontalClosely() { emit mNative->arrangeSelectedViewsToJS("H_CLOSELY"); }
     void arrangeVerticalClosely() { emit mNative->arrangeSelectedViewsToJS("V_CLOSELY"); }

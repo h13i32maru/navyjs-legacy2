@@ -11,7 +11,9 @@
  *   setScreenToJS: {connect: function},
  *   setScreenEnableToJS: {connect: function},
  *   changedLayoutContentFromJS: function,
- *   unselectAllViewsToJS: {connect: function}
+ *   unselectAllViewsToJS: {connect: function},
+ *   alignSelectedViewsToJS: {connect: function},
+ *   arrangeSelectedViewsToJS: {connect: function},
  * }}
  */
 Native;
@@ -55,7 +57,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     Native.setScreenToJS.connect(this._setScreen.bind(this));
     Native.setScreenEnableToJS.connect(this._setScreenEnable.bind(this));
     Native.unselectAllViewsToJS.connect(this._unselectAllView.bind(this));
-    Native.alignViewToJS.connect(this._alignView.bind(this));
+    Native.alignSelectedViewsToJS.connect(this._alignSelectedViews.bind(this));
     Native.arrangeSelectedViewsToJS.connect(this._arrangeSelectedViews.bind(this));
   },
 
@@ -371,7 +373,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     document.body.removeEventListener('mousemove', this._mouseMove);
   },
 
-  _alignView: function(type) {
+  _alignSelectedViews: function(type) {
     /*
      * 位置揃えのアルゴリズムは一番目のviewの起点(anchor)から各viewがどれだけ移動すればよいかを求めれば良い.
      *
