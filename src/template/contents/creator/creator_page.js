@@ -32,7 +32,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     document.body.style.background = '#666';
     window.CreatorPageInstance = this;
     window.getContentLayout = this._getContentLayout.bind(this);
-    this._bodyPos = {x: parseInt(document.body.style.left, 10), y: parseInt(document.body.style.top, 10)};
+    this._bodyPos = {x: parseFloat(document.body.style.left), y: parseFloat(document.body.style.top)};
     this._zoom = parseFloat(document.body.style.zoom);
     // --
 
@@ -390,16 +390,37 @@ Navy.Class('CreatorPage', Navy.Page, {
   },
 
   _mouseMoveForResizeView: function(ev) {
-    var clientX = ev.clientX / this._zoom - this._bodyPos.x;
-    var clientY = ev.clientY / this._zoom - this._bodyPos.y;
+    var clientX = Math.round(ev.clientX / this._zoom - this._bodyPos.x);
+    var clientY = Math.round(ev.clientY / this._zoom - this._bodyPos.y);
 
     var view = this._selectedViews[0];
     var box = view.__box__;
     var pos = view.getPos();
     var size = view.getSize();
     var newSize;
+    var newPos = pos;
 
     switch(this._resizeType) {
+    case 'left.top':
+      newSize = {width: (pos.x + size.width) - clientX, height: (pos.y + size.height) - clientY};
+      newPos = {x: clientX, y: clientY};
+      break;
+    case 'h_center.top':
+      newSize = {width: size.width, height: (pos.y + size.height) - clientY};
+      newPos = {x: pos.x, y: clientY};
+      break;
+    case 'right.top':
+      newSize = {width: clientX - pos.x, height: (pos.y + size.height) - clientY};
+      newPos = {x: pos.x, y: clientY};
+      break;
+    case 'left.v_center':
+      newSize = {width: (pos.x + size.width) - clientX, height: size.height};
+      newPos = {x: clientX, y: pos.y};
+      break;
+    case 'left.bottom':
+      newSize = {width: (pos.x + size.width) - clientX, height: clientY - pos.y};
+      newPos = {x: clientX, y: pos.y};
+      break;
     case 'right.v_center':
       newSize = {width: clientX - pos.x, height: size.height};
       break;
@@ -413,8 +434,11 @@ Navy.Class('CreatorPage', Navy.Page, {
 
     view.setSizePolicy('fixed');
     view.setSize(newSize);
+    view.setPos(newPos);
     box.style.width = newSize.width + 'px';
     box.style.height = newSize.height + 'px';
+    box.style.left = newPos.x + 'px';
+    box.style.top = newPos.y + 'px';
 
     Native.changedLayoutContentFromJS();
   },
