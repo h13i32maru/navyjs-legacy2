@@ -390,6 +390,13 @@ Navy.Class('CreatorPage', Navy.Page, {
   },
 
   _mouseMoveForResizeView: function(ev) {
+    /*
+     * リサイズのアルゴリズムはマウスの座標、viewの座標、viewのサイズからリサイズ後のサイズと位置を計算するだけ.
+     * 基本的には[マウスの座標 - viewの座標]がviewのサイズになる.
+     * あとはこれをリサイズ方向で計算方法を調整すればよい.
+     * ただし、viewの座標が変更されるリサイズについては微妙にviewの位置が定まらずプルプルしてしまう.(TODO)
+     */
+
     var clientX = Math.round(ev.clientX / this._zoom - this._bodyPos.x);
     var clientY = Math.round(ev.clientY / this._zoom - this._bodyPos.y);
 
