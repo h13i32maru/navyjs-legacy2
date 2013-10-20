@@ -68,13 +68,16 @@ Navy.Class('CreatorPage', Navy.Page, {
      * Sceneにイベントを登録できるようにするか、pageのレジュームの呼び出しタイミングを修正する必要あり.
      */
     this.getScene().onResumeAfter = function(){
+      var doc = document.implementation.createHTMLDocument('');
       for (var viewId in this._views) {
         var view = this._views[viewId];
         var size = view.getSize();
         var pos = view.getPos();
-        var box  = document.createElement('div');
-        box.className = 'creator_selected_box';
-        box.style.cssText = 'opacity:0; position:absolute; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
+        doc.body.innerHTML = document.getElementById('box_template').textContent;
+        var box = doc.body.firstElementChild;
+//        var box  = document.createElement('div');
+//        box.className = 'creator_selected_box';
+//        box.style.cssText = 'opacity:0; position:absolute; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
         box.style.width = size.width + 'px';
         box.style.height = size.height + 'px';
         box.style.left = pos.x + 'px';

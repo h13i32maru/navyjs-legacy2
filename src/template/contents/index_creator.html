@@ -34,6 +34,60 @@
     Navy.Config.page[pageId] = pageLayout;
   });
 </script>
+
+<style>
+  .creator_selected_box {
+    opacity:0;
+    position:absolute;
+    border:solid 1px red;
+    background-color: rgba(0,0,0,0.3);
+  }
+
+  .creator_selected_box .resizer {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: red;
+  }
+
+  .creator_selected_box .resizer.left {
+    left: 0;
+  }
+
+  .creator_selected_box .resizer.h_center {
+    left: 50%;
+    margin-left: -2px;
+  }
+
+  .creator_selected_box .resizer.right {
+    right: 0;
+  }
+
+  .creator_selected_box .resizer.top {
+    top: 0;
+  }
+
+  .creator_selected_box .resizer.v_center {
+    top: 50%;
+    margin-top: -2px;
+  }
+
+  .creator_selected_box .resizer.bottom {
+    bottom: 0;
+  }
+</style>
+<script id="box_template" type="text/x-template">
+  <div class="creator_selected_box">
+    <div class="resizer left top" style="cursor: nw-resize;"></div>
+    <div class="resizer h_center top" style="cursor: n-resize;"></div>
+    <div class="resizer right top" style="cursor: ne-resize;"></div>
+    <div class="resizer left v_center" style="cursor: e-resize;"></div>
+    <div class="resizer right v_center" style="cursor: e-resize;"></div>
+    <div class="resizer left bottom" style="cursor: ne-resize;"></div>
+    <div class="resizer h_center bottom" style="cursor: n-resize;"></div>
+    <div class="resizer right bottom" style="cursor: nw-resize;"></div>
+  </div>
+</script>
 </head>
 
 <body>
