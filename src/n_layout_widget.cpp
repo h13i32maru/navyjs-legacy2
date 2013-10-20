@@ -106,6 +106,24 @@ void NLayoutWidget::contextMenuForViewsTree(const QPoint &point) {
 void NLayoutWidget::contextMenuForWebView(const QPoint &/*point*/) {
     QMenu menu(this);
 
+    QMenu *alignmentSubMenu = menu.addMenu(tr("&Alignment"));
+    alignmentSubMenu->addAction(tr("&Top Alignment"), this, SLOT(reload()));
+    alignmentSubMenu->addAction(tr("&Center Alignment"), this, SLOT(reload()));
+    alignmentSubMenu->addAction(tr("&Bottom Alignment"), this, SLOT(reload()));
+    alignmentSubMenu->addSeparator();
+    alignmentSubMenu->addAction(tr("&Left Alignment"), this, SLOT(reload()));
+    alignmentSubMenu->addAction(tr("&Center Alignment"), this, SLOT(reload()));
+    alignmentSubMenu->addAction(tr("&Right Alignment"), this, SLOT(reload()));
+
+    QMenu *arrangementSubMenu = menu.addMenu(tr("&Arrangement"));
+    arrangementSubMenu->addAction(tr("&Horizontal Closely"), this, SLOT(reload()));
+    arrangementSubMenu->addAction(tr("&Vertical Closely"), this, SLOT(reload()));
+    arrangementSubMenu->addSeparator();
+    arrangementSubMenu->addAction(tr("&Horizontal Even"), this, SLOT(reload()));
+    arrangementSubMenu->addAction(tr("&Vertical Even"), this, SLOT(reload()));
+
+    menu.addSeparator();
+
     menu.addAction(tr("&Reload"), this ,SLOT(reload()));
     menu.addAction(tr("&Raw Data"), this, SLOT(showRawData()));
     menu.addAction(tr("&Inspector"), this, SLOT(showInspector()));
