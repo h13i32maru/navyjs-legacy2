@@ -396,11 +396,25 @@ Navy.Class('CreatorPage', Navy.Page, {
     var view = this._selectedViews[0];
     var box = view.__box__;
     var pos = view.getPos();
-    var size = {width: clientX - pos.x, height: clientY - pos.y};
+    var size = view.getSize();
+    var newSize;
+
+    switch(this._resizeType) {
+    case 'right.v_center':
+      newSize = {width: clientX - pos.x, height: size.height};
+      break;
+    case 'h_center.bottom':
+      newSize = {width: size.width, height: clientY - pos.y};
+      break;
+    case 'right.bottom':
+      newSize = {width: clientX - pos.x, height: clientY - pos.y};
+      break;
+    }
+
     view.setSizePolicy('fixed');
-    view.setSize(size);
-    box.style.width = size.width + 'px';
-    box.style.height = size.height + 'px';
+    view.setSize(newSize);
+    box.style.width = newSize.width + 'px';
+    box.style.height = newSize.height + 'px';
 
     Native.changedLayoutContentFromJS();
   },
