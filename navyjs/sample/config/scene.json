@@ -1,0 +1,11 @@
+[
+  {
+    "id": "Scene1",
+    "class": "Scene1",
+    "classFile": "code/scene1.js",
+    "extra": {
+      "contentLayoutFile": "layout/scene1.json",
+      "page": "Page1"
+    }
+  }
+]

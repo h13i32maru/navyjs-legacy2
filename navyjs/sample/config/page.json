@@ -1,0 +1,20 @@
+[
+  {
+    "id": "Page1",
+    "class": "Page1",
+    "classFile": "code/page1.js",
+    "backgroundColor": "#ff0000",
+    "extra": {
+      "contentLayoutFile": "layout/page1.json"
+    }
+  },
+  {
+    "id": "Page2",
+    "class": "Page2",
+    "classFile": "code/page2.js",
+    "backgroundColor": "#00ff00",
+    "extra": {
+      "contentLayoutFile": "layout/page2.json"
+    }
+  }
+]

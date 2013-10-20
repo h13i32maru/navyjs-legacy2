@@ -1,0 +1,61 @@
+[
+  {
+    "id": "group1_1",
+    "class": "Navy.ViewGroup.ViewGroup",
+    "visible": true,
+    "pos": {"x": 0, "y": 100},
+    "sizePolicy": "wrapContent",
+    "link": {
+      "type": "page",
+      "id": "Page2"
+    },
+    "extra": {
+      "contentLayoutFile": "layout/group1.json"
+    }
+  },
+
+  {
+    "id": "group1_2",
+    "class": "Navy.ViewGroup.ViewGroup",
+    "visible": true,
+    "pos": {"x": 0, "y": 228},
+    "sizePolicy": "wrapContent",
+    "link": {
+      "type": "page",
+      "id": "$back"
+    },
+    "extra": {
+      "contentLayoutFile": "layout/group1.json"
+    }
+  },
+
+  {
+    "id": "group1_3",
+    "class": "Navy.ViewGroup.ViewGroup",
+    "visible": true,
+    "pos": {"x": 0, "y": 356},
+    "sizePolicy": "wrapContent",
+    "link": {
+      "type": "scene",
+      "id": "Scene1"
+    },
+    "extra": {
+      "contentLayoutFile": "layout/group1.json"
+    }
+  },
+
+  {
+    "id": "group1_4",
+    "class": "Navy.ViewGroup.ViewGroup",
+    "visible": true,
+    "pos": {"x": 0, "y": 484},
+    "sizePolicy": "wrapContent",
+    "link": {
+      "type": "scene",
+      "id": "$back"
+    },
+    "extra": {
+      "contentLayoutFile": "layout/group1.json"
+    }
+  }
+]

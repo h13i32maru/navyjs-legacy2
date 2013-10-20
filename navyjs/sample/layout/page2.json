@@ -1,0 +1,32 @@
+[
+  {
+    "id": "text1",
+    "class": "Navy.View.Text",
+    "visible": true,
+    "pos": {"x": 10, "y": 200},
+    "sizePolicy": "fixed",
+    "size": {"width": 80, "height": 80},
+    "link": {
+      "type": "page",
+      "id": "Page1"
+    },
+    "extra": {
+      "text": "go Page1"
+    }
+  },
+  {
+    "id": "text2",
+    "class": "Navy.View.Text",
+    "visible": true,
+    "pos": {"x": 10, "y": 300},
+    "sizePolicy": "fixed",
+    "size": {"width": 80, "height": 80},
+    "link": {
+      "type": "page",
+      "id": "$back"
+    },
+    "extra": {
+      "text": "back"
+    }
+  }
+]

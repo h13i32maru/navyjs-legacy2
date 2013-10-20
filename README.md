@@ -1,5 +1,8 @@
-# NavyCreator
-- Navy (https://github.com/h13i32maru/navy) を使ってモバイルWebアプリを作るための開発環境
+# NavyJS
+- モバイルWebアプリケーションフレームワーク
+
+## Creator
+- NavyJSを使ってアプリケーションを作成するための開発環境
 
 ## ビルド方法
 - Qt Creatorをインストール
