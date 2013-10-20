@@ -62,6 +62,7 @@ signals:
     void setScreenEnableToJS(const bool &enable);
 
     void alignViewToJS(const QString &type);
+    void arrangeSelectedViewsToJS(const QString &type);
 
 public slots:
 

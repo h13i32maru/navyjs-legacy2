@@ -53,6 +53,11 @@ private slots:
     void alignHCenterToJS() { emit mNative->alignViewToJS("H_CENTER"); }
     void alignRightToJS() { emit mNative->alignViewToJS("RIGHT"); }
 
+    void arrangeHorizontalClosely() { emit mNative->arrangeSelectedViewsToJS("H_CLOSELY"); }
+    void arrangeVerticalClosely() { emit mNative->arrangeSelectedViewsToJS("V_CLOSELY"); }
+    void arrangeHorizontalEven() { emit mNative->arrangeSelectedViewsToJS("H_EVEN"); }
+    void arrangeVerticalEven() { emit mNative->arrangeSelectedViewsToJS("V_EVEN"); }
+
     // for webview
     void reload();
     void showRawData();

@@ -56,6 +56,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     Native.setScreenEnableToJS.connect(this._setScreenEnable.bind(this));
     Native.unselectAllViewsToJS.connect(this._unselectAllView.bind(this));
     Native.alignViewToJS.connect(this._alignView.bind(this));
+    Native.arrangeSelectedViewsToJS.connect(this._arrangeSelectedViews.bind(this));
   },
 
   onResumeAfter: function($super) {
@@ -306,7 +307,6 @@ Navy.Class('CreatorPage', Navy.Page, {
   },
 
   _mouseDown: function(view, ev) {
-    console.log(ev.button);
     var viewId = view.getId();
 
     // クリックイベントで選択要素をすべてリセットして、対象の要素だけを選択状態にするかどうか
@@ -437,5 +437,109 @@ Navy.Class('CreatorPage', Navy.Page, {
     }
 
     Native.changedLayoutContentFromJS();
+  },
+
+  _arrangeSelectedViews: function(type) {
+    var views = this._selectedViews;
+
+    if (views.length <= 1) {
+      return;
+    }
+
+    if (type === 'H_CLOSELY') {
+      this._sortViewsByX(views);
+      var x = views[0].getPos().x + views[0].getSize().width;
+      for (var i = 1; i < views.length; i++) {
+        var view = views[i];
+        var pos = view.getPos();
+        var size = view.getSize();
+        var box = view.__box__;
+        view.setPos({x: x, y: pos.y});
+        box.style.left = x + 'px';
+        x = x + size.width;
+      }
+    }
+
+    if (type === 'V_CLOSELY') {
+      this._sortViewsByY(views);
+      var y = views[0].getPos().y + views[0].getSize().height;
+      for (var i = 1; i < views.length; i++) {
+        var view = views[i];
+        var pos = view.getPos();
+        var size = view.getSize();
+        var box = view.__box__;
+        view.setPos({x: pos.x, y: y});
+        box.style.top = y + 'px';
+        y = y + size.height;
+      }
+    }
+
+    if (type === 'H_EVEN') {
+      this._sortViewsByX(views);
+      var startView = views[0];
+      var endView = views[views.length - 1];
+      var totalSpace = (endView.getPos().x + endView.getSize().width) - startView.getPos().x;
+      for (var i = 0; i < views.length; i++) {
+        totalSpace -= views[i].getSize().width;
+      }
+
+      if (totalSpace <= 0) {
+        return;
+      }
+
+      var space = totalSpace / (views.length - 1);
+
+      var x = views[0].getPos().x + views[0].getSize().width + space;
+      for (var i = 1; i < views.length; i++) {
+        var view = views[i];
+        var pos = view.getPos();
+        var size = view.getSize();
+        var box = view.__box__;
+        view.setPos({x: x, y: pos.y});
+        box.style.left = x + 'px';
+        x = x + size.width + space;
+      }
+    }
+
+    if (type === 'V_EVEN') {
+      this._sortViewsByY(views);
+      var startView = views[0];
+      var endView = views[views.length - 1];
+      var totalSpace = (endView.getPos().y + endView.getSize().height) - startView.getPos().y;
+      for (var i = 0; i < views.length; i++) {
+        totalSpace -= views[i].getSize().height;
+      }
+
+      if (totalSpace <= 0) {
+        return;
+      }
+
+      var space = totalSpace / (views.length - 1);
+
+      var y = views[0].getPos().y + views[0].getSize().height + space;
+      for (var i = 1; i < views.length; i++) {
+        var view = views[i];
+        var pos = view.getPos();
+        var size = view.getSize();
+        var box = view.__box__;
+        view.setPos({x: pos.x, y: y});
+        box.style.top = y + 'px';
+        y = y + size.height + space;
+      }
+    }
+
+    Native.changedLayoutContentFromJS();
+  },
+
+  _sortViewsByX: function(views) {
+    views.sort(function(view1, view2){
+      return view1.getPos().x - view2.getPos().x;
+    });
+  },
+
+  _sortViewsByY: function(views) {
+    views.sort(function(view1, view2){
+      return view1.getPos().y - view2.getPos().y;
+    });
   }
 });

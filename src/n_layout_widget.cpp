@@ -116,11 +116,11 @@ void NLayoutWidget::contextMenuForWebView(const QPoint &/*point*/) {
     alignmentSubMenu->addAction(tr("&Right Alignment"), this, SLOT(alignRightToJS()));
 
     QMenu *arrangementSubMenu = menu.addMenu(tr("&Arrangement"));
-    arrangementSubMenu->addAction(tr("&Horizontal Closely"), this, SLOT(reload()));
-    arrangementSubMenu->addAction(tr("&Vertical Closely"), this, SLOT(reload()));
+    arrangementSubMenu->addAction(tr("&Horizontal Closely"), this, SLOT(arrangeHorizontalClosely()));
+    arrangementSubMenu->addAction(tr("&Vertical Closely"), this, SLOT(arrangeVerticalClosely()));
     arrangementSubMenu->addSeparator();
-    arrangementSubMenu->addAction(tr("&Horizontal Even"), this, SLOT(reload()));
-    arrangementSubMenu->addAction(tr("&Vertical Even"), this, SLOT(reload()));
+    arrangementSubMenu->addAction(tr("&Horizontal Even"), this, SLOT(arrangeHorizontalEven()));
+    arrangementSubMenu->addAction(tr("&Vertical Even"), this, SLOT(arrangeVerticalEven()));
 
     menu.addSeparator();
 
