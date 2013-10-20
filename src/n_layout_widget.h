@@ -42,6 +42,7 @@ private slots:
     void selectViewToJS();
     void addViewToJS(QTreeWidgetItem *item, int index);
     void deleteViewToJS();
+    void deleteSelectedViewsToJS();
     void setScreenToJS();
     void setCurrentViewFromJS(const NJson &json);
     void setScreenEnable(bool enable);

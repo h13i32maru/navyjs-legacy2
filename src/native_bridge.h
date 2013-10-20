@@ -58,6 +58,8 @@ signals:
     // Viewが削除された時にJSに送信される
     void deleteViewToJS(const QString &viewId);
 
+    void deleteSelectedViewsToJS();
+
     // Scene, Pageの設定が変更された時にJSに送信される
     void setScreenToJS(const QString &sceneId, const QString &pageId);
 

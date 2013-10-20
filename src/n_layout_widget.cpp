@@ -122,6 +122,8 @@ void NLayoutWidget::contextMenuForWebView(const QPoint &/*point*/) {
     arrangementSubMenu->addAction(tr("&Horizontal Even"), this, SLOT(arrangeHorizontalEven()));
     arrangementSubMenu->addAction(tr("&Vertical Even"), this, SLOT(arrangeVerticalEven()));
 
+    menu.addAction(tr("&Delete Selected Views"), this, SLOT(deleteSelectedViewsToJS()));
+
     menu.addSeparator();
 
     menu.addAction(tr("&Reload"), this ,SLOT(reload()));
@@ -268,6 +270,19 @@ void NLayoutWidget::deleteViewToJS() {
 
     QString viewId = item->text(ViewsColId);
     emit mNative->deleteViewToJS(viewId);
+}
+
+void NLayoutWidget::deleteSelectedViewsToJS() {
+    QTreeWidget *tree = ui->layerTreeWidget;
+    tree->blockSignals(true);
+    QList <QTreeWidgetItem *> items = tree->selectedItems();
+    for (int i = 0; i< items.length(); i++) {
+        int index = tree->indexOfTopLevelItem(items[i]);
+        tree->takeTopLevelItem(index);
+    }
+    tree->blockSignals(false);
+
+    emit mNative->deleteSelectedViewsToJS();
 }
 
 void NLayoutWidget::setScreenToJS() {
