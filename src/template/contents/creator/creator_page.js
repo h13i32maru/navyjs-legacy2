@@ -3,6 +3,7 @@
  *   setViewsFromJS: function,
  *   setCurrentViewFromJS: function,
  *   setCurrentViewPosFromJS: function,
+ *   setCurrentViewSizeFromJS: function,
  *   changedViewsOrderToJS: {connect: function},
  *   changedSelectedViewToJS: {connect: function},
  *   changedViewPropertyToJS: {connect: function},
@@ -448,6 +449,8 @@ Navy.Class('CreatorPage', Navy.Page, {
     box.style.top = newPos.y + 'px';
 
     Native.changedLayoutContentFromJS();
+    Native.setCurrentViewSizeFromJS(newSize.width, newSize.height);
+    Native.setCurrentViewPosFromJS(newPos.x, newPos.y);
   },
 
   _mouseUp: function(/* ev */) {

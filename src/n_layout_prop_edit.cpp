@@ -39,6 +39,7 @@ void NLayoutPropEdit::setNativeBridge(NativeBridge *native) {
 
     connect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setViewFromJS(NJson)));
     connect(mNative, SIGNAL(currentViewPosFromJS(int,int)), this, SLOT(setViewPosFromJS(int,int)));
+    connect(mNative, SIGNAL(currentViewSizeFromJS(int,int)), this, SLOT(setViewSizeFromJS(int,int)));
 }
 
 void NLayoutPropEdit::blockAllSignals(bool block) {
@@ -174,6 +175,15 @@ void NLayoutPropEdit::setViewPosFromJS(const int &x, const int &y) {
 
     ui->posXSpinBox->setValue(x);
     ui->posYSpinBox->setValue(y);
+
+    blockAllSignals(false);
+}
+
+void NLayoutPropEdit::setViewSizeFromJS(const int &width, const int &height) {
+    blockAllSignals(true);
+
+    ui->sizeWidthSpinBox->setValue(width);
+    ui->sizeHeightSpinBox->setValue(height);
 
     blockAllSignals(false);
 }
