@@ -37,7 +37,7 @@ void NLayoutPropEdit::refreshForActive() {
 void NLayoutPropEdit::setNativeBridge(NativeBridge *native) {
     mNative = native;
 
-    connect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setViewFromJS(NJson)));
+    connect(mNative, SIGNAL(selectedViewsFromJS(NJson)), this, SLOT(setSelectedViewsFromJS(NJson)));
     connect(mNative, SIGNAL(currentViewPosFromJS(int,int)), this, SLOT(setViewPosFromJS(int,int)));
     connect(mNative, SIGNAL(currentViewSizeFromJS(int,int)), this, SLOT(setViewSizeFromJS(int,int)));
 }
@@ -126,7 +126,7 @@ void NLayoutPropEdit::showExtraPropWidget(QString className) {
     }
 }
 
-void NLayoutPropEdit::setViewFromJS(const NJson &views) {
+void NLayoutPropEdit::setSelectedViewsFromJS(const NJson &views) {
     blockAllSignals(true);
 
     // 複数のviewが選択されている場合があるので、最後に選択されたものを対象とする

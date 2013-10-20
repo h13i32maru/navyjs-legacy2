@@ -1,7 +1,7 @@
 /**
  * @typedef {{
  *   setViewsFromJS: function,
- *   setCurrentViewFromJS: function,
+ *   setSelectedViewsFromJS: function,
  *   setCurrentViewPosFromJS: function,
  *   setCurrentViewSizeFromJS: function,
  *   changedViewsOrderToJS: {connect: function},

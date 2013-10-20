@@ -52,7 +52,7 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(injectNativeBridge()));
     connect(mNative, SIGNAL(changedLayoutContentFromJS()), this, SLOT(changed()));
     connect(mNative, SIGNAL(viewsFromJS(NJson)), this, SLOT(setViewsFromJS(NJson)));
-    connect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setCurrentViewFromJS(NJson)));
+    connect(mNative, SIGNAL(selectedViewsFromJS(NJson)), this, SLOT(setSelectedsViewsFromJS(NJson)));
 }
 
 void NLayoutWidget::toggleLayerTreeWidget() {
@@ -210,7 +210,7 @@ void NLayoutWidget::setViewsFromJS(const NJson &views) {
     }
 }
 
-void NLayoutWidget::setCurrentViewFromJS(const NJson &views) {
+void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
     QTreeWidget *tree = ui->layerTreeWidget;
     tree->blockSignals(true);
 
@@ -262,10 +262,10 @@ void NLayoutWidget::selectViewToJS() {
         ui->layoutPropEdit->setEnabled(true);
     }
 
-    disconnect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setCurrentViewFromJS(NJson)));
+    disconnect(mNative, SIGNAL(selectedViewsFromJS(NJson)), this, SLOT(setSelectedsViewsFromJS(NJson)));
     emit mNative->unselectAllViewsToJS();
     emit mNative->changedSelectedViewToJS(viewIds);
-    connect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setCurrentViewFromJS(NJson)));
+    connect(mNative, SIGNAL(selectedViewsFromJS(NJson)), this, SLOT(setSelectedsViewsFromJS(NJson)));
 }
 
 void NLayoutWidget::addViewToJS(QTreeWidgetItem *item, int /* index */) {

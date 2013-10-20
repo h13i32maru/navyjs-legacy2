@@ -47,7 +47,7 @@ private slots:
     void selectViewToJS();
     void addViewToJS(QTreeWidgetItem *item, int index);
     void deleteSelectedViewsToJS();
-    void setCurrentViewFromJS(const NJson &json);
+    void setSelectedsViewsFromJS(const NJson &json);
 
     void alignTopToJS() { emit mNative->alignSelectedViewsToJS("TOP"); }
     void alignVCenterToJS(){ emit mNative->alignSelectedViewsToJS("V_CENTER"); }

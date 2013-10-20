@@ -20,9 +20,9 @@ void NativeBridge::setViewsFromJS(const QString &viewsJsonText) {
     emit this->viewsFromJS(json);
 }
 
-void NativeBridge::setCurrentViewFromJS(const QString &viewJsonText) {
-    NJson json(viewJsonText);
-    emit this->currentViewFromJS(json);
+void NativeBridge::setSelectedViewsFromJS(const QString &viewsJsonText) {
+    NJson json(viewsJsonText);
+    emit this->selectedViewsFromJS(json);
 }
 
 void NativeBridge::setCurrentViewPosFromJS(const int &x, const int &y) {
