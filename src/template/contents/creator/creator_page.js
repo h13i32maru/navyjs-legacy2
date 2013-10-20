@@ -52,25 +52,30 @@ Navy.Class('CreatorPage', Navy.Page, {
      * Sceneにイベントを登録できるようにするか、pageのレジュームの呼び出しタイミングを修正する必要あり.
      */
     this.getScene().onResumeAfter = function(){
-      var doc = document.implementation.createHTMLDocument('');
       for (var viewId in this._views) {
         var view = this._views[viewId];
-        var size = view.getSize();
-        var pos = view.getPos();
-        doc.body.innerHTML = document.getElementById('box_template').textContent;
-        var box = doc.body.firstElementChild;
-        box.style.width = size.width + 'px';
-        box.style.height = size.height + 'px';
-        box.style.left = pos.x + 'px';
-        box.style.top = pos.y + 'px';
-        document.body.appendChild(box);
-        box.addEventListener('mousedown', this._mouseDown.bind(this, view));
-        box.addEventListener('click', this._click.bind(this, view));
-        box.__view__ = view;
-        view.__box__ = box;
+        this._setupSelectedBox(view);
       }
     }.bind(this);
+  },
 
+  _setupSelectedBox: function(view) {
+    var doc = document.implementation.createHTMLDocument('');
+    doc.body.innerHTML = document.getElementById('box_template').textContent;
+
+    var size = view.getSize();
+    var pos = view.getPos();
+    var box = doc.body.firstElementChild;
+
+    box.style.width = size.width + 'px';
+    box.style.height = size.height + 'px';
+    box.style.left = pos.x + 'px';
+    box.style.top = pos.y + 'px';
+    document.body.appendChild(box);
+    box.addEventListener('mousedown', this._mouseDown.bind(this, view));
+    box.addEventListener('click', this._click.bind(this, view));
+    box.__view__ = view;
+    view.__box__ = box;
   },
 
   _getContentLayout: function() {
@@ -116,23 +121,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     var view = new _class(layout, function(){
       this.addView(view);
       Native.changedLayoutContentFromJS();
-
-      // FIXME: ここリファクタする.
-      var size = view.getSize();
-      var pos = view.getPos();
-      var box  = document.createElement('div');
-      box.className = 'creator_selected_box';
-      box.style.cssText = 'opacity:0; position:absolute; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
-      box.style.width = size.width + 'px';
-      box.style.height = size.height + 'px';
-      box.style.left = pos.x + 'px';
-      box.style.top = pos.y + 'px';
-      document.body.appendChild(box);
-      box.addEventListener('mousedown', this._mouseDown.bind(this, view));
-      box.addEventListener('click', this._click.bind(this, view));
-      box.__view__ = view;
-      view.__box__ = box;
-
+      this._setupSelectedBox(view);
       this._unselectAllView();
       this._selectView(view.getId());
     }.bind(this));
