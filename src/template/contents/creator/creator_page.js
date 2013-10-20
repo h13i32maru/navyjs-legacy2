@@ -19,9 +19,11 @@
 Native;
 
 Navy.Class('CreatorPage', Navy.Page, {
+  _bodyPos: null,
   _zoom: null,
 
   _selectedViews: null,
+  _resizeType: null,
 
   onCreate: function($super) {
     $super();
@@ -30,6 +32,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     document.body.style.background = '#666';
     window.CreatorPageInstance = this;
     window.getContentLayout = this._getContentLayout.bind(this);
+    this._bodyPos = {x: parseInt(document.body.style.left, 10), y: parseInt(document.body.style.top, 10)};
     this._zoom = parseFloat(document.body.style.zoom);
     // --
 
@@ -43,6 +46,7 @@ Navy.Class('CreatorPage', Navy.Page, {
       }
     }.bind(this));
     this._mouseMove = this._mouseMove.bind(this);
+    this._mouseMoveForResizeView = this._mouseMoveForResizeView.bind(this);
     // --
 
     Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, function(layout){
@@ -75,9 +79,6 @@ Navy.Class('CreatorPage', Navy.Page, {
         var pos = view.getPos();
         doc.body.innerHTML = document.getElementById('box_template').textContent;
         var box = doc.body.firstElementChild;
-//        var box  = document.createElement('div');
-//        box.className = 'creator_selected_box';
-//        box.style.cssText = 'opacity:0; position:absolute; border:solid 1px red; background-color: rgba(0,0,0,0.3)';
         box.style.width = size.width + 'px';
         box.style.height = size.height + 'px';
         box.style.left = pos.x + 'px';
@@ -312,6 +313,14 @@ Navy.Class('CreatorPage', Navy.Page, {
   },
 
   _mouseDown: function(view, ev) {
+    if (ev.target.classList.contains('creator_selected_box')) {
+      this._mouseDownForMoveView(view, ev);
+    } else {
+      this._mouseDownForResizeView(view, ev);
+    }
+  },
+
+  _mouseDownForMoveView: function(view, ev){
     var viewId = view.getId();
 
     // クリックイベントで選択要素をすべてリセットして、対象の要素だけを選択状態にするかどうか
@@ -372,8 +381,33 @@ Navy.Class('CreatorPage', Navy.Page, {
     Native.setCurrentViewPosFromJS(pos.x, pos.y);
   },
 
+  _mouseDownForResizeView: function(view, ev) {
+    var viewId = view.getId();
+    this._unselectAllView();
+    this._selectView(viewId);
+    this._resizeType = ev.target.dataset.resizeType;
+    document.body.addEventListener('mousemove', this._mouseMoveForResizeView);
+  },
+
+  _mouseMoveForResizeView: function(ev) {
+    var clientX = ev.clientX / this._zoom - this._bodyPos.x;
+    var clientY = ev.clientY / this._zoom - this._bodyPos.y;
+
+    var view = this._selectedViews[0];
+    var box = view.__box__;
+    var pos = view.getPos();
+    var size = {width: clientX - pos.x, height: clientY - pos.y};
+    view.setSizePolicy('fixed');
+    view.setSize(size);
+    box.style.width = size.width + 'px';
+    box.style.height = size.height + 'px';
+
+    Native.changedLayoutContentFromJS();
+  },
+
   _mouseUp: function(/* ev */) {
     document.body.removeEventListener('mousemove', this._mouseMove);
+    document.body.removeEventListener('mousemove', this._mouseMoveForResizeView);
   },
 
   _alignSelectedViews: function(type) {
