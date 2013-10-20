@@ -1,7 +1,10 @@
 # NavyJS
 - モバイルWebアプリケーションフレームワーク
+- ビルド方法
+  - uglifyjsをインストール
+    - https://github.com/mishoo/UglifyJS2
 
-## NavyCreator
+# NavyCreator
 - NavyJSを使ってアプリケーションを作成するための開発環境
 - ビルド方法
   - Qt Creatorをインストール
