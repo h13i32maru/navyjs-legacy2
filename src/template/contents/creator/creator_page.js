@@ -1,24 +1,3 @@
-/**
- * @typedef {{
- *   setViewsFromJS: function,
- *   setCurrentViewFromJS: function,
- *   setCurrentViewPosFromJS: function,
- *   setCurrentViewSizeFromJS: function,
- *   changedViewsOrderToJS: {connect: function},
- *   changedSelectedViewToJS: {connect: function},
- *   changedViewPropertyToJS: {connect: function},
- *   addViewToJS: {connect: function},
- *   deleteViewToJS: {connect: function},
- *   setScreenToJS: {connect: function},
- *   setScreenEnableToJS: {connect: function},
- *   changedLayoutContentFromJS: function,
- *   unselectAllViewsToJS: {connect: function},
- *   alignSelectedViewsToJS: {connect: function},
- *   arrangeSelectedViewsToJS: {connect: function},
- * }}
- */
-Native;
-
 Navy.Class('CreatorPage', Navy.Page, {
   _bodyPos: null,
   _zoom: null,
@@ -386,7 +365,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     var viewId = view.getId();
     this._unselectAllView();
     this._selectView(viewId);
-    this._resizeType = ev.target.dataset.resizeType;
+    this._resizeType = ev.target.dataset['resizeType'];
     document.body.addEventListener('mousemove', this._mouseMoveForResizeView);
   },
 
