@@ -38,9 +38,9 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     injectNativeBridge();
     ui->layoutPropEdit->setNativeBridge(mNative);
 
-    ui->layerTreeWidget->hide();
     connect(ui->layerToggleButton, SIGNAL(clicked()), this, SLOT(toggleLayerTreeWidget()));
     connect(ui->propToggleButton, SIGNAL(clicked()), this, SLOT(toggleLayoutPropWidget()));
+    connect(ui->viewToggleButton, SIGNAL(clicked()), this, SLOT(toggleViewClassTreeWidget()));
 
     reload();
 
@@ -61,6 +61,10 @@ void NLayoutWidget::toggleLayerTreeWidget() {
 
 void NLayoutWidget::toggleLayoutPropWidget() {
     ui->layoutPropEdit->setVisible(ui->layoutPropEdit->isVisible() ^ true);
+}
+
+void NLayoutWidget::toggleViewClassTreeWidget() {
+    ui->viewClassTreeWidget->setVisible(ui->viewClassTreeWidget->isVisible() ^ true);
 }
 
 void NLayoutWidget::showLayoutSettingDialog() {

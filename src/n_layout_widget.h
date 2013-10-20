@@ -36,6 +36,7 @@ private:
 private slots:
     void toggleLayerTreeWidget();
     void toggleLayoutPropWidget();
+    void toggleViewClassTreeWidget();
     void showLayoutSettingDialog();
 
     void contextMenuForViewsTree(const QPoint &point);
