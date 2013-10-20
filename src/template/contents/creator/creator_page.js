@@ -35,6 +35,11 @@ Navy.Class('CreatorPage', Navy.Page, {
 
     // 要素を移動させるためのマウス操作の追跡
     document.body.addEventListener('mouseup', this._mouseUp.bind(this));
+    document.body.addEventListener('mousedown', function(ev){
+      if (ev.target === this.getElement()) {
+        this._unselectAllView();
+      }
+    }.bind(this));
     this._mouseMove = this._mouseMove.bind(this);
     // --
 
@@ -193,17 +198,6 @@ Navy.Class('CreatorPage', Navy.Page, {
         view.setVisible(enable);
       }
     }
-    /*
-    var funcName = enable ? 'show' : 'hide';
-    var scene = this.getScene();
-    var views = scene.getAllViews();
-    for (var viewId in views) {
-      var view = views[viewId];
-      if (view !== this) {
-        view[funcName]();
-      }
-    }
-    */
 
     /*
      * 無効にする場合は背景も合わせて透明にしておく.
@@ -311,6 +305,7 @@ Navy.Class('CreatorPage', Navy.Page, {
   },
 
   _mouseDown: function(view, ev) {
+    console.log(ev.button);
     var viewId = view.getId();
 
     // クリックイベントで選択要素をすべてリセットして、対象の要素だけを選択状態にするかどうか
@@ -329,6 +324,8 @@ Navy.Class('CreatorPage', Navy.Page, {
       if (this._isSelectedView(viewId)) {
         // viewを移動させようとしているので選択されているすべてのviewのdx,dyを更新する
         this._updateSelectedViewMouseDistance(ev);
+
+        // マウスを動かさずにクリックイベントが発火した場合、すべてのviewを非選択にするためのフラグを立てる.
         this._unselectAllViewForClick = true;
       } else {
         // 現在選択されているviewをすべてリセットして新たにviewを選択する
@@ -337,10 +334,15 @@ Navy.Class('CreatorPage', Navy.Page, {
         this._updateSelectedViewMouseDistance(ev);
       }
     }
-    document.body.addEventListener('mousemove', this._mouseMove);
+
+    if (ev.button === 0) {
+      // 左ボタンの場合はマウスの移動にviewを追従させる
+      document.body.addEventListener('mousemove', this._mouseMove);
+    }
   },
 
   _mouseMove: function(ev) {
+    // クリックイベント発火時にマウスが移動したかどうかを判定してviewの選択状態を変えているのでそれに使用するフラグを立てる.
     this._movingSelectedView = true;
 
     var clientX = ev.clientX / this._zoom;
