@@ -34,6 +34,10 @@ private:
     QString contentLayoutJsonText() const;
 
 private slots:
+    void toggleLayerTreeWidget();
+    void toggleLayoutPropWidget();
+    void showLayoutSettingDialog();
+
     void contextMenuForViewsTree(const QPoint &point);
     void contextMenuForWebView(const QPoint &point);
     void injectNativeBridge();
@@ -42,9 +46,7 @@ private slots:
     void selectViewToJS();
     void addViewToJS(QTreeWidgetItem *item, int index);
     void deleteSelectedViewsToJS();
-    void setScreenToJS();
     void setCurrentViewFromJS(const NJson &json);
-    void setScreenEnable(bool enable);
 
     void alignTopToJS() { emit mNative->alignSelectedViewsToJS("TOP"); }
     void alignVCenterToJS(){ emit mNative->alignSelectedViewsToJS("V_CENTER"); }

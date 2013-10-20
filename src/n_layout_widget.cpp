@@ -14,6 +14,9 @@
 #include <QDebug>
 #include <QList>
 
+#include <window/n_layout_setting_dialog.h>
+#include <ui_n_layout_setting_dialog.h>
+
 const QString NLayoutWidget::HtmlFilePath = "index_creator.html";
 
 NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWidget(filePath, parent), ui(new Ui::NLayoutWidget)
@@ -35,20 +38,48 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     injectNativeBridge();
     ui->layoutPropEdit->setNativeBridge(mNative);
 
+    ui->layerTreeWidget->hide();
+    connect(ui->layerToggleButton, SIGNAL(clicked()), this, SLOT(toggleLayerTreeWidget()));
+    connect(ui->propToggleButton, SIGNAL(clicked()), this, SLOT(toggleLayoutPropWidget()));
+
     reload();
 
     connect(ui->viewClassTreeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(addViewToJS(QTreeWidgetItem*, int)));
     connect(ui->layerTreeWidget, SIGNAL(changedTreeByDrop(QTreeWidgetItem *)), this, SLOT(updateViewsToJS(QTreeWidgetItem*)));
     connect(ui->layerTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectViewToJS()));
     connect(ui->layerTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuForViewsTree(QPoint)));
-    connect(ui->screenEnable, SIGNAL(toggled(bool)), this, SLOT(setScreenEnable(bool)));
-    connect(ui->screenScene, SIGNAL(currentTextChanged(QString)), this, SLOT(setScreenToJS()));
-    connect(ui->screenPage, SIGNAL(currentTextChanged(QString)), this, SLOT(setScreenToJS()));
     connect(ui->webView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuForWebView(QPoint)));
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(injectNativeBridge()));
     connect(mNative, SIGNAL(changedLayoutContentFromJS()), this, SLOT(changed()));
     connect(mNative, SIGNAL(viewsFromJS(NJson)), this, SLOT(setViewsFromJS(NJson)));
     connect(mNative, SIGNAL(currentViewFromJS(NJson)), this, SLOT(setCurrentViewFromJS(NJson)));
+}
+
+void NLayoutWidget::toggleLayerTreeWidget() {
+    ui->layerTreeWidget->setVisible(ui->layerTreeWidget->isVisible() ^ true);
+}
+
+void NLayoutWidget::toggleLayoutPropWidget() {
+    ui->layoutPropEdit->setVisible(ui->layoutPropEdit->isVisible() ^ true);
+}
+
+void NLayoutWidget::showLayoutSettingDialog() {
+    NLayoutSettingDialog dialog;
+    int ret = dialog.exec();
+    if (ret != NLayoutSettingDialog::Accepted) {
+        return;
+    }
+
+    bool enable = dialog.ui->screenEnable->isEnabled();
+
+    if (enable) {
+        QString sceneId = dialog.ui->screenScene->currentText();
+        QString pageId = dialog.ui->screenPage->currentText();
+        emit mNative->setScreenEnableToJS(true);
+        emit mNative->setScreenToJS(sceneId, pageId);
+    } else {
+        emit mNative->setScreenEnableToJS(false);
+    }
 }
 
 bool NLayoutWidget::innerSave() {
@@ -70,8 +101,6 @@ bool NLayoutWidget::innerSave() {
 }
 
 void NLayoutWidget::refreshForActive() {
-    ui->screenScene->setList(NProject::instance()->scenes());
-    ui->screenPage->setList(NProject::instance()->pages());
     ui->layoutPropEdit->refreshForActive();
 }
 
@@ -126,6 +155,7 @@ void NLayoutWidget::contextMenuForWebView(const QPoint &/*point*/) {
 
     menu.addSeparator();
 
+    menu.addAction(tr("&Setting"), this, SLOT(showLayoutSettingDialog()));
     menu.addAction(tr("&Reload"), this ,SLOT(reload()));
     menu.addAction(tr("&Raw Data"), this, SLOT(showRawData()));
     menu.addAction(tr("&Inspector"), this, SLOT(showInspector()));
@@ -273,25 +303,6 @@ void NLayoutWidget::deleteSelectedViewsToJS() {
     tree->blockSignals(false);
 
     emit mNative->deleteSelectedViewsToJS();
-}
-
-void NLayoutWidget::setScreenToJS() {
-    QString sceneId = ui->screenScene->currentText();
-    QString pageId = ui->screenPage->currentText();
-
-    emit mNative->setScreenToJS(sceneId, pageId);
-}
-
-void NLayoutWidget::setScreenEnable(bool enable) {
-    ui->screenPage->setEnabled(enable);
-    ui->screenScene->setEnabled(enable);
-
-    if (enable) {
-        emit mNative->setScreenEnableToJS(true);
-        setScreenToJS();
-    } else {
-        emit mNative->setScreenEnableToJS(false);
-    }
 }
 
 NLayoutWidget::~NLayoutWidget()
