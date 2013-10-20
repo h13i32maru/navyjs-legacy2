@@ -1,2 +1,3 @@
-src/navy-creator.pro.user
-build
+creator/src/navy-creator.pro.user
+creator/build
+navyjs/build
