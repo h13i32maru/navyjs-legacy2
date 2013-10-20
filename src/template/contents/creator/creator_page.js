@@ -46,7 +46,7 @@ Navy.Class('CreatorPage', Navy.Page, {
         this._unselectAllView();
       }
     }.bind(this));
-    this._mouseMove = this._mouseMove.bind(this);
+    this._mouseMoveForMoveView = this._mouseMoveForMoveView.bind(this);
     this._mouseMoveForResizeView = this._mouseMoveForResizeView.bind(this);
     // --
 
@@ -353,11 +353,11 @@ Navy.Class('CreatorPage', Navy.Page, {
 
     if (ev.button === 0) {
       // 左ボタンの場合はマウスの移動にviewを追従させる
-      document.body.addEventListener('mousemove', this._mouseMove);
+      document.body.addEventListener('mousemove', this._mouseMoveForMoveView);
     }
   },
 
-  _mouseMove: function(ev) {
+  _mouseMoveForMoveView: function(ev) {
     // クリックイベント発火時にマウスが移動したかどうかを判定してviewの選択状態を変えているのでそれに使用するフラグを立てる.
     this._movingSelectedView = true;
 
@@ -454,7 +454,7 @@ Navy.Class('CreatorPage', Navy.Page, {
   },
 
   _mouseUp: function(/* ev */) {
-    document.body.removeEventListener('mousemove', this._mouseMove);
+    document.body.removeEventListener('mousemove', this._mouseMoveForMoveView);
     document.body.removeEventListener('mousemove', this._mouseMoveForResizeView);
   },
 
