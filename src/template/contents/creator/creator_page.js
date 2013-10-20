@@ -55,6 +55,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     Native.setScreenToJS.connect(this._setScreen.bind(this));
     Native.setScreenEnableToJS.connect(this._setScreenEnable.bind(this));
     Native.unselectAllViewsToJS.connect(this._unselectAllView.bind(this));
+    Native.alignViewToJS.connect(this._alignView.bind(this));
   },
 
   onResumeAfter: function($super) {
@@ -368,5 +369,73 @@ Navy.Class('CreatorPage', Navy.Page, {
 
   _mouseUp: function(/* ev */) {
     document.body.removeEventListener('mousemove', this._mouseMove);
+  },
+
+  _alignView: function(type) {
+    /*
+     * 位置揃えのアルゴリズムは一番目のviewの起点(anchor)から各viewがどれだけ移動すればよいかを求めれば良い.
+     *
+     * 例えば下揃えの場合:
+     * 起点は一番目のviewの下辺座標(= 上辺座標 + 高さ * 1)となる.
+     * そして各viewはこの起点から自身の高さだけずれることになる.
+     *
+     * 同じように中央揃えの場合:
+     * 起点は[上辺座標 + 高さ * 0.5]となり、各viewはこの起点から自身の高さ * 0.5だけずれる.
+     */
+
+    var views = this._selectedViews;
+    var view = views[0];
+
+    if (type === 'TOP' || type === 'V_CENTER' || type === 'BOTTOM') {
+      switch(type) {
+      case 'TOP':
+        var delta = 0;
+        break;
+      case 'V_CENTER':
+        var delta = 0.5;
+        break;
+      case 'BOTTOM':
+        var delta = 1;
+        break;
+      }
+
+      var anchor = view.getPos().y + parseInt(view.getSize().height * delta, 10);
+      for (var i = 1; i < views.length; i++) {
+        var view = views[i];
+        var box = view.__box__;
+        var pos = view.getPos();
+        var size = view.getSize();
+        var y = anchor - parseInt(size.height * delta, 10);
+        view.setPos({x: pos.x, y: y});
+        box.style.top = y + 'px';
+      }
+    }
+
+    if (type === 'LEFT' || type === 'H_CENTER' || type === 'RIGHT') {
+      switch(type) {
+      case 'LEFT':
+        var delta = 0;
+        break;
+      case 'H_CENTER':
+        var delta = 0.5;
+        break;
+      case 'RIGHT':
+        var delta = 1;
+        break;
+      }
+
+      var anchor = view.getPos().x + parseInt(view.getSize().width * delta, 10);
+      for (var i = 1; i < views.length; i++) {
+        var view = views[i];
+        var box = view.__box__;
+        var pos = view.getPos();
+        var size = view.getSize();
+        var x = anchor - parseInt(size.width * delta, 10);
+        view.setPos({x: x, y: pos.y});
+        box.style.left = x + 'px';
+      }
+    }
+
+    Native.changedLayoutContentFromJS();
   }
 });

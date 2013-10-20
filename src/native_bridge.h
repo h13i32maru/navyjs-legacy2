@@ -61,6 +61,8 @@ signals:
     // Scene, Pageの有効無効が切り替わった時にJSに送信される
     void setScreenEnableToJS(const bool &enable);
 
+    void alignViewToJS(const QString &type);
+
 public slots:
 
 };

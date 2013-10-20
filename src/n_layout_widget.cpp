@@ -107,13 +107,13 @@ void NLayoutWidget::contextMenuForWebView(const QPoint &/*point*/) {
     QMenu menu(this);
 
     QMenu *alignmentSubMenu = menu.addMenu(tr("&Alignment"));
-    alignmentSubMenu->addAction(tr("&Top Alignment"), this, SLOT(reload()));
-    alignmentSubMenu->addAction(tr("&Center Alignment"), this, SLOT(reload()));
-    alignmentSubMenu->addAction(tr("&Bottom Alignment"), this, SLOT(reload()));
+    alignmentSubMenu->addAction(tr("&Top Alignment"), this, SLOT(alignTopToJS()));
+    alignmentSubMenu->addAction(tr("&Center Alignment"), this, SLOT(alignVCenterToJS()));
+    alignmentSubMenu->addAction(tr("&Bottom Alignment"), this, SLOT(alignBottomToJS()));
     alignmentSubMenu->addSeparator();
-    alignmentSubMenu->addAction(tr("&Left Alignment"), this, SLOT(reload()));
-    alignmentSubMenu->addAction(tr("&Center Alignment"), this, SLOT(reload()));
-    alignmentSubMenu->addAction(tr("&Right Alignment"), this, SLOT(reload()));
+    alignmentSubMenu->addAction(tr("&Left Alignment"), this, SLOT(alignLeftToJS()));
+    alignmentSubMenu->addAction(tr("&Center Alignment"), this, SLOT(alignHCenterToJS()));
+    alignmentSubMenu->addAction(tr("&Right Alignment"), this, SLOT(alignRightToJS()));
 
     QMenu *arrangementSubMenu = menu.addMenu(tr("&Arrangement"));
     arrangementSubMenu->addAction(tr("&Horizontal Closely"), this, SLOT(reload()));

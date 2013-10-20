@@ -46,6 +46,13 @@ private slots:
     void setCurrentViewFromJS(const NJson &json);
     void setScreenEnable(bool enable);
 
+    void alignTopToJS() { emit mNative->alignViewToJS("TOP"); }
+    void alignVCenterToJS(){ emit mNative->alignViewToJS("V_CENTER"); }
+    void alignBottomToJS() { emit mNative->alignViewToJS("BOTTOM"); }
+    void alignLeftToJS() { emit mNative->alignViewToJS("LEFT"); }
+    void alignHCenterToJS() { emit mNative->alignViewToJS("H_CENTER"); }
+    void alignRightToJS() { emit mNative->alignViewToJS("RIGHT"); }
+
     // for webview
     void reload();
     void showRawData();
