@@ -92,7 +92,7 @@ void NLayoutWidget::injectNativeBridge (){
 void NLayoutWidget::contextMenuForViewsTree(const QPoint &point) {
     QMenu menu(this);
 
-    menu.addAction(tr("&Delete"), this, SLOT(deleteViewToJS()));
+    menu.addAction(tr("&Delete Selected Views"), this, SLOT(deleteSelectedViewsToJS()));
 
     // 選択されたところに行があるときしかメニューを表示しない
     QModelIndex index = ui->layerTreeWidget->indexAt(point);
@@ -260,16 +260,6 @@ void NLayoutWidget::addViewToJS(QTreeWidgetItem *item, int /* index */) {
     tree->addTopLevelItem(viewsItem);
 
     emit mNative->addViewToJS(viewId, viewClass);
-}
-
-void NLayoutWidget::deleteViewToJS() {
-    // delete item from tree;
-    QTreeWidgetItem *item = ui->layerTreeWidget->currentItem();
-    int index = ui->layerTreeWidget->indexOfTopLevelItem(item);
-    ui->layerTreeWidget->takeTopLevelItem(index);
-
-    QString viewId = item->text(ViewsColId);
-    emit mNative->deleteViewToJS(viewId);
 }
 
 void NLayoutWidget::deleteSelectedViewsToJS() {

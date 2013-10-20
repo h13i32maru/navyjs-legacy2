@@ -56,8 +56,6 @@ signals:
     void addViewToJS(const QString &viewId, const QString &viewClass);
 
     // Viewが削除された時にJSに送信される
-    void deleteViewToJS(const QString &viewId);
-
     void deleteSelectedViewsToJS();
 
     // Scene, Pageの設定が変更された時にJSに送信される

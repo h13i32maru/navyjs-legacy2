@@ -8,7 +8,6 @@
  *   changedSelectedViewToJS: {connect: function},
  *   changedViewPropertyToJS: {connect: function},
  *   addViewToJS: {connect: function},
- *   deleteViewToJS: {connect: function},
  *   deleteSelectedViewsToJS: {connect: function},
  *   setScreenToJS: {connect: function},
  *   setScreenEnableToJS: {connect: function},

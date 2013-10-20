@@ -37,7 +37,6 @@ Navy.Class('CreatorPage', Navy.Page, {
     Native.changedSelectedViewToJS.connect(this._selectViews.bind(this));
     Native.changedViewPropertyToJS.connect(this._updateSelectedViewLayout.bind(this));
     Native.addViewToJS.connect(this._addView.bind(this));
-    Native.deleteViewToJS.connect(this._deleteView.bind(this));
     Native.deleteSelectedViewsToJS.connect(this._deleteSelectedViews.bind(this));
     Native.setScreenToJS.connect(this._setScreen.bind(this));
     Native.setScreenEnableToJS.connect(this._setScreenEnable.bind(this));
@@ -126,13 +125,6 @@ Navy.Class('CreatorPage', Navy.Page, {
       this._unselectAllView();
       this._selectView(view.getId());
     }.bind(this));
-  },
-
-  _deleteView: function(viewId) {
-    //FIXME: view groupにfindViewByIdメソッド作ってそれを使うようにする
-    var view = this._views[viewId];
-    this.removeView(view);
-    Native.changedLayoutContentFromJS();
   },
 
   _deleteSelectedViews: function() {
