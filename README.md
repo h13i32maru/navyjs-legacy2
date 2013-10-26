@@ -7,9 +7,8 @@
   - 以下のコマンドを実行
 
 ```sh
-cd navyjs/
-./tools/build.sh
-ls build/
+./navyjs/tools/build.sh
+ls navyjs/build/
 ```
 
 # NavyCreator

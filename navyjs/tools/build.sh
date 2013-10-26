@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd navyjs/
+
 files="\
     src/wrap_text/header.txt\
     src/init.js\
@@ -33,9 +35,9 @@ do
 done
 
 uglifyjs="uglifyjs"
-if [ -f "./node_modules/.bin/uglifyjs" ]
+if [ -e "../node_modules/.bin/uglifyjs" ]
 then
-    uglifyjs="./node_modules/.bin/uglifyjs"
+    uglifyjs="../node_modules/.bin/uglifyjs"
 fi
 
 $uglifyjs build/navy.js --mangle --reserved '$super' --output build/navy.min.js
