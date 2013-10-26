@@ -31,13 +31,18 @@ do
     fi
     echo "$file"
     echo -e "\n// file: $file" >> build/navy.js
-    cat $file >> build/navy.js
+    cat ${file} >> build/navy.js
 done
 
-uglifyjs="uglifyjs"
-if [ -e "../node_modules/.bin/uglifyjs" ]
+uglifyjs --version >/dev/null 2>&1
+if [ $? -eq 0 ]
 then
-    uglifyjs="../node_modules/.bin/uglifyjs"
+    uglifyjs_command="uglifyjs"
+else
+    # for travis ci
+    uglifyjs_command="../node_modules/.bin/uglifyjs"
 fi
 
-$uglifyjs build/navy.js --mangle --reserved '$super' --output build/navy.min.js
+${uglifyjs_command} build/navy.js --mangle --reserved '$super' --output build/navy.min.js
+echo "build/navy.js"
+echo "build/navy.min.js"
