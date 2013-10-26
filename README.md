@@ -1,4 +1,5 @@
 # NavyJS
+[![Build Status](https://travis-ci.org/h13i32maru/navyjs.png?branch=master)](https://travis-ci.org/h13i32maru/navyjs)
 - モバイルWebアプリケーションフレームワーク
 - ビルド方法
   - uglifyjsをインストール ``npm install -g uglifyjs``
