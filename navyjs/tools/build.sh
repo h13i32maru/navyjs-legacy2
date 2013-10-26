@@ -16,6 +16,7 @@ files="\
     "
 
 rm -f build/navy.js build/navy.min.js
+touch build/navy.js
 for file in $files
 do
     if [ -f build/navy.js ]
