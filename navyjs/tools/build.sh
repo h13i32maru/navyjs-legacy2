@@ -31,4 +31,10 @@ do
     cat $file >> build/navy.js
 done
 
-uglifyjs build/navy.js --mangle --reserved '$super' --output build/navy.min.js
+uglifyjs="uglifyjs"
+if [ -f "./node_modules/.bin/uglifyjs" ]
+then
+    uglifyjs="./node_modules/.bin/uglifyjs"
+fi
+
+$uglifyjs build/navy.js --mangle --reserved '$super' --output build/navy.min.js
