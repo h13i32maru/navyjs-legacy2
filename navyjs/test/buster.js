@@ -4,7 +4,7 @@ config['NavyJS Tests'] = {
 rootPath: '../',
   environment: 'browser', // or "node"
   sources: [
-    'build/navy.js',
+    'build/navy.js'
   ],
   tests: [
     'test/test_env.js',
