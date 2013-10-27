@@ -151,7 +151,9 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
       beforePage.onPauseBefore();
     }
 
-    var transition = new Navy.Transition.SlideOver(beforePage, page);
+    // TODO: 組み込みだけじゃんくてカスタムのTransitionにも対応する.
+    var TransitionClass = Navy.Resource.getClass(page.getLayout().extra.transition.class);
+    var transition = new TransitionClass(beforePage, page);
     this._pageStack.push({
       page: page,
       transition: transition

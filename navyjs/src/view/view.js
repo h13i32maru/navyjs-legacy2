@@ -48,6 +48,10 @@ Navy.Class('Navy.View.View', {
     this._loadExtraResource(layout, pass);
   },
 
+  getLayout: function() {
+    return this._cloneObject(this._layout);
+  },
+
   _createElement: function(layout) {
     this._element = document.createElement('div');
   },
