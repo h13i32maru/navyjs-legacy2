@@ -6,6 +6,8 @@ document.head;
 /**
  * @typedef {{
  *  id: string,
+ *  class: string,
+ *  classFile: string,
  *  visible: boolean,
  *  pos: {x: number, y:number, z:number},
  *  sizePolicy: "fixed" | "wrapContent",

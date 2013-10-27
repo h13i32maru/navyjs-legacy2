@@ -1,3 +1,6 @@
+/**
+ * @class Navy.Transition.SlideOver
+ */
 Navy.Class('Navy.Transition.SlideOver', Navy.Transition.Transition, {
   $static: {
     initAnimationStyle: false

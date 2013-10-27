@@ -93,6 +93,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   },
 
   // 不要？
+  /*
   _getBottomPageLayout: function(layout) {
     var bottomLayout = {
       class: 'Navy.Page',
@@ -121,6 +122,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
     return topLayout;
   },
+  */
 
   _createPage: function(pageName, callback) {
     var layout = Navy.Config.page[pageName];
@@ -133,8 +135,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   },
 
   _onLoadScript: function(layout, callback) {
-    var _class = Navy.Resource.getClass(layout.class);
-    new _class(layout, callback);
+    var PageClass = Navy.Resource.getClass(layout.class);
+    new PageClass(layout, callback);
   },
 
   _addPage: function(page) {
