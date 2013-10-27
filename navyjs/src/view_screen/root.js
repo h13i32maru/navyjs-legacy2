@@ -102,7 +102,9 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
       beforeScene.onPauseBefore();
     }
 
-    var transition = new Navy.Transition.Fade(beforeScene, scene);
+    // TODO: 組み込みだけじゃんくてカスタムのTransitionにも対応する.
+    var TransitionClass = Navy.Resource.getClass(scene.getLayout().extra.transition.class);
+    var transition = new TransitionClass(beforeScene, scene);
     this._sceneStack.push({
       scene: scene,
       transition: transition
