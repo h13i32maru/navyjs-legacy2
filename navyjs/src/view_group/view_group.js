@@ -3,6 +3,7 @@
  */
 Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   _views: null,
+  _viewsOrder: null,
   _initCallback: null,
 
   /**
@@ -12,6 +13,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
    */
   initialize: function($super, layout, callback) {
     this._views = {};
+    this._viewsOrder = [];
 
     $super(layout, callback);
   },
@@ -126,10 +128,15 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     return result;
   },
 
-  addView: function(view) {
+  addView: function(view, referenceView) {
     var element = view.getElement();
-    this._element.appendChild(element);
+    if (referenceView) {
+      this._element.insertBefore(element, referenceView.getElement());
+    } else {
+      this._element.appendChild(element);
+    }
     this._views[view.getId()] = view;
+    this._viewsOrder.push(view.getId());
     view.setParent(this);
     view.setPage(this.getPage());
     view.setScene(this.getScene());
@@ -140,6 +147,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     this._element.removeChild(element);
     this._views[view.getId()] = null;
     delete this._views[view.getId()];
+    this._viewsOrder.splice(this._views.indexOf(view.getId()), 1);
     view.setParent(null);
   },
 
