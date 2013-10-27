@@ -8,6 +8,6 @@ rootPath: '../',
   ],
   tests: [
     'test/test_env.js',
-    'test/lib/class_test.js'
+    'test/lib/*.js'
   ]
 };

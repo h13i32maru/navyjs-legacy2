@@ -12,16 +12,20 @@ Navy.Class('Navy.Notify', {
     this._count--;
 
     if (this._count === 0) {
-      this._callback();
+      this._execCallback();
     }
   },
 
   set: function(count, callback) {
+    this._count = count;
+    this._callback = callback;
+
     if (count === 0) {
-      callback();
-    } else {
-      this._count = count;
-      this._callback = callback;
+      this._execCallback();
     }
+  },
+
+  _execCallback: function(){
+    setTimeout(this._callback, 0);
   }
 });
