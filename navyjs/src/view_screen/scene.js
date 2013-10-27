@@ -1,14 +1,13 @@
 Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   _pageStack: null,
+  _sceneFixedFirstView: null,
 
   initialize: function($super, layout, callback){
     this._pageStack = [];
 
     $super(layout, function(){
-      var views = this._views;
-      for (var name in views) {
-        views[name].setPos({z: 100});
-      }
+      var viewId = this._viewsOrder[0];
+      this._sceneFixedFirstView = this._views[viewId];
       this.nextPage(layout.extra.page, callback.bind(null, this));
     }.bind(this));
   },
@@ -158,7 +157,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
       page: page,
       transition: transition
     });
-    this.addView(page);
+    this.addView(page, this._sceneFixedFirstView);
     transition.start(this._onTransitionStartEnd.bind(this));
   },
 
