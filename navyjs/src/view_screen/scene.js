@@ -92,7 +92,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     console.log('onDestroy', this.$className);
   },
 
-  // 不要？
+  // fixme: 不要？
   /*
   _getBottomPageLayout: function(layout) {
     var bottomLayout = {
@@ -107,8 +107,10 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
     return bottomLayout;
   },
+  */
 
-  // 不要？
+  // fixme: 不要？
+  /*
   _getTopPageLayout: function(layout) {
     var topLayout = {
       class: 'Navy.Page',
