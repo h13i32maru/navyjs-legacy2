@@ -4,6 +4,9 @@
     "class": "Scene1",
     "classFile": "code/scene1.js",
     "extra": {
+      "transition": {
+        "class": "Navy.Transition.SlideOver"
+      },
       "contentLayoutFile": "layout/scene1.json",
       "page": "Page1"
     }
