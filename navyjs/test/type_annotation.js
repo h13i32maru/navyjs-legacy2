@@ -1,3 +1,7 @@
+/*
+ * busterのユニットテスト用のannotation (PhpStorm用)
+ */
+
 /**
  * @typedef {Object}
  */
