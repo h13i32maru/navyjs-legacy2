@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/h13i32maru/navyjs.png?branch=master)](https://travis-ci.org/h13i32maru/navyjs)
 - モバイルWebアプリケーションフレームワーク
 - ビルド方法
-  - uglifyjsをインストール ``npm install -g uglifyjs``
+  - uglifyjsをインストール ``npm install -g uglify-js``
   - uglifyjsのパスを通す ``export PATH=/usr/local/share/npm/bin/:$PATH``
   - ビルドコマンドを実行 ``./navyjs/tools/build.sh``
   - ビルド完了 ``ls ./navyjs/build``
