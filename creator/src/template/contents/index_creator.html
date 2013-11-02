@@ -13,7 +13,10 @@
       classFile: 'creator/creator_page.js',
       backgroundColor: 'transparent',
       extra: {
-        contentLayoutFile: Native.getLayoutPath()
+        contentLayoutFile: Native.getLayoutPath(),
+        transition: {
+          class: 'Navy.Transition.SlideOver'
+        }
       }
     };
 
@@ -25,7 +28,10 @@
       backgroundColor: 'transparent',
       extra: {
         page: pageId,
-        contentLayoutFile: null
+        contentLayoutFile: null,
+        transition: {
+          class: 'Navy.Transition.Fade'
+        }
       }
     };
 

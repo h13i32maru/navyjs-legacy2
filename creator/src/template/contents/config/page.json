@@ -1,11 +1,14 @@
 [
-    {
-        "backgroundColor": "#aaffaa",
-        "class": "MainPage",
-        "classFile": "code/main_page.js",
-        "extra": {
-            "contentLayoutFile": "layout/main_page.json"
-        },
-        "id": "MainPage"
-    }
+  {
+    "backgroundColor": "#aaffaa",
+    "class": "MainPage",
+    "classFile": "code/main_page.js",
+    "extra": {
+      "contentLayoutFile": "layout/main_page.json",
+      "transition": {
+        "class": "Navy.Transition.SlideOver"
+      }
+    },
+    "id": "MainPage"
+  }
 ]

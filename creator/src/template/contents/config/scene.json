@@ -1,12 +1,15 @@
 [
-    {
-        "backgroundColor": "",
-        "class": "MainScene",
-        "classFile": "code/main_scene.js",
-        "extra": {
-            "contentLayoutFile": "layout/main_scene.json",
-            "page": "MainPage"
-        },
-        "id": "MainScene"
-    }
+  {
+    "backgroundColor": "",
+    "class": "MainScene",
+    "classFile": "code/main_scene.js",
+    "extra": {
+      "contentLayoutFile": "layout/main_scene.json",
+      "page": "MainPage",
+      "transition": {
+        "class": "Navy.Transition.Fade"
+      }
+    },
+    "id": "MainScene"
+  }
 ]

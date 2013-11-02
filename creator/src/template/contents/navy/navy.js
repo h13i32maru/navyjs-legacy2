@@ -7,6 +7,10 @@
 window.Navy = {};
 
 window.addEventListener('DOMContentLoaded', function(){
+  if (Navy.UnitTest) {
+    return;
+  }
+
   Navy.App.initialize();
 });
 
@@ -181,17 +185,21 @@ Navy.Class('Navy.Notify', {
     this._count--;
 
     if (this._count === 0) {
-      this._callback();
+      this._execCallback();
     }
   },
 
   set: function(count, callback) {
+    this._count = count;
+    this._callback = callback;
+
     if (count === 0) {
-      callback();
-    } else {
-      this._count = count;
-      this._callback = callback;
+      this._execCallback();
     }
+  },
+
+  _execCallback: function(){
+    setTimeout(this._callback, 0);
   }
 });
 
@@ -402,6 +410,10 @@ Navy.Class('Navy.View.View', {
 
     this._loadResource(layout, pass);
     this._loadExtraResource(layout, pass);
+  },
+
+  getLayout: function() {
+    return this._cloneObject(this._layout);
   },
 
   _createElement: function(layout) {
@@ -788,8 +800,12 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
 });
 
 // file: src/view_group/view_group.js
+/**
+ * @class Navy.ViewGroup.ViewGroup
+ */
 Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   _views: null,
+  _viewsOrder: null,
   _initCallback: null,
 
   /**
@@ -799,6 +815,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
    */
   initialize: function($super, layout, callback) {
     this._views = {};
+    this._viewsOrder = [];
 
     $super(layout, callback);
   },
@@ -913,10 +930,15 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     return result;
   },
 
-  addView: function(view) {
+  addView: function(view, referenceView) {
     var element = view.getElement();
-    this._element.appendChild(element);
+    if (referenceView) {
+      this._element.insertBefore(element, referenceView.getElement());
+    } else {
+      this._element.appendChild(element);
+    }
     this._views[view.getId()] = view;
+    this._viewsOrder.push(view.getId());
     view.setParent(this);
     view.setPage(this.getPage());
     view.setScene(this.getScene());
@@ -927,6 +949,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     this._element.removeChild(element);
     this._views[view.getId()] = null;
     delete this._views[view.getId()];
+    this._viewsOrder.splice(this._views.indexOf(view.getId()), 1);
     view.setParent(null);
   },
 
@@ -1097,7 +1120,9 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
       beforeScene.onPauseBefore();
     }
 
-    var transition = new Navy.Transition.Fade(beforeScene, scene);
+    // TODO: 組み込みだけじゃんくてカスタムのTransitionにも対応する.
+    var TransitionClass = Navy.Resource.getClass(scene.getLayout().extra.transition.class);
+    var transition = new TransitionClass(beforeScene, scene);
     this._sceneStack.push({
       scene: scene,
       transition: transition
@@ -1158,15 +1183,14 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
 // file: src/view_screen/scene.js
 Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   _pageStack: null,
+  _sceneFixedFirstView: null,
 
   initialize: function($super, layout, callback){
     this._pageStack = [];
 
     $super(layout, function(){
-      var views = this._views;
-      for (var name in views) {
-        views[name].setPos({z: 100});
-      }
+      var viewId = this._viewsOrder[0];
+      this._sceneFixedFirstView = this._views[viewId];
       this.nextPage(layout.extra.page, callback.bind(null, this));
     }.bind(this));
   },
@@ -1250,7 +1274,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     console.log('onDestroy', this.$className);
   },
 
-  // 不要？
+  // fixme: 不要？
+  /*
   _getBottomPageLayout: function(layout) {
     var bottomLayout = {
       class: 'Navy.Page',
@@ -1264,8 +1289,10 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
     return bottomLayout;
   },
+  */
 
-  // 不要？
+  // fixme: 不要？
+  /*
   _getTopPageLayout: function(layout) {
     var topLayout = {
       class: 'Navy.Page',
@@ -1279,6 +1306,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
     return topLayout;
   },
+  */
 
   _createPage: function(pageName, callback) {
     var layout = Navy.Config.page[pageName];
@@ -1291,8 +1319,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   },
 
   _onLoadScript: function(layout, callback) {
-    var _class = Navy.Resource.getClass(layout.class);
-    new _class(layout, callback);
+    var PageClass = Navy.Resource.getClass(layout.class);
+    new PageClass(layout, callback);
   },
 
   _addPage: function(page) {
@@ -1305,12 +1333,14 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
       beforePage.onPauseBefore();
     }
 
-    var transition = new Navy.Transition.SlideOver(beforePage, page);
+    // TODO: 組み込みだけじゃんくてカスタムのTransitionにも対応する.
+    var TransitionClass = Navy.Resource.getClass(page.getLayout().extra.transition.class);
+    var transition = new TransitionClass(beforePage, page);
     this._pageStack.push({
       page: page,
       transition: transition
     });
-    this.addView(page);
+    this.addView(page, this._sceneFixedFirstView);
     transition.start(this._onTransitionStartEnd.bind(this));
   },
 
@@ -1456,6 +1486,9 @@ Navy.Class('Navy.Transition.Fade', Navy.Transition.Transition, {
 
 
 // file: src/transition/slide_over.js
+/**
+ * @class Navy.Transition.SlideOver
+ */
 Navy.Class('Navy.Transition.SlideOver', Navy.Transition.Transition, {
   $static: {
     initAnimationStyle: false
