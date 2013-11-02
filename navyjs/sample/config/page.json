@@ -6,7 +6,7 @@
     "backgroundColor": "#ff0000",
     "extra": {
       "transition": {
-        "class": "Navy.Transition.SlideOver"
+        "class": "Navy.Transition.SlideRight"
       },
       "contentLayoutFile": "layout/page1.json"
     }

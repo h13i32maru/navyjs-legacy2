@@ -1,7 +1,7 @@
 /**
- * @class Navy.Transition.SlideOver
+ * @class Navy.Transition.SlideRight
  */
-Navy.Class('Navy.Transition.SlideOver', Navy.Transition.Transition, {
+Navy.Class('Navy.Transition.SlideRight', Navy.Transition.Transition, {
   $static: {
     initAnimationStyle: false
   },
@@ -24,8 +24,8 @@ Navy.Class('Navy.Transition.SlideOver', Navy.Transition.Transition, {
 
   _addAnimationStyle: function(){
     var width = Navy.Config.app.size.width;
-    var animIn  = '@-webkit-keyframes slide_over_in  {100% {-webkit-transform: translateX(0)}}';
-    var animOut = '@-webkit-keyframes slide_over_out {100% {-webkit-transform: translateX(%width%px)}}'.replace('%width%', width);
+    var animIn  = '@-webkit-keyframes slide_right_in  {100% {-webkit-transform: translateX(0)}}';
+    var animOut = '@-webkit-keyframes slide_right_out {100% {-webkit-transform: translateX(%width%px)}}'.replace('%width%', width);
     var styleElm = document.createElement('style');
     styleElm.textContent = animIn + animOut;
     document.head.appendChild(styleElm);
@@ -46,7 +46,7 @@ Navy.Class('Navy.Transition.SlideOver', Navy.Transition.Transition, {
     }.bind(this);
 
     this._afterView.addRawEventListener('webkitAnimationEnd', cb);
-    this._afterView._setRawStyle({webkitAnimationName: 'slide_over_in'});
+    this._afterView._setRawStyle({webkitAnimationName: 'slide_right_in'});
   },
 
   back: function(callback) {
@@ -62,6 +62,6 @@ Navy.Class('Navy.Transition.SlideOver', Navy.Transition.Transition, {
 
     this._beforeView.setVisible(true);
     this._afterView.addRawEventListener('webkitAnimationEnd', cb);
-    this._afterView._setRawStyle({webkitAnimationName: 'slide_over_out'});
+    this._afterView._setRawStyle({webkitAnimationName: 'slide_right_out'});
   }
 });
