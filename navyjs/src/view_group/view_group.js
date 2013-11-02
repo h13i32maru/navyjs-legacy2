@@ -147,7 +147,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     this._element.removeChild(element);
     this._views[view.getId()] = null;
     delete this._views[view.getId()];
-    this._viewsOrder.splice(this._views.indexOf(view.getId()), 1);
+    this._viewsOrder.splice(this._viewsOrder.indexOf(view.getId()), 1);
     view.setParent(null);
   },
 
