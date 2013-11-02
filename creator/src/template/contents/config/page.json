@@ -6,7 +6,7 @@
     "extra": {
       "contentLayoutFile": "layout/main_page.json",
       "transition": {
-        "class": "Navy.Transition.SlideOver"
+        "class": "Navy.Transition.SlideRight"
       }
     },
     "id": "MainPage"

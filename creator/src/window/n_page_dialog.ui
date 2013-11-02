@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>261</height>
+    <height>265</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -135,7 +135,32 @@
      </property>
      <item>
       <property name="text">
-       <string>Navy.Transition.SlideOver</string>
+       <string>Navy.Transition.SlideRight</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Navy.Transition.SlideLeft</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Navy.Transition.SlideUp</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Navy.Transition.SlideDown</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Navy.Transition.PopUp</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Navy.Transition.TurnOver</string>
       </property>
      </item>
      <item>
