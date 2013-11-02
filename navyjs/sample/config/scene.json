@@ -5,10 +5,22 @@
     "classFile": "code/scene1.js",
     "extra": {
       "transition": {
-        "class": "Navy.Transition.SlideOver"
+        "class": "Navy.Transition.Fade"
       },
       "contentLayoutFile": "layout/scene1.json",
       "page": "Page1"
+    }
+  },
+  {
+    "id": "Scene2",
+    "class": "Scene2",
+    "classFile": "code/scene2.js",
+    "extra": {
+      "transition": {
+        "class": "Navy.Transition.PopUp"
+      },
+      "contentLayoutFile": "layout/scene2.json",
+      "page": "Page2"
     }
   }
 ]

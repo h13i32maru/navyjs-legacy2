@@ -37,7 +37,7 @@
     "sizePolicy": "wrapContent",
     "link": {
       "type": "scene",
-      "id": "Scene1"
+      "id": "Scene2"
     },
     "extra": {
       "contentLayoutFile": "layout/group1.json"

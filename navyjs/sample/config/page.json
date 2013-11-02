@@ -18,7 +18,7 @@
     "backgroundColor": "#00ff00",
     "extra": {
       "transition": {
-        "class": "Navy.Transition.SlideOver"
+        "class": "Navy.Transition.PopUp"
       },
       "contentLayoutFile": "layout/page2.json"
     }

@@ -22,8 +22,8 @@
     "sizePolicy": "fixed",
     "size": {"width": 80, "height": 80},
     "link": {
-      "type": "scene",
-      "id": "Scene1"
+      "type": "page",
+      "id": "$back"
     },
     "extra": {
       "text": "back"
