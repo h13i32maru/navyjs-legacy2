@@ -72,6 +72,7 @@ void NSceneDialog::setSceneId(const QString &sceneId) {
     ui->page->setCurrentText(scene.getStr("extra.page"));
     ui->layout->setCurrentText(scene.getStr("extra.contentLayoutFile"));
     ui->backgroundColor->setText(scene.getStr("backgroundColor"));
+    ui->transition->setCurrentText(scene.getStr("extra.transition.class"));
 }
 
 void NSceneDialog::autoInputWithId() {
@@ -146,6 +147,7 @@ void NSceneDialog::updateScene() {
     mConfigScene.set(index + ".extra.contentLayoutFile", layoutFile);
     mConfigScene.set(index + ".extra.page", page);
     mConfigScene.set(index + ".backgroundColor", ui->backgroundColor->text());
+    mConfigScene.set(index + ".extra.transition.class", ui->transition->currentText());
 
     accept();
 }

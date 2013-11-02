@@ -58,6 +58,7 @@ void NPageDialog::setPageId(const QString &pageId) {
     ui->classFile->setCurrentText(page.getStr("classFile"));
     ui->layout->setCurrentText(page.getStr("extra.contentLayoutFile"));
     ui->backgroundColor->setText(page.getStr("backgroundColor"));
+    ui->transition->setCurrentText(page.getStr("extra.transition.class"));
 }
 
 void NPageDialog::autoInputWithId() {
@@ -126,6 +127,7 @@ void NPageDialog::updatePage() {
     mConfigPage.set(index + ".classFile", classFile);
     mConfigPage.set(index + ".extra.contentLayoutFile", layoutFile);
     mConfigPage.set(index + ".backgroundColor", ui->backgroundColor->text());
+    mConfigPage.set(index + ".extra.transition.class", ui->transition->currentText());
 
     accept();
 }
