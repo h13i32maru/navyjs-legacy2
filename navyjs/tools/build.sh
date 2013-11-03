@@ -14,6 +14,8 @@ files="\
     src/view_screen/*.js\
     src/transition/transition.js\
     src/transition/*.js\
+    src/gesture/gesture.js\
+    src/gesture/*.js\
     src/wrap_text/footer.txt\
     "
 
