@@ -93,6 +93,7 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   },
 
   _addScene: function(scene) {
+    this.addView(scene);
     scene.onCreate();
     scene.onResumeBefore();
 
@@ -109,7 +110,6 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
       scene: scene,
       transition: transition
     });
-    this.addView(scene);
     transition.start(this._onTransitionStartEnd.bind(this));
   },
 

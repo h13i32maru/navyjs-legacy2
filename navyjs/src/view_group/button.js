@@ -23,9 +23,16 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
       this.addView(this._textView);
       $super(layout, callback);
 
-      this.getPage().onResumeAfter = function() {
-        debugger;
-        console.log(this._textView.getSize());
+      this.getPage().onResumeBefore = function() {
+        var imageSize = this._imageView.getSize();
+        var textSize = this._textView.getSize();
+
+        var pos = {
+          x: imageSize.width / 2 - textSize.width / 2,
+          y: imageSize.height / 2 - textSize.height / 2
+        };
+
+        this._textView.setPos(pos);
       }.bind(this);
     }.bind(this);
 

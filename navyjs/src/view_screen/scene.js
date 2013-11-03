@@ -179,6 +179,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   },
 
   _addPage: function(page) {
+    this.addView(page, this._sceneFixedFirstView);
     this._lifeCycleState >= this.LIFE_CYCLE_STATE_CREATE && page.onCreate();
     this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_BEFORE && page.onResumeBefore();
 
@@ -195,7 +196,6 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
       page: page,
       transition: transition
     });
-    this.addView(page, this._sceneFixedFirstView);
     transition.start(this._onTransitionStartEnd.bind(this));
   },
 
