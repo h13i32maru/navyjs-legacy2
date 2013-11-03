@@ -75,6 +75,8 @@ Navy.Class('Navy.View.View', {
     this.setSize(layout.size);
     this.setBackgroundColor(layout.backgroundColor);
     this.setLink(layout.link);
+
+    this._setRawStyle({overflow:'hidden'});
   },
 
   _loadResource: function(layout, callback) {
