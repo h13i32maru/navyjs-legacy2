@@ -134,7 +134,7 @@ Navy.Class('Navy.View.View', {
 
   on: function(eventName, callback) {
     if (!this._eventCallbackMap[eventName]) {
-      this._eventCallbackMap = [];
+      this._eventCallbackMap[eventName] = [];
     }
 
     var eventCallbackId = this._eventCallbackId++;
