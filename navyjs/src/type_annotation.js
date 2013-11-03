@@ -5,6 +5,14 @@ document.head;
 
 /**
  * @typedef {{
+ *  touches: Object[],
+ *  changedTouches: Object[]
+ * }}
+ */
+TouchEvent;
+
+/**
+ * @typedef {{
  *  id: string,
  *  class: string,
  *  classFile: string,
