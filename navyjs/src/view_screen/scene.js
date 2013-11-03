@@ -1,4 +1,12 @@
 Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
+  LIFE_CYCLE_STATE_CREATE: 1,
+  LIFE_CYCLE_STATE_RESUME_BEFORE: 2,
+  LIFE_CYCLE_STATE_RESUME_AFTER: 3,
+  LIFE_CYCLE_STATE_PAUSE_BEFORE: 4,
+  LIFE_CYCLE_STATE_PAUSE_AFTER: 5,
+  LIFE_CYCLE_STATE_DESTROY: 6,
+
+  _lifeCycleState: 0,
   _pageStack: null,
   _sceneFixedFirstView: null,
 
@@ -61,34 +69,64 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
   backPage: function() {
     if (this._pageStack.length >= 2) {
-      var stackObj = this._pageStack[this._pageStack.length - 1];
-      var transition = stackObj.transition;
+      var currentStackObj = this._getCurrentStack();
+      var prevStackObj = this._getPrevStack();
+
+      currentStackObj.page.onPauseBefore();
+      prevStackObj.page.onResumeBefore();
+
+      var transition = currentStackObj.transition;
       transition.back(this._onTransitionBackEnd.bind(this));
     }
   },
 
   onCreate: function() {
+    this._lifeCycleState = this.LIFE_CYCLE_STATE_CREATE;
     console.log('onCreate', this.$className);
+
+    var page = this.getCurrentPage();
+    page.onCreate();
   },
 
   onResumeBefore: function(){
+    this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_BEFORE;
     console.log('onResumeBefore', this.$className);
+
+    var page = this.getCurrentPage();
+    page.onResumeBefore();
   },
 
   onResumeAfter: function(){
+    this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_AFTER;
     console.log('onResumeAfter', this.$className);
+
+    var page = this.getCurrentPage();
+    page.onResumeAfter();
   },
 
   onPauseBefore: function(){
+    this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_BEFORE;
     console.log('onPauseBefore', this.$className);
+
+    var page = this.getCurrentPage();
+    page.onPauseBefore();
   },
 
   onPauseAfter: function(){
+    this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_AFTER;
     console.log('onPauseAfter', this.$className);
+
+    var page = this.getCurrentPage();
+    page.onPauseAfter();
   },
 
   onDestroy: function(){
+    this._lifeCycleState = this.LIFE_CYCLE_STATE_DESTROY;
     console.log('onDestroy', this.$className);
+
+    // TODO: いきなりsceneが終わる場合もあるのですべてのスタックを綺麗にする必要ありそう.
+    var page = this.getCurrentPage();
+    page.onDestroy();
   },
 
   // fixme: 不要？
@@ -141,8 +179,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   },
 
   _addPage: function(page) {
-    page.onCreate();
-    page.onResumeBefore();
+    this._lifeCycleState >= this.LIFE_CYCLE_STATE_CREATE && page.onCreate();
+    this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_BEFORE && page.onResumeBefore();
 
     var currentStackObj = this._getCurrentStack();
     if (currentStackObj) {
@@ -185,7 +223,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
     var currentStackObj = this._getCurrentStack();
     if (currentStackObj) {
-      currentStackObj.page.onResumeAfter();
+      this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_AFTER && currentStackObj.page.onResumeAfter();
     }
   },
 
