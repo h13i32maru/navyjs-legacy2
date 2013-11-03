@@ -42,6 +42,17 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
       var view = new _class(contentLayout, pass);
       this.addView(view);
     }
+
+    /*
+     * wrapContentの場合、ViewGroupは子要素の大きさによって自身のサイズが変動する.
+     * そのため描画されてサイズが取得出来る段階になって初めてwidth,heightを設定することができる.
+     */
+    if (this.getSizePolicy() === this.SIZE_POLICY_WRAP_CONTENT) {
+      this.getPage().on('resumeBefore', function(){
+        var size = this.getSize();
+        this.setSize(size);
+      }.bind(this));
+    }
   },
 
   destroy: function($super) {

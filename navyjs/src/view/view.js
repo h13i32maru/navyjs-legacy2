@@ -75,6 +75,8 @@ Navy.Class('Navy.View.View', {
     this.setSize(layout.size);
     this.setBackgroundColor(layout.backgroundColor);
     this.setLink(layout.link);
+
+    this._setRawStyle({overflow:'hidden'});
   },
 
   _loadResource: function(layout, callback) {
@@ -134,7 +136,7 @@ Navy.Class('Navy.View.View', {
 
   on: function(eventName, callback) {
     if (!this._eventCallbackMap[eventName]) {
-      this._eventCallbackMap = [];
+      this._eventCallbackMap[eventName] = [];
     }
 
     var eventCallbackId = this._eventCallbackId++;

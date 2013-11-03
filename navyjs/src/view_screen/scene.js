@@ -1,3 +1,7 @@
+/**
+ * @class Navy.Scene
+ * @eventNames create, resumeBefore, resumeAfter, pauseBefore, pauseAfter, destroy
+ */
 Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   LIFE_CYCLE_STATE_CREATE: 1,
   LIFE_CYCLE_STATE_RESUME_BEFORE: 2,
@@ -84,6 +88,9 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     this._lifeCycleState = this.LIFE_CYCLE_STATE_CREATE;
     console.log('onCreate', this.$className);
 
+    // TODO: eventオブジェクトをちゃんと生成する.(他のライフサイクルも同じく)
+    this.trigger('create', this, null);
+
     var page = this.getCurrentPage();
     page.onCreate();
   },
@@ -91,6 +98,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   onResumeBefore: function(){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_BEFORE;
     console.log('onResumeBefore', this.$className);
+
+    this.trigger('resumeBefore', this, null);
 
     var page = this.getCurrentPage();
     page.onResumeBefore();
@@ -100,6 +109,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_AFTER;
     console.log('onResumeAfter', this.$className);
 
+    this.trigger('resumeAfter', this, null);
+
     var page = this.getCurrentPage();
     page.onResumeAfter();
   },
@@ -107,6 +118,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   onPauseBefore: function(){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_BEFORE;
     console.log('onPauseBefore', this.$className);
+
+    this.trigger('pauseBefore', this, null);
 
     var page = this.getCurrentPage();
     page.onPauseBefore();
@@ -116,6 +129,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_AFTER;
     console.log('onPauseAfter', this.$className);
 
+    this.trigger('pauseAfter', this, null);
+
     var page = this.getCurrentPage();
     page.onPauseAfter();
   },
@@ -123,6 +138,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   onDestroy: function(){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_DESTROY;
     console.log('onDestroy', this.$className);
+
+    this.trigger('destroy', this, null);
 
     // TODO: いきなりsceneが終わる場合もあるのですべてのスタックを綺麗にする必要ありそう.
     var page = this.getCurrentPage();
