@@ -47,6 +47,25 @@ ImageLayout;
 /**
  * @typedef {ViewLayout | {
  *  extra: {
+ *    text: string,
+ *    fontSize: number,
+ *    normal: {
+ *      src: string
+ *    },
+ *    active: {
+ *      src: string
+ *    },
+ *    disabled: {
+ *      src: string
+ *    }
+ *  }
+ * }}
+ */
+ButtonLayout;
+
+/**
+ * @typedef {ViewLayout | {
+ *  extra: {
  *    contentLayoutFile: string
  *  }
  * }}

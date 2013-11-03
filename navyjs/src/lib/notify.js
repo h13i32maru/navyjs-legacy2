@@ -1,3 +1,6 @@
+/**
+ * @class Navy.Notify
+ */
 Navy.Class('Navy.Notify', {
   _count: null,
   _callback: null,

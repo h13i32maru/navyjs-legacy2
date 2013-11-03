@@ -1,3 +1,6 @@
+/**
+ * @class Navy.View.Text
+ */
 Navy.Class('Navy.View.Text', Navy.View.View, {
   _textElement: null,
 

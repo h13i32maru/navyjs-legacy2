@@ -1,3 +1,6 @@
+/**
+ * @class Navy.View.Image
+ */
 Navy.Class('Navy.View.Image', Navy.View.View, {
   _imgElm: null,
 
@@ -14,7 +17,7 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
   },
 
   _applyExtraLayout: function($super, layout) {
-    // pass
+    $super(layout);
   },
 
   _loadExtraResource: function($super, layout, callback) {
