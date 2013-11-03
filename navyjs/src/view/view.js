@@ -1,3 +1,7 @@
+/**
+ * @class Navy.View.View
+ * @eventType link
+ */
 Navy.Class('Navy.View.View', {
   SIZE_POLICY_FIXED: 'fixed',
   SIZE_POLICY_WRAP_CONTENT: 'wrapContent',
@@ -9,12 +13,19 @@ Navy.Class('Navy.View.View', {
   _element: null,
   _parentView: null,
 
+  _eventCallbackMap: null,
+  _eventCallbackId: 0,
+
+  _linkGesture: null,
+
   /**
    *
    * @param {function} callback
    * @param {ViewLayout} layout
    */
   initialize: function(layout, callback) {
+    this._eventCallbackMap = {};
+
     if (layout) {
       this._id = layout.id;
     }
@@ -23,8 +34,6 @@ Navy.Class('Navy.View.View', {
 
     this._createElement(layout);
     this._createExtraElement(layout);
-
-    this._execLink = this._execLink.bind(this);
 
     this.setLayout(layout, callback);
   },
@@ -54,6 +63,7 @@ Navy.Class('Navy.View.View', {
 
   _createElement: function(layout) {
     this._element = document.createElement('div');
+    this._linkGesture = new Navy.Gesture.Tap(this._element, this._onLink.bind(this));
   },
 
   _applyLayout: function(layout) {
@@ -104,7 +114,11 @@ Navy.Class('Navy.View.View', {
     this._element.style.cssText += cssText;
   },
 
-  _execLink: function(ev) {
+  _onLink: function(ev) {
+    // TODO: Navy.Eventオブジェクトを作る.
+    this.trigger('link', this, ev);
+
+    // TODO: evがpreventDefault的なことをされていれば遷移しないようにする.
     var type = this._layout.link.type;
     var id = this._layout.link.id;
 
@@ -115,6 +129,60 @@ Navy.Class('Navy.View.View', {
     case 'scene':
       Navy.Root.linkScene(id);
       break;
+    }
+  },
+
+  on: function(eventName, callback) {
+    if (!this._eventCallbackMap[eventName]) {
+      this._eventCallbackMap = [];
+    }
+
+    var eventCallbackId = this._eventCallbackId++;
+    this._eventCallbackMap[eventName].push({
+      callbackId: eventCallbackId,
+      callback: callback
+    });
+
+    return eventCallbackId;
+  },
+
+  off: function(eventName, callbackOrId) {
+    var eventCallbacks = this._eventCallbackMap[eventName];
+    if (!eventCallbacks) {
+      return;
+    }
+
+    if (typeof callbackOrId === 'function') {
+      var callback = callbackOrId;
+      for (var i = 0; i < eventCallbacks.length; i++) {
+        if (callback === eventCallbacks[i].callback) {
+          eventCallbacks.splice(i, 1);
+          i--;
+        }
+      }
+
+    } else {
+      var callbackId = callbackOrId;
+      for (var i = 0; i < eventCallbacks.length; i++) {
+        if (callbackId === eventCallbacks[i].callbackId) {
+          eventCallbacks.splice(i, 1);
+          return;
+        }
+      }
+    }
+  },
+
+  trigger: function(eventName, view, event) {
+    var eventCallbacks = this._eventCallbackMap[eventName];
+    if (!eventCallbacks) {
+      return;
+    }
+
+    for (var i = 0; i < eventCallbacks.length; i++) {
+      var callback = eventCallbacks[i].callback;
+      callback(view, event);
+
+      // TODO: preventDefault, stopPropagation, stopNext的なのを実装
     }
   },
 
@@ -317,9 +385,9 @@ Navy.Class('Navy.View.View', {
     this._layout.link = link;
 
     if (link) {
-      this._element.addEventListener('touchend', this._execLink);
+      this._linkGesture.start();
     } else {
-      this._element.removeEventListener('touchend', this._execLink);
+      this._linkGesture.stop();
     }
   },
 
