@@ -171,6 +171,9 @@ Navy.Class._wrapFunction = function _wrapFunction(superObj, funcname, func) {
 };
 
 // file: src/lib/notify.js
+/**
+ * @class Navy.Notify
+ */
 Navy.Class('Navy.Notify', {
   _count: null,
   _callback: null,
@@ -362,9 +365,14 @@ Navy.Class.instance('Navy.Resource', {
 });
 
 // file: src/view/view.js
+/**
+ * @class Navy.View.View
+ * @eventNames link, sizeChanged, posChanged
+ */
 Navy.Class('Navy.View.View', {
   SIZE_POLICY_FIXED: 'fixed',
   SIZE_POLICY_WRAP_CONTENT: 'wrapContent',
+  SIZE_POLICY_MATCH_PARENT: 'matchParent',
 
   _id: null,
   _page: null,
@@ -373,12 +381,19 @@ Navy.Class('Navy.View.View', {
   _element: null,
   _parentView: null,
 
+  _eventCallbackMap: null,
+  _eventCallbackId: 0,
+
+  _linkGesture: null,
+
   /**
    *
    * @param {function} callback
    * @param {ViewLayout} layout
    */
   initialize: function(layout, callback) {
+    this._eventCallbackMap = {};
+
     if (layout) {
       this._id = layout.id;
     }
@@ -388,8 +403,6 @@ Navy.Class('Navy.View.View', {
     this._createElement(layout);
     this._createExtraElement(layout);
 
-    this._execLink = this._execLink.bind(this);
-
     this.setLayout(layout, callback);
   },
 
@@ -398,16 +411,22 @@ Navy.Class('Navy.View.View', {
       return;
     }
 
-    this._layout = layout;
+    function onLoadResource() {
+      var notify = new Navy.Notify(2, onApplyLayout.bind(this));
+      var pass = notify.pass.bind(notify);
+      this._applyLayout(layout, pass);
+      this._applyExtraLayout(layout, pass);
+    }
 
-    var notify = new Navy.Notify(2, function(){
-      this._applyLayout(layout);
-      this._applyExtraLayout(layout);
+    function onApplyLayout() {
+      this._updateSizeWithWrapContentSize();
+      this._element.style.visibility = '';
       callback && callback(this);
-    }.bind(this));
+    }
 
+    this._layout = layout;
+    var notify = new Navy.Notify(2, onLoadResource.bind(this));
     var pass = notify.pass.bind(notify);
-
     this._loadResource(layout, pass);
     this._loadExtraResource(layout, pass);
   },
@@ -418,33 +437,76 @@ Navy.Class('Navy.View.View', {
 
   _createElement: function(layout) {
     this._element = document.createElement('div');
+    this._element.style.visibility = 'hidden';
+
+    this._linkGesture = new Navy.Gesture.Tap(this._element, this._onLink.bind(this));
   },
 
-  _applyLayout: function(layout) {
+  _applyLayout: function(layout, callback) {
     this._element.style.position = 'absolute';
 
     this.setVisible(layout.visible);
     this.setPos(layout.pos);
-    this.setSizePolicy(layout.sizePolicy);
+    this.setSizePolicy(layout.sizePolicy, true);
     this.setSize(layout.size);
     this.setBackgroundColor(layout.backgroundColor);
     this.setLink(layout.link);
+
+    this._setRawStyle({overflow:'hidden'});
+
+    callback && setTimeout(callback, 0);
   },
 
   _loadResource: function(layout, callback) {
     callback && setTimeout(callback, 0);
   },
 
+  /**
+   * @forOverride
+   * @param layout
+   * @private
+   */
   _createExtraElement: function(layout) {
-    // pass
   },
 
-  _applyExtraLayout: function(layout) {
-    // pass
+  /**
+   * @forOverride
+   * @param layout
+   * @param callback
+   * @private
+   */
+  _applyExtraLayout: function(layout, callback) {
+    callback && setTimeout(callback, 0);
   },
 
+  /**
+   * @forOverride
+   * @param layout
+   * @param callback
+   * @private
+   */
   _loadExtraResource: function(layout, callback) {
     callback && setTimeout(callback, 0);
+  },
+
+  /**
+   * @forOverride
+   * @private
+   */
+  _calcWrapContentSize: function() {
+    return {width: 0, height: 0};
+  },
+
+  _updateSizeWithWrapContentSize: function() {
+    if (this._layout.sizePolicy !== this.SIZE_POLICY_WRAP_CONTENT) {
+      return;
+    }
+
+    var size = this._calcWrapContentSize();
+    this._element.style.width = size.width + 'px';
+    this._element.style.height = size.height + 'px';
+
+    this.trigger('sizeChanged', this, null);
   },
 
   _setRawStyle: function(style) {
@@ -468,7 +530,11 @@ Navy.Class('Navy.View.View', {
     this._element.style.cssText += cssText;
   },
 
-  _execLink: function(ev) {
+  _onLink: function(ev) {
+    // TODO: Navy.Eventオブジェクトを作る.
+    this.trigger('link', this, ev);
+
+    // TODO: evがpreventDefault的なことをされていれば遷移しないようにする.
     var type = this._layout.link.type;
     var id = this._layout.link.id;
 
@@ -479,6 +545,60 @@ Navy.Class('Navy.View.View', {
     case 'scene':
       Navy.Root.linkScene(id);
       break;
+    }
+  },
+
+  on: function(eventName, callback) {
+    if (!this._eventCallbackMap[eventName]) {
+      this._eventCallbackMap[eventName] = [];
+    }
+
+    var eventCallbackId = this._eventCallbackId++;
+    this._eventCallbackMap[eventName].push({
+      callbackId: eventCallbackId,
+      callback: callback
+    });
+
+    return eventCallbackId;
+  },
+
+  off: function(eventName, callbackOrId) {
+    var eventCallbacks = this._eventCallbackMap[eventName];
+    if (!eventCallbacks) {
+      return;
+    }
+
+    if (typeof callbackOrId === 'function') {
+      var callback = callbackOrId;
+      for (var i = 0; i < eventCallbacks.length; i++) {
+        if (callback === eventCallbacks[i].callback) {
+          eventCallbacks.splice(i, 1);
+          i--;
+        }
+      }
+
+    } else {
+      var callbackId = callbackOrId;
+      for (var i = 0; i < eventCallbacks.length; i++) {
+        if (callbackId === eventCallbacks[i].callbackId) {
+          eventCallbacks.splice(i, 1);
+          return;
+        }
+      }
+    }
+  },
+
+  trigger: function(eventName, view, event) {
+    var eventCallbacks = this._eventCallbackMap[eventName];
+    if (!eventCallbacks) {
+      return;
+    }
+
+    for (var i = 0; i < eventCallbacks.length; i++) {
+      var callback = eventCallbacks[i].callback;
+      callback(view, event);
+
+      // TODO: preventDefault, stopPropagation, stopNext的なのを実装
     }
   },
 
@@ -561,7 +681,7 @@ Navy.Class('Navy.View.View', {
     this._layout.visible = visible;
 
     if (visible) {
-      this.setSizePolicy(this._layout.sizePolicy);
+      this._element.style.display = 'block';
     } else {
       this._element.style.display = 'none';
     }
@@ -576,23 +696,23 @@ Navy.Class('Navy.View.View', {
     return this._layout.backgroundColor;
   },
 
-  setSizePolicy: function(sizePolicy) {
-    if (!this.isVisible()) {
-      return;
-    }
+  setSizePolicy: function(sizePolicy, disableUpdateSizeWithWrapContentSize) {
+    this._layout.sizePolicy = sizePolicy;
 
-    switch(sizePolicy) {
+    switch (sizePolicy) {
     case this.SIZE_POLICY_FIXED:
-      this._element.style.display = 'block';
       break;
     case this.SIZE_POLICY_WRAP_CONTENT:
-      this._element.style.display = 'inline';
+      if (!disableUpdateSizeWithWrapContentSize) {
+        this._updateSizeWithWrapContentSize();
+      }
+      break;
+    case this.SIZE_POLICY_MATCH_PARENT:
+      this._element.style.cssText += 'width: 100%; height: 100%';
       break;
     default:
       throw new Error('unknown size policy. ' + this._layout.sizePolicy);
     }
-
-    this._layout.sizePolicy = sizePolicy;
   },
 
   getSizePolicy: function() {
@@ -601,19 +721,12 @@ Navy.Class('Navy.View.View', {
 
   getSize: function() {
     switch (this._layout.sizePolicy) {
-    case this.SIZE_POLICY_WRAP_CONTENT:
-      if (!this.isVisible()) {
-        return {width: -1, height: -1};
-      }
-
-      // FIXME: view groupの場合clientではサイズがとれずscrollでとれる. 調査必要.
-      if (this._element.clientWidth || this._element.clientHeight) {
-        return {width: this._element.clientWidth, height: this._element.clientHeight};
-      } else {
-        return {width: this._element.scrollWidth, height: this._element.scrollHeight};
-      }
     case this.SIZE_POLICY_FIXED:
       return {width: this._layout.size.width, height: this._layout.size.height};
+    case this.SIZE_POLICY_WRAP_CONTENT:
+      return {width: this._element.clientWidth, height: this._element.clientHeight};
+    case this.SIZE_POLICY_MATCH_PARENT:
+      return {width: this._element.clientWidth, height: this._element.clientHeight};
     default:
       throw new Error('unknown size policy. ' + this._layout.sizePolicy);
     }
@@ -621,6 +734,10 @@ Navy.Class('Navy.View.View', {
 
   setSize: function(size) {
     if (!size) {
+      return;
+    }
+
+    if (this._layout.sizePolicy !== this.SIZE_POLICY_FIXED) {
       return;
     }
 
@@ -641,6 +758,9 @@ Navy.Class('Navy.View.View', {
     }
 
     this._element.style.cssText += cssText;
+
+    // TODO: Eventオブジェクト作る.
+    this.trigger('sizeChanged', this, null);
   },
 
   setPos: function(pos) {
@@ -665,6 +785,9 @@ Navy.Class('Navy.View.View', {
     }
 
     this._element.style.cssText += cssText;
+
+    // TODO: Eventオブジェクト作る.
+    this.trigger('posChanged', this, null);
   },
 
   addPos: function(deltaPos) {
@@ -681,9 +804,9 @@ Navy.Class('Navy.View.View', {
     this._layout.link = link;
 
     if (link) {
-      this._element.addEventListener('touchend', this._execLink);
+      this._linkGesture.start();
     } else {
-      this._element.removeEventListener('touchend', this._execLink);
+      this._linkGesture.stop();
     }
   },
 
@@ -708,8 +831,8 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
     this._imgElm = imgElm;
   },
 
-  _applyExtraLayout: function($super, layout) {
-    // pass
+  _applyExtraLayout: function($super, layout, callback) {
+    $super(layout, callback);
   },
 
   _loadExtraResource: function($super, layout, callback) {
@@ -722,12 +845,16 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
     }
   },
 
+  _calcWrapContentSize: function() {
+    return {
+      width: this._imgElm.width,
+      height: this._imgElm.height
+    };
+  },
+
   _onLoadImage: function(src, width, height){
     this._imgElm.src = src;
-
-    if (this._layout.sizePolicy == this.SIZE_POLICY_WRAP_CONTENT) {
-      this.setSize({width: width, height: height});
-    }
+    this.trigger('sizeChanged', this, null);
   },
 
   setSrc: function(src, callback) {
@@ -761,17 +888,19 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
     $super(layout);
 
     this._textElement = document.createElement('span');
+    // inlineだとdivとの間に隙間ができてY方向でぴったり揃わないのでinline-blockにする.
+    this._textElement.style.display = 'inline-block';
     this._element.appendChild(this._textElement);
   },
 
-  _applyExtraLayout: function($super, layout) {
-    $super(layout);
-
+  _applyExtraLayout: function($super, layout, callback) {
     if (!layout.extra) {
       return;
     }
 
     this.setFontSize(layout.extra.fontSize);
+
+    $super(layout, callback);
   },
 
   _loadExtraResource: function($super, layout, callback) {
@@ -780,9 +909,17 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
     $super(layout, callback);
   },
 
+  _calcWrapContentSize: function() {
+    return {
+      width: this._textElement.offsetWidth,
+      height: this._textElement.offsetHeight
+    };
+  },
+
   setText: function(text) {
     this._layout.extra.text = text;
     this._textElement.textContent = text;
+    this.trigger('sizeChanged', this, null);
   },
 
   getText: function() {
@@ -792,6 +929,7 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
   setFontSize: function(fontSize) {
     this._layout.extra.fontSize = fontSize;
     this._element.style.fontSize = fontSize + 'px';
+    this.trigger('sizeChanged', this, null);
   },
 
   getFontSize: function() {
@@ -807,6 +945,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   _views: null,
   _viewsOrder: null,
   _initCallback: null,
+  _contentLayouts: null,
 
   /**
    * @param $super
@@ -823,14 +962,34 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   _loadExtraResource: function($super, layout, callback) {
     if (layout && layout.extra.contentLayoutFile) {
       this._layout.extra.contentLayoutFile = layout.extra.contentLayoutFile;
-      this._initCallback = function() {
+      Navy.Resource.loadLayout(layout.extra.contentLayoutFile, function(contentLayouts){
+        this._contentLayouts = contentLayouts;
         $super(layout, callback);
-      };
-      Navy.Resource.loadLayout(layout.extra.contentLayoutFile, this._onLoadContentLayout.bind(this));
+      }.bind(this));
     } else {
       // rootは_layoutがnull
       this._layout && (this._layout.extra.contentLayoutFile = null);
       $super(layout, callback);
+    }
+  },
+
+  _applyExtraLayout: function($super, layout, callback) {
+    if (!this._contentLayouts) {
+      $super(layout, callback);
+      return;
+    }
+
+    var contentLayouts = this._contentLayouts;
+    var notify = new Navy.Notify(contentLayouts.length, function(){
+      $super(layout, callback);
+    });
+    var pass = notify.pass.bind(notify);
+
+    for (var i = 0; i < contentLayouts.length; i++) {
+      var contentLayout = contentLayouts[i];
+      var ViewClass = Navy.Resource.getClass(contentLayout.class);
+      var view = new ViewClass(contentLayout, pass);
+      this.addView(view);
     }
   },
 
@@ -840,10 +999,34 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
 
     for (var i = 0; i < contentLayouts.length; i++) {
       var contentLayout = contentLayouts[i];
-      var _class = Navy.Resource.getClass(contentLayout.class);
-      var view = new _class(contentLayout, pass);
+      var ViewClass = Navy.Resource.getClass(contentLayout.class);
+      var view = new ViewClass(contentLayout, pass);
       this.addView(view);
     }
+  },
+
+  _calcWrapContentSize: function() {
+    var maxWidth = 0;
+    var maxHeight = 0;
+
+    var views = this._views;
+    for (var id in views) {
+      var view = views[id];
+      if (view.getSizePolicy() === this.SIZE_POLICY_MATCH_PARENT) {
+        continue;
+      }
+
+      var pos = view.getPos();
+      var size = view.getSize();
+
+      maxWidth = Math.max(maxWidth, pos.x + size.width);
+      maxHeight = Math.max(maxHeight, pos.y + size.height);
+    }
+
+    return {
+      width: maxWidth,
+      height: maxHeight
+    };
   },
 
   destroy: function($super) {
@@ -942,6 +1125,11 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     view.setParent(this);
     view.setPage(this.getPage());
     view.setScene(this.getScene());
+
+    // TODO: sizePolicyがwrapContentの時のみonするように変更する.
+    // TODO: 無駄にupdateが呼ばれていてパフォーマンス悪い.
+    view.on('sizeChanged', this._updateSizeWithWrapContentSize.bind(this));
+    view.on('posChanged', this._updateSizeWithWrapContentSize.bind(this));
   },
 
   removeView: function(view) {
@@ -967,6 +1155,10 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
 });
 
 // file: src/view_screen/page.js
+/**
+ * @class Navy.Page
+ * @eventNames create, resumeBefore, resumeAfter, pauseBefore, pauseAfter, destroy
+ */
 Navy.Class('Navy.Page', Navy.ViewGroup.ViewGroup, {
   initialize: function($super, layout, callback) {
     $super(layout, callback);
@@ -992,26 +1184,39 @@ Navy.Class('Navy.Page', Navy.ViewGroup.ViewGroup, {
 
   onCreate: function() {
     console.log('onCreate', this.$className);
+
+    // TODO: eventオブジェクトをちゃんと生成する.(他のライフサイクルも同じく)
+    this.trigger('create', this, null);
   },
 
   onResumeBefore: function(){
     console.log('onResumeBefore', this.$className);
+
+    this.trigger('resumeBefore', this, null);
   },
 
   onResumeAfter: function(){
     console.log('onResumeAfter', this.$className);
+
+    this.trigger('resumeAfter', this, null);
   },
 
   onPauseBefore: function(){
     console.log('onPauseBefore', this.$className);
+
+    this.trigger('pauseBefore', this, null);
   },
 
   onPauseAfter: function(){
     console.log('onPauseAfter', this.$className);
+
+    this.trigger('pauseAfter', this, null);
   },
 
   onDestroy: function(){
     console.log('onDestroy', this.$className);
+
+    this.trigger('destroy', this, null);
   }
 });
 
@@ -1106,8 +1311,9 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   },
 
   _onLoadScript: function(layout, callback) {
-    var _class = Navy.Resource.getClass(layout.class);
-    new _class(layout, callback);
+    var SceneClass = Navy.Resource.getClass(layout.class);
+    var scene = new SceneClass(layout, callback);
+    this.addView(scene);
   },
 
   _addScene: function(scene) {
@@ -1127,7 +1333,6 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
       scene: scene,
       transition: transition
     });
-    this.addView(scene);
     transition.start(this._onTransitionStartEnd.bind(this));
   },
 
@@ -1181,7 +1386,19 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
 });
 
 // file: src/view_screen/scene.js
+/**
+ * @class Navy.Scene
+ * @eventNames create, resumeBefore, resumeAfter, pauseBefore, pauseAfter, destroy
+ */
 Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
+  LIFE_CYCLE_STATE_CREATE: 1,
+  LIFE_CYCLE_STATE_RESUME_BEFORE: 2,
+  LIFE_CYCLE_STATE_RESUME_AFTER: 3,
+  LIFE_CYCLE_STATE_PAUSE_BEFORE: 4,
+  LIFE_CYCLE_STATE_PAUSE_AFTER: 5,
+  LIFE_CYCLE_STATE_DESTROY: 6,
+
+  _lifeCycleState: 0,
   _pageStack: null,
   _sceneFixedFirstView: null,
 
@@ -1244,34 +1461,77 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
   backPage: function() {
     if (this._pageStack.length >= 2) {
-      var stackObj = this._pageStack[this._pageStack.length - 1];
-      var transition = stackObj.transition;
+      var currentStackObj = this._getCurrentStack();
+      var prevStackObj = this._getPrevStack();
+
+      currentStackObj.page.onPauseBefore();
+      prevStackObj.page.onResumeBefore();
+
+      var transition = currentStackObj.transition;
       transition.back(this._onTransitionBackEnd.bind(this));
     }
   },
 
   onCreate: function() {
+    this._lifeCycleState = this.LIFE_CYCLE_STATE_CREATE;
     console.log('onCreate', this.$className);
+
+    // TODO: eventオブジェクトをちゃんと生成する.(他のライフサイクルも同じく)
+    this.trigger('create', this, null);
+
+    var page = this.getCurrentPage();
+    page.onCreate();
   },
 
   onResumeBefore: function(){
+    this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_BEFORE;
     console.log('onResumeBefore', this.$className);
+
+    this.trigger('resumeBefore', this, null);
+
+    var page = this.getCurrentPage();
+    page.onResumeBefore();
   },
 
   onResumeAfter: function(){
+    this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_AFTER;
     console.log('onResumeAfter', this.$className);
+
+    this.trigger('resumeAfter', this, null);
+
+    var page = this.getCurrentPage();
+    page.onResumeAfter();
   },
 
   onPauseBefore: function(){
+    this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_BEFORE;
     console.log('onPauseBefore', this.$className);
+
+    this.trigger('pauseBefore', this, null);
+
+    var page = this.getCurrentPage();
+    page.onPauseBefore();
   },
 
   onPauseAfter: function(){
+    this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_AFTER;
     console.log('onPauseAfter', this.$className);
+
+    this.trigger('pauseAfter', this, null);
+
+    var page = this.getCurrentPage();
+    page.onPauseAfter();
   },
 
   onDestroy: function(){
+    this._lifeCycleState = this.LIFE_CYCLE_STATE_DESTROY;
     console.log('onDestroy', this.$className);
+
+    this.trigger('destroy', this, null);
+
+    // TODO: いきなりsceneが終わる場合もあるのですべてのスタックを綺麗にする必要ありそう.
+    var page = this.getCurrentPage();
+    page.onDestroy();
   },
 
   // fixme: 不要？
@@ -1314,18 +1574,20 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   },
 
   _createPageByLayout: function(layout, callback) {
-    var _class = Navy.Resource.getClass(layout.class);
-    new _class(layout, callback);
+    var PageClass = Navy.Resource.getClass(layout.class);
+    var page = new PageClass(layout, callback);
+    this.addView(page, this._sceneFixedFirstView);
   },
 
   _onLoadScript: function(layout, callback) {
     var PageClass = Navy.Resource.getClass(layout.class);
-    new PageClass(layout, callback);
+    var page = new PageClass(layout, callback);
+    this.addView(page, this._sceneFixedFirstView);
   },
 
   _addPage: function(page) {
-    page.onCreate();
-    page.onResumeBefore();
+    this._lifeCycleState >= this.LIFE_CYCLE_STATE_CREATE && page.onCreate();
+    this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_BEFORE && page.onResumeBefore();
 
     var currentStackObj = this._getCurrentStack();
     if (currentStackObj) {
@@ -1340,7 +1602,6 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
       page: page,
       transition: transition
     });
-    this.addView(page, this._sceneFixedFirstView);
     transition.start(this._onTransitionStartEnd.bind(this));
   },
 
@@ -1368,7 +1629,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
     var currentStackObj = this._getCurrentStack();
     if (currentStackObj) {
-      currentStackObj.page.onResumeAfter();
+      this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_AFTER && currentStackObj.page.onResumeAfter();
     }
   },
 
@@ -1925,6 +2186,98 @@ Navy.Class('Navy.Transition.TurnOver', Navy.Transition.Transition, {
     this._afterView.addRawEventListener('webkitAnimationEnd', cb1);
     this._afterView._setRawStyle({webkitAnimation: '0.25s', webkitAnimationTimingFunction: 'linear', webkitTransform: 'rotateY(0)'});
     this._afterView._setRawStyle({webkitAnimationName: 'turn_over_out_after_view'});
+  }
+});
+
+// file: src/gesture/gesture.js
+/**
+ * @class Navy.Gesture.Gesture
+ */
+Navy.Class('Navy.Gesture.Gesture', {
+  isStart: false,
+
+  initialize: function(element, callback) {
+    this._element = element;
+    this._callback = callback;
+  },
+
+  start: function() {
+  },
+
+  stop: function() {
+  }
+});
+
+// file: src/gesture/tap.js
+/**
+ * @class Navy.Gesture.Tap
+ */
+Navy.Class('Navy.Gesture.Tap', Navy.Gesture.Gesture, {
+  TAP_ALLOW_DISTANCE: 350,
+  _trigger: false,
+  _startX: null,
+  _startY: null,
+
+  initialize: function($super, element, callback) {
+    $super(element, callback);
+
+    this._touchstart = this._touchstart.bind(this);
+    this._touchmove = this._touchmove.bind(this);
+    this._touchend = this._touchend.bind(this);
+  },
+
+  /**
+   * @param {function} [$super]
+   */
+  start: function($super) {
+    $super();
+    this._element.addEventListener('touchstart', this._touchstart);
+  },
+
+  /**
+   * @param {function} [$super]
+   */
+  stop: function($super) {
+    $super();
+    this._element.removeEventListener('touchstart', this._touchstart);
+  },
+
+  _touchstart: function(ev) {
+    if (ev.touches.length > 1) {
+      return;
+    }
+
+    this._trigger = true;
+    this._startX = ev.changedTouches[0].clientX;
+    this._startY = ev.changedTouches[0].clientY;
+
+    this._element.addEventListener('touchmove', this._touchmove);
+    this._element.addEventListener('touchend', this._touchend);
+  },
+
+  _touchmove: function(ev) {
+    this._judgeTapAllowDistance(ev);
+  },
+
+  _touchend: function(ev) {
+    this._element.removeEventListener('touchmove', this._touchmove);
+    this._element.removeEventListener('touchend', this._touchend);
+
+    this._judgeTapAllowDistance(ev);
+
+    this._trigger && this._callback(ev);
+  },
+
+  _judgeTapAllowDistance: function(ev) {
+    var x0 = this._startX;
+    var y0 = this._startY;
+    var x1 = ev.changedTouches[0].clientX;
+    var y1 = ev.changedTouches[0].clientY;
+
+    var delta = Math.pow(Math.abs(x0 - x1), 2) + Math.pow(Math.abs(y0 - y1), 2);
+    if (delta >= this.TAP_ALLOW_DISTANCE) {
+      this._trigger = false;
+    }
   }
 });
 

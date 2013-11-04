@@ -34,6 +34,11 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   },
 
   _applyExtraLayout: function($super, layout, callback) {
+    if (!this._contentLayouts) {
+      $super(layout, callback);
+      return;
+    }
+
     var contentLayouts = this._contentLayouts;
     var notify = new Navy.Notify(contentLayouts.length, function(){
       $super(layout, callback);
