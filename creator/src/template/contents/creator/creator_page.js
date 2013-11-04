@@ -104,12 +104,19 @@ Navy.Class('CreatorPage', Navy.Page, {
     switch (viewClass) {
     case 'Navy.View.Text':
       layout.extra.text = 'text';
+      layout.extra.fontSize = 20;
       break;
     case 'Navy.View.Image':
       layout.extra.src = null;
       break;
     case 'Navy.ViewGroup.ViewGroup':
       layout.extra.contentLayoutFile = null;
+      break;
+    case 'Navy.ViewGroup.Button':
+      layout.extra.normal = {};
+      layout.extra.active = {};
+      layout.extra.disabled = {};
+      break;
     }
 
     var _class = Navy.Resource.getClass(viewClass);
