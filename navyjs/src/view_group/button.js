@@ -13,40 +13,51 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
     $super(layout);
   },
 
-  _applyExtraLayout: function($super, layout) {
-    $super(layout);
-  },
-
   _loadExtraResource: function($super, layout, callback) {
-    var cb = function() {
-      this.addView(this._imageView);
-      this.addView(this._textView);
+    function cb() {
       $super(layout, callback);
+    }
 
-      this.getPage().onResumeBefore = function() {
-        var imageSize = this._imageView.getSize();
-        var textSize = this._textView.getSize();
-
-        var pos = {
-          x: imageSize.width / 2 - textSize.width / 2,
-          y: imageSize.height / 2 - textSize.height / 2
-        };
-
-        this._textView.setPos(pos);
-      }.bind(this);
-    }.bind(this);
-
-    var notify = new Navy.Notify(4, cb);
+    var notify = new Navy.Notify(3, cb);
     var pass = notify.pass.bind(notify);
-
-    var textLayout = this._cloneObject(layout);
-    this._textView = new Navy.View.Text(textLayout, pass);
-
-    var imageLayout = this._cloneObject(layout);
-    imageLayout.extra.src = layout.extra.normal.src;
-    this._imageView = new Navy.View.Image(imageLayout, pass);
-
+    Navy.Resource.loadImage(layout.extra.normal.src, pass);
     Navy.Resource.loadImage(layout.extra.active.src, pass);
     Navy.Resource.loadImage(layout.extra.disabled.src, pass);
+  },
+
+  _applyExtraLayout: function($super, layout, callback) {
+    function cb() {
+      var size = this._imageView.getSize();
+      this._textView.setSizePolicy(this.SIZE_POLICY_FIXED);
+      this._textView.setSize(size);
+
+      // TODO: TextViewのextraで設定できるようにする
+      this._textView.getElement().style.lineHeight = size.height + 'px';
+      this._textView.getElement().style.textAlign = 'center';
+
+      $super(layout, callback);
+    }
+
+    if (this._imageView) {
+      this.removeView(this._imageView);
+    }
+
+    if (this._textView) {
+      this.removeView(this._textView);
+    }
+
+    var notify = new Navy.Notify(2, cb.bind(this));
+    var pass = notify.pass.bind(notify);
+
+    var imageLayout = this._cloneObject(layout);
+    imageLayout.id = 'image';
+    imageLayout.extra.src = layout.extra.normal.src;
+    this._imageView = new Navy.View.Image(imageLayout, pass);
+    this.addView(this._imageView);
+
+    var textLayout = this._cloneObject(layout);
+    textLayout.id = 'text';
+    this._textView = new Navy.View.Text(textLayout, pass);
+    this.addView(this._textView);
   }
 });
