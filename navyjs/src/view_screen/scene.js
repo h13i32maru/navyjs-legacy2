@@ -65,6 +65,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   },
 
   nextPage: function(pageName, callback) {
+    Navy.Root.lockView();
+
     this._createPage(pageName, function(page){
       this._addPage(page);
       callback && callback(page);
@@ -73,6 +75,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
   backPage: function() {
     if (this._pageStack.length >= 2) {
+      Navy.Root.lockView();
+
       var currentStackObj = this._getCurrentStack();
       var prevStackObj = this._getPrevStack();
 
@@ -243,6 +247,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     if (currentStackObj) {
       this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_AFTER && currentStackObj.page.onResumeAfter();
     }
+
+    Navy.Root.unlockView();
   },
 
   _onTransitionBackEnd: function(){
@@ -259,5 +265,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
       var stackObj = this._pageStack.pop();
       stackObj.page.destroy();
     }
+
+    Navy.Root.unlockView();
   }
 });
