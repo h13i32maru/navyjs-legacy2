@@ -341,7 +341,7 @@ Navy.Class('Navy.View.View', {
       }
       break;
     case this.SIZE_POLICY_MATCH_PARENT:
-      this._element.style.cssText = 'width: 100%; height: 100%';
+      this._element.style.cssText += 'width: 100%; height: 100%';
       break;
     default:
       throw new Error('unknown size policy. ' + this._layout.sizePolicy);
