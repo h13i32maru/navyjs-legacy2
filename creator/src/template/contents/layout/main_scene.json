@@ -1,6 +1,5 @@
 [
   {
-    "visible": true,
     "backgroundColor": "#aaaaff",
     "class": "Navy.View.View",
     "id": "header_bg",
@@ -9,10 +8,11 @@
       "y": 0
     },
     "size": {
-      "height": 50,
-      "width": 320
+      "height": 82,
+      "width": 640
     },
-    "sizePolicy": "fixed"
+    "sizePolicy": "fixed",
+    "visible": true
   },
   {
     "visible": true,
@@ -23,12 +23,12 @@
     },
     "id": "left_button",
     "pos": {
-      "x": 9,
-      "y": 4
+      "x": 11,
+      "y": 11
     },
     "size": {
-      "height": 40,
-      "width": 40
+      "height": 60,
+      "width": 70
     },
     "sizePolicy": "fixed"
   },
@@ -42,8 +42,8 @@
     },
     "id": "Text3",
     "pos": {
-      "x": 80,
-      "y": 7
+      "x": 253,
+      "y": 27
     },
     "size": {},
     "sizePolicy": "wrapContent"
