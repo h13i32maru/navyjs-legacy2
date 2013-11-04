@@ -151,6 +151,11 @@
               <string>wrapContent</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>matchParent</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="0" column="0">
@@ -259,6 +264,13 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>fontSize</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
@@ -269,19 +281,25 @@
           <item row="0" column="1">
            <widget class="QLineEdit" name="extraText"/>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>fontSize</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="1">
            <widget class="QSpinBox" name="extraFontSize">
             <property name="maximum">
              <number>999</number>
             </property>
+            <property name="value">
+             <number>20</number>
+            </property>
            </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_13">
+            <property name="text">
+             <string>fontColor</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="extraFontColor"/>
           </item>
          </layout>
         </widget>

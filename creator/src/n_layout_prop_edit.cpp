@@ -69,6 +69,7 @@ void NLayoutPropEdit::connectWidgetToJson() {
     // text
     connect(ui->extraText, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
     connect(ui->extraFontSize, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
+    connect(ui->extraFontColor, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
 
     // image
     connect(ui->extraSrc, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
@@ -99,6 +100,7 @@ void NLayoutPropEdit::syncWidgetToJson() {
     } else if (className == ClassText){
         mView.set("extra.text", ui->extraText->text());
         mView.set("extra.fontSize", ui->extraFontSize->value());
+        mView.set("extra.fontColor", ui->extraFontColor->text());
     } else if (className == ClassImage) {
         mView.set("extra.src", ui->extraSrc->currentText());
     } else if (className == ClassViewGroup) {
@@ -155,6 +157,7 @@ void NLayoutPropEdit::setSelectedViewsFromJS(const NJson &views) {
     } else if (className == ClassText){
         ui->extraText->setText(view.getStr("extra.text"));
         ui->extraFontSize->setValue(view.getInt("extra.fontSize"));
+        ui->extraFontColor->setText(view.getStr("extra.fontColor"));
     } else if (className == ClassImage) {
         ui->extraSrc->setCurrentText(view.getStr("extra.src"));
     } else if (className == ClassViewGroup) {

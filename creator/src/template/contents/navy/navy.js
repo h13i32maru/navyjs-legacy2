@@ -393,6 +393,7 @@ Navy.Class('Navy.View.View', {
    */
   initialize: function(layout, callback) {
     this._eventCallbackMap = {};
+    this._preventDOMEvent = this._preventDOMEvent.bind(this);
 
     if (layout) {
       this._id = layout.id;
@@ -433,6 +434,19 @@ Navy.Class('Navy.View.View', {
 
   getLayout: function() {
     return this._cloneObject(this._layout);
+  },
+
+  lockView: function() {
+    this._element.addEventListener('touchstart', this._preventDOMEvent, true);
+  },
+
+  unlockView: function() {
+    this._element.removeEventListener('touchstart', this._preventDOMEvent, true);
+  },
+
+  _preventDOMEvent: function(ev) {
+    ev.stopPropagation();
+    ev.preventDefault();
   },
 
   _createElement: function(layout) {
@@ -816,6 +830,9 @@ Navy.Class('Navy.View.View', {
 });
 
 // file: src/view/image.js
+/**
+ * @class Navy.View.Image
+ */
 Navy.Class('Navy.View.Image', Navy.View.View, {
   _imgElm: null,
 
@@ -871,6 +888,9 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
 });
 
 // file: src/view/text.js
+/**
+ * @class Navy.View.Text
+ */
 Navy.Class('Navy.View.Text', Navy.View.View, {
   _textElement: null,
 
@@ -899,6 +919,7 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
     }
 
     this.setFontSize(layout.extra.fontSize);
+    this.setFontColor(layout.extra.fontColor);
 
     $super(layout, callback);
   },
@@ -934,6 +955,15 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
 
   getFontSize: function() {
     return this._layout.extra.fontSize;
+  },
+
+  setFontColor: function(fontColor) {
+    this._layout.extra.fontColor = fontColor;
+    this._element.style.color = fontColor;
+  },
+
+  getFontColor: function() {
+    return this._layout.extra.fontColor;
   }
 });
 
@@ -1154,6 +1184,84 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   }
 });
 
+// file: src/view_group/button.js
+/**
+ * @class Navy.ViewGroup.Button
+ */
+Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
+  _imageView: null,
+  _textView: null,
+
+  initialize: function($super, layout, callback) {
+    $super(layout, callback);
+  },
+
+  _createExtraElement: function($super, layout) {
+    $super(layout);
+
+    this._element.addEventListener('touchstart', this._onTouchStart.bind(this));
+    this._element.addEventListener('touchend', this._onTouchEnd.bind(this));
+  },
+
+  _loadExtraResource: function($super, layout, callback) {
+    function cb() {
+      $super(layout, callback);
+    }
+
+    var notify = new Navy.Notify(3, cb);
+    var pass = notify.pass.bind(notify);
+    Navy.Resource.loadImage(layout.extra.normal.src, pass);
+    Navy.Resource.loadImage(layout.extra.active.src, pass);
+    Navy.Resource.loadImage(layout.extra.disabled.src, pass);
+  },
+
+  _applyExtraLayout: function($super, layout, callback) {
+    function cb() {
+      var size = this._imageView.getSize();
+      this._textView.setSizePolicy(this.SIZE_POLICY_FIXED);
+      this._textView.setSize(size);
+
+      // TODO: TextViewのextraで設定できるようにする
+      this._textView.getElement().style.lineHeight = size.height + 'px';
+      this._textView.getElement().style.textAlign = 'center';
+
+      $super(layout, callback);
+    }
+
+    if (this._imageView) {
+      this.removeView(this._imageView);
+    }
+
+    if (this._textView) {
+      this.removeView(this._textView);
+    }
+
+    var notify = new Navy.Notify(2, cb.bind(this));
+    var pass = notify.pass.bind(notify);
+
+    var imageLayout = this._cloneObject(layout);
+    imageLayout.id = 'image';
+    imageLayout.extra.src = layout.extra.normal.src;
+    this._imageView = new Navy.View.Image(imageLayout, pass);
+    this.addView(this._imageView);
+
+    var textLayout = this._cloneObject(layout);
+    textLayout.id = 'text';
+    this._textView = new Navy.View.Text(textLayout, pass);
+    this.addView(this._textView);
+  },
+
+  _onTouchStart: function(/* ev */) {
+    this._imageView.setSrc(this._layout.extra.active.src);
+  },
+
+  _onTouchEnd: function(/* ev */) {
+    setTimeout(function(){
+      this._imageView.setSrc(this._layout.extra.normal.src);
+    }.bind(this), 400);
+  }
+});
+
 // file: src/view_screen/page.js
 /**
  * @class Navy.Page
@@ -1264,11 +1372,13 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   },
 
   nextScene: function(sceneName) {
+    this.lockView();
     this._createScene(sceneName, this._addScene.bind(this));
   },
 
   backScene: function() {
     if (this._sceneStack.length >= 2) {
+      this.lockView();
       var prevStackObj = this._getPrevStack();
       prevStackObj.scene.onResumeBefore();
 
@@ -1367,6 +1477,7 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     if (currentStackObj) {
       currentStackObj.scene.onResumeAfter();
     }
+    this.unlockView();
   },
 
   _onTransitionBackEnd: function(){
@@ -1382,6 +1493,7 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
 
       this._removeCurrentScene();
     }
+    this.unlockView();
   }
 });
 
@@ -1453,6 +1565,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   },
 
   nextPage: function(pageName, callback) {
+    Navy.Root.lockView();
+
     this._createPage(pageName, function(page){
       this._addPage(page);
       callback && callback(page);
@@ -1461,6 +1575,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
   backPage: function() {
     if (this._pageStack.length >= 2) {
+      Navy.Root.lockView();
+
       var currentStackObj = this._getCurrentStack();
       var prevStackObj = this._getPrevStack();
 
@@ -1631,6 +1747,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     if (currentStackObj) {
       this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_AFTER && currentStackObj.page.onResumeAfter();
     }
+
+    Navy.Root.unlockView();
   },
 
   _onTransitionBackEnd: function(){
@@ -1647,6 +1765,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
       var stackObj = this._pageStack.pop();
       stackObj.page.destroy();
     }
+
+    Navy.Root.unlockView();
   }
 });
 
