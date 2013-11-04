@@ -23,9 +23,24 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
 
     var notify = new Navy.Notify(3, cb);
     var pass = notify.pass.bind(notify);
-    Navy.Resource.loadImage(layout.extra.normal.src, pass);
-    Navy.Resource.loadImage(layout.extra.active.src, pass);
-    Navy.Resource.loadImage(layout.extra.disabled.src, pass);
+
+    if (layout.extra.normal.src) {
+      Navy.Resource.loadImage(layout.extra.normal.src, pass);
+    } else {
+      pass();
+    }
+
+    if (layout.extra.active.src) {
+      Navy.Resource.loadImage(layout.extra.active.src, pass);
+    } else {
+      pass();
+    }
+
+    if (layout.extra.disabled.src) {
+      Navy.Resource.loadImage(layout.extra.disabled.src, pass);
+    } else {
+      pass();
+    }
   },
 
   _applyExtraLayout: function($super, layout, callback) {
@@ -54,21 +69,31 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
 
     var imageLayout = this._cloneObject(layout);
     imageLayout.id = 'image';
+    imageLayout.pos = {x: 0, y: 0};
     imageLayout.extra.src = layout.extra.normal.src;
     this._imageView = new Navy.View.Image(imageLayout, pass);
     this.addView(this._imageView);
 
     var textLayout = this._cloneObject(layout);
     textLayout.id = 'text';
+    textLayout.pos = {x:0, y:0};
     this._textView = new Navy.View.Text(textLayout, pass);
     this.addView(this._textView);
   },
 
   _onTouchStart: function(/* ev */) {
+    if (!this._layout.extra.active.src) {
+      return;
+    }
+
     this._imageView.setSrc(this._layout.extra.active.src);
   },
 
   _onTouchEnd: function(/* ev */) {
+    if (!this._layout.extra.normal.src) {
+      return;
+    }
+
     setTimeout(function(){
       this._imageView.setSrc(this._layout.extra.normal.src);
     }.bind(this), 400);
