@@ -1,10 +1,11 @@
 /**
  * @class Navy.View.View
- * @eventType link
+ * @eventNames link, sizeChanged, posChanged
  */
 Navy.Class('Navy.View.View', {
   SIZE_POLICY_FIXED: 'fixed',
   SIZE_POLICY_WRAP_CONTENT: 'wrapContent',
+  SIZE_POLICY_MATCH_PARENT: 'matchParent',
 
   _id: null,
   _page: null,
@@ -43,16 +44,22 @@ Navy.Class('Navy.View.View', {
       return;
     }
 
-    this._layout = layout;
+    function onLoadResource() {
+      var notify = new Navy.Notify(2, onApplyLayout.bind(this));
+      var pass = notify.pass.bind(notify);
+      this._applyLayout(layout, pass);
+      this._applyExtraLayout(layout, pass);
+    }
 
-    var notify = new Navy.Notify(2, function(){
-      this._applyLayout(layout);
-      this._applyExtraLayout(layout);
+    function onApplyLayout() {
+      this._updateSizeWithWrapContentSize();
+      this._element.style.visibility = '';
       callback && callback(this);
-    }.bind(this));
+    }
 
+    this._layout = layout;
+    var notify = new Navy.Notify(2, onLoadResource.bind(this));
     var pass = notify.pass.bind(notify);
-
     this._loadResource(layout, pass);
     this._loadExtraResource(layout, pass);
   },
@@ -63,36 +70,76 @@ Navy.Class('Navy.View.View', {
 
   _createElement: function(layout) {
     this._element = document.createElement('div');
+    this._element.style.visibility = 'hidden';
+
     this._linkGesture = new Navy.Gesture.Tap(this._element, this._onLink.bind(this));
   },
 
-  _applyLayout: function(layout) {
+  _applyLayout: function(layout, callback) {
     this._element.style.position = 'absolute';
 
     this.setVisible(layout.visible);
     this.setPos(layout.pos);
-    this.setSizePolicy(layout.sizePolicy);
+    this.setSizePolicy(layout.sizePolicy, true);
     this.setSize(layout.size);
     this.setBackgroundColor(layout.backgroundColor);
     this.setLink(layout.link);
 
     this._setRawStyle({overflow:'hidden'});
+
+    callback && setTimeout(callback, 0);
   },
 
   _loadResource: function(layout, callback) {
     callback && setTimeout(callback, 0);
   },
 
+  /**
+   * @forOverride
+   * @param layout
+   * @private
+   */
   _createExtraElement: function(layout) {
-    // pass
   },
 
-  _applyExtraLayout: function(layout) {
-    // pass
+  /**
+   * @forOverride
+   * @param layout
+   * @param callback
+   * @private
+   */
+  _applyExtraLayout: function(layout, callback) {
+    callback && setTimeout(callback, 0);
   },
 
+  /**
+   * @forOverride
+   * @param layout
+   * @param callback
+   * @private
+   */
   _loadExtraResource: function(layout, callback) {
     callback && setTimeout(callback, 0);
+  },
+
+  /**
+   * @forOverride
+   * @private
+   */
+  _calcWrapContentSize: function() {
+    return {width: 0, height: 0};
+  },
+
+  _updateSizeWithWrapContentSize: function() {
+    if (this._layout.sizePolicy !== this.SIZE_POLICY_WRAP_CONTENT) {
+      return;
+    }
+
+    var size = this._calcWrapContentSize();
+    this._element.style.width = size.width + 'px';
+    this._element.style.height = size.height + 'px';
+
+    this.trigger('sizeChanged', this, null);
   },
 
   _setRawStyle: function(style) {
@@ -267,7 +314,7 @@ Navy.Class('Navy.View.View', {
     this._layout.visible = visible;
 
     if (visible) {
-      this.setSizePolicy(this._layout.sizePolicy);
+      this._element.style.display = 'block';
     } else {
       this._element.style.display = 'none';
     }
@@ -282,23 +329,23 @@ Navy.Class('Navy.View.View', {
     return this._layout.backgroundColor;
   },
 
-  setSizePolicy: function(sizePolicy) {
-    if (!this.isVisible()) {
-      return;
-    }
+  setSizePolicy: function(sizePolicy, disableUpdateSizeWithWrapContentSize) {
+    this._layout.sizePolicy = sizePolicy;
 
-    switch(sizePolicy) {
+    switch (sizePolicy) {
     case this.SIZE_POLICY_FIXED:
-      this._element.style.display = 'block';
       break;
     case this.SIZE_POLICY_WRAP_CONTENT:
-      this._element.style.display = 'inline';
+      if (!disableUpdateSizeWithWrapContentSize) {
+        this._updateSizeWithWrapContentSize();
+      }
+      break;
+    case this.SIZE_POLICY_MATCH_PARENT:
+      this._element.style.cssText = 'width: 100%; height: 100%';
       break;
     default:
       throw new Error('unknown size policy. ' + this._layout.sizePolicy);
     }
-
-    this._layout.sizePolicy = sizePolicy;
   },
 
   getSizePolicy: function() {
@@ -307,19 +354,12 @@ Navy.Class('Navy.View.View', {
 
   getSize: function() {
     switch (this._layout.sizePolicy) {
-    case this.SIZE_POLICY_WRAP_CONTENT:
-      if (!this.isVisible()) {
-        return {width: -1, height: -1};
-      }
-
-      // FIXME: view groupの場合clientではサイズがとれずscrollでとれる. 調査必要.
-      if (this._element.clientWidth || this._element.clientHeight) {
-        return {width: this._element.clientWidth, height: this._element.clientHeight};
-      } else {
-        return {width: this._element.scrollWidth, height: this._element.scrollHeight};
-      }
     case this.SIZE_POLICY_FIXED:
       return {width: this._layout.size.width, height: this._layout.size.height};
+    case this.SIZE_POLICY_WRAP_CONTENT:
+      return {width: this._element.clientWidth, height: this._element.clientHeight};
+    case this.SIZE_POLICY_MATCH_PARENT:
+      return {width: this._element.clientWidth, height: this._element.clientHeight};
     default:
       throw new Error('unknown size policy. ' + this._layout.sizePolicy);
     }
@@ -327,6 +367,10 @@ Navy.Class('Navy.View.View', {
 
   setSize: function(size) {
     if (!size) {
+      return;
+    }
+
+    if (this._layout.sizePolicy !== this.SIZE_POLICY_FIXED) {
       return;
     }
 
@@ -347,6 +391,9 @@ Navy.Class('Navy.View.View', {
     }
 
     this._element.style.cssText += cssText;
+
+    // TODO: Eventオブジェクト作る.
+    this.trigger('sizeChanged', this, null);
   },
 
   setPos: function(pos) {
@@ -371,6 +418,9 @@ Navy.Class('Navy.View.View', {
     }
 
     this._element.style.cssText += cssText;
+
+    // TODO: Eventオブジェクト作る.
+    this.trigger('posChanged', this, null);
   },
 
   addPos: function(deltaPos) {
