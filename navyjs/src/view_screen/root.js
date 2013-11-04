@@ -88,12 +88,12 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   },
 
   _onLoadScript: function(layout, callback) {
-    var _class = Navy.Resource.getClass(layout.class);
-    new _class(layout, callback);
+    var SceneClass = Navy.Resource.getClass(layout.class);
+    var scene = new SceneClass(layout, callback);
+    this.addView(scene);
   },
 
   _addScene: function(scene) {
-    this.addView(scene);
     scene.onCreate();
     scene.onResumeBefore();
 
