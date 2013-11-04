@@ -8,6 +8,7 @@
     "extra": {
       "text": "NavyJS",
       "fontSize": 20,
+      "fontColor": "#ffffff",
       "normal": {
         "src": "image/button_normal.png"
       },

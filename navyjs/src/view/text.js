@@ -29,6 +29,7 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
     }
 
     this.setFontSize(layout.extra.fontSize);
+    this.setFontColor(layout.extra.fontColor);
 
     $super(layout, callback);
   },
@@ -64,5 +65,14 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
 
   getFontSize: function() {
     return this._layout.extra.fontSize;
+  },
+
+  setFontColor: function(fontColor) {
+    this._layout.extra.fontColor = fontColor;
+    this._element.style.color = fontColor;
+  },
+
+  getFontColor: function() {
+    return this._layout.extra.fontColor;
   }
 });
