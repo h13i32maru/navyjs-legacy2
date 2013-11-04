@@ -186,17 +186,18 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   },
 
   _createPageByLayout: function(layout, callback) {
-    var _class = Navy.Resource.getClass(layout.class);
-    new _class(layout, callback);
+    var PageClass = Navy.Resource.getClass(layout.class);
+    var page = new PageClass(layout, callback);
+    this.addView(page, this._sceneFixedFirstView);
   },
 
   _onLoadScript: function(layout, callback) {
     var PageClass = Navy.Resource.getClass(layout.class);
-    new PageClass(layout, callback);
+    var page = new PageClass(layout, callback);
+    this.addView(page, this._sceneFixedFirstView);
   },
 
   _addPage: function(page) {
-    this.addView(page, this._sceneFixedFirstView);
     this._lifeCycleState >= this.LIFE_CYCLE_STATE_CREATE && page.onCreate();
     this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_BEFORE && page.onResumeBefore();
 

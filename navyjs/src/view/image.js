@@ -16,8 +16,8 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
     this._imgElm = imgElm;
   },
 
-  _applyExtraLayout: function($super, layout) {
-    $super(layout);
+  _applyExtraLayout: function($super, layout, callback) {
+    $super(layout, callback);
   },
 
   _loadExtraResource: function($super, layout, callback) {
@@ -30,12 +30,16 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
     }
   },
 
+  _calcWrapContentSize: function() {
+    return {
+      width: this._imgElm.width,
+      height: this._imgElm.height
+    };
+  },
+
   _onLoadImage: function(src, width, height){
     this._imgElm.src = src;
-
-    if (this._layout.sizePolicy == this.SIZE_POLICY_WRAP_CONTENT) {
-      this.setSize({width: width, height: height});
-    }
+    this.trigger('sizeChanged', this, null);
   },
 
   setSrc: function(src, callback) {

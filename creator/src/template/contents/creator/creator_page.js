@@ -6,6 +6,7 @@ Navy.Class('CreatorPage', Navy.Page, {
   _resizeType: null,
 
   onCreate: function($super) {
+    console.log(true);
     $super();
 
     // 雑多な設定
@@ -47,16 +48,10 @@ Navy.Class('CreatorPage', Navy.Page, {
 
   onResumeAfter: function($super) {
     $super();
-    /**
-     * FIXME: Sceneのレジュームされるまでviewの大きさがわからないので無理やりやっている.
-     * Sceneにイベントを登録できるようにするか、pageのレジュームの呼び出しタイミングを修正する必要あり.
-     */
-    this.getScene().onResumeAfter = function(){
-      for (var viewId in this._views) {
-        var view = this._views[viewId];
-        this._setupSelectedBox(view);
-      }
-    }.bind(this);
+    for (var viewId in this._views) {
+      var view = this._views[viewId];
+      this._setupSelectedBox(view);
+    }
   },
 
   _setupSelectedBox: function(view) {

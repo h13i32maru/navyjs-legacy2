@@ -5,6 +5,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   _views: null,
   _viewsOrder: null,
   _initCallback: null,
+  _contentLayouts: null,
 
   /**
    * @param $super
@@ -21,14 +22,34 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   _loadExtraResource: function($super, layout, callback) {
     if (layout && layout.extra.contentLayoutFile) {
       this._layout.extra.contentLayoutFile = layout.extra.contentLayoutFile;
-      this._initCallback = function() {
+      Navy.Resource.loadLayout(layout.extra.contentLayoutFile, function(contentLayouts){
+        this._contentLayouts = contentLayouts;
         $super(layout, callback);
-      };
-      Navy.Resource.loadLayout(layout.extra.contentLayoutFile, this._onLoadContentLayout.bind(this));
+      }.bind(this));
     } else {
       // rootは_layoutがnull
       this._layout && (this._layout.extra.contentLayoutFile = null);
       $super(layout, callback);
+    }
+  },
+
+  _applyExtraLayout: function($super, layout, callback) {
+    if (!this._contentLayouts) {
+      $super(layout, callback);
+      return;
+    }
+
+    var contentLayouts = this._contentLayouts;
+    var notify = new Navy.Notify(contentLayouts.length, function(){
+      $super(layout, callback);
+    });
+    var pass = notify.pass.bind(notify);
+
+    for (var i = 0; i < contentLayouts.length; i++) {
+      var contentLayout = contentLayouts[i];
+      var ViewClass = Navy.Resource.getClass(contentLayout.class);
+      var view = new ViewClass(contentLayout, pass);
+      this.addView(view);
     }
   },
 
@@ -38,21 +59,34 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
 
     for (var i = 0; i < contentLayouts.length; i++) {
       var contentLayout = contentLayouts[i];
-      var _class = Navy.Resource.getClass(contentLayout.class);
-      var view = new _class(contentLayout, pass);
+      var ViewClass = Navy.Resource.getClass(contentLayout.class);
+      var view = new ViewClass(contentLayout, pass);
       this.addView(view);
     }
+  },
 
-    /*
-     * wrapContentの場合、ViewGroupは子要素の大きさによって自身のサイズが変動する.
-     * そのため描画されてサイズが取得出来る段階になって初めてwidth,heightを設定することができる.
-     */
-    if (this.getSizePolicy() === this.SIZE_POLICY_WRAP_CONTENT) {
-      this.getPage().on('resumeBefore', function(){
-        var size = this.getSize();
-        this.setSize(size);
-      }.bind(this));
+  _calcWrapContentSize: function() {
+    var maxWidth = 0;
+    var maxHeight = 0;
+
+    var views = this._views;
+    for (var id in views) {
+      var view = views[id];
+      if (view.getSizePolicy() === this.SIZE_POLICY_MATCH_PARENT) {
+        continue;
+      }
+
+      var pos = view.getPos();
+      var size = view.getSize();
+
+      maxWidth = Math.max(maxWidth, pos.x + size.width);
+      maxHeight = Math.max(maxHeight, pos.y + size.height);
     }
+
+    return {
+      width: maxWidth,
+      height: maxHeight
+    };
   },
 
   destroy: function($super) {
@@ -151,6 +185,11 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     view.setParent(this);
     view.setPage(this.getPage());
     view.setScene(this.getScene());
+
+    // TODO: sizePolicyがwrapContentの時のみonするように変更する.
+    // TODO: 無駄にupdateが呼ばれていてパフォーマンス悪い.
+    view.on('sizeChanged', this._updateSizeWithWrapContentSize.bind(this));
+    view.on('posChanged', this._updateSizeWithWrapContentSize.bind(this));
   },
 
   removeView: function(view) {
