@@ -14,6 +14,7 @@ const QString NLayoutPropEdit::ClassView = "Navy.View.View";
 const QString NLayoutPropEdit::ClassText = "Navy.View.Text";
 const QString NLayoutPropEdit::ClassImage = "Navy.View.Image";
 const QString NLayoutPropEdit::ClassViewGroup = "Navy.ViewGroup.ViewGroup";
+const QString NLayoutPropEdit::ClassButton = "Navy.ViewGroup.Button";
 
 NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::NLayoutPropEdit)
 {
@@ -30,8 +31,12 @@ NLayoutPropEdit::NLayoutPropEdit(QWidget *parent) : QWidget(parent), ui(new Ui::
 }
 
 void NLayoutPropEdit::refreshForActive() {
-    ui->extraSrc->setList(NProject::instance()->images());
+    QStringList images = NProject::instance()->images();
+    ui->extraSrc->setList(images);
     ui->extraContentLayout->setList(NProject::instance()->layouts());
+    ui->extraNormalSrc->setList(images);
+    ui->extraActiveSrc->setList(images);
+    ui->extraDisabledSrc->setList(images);
 }
 
 void NLayoutPropEdit::setNativeBridge(NativeBridge *native) {
@@ -76,6 +81,11 @@ void NLayoutPropEdit::connectWidgetToJson() {
 
     // view group
     connect(ui->extraContentLayout, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
+
+    // button
+    connect(ui->extraNormalSrc, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
+    connect(ui->extraActiveSrc, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
+    connect(ui->extraDisabledSrc, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
 }
 
 void NLayoutPropEdit::syncWidgetToJson() {
@@ -105,6 +115,13 @@ void NLayoutPropEdit::syncWidgetToJson() {
         mView.set("extra.src", ui->extraSrc->currentText());
     } else if (className == ClassViewGroup) {
         mView.set("extra.contentLayoutFile", ui->extraContentLayout->currentText());
+    } else if (className == ClassButton) {
+        mView.set("extra.text", ui->extraText->text());
+        mView.set("extra.fontSize", ui->extraFontSize->value());
+        mView.set("extra.fontColor", ui->extraFontColor->text());
+        mView.set("extra.normal.src", ui->extraNormalSrc->currentText());
+        mView.set("extra.active.src", ui->extraActiveSrc->currentText());
+        mView.set("extra.disabled.src", ui->extraDisabledSrc->currentText());
     }
 
     emit mNative->changedViewPropertyToJS(mView.toVariant());
@@ -114,6 +131,7 @@ void NLayoutPropEdit::hideAllExtraPropWidget() {
     ui->imageViewWidget->hide();
     ui->textViewWidget->hide();
     ui->viewGroupWidget->hide();
+    ui->buttonViewWidget->hide();
 }
 
 void NLayoutPropEdit::showExtraPropWidget(QString className) {
@@ -125,6 +143,9 @@ void NLayoutPropEdit::showExtraPropWidget(QString className) {
         ui->textViewWidget->show();
     } else if (className == ClassViewGroup) {
         ui->viewGroupWidget->show();
+    } else if (className == ClassButton) {
+        ui->textViewWidget->show();
+        ui->buttonViewWidget->show();
     }
 }
 
@@ -162,6 +183,14 @@ void NLayoutPropEdit::setSelectedViewsFromJS(const NJson &views) {
         ui->extraSrc->setCurrentText(view.getStr("extra.src"));
     } else if (className == ClassViewGroup) {
         ui->extraContentLayout->setCurrentText(view.getStr("extra.contentLayoutFile"));
+    } else if (className == ClassButton) {
+        ui->extraText->setText(view.getStr("extra.text"));
+        ui->extraFontSize->setValue(view.getInt("extra.fontSize"));
+        ui->extraFontColor->setText(view.getStr("extra.fontColor"));
+
+        ui->extraNormalSrc->setCurrentText(view.getStr("extra.normal.src"));
+        ui->extraActiveSrc->setCurrentText(view.getStr("extra.active.src"));
+        ui->extraDisabledSrc->setCurrentText(view.getStr("extra.disabled.src"));
     }
 
 

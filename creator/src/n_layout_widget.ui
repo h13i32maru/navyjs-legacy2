@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>945</width>
-    <height>642</height>
+    <height>646</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -206,6 +206,14 @@
           </property>
           <property name="text">
            <string>Navy.View.Image</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Button</string>
+          </property>
+          <property name="text">
+           <string>Navy.ViewGroup.Button</string>
           </property>
          </item>
          <item>

@@ -23,6 +23,7 @@ public:
     static const QString ClassText;
     static const QString ClassImage;
     static const QString ClassViewGroup;
+    static const QString ClassButton;
 
 public:
     explicit NLayoutPropEdit(QWidget *parent = 0);
