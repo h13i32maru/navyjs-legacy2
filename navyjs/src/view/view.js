@@ -26,6 +26,7 @@ Navy.Class('Navy.View.View', {
    */
   initialize: function(layout, callback) {
     this._eventCallbackMap = {};
+    this._preventDOMEvent = this._preventDOMEvent.bind(this);
 
     if (layout) {
       this._id = layout.id;
@@ -66,6 +67,19 @@ Navy.Class('Navy.View.View', {
 
   getLayout: function() {
     return this._cloneObject(this._layout);
+  },
+
+  lockView: function() {
+    this._element.addEventListener('touchstart', this._preventDOMEvent, true);
+  },
+
+  unlockView: function() {
+    this._element.removeEventListener('touchstart', this._preventDOMEvent, true);
+  },
+
+  _preventDOMEvent: function(ev) {
+    ev.stopPropagation();
+    ev.preventDefault();
   },
 
   _createElement: function(layout) {
