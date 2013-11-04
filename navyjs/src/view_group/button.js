@@ -11,6 +11,9 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
 
   _createExtraElement: function($super, layout) {
     $super(layout);
+
+    this._element.addEventListener('touchstart', this._onTouchStart.bind(this));
+    this._element.addEventListener('touchend', this._onTouchEnd.bind(this));
   },
 
   _loadExtraResource: function($super, layout, callback) {
@@ -59,5 +62,15 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
     textLayout.id = 'text';
     this._textView = new Navy.View.Text(textLayout, pass);
     this.addView(this._textView);
+  },
+
+  _onTouchStart: function(/* ev */) {
+    this._imageView.setSrc(this._layout.extra.active.src);
+  },
+
+  _onTouchEnd: function(/* ev */) {
+    setTimeout(function(){
+      this._imageView.setSrc(this._layout.extra.normal.src);
+    }.bind(this), 400);
   }
 });
