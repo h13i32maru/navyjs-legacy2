@@ -5,6 +5,19 @@
 #include <QDebug>
 #include <QDropEvent>
 
+/*
+ * 入力されたテキストが含まれるファイルの一覧を表示してファイル名を決定する.
+ *
+ * @example
+ * NFileOpener opener(this);
+ * opener.setModal(true);
+ * int ret = opener.exec();
+ * if (ret == NFileOpener::Accepted) {
+ *  QString filePath = NProject::instance()->contentsFilePath(opener.filePath());
+ *  openFile(filePath);
+ * }
+ */
+
 NFileOpener::NFileOpener(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::NFileOpener)
@@ -26,6 +39,9 @@ QString NFileOpener::filePath() const {
     return ui->comboBox->currentText();
 }
 
+/**
+ * enter/returnキーを押下時にフェイル名を決定するためにオーバーライドしている.
+ */
 void NFileOpener::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
         accept();
