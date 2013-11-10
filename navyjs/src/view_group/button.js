@@ -46,7 +46,7 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
   _applyExtraLayout: function($super, layout, callback) {
     function cb() {
       var size = this._imageView.getSize();
-      this._textView.setSizePolicy(this.SIZE_POLICY_FIXED);
+      this._textView.setSizePolicy({width: this.SIZE_POLICY_FIXED, height: this.SIZE_POLICY_FIXED});
       this._textView.setSize(size);
 
       // TODO: TextViewのextraで設定できるようにする

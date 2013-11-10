@@ -72,15 +72,17 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     var views = this._views;
     for (var id in views) {
       var view = views[id];
-      if (view.getSizePolicy() === this.SIZE_POLICY_MATCH_PARENT) {
-        continue;
-      }
-
+      var sizePolicy = view.getSizePolicy();
       var pos = view.getPos();
       var size = view.getSize();
 
-      maxWidth = Math.max(maxWidth, pos.x + size.width);
-      maxHeight = Math.max(maxHeight, pos.y + size.height);
+      if (sizePolicy.width !== this.SIZE_POLICY_MATCH_PARENT) {
+        maxWidth = Math.max(maxWidth, pos.x + size.width);
+      }
+
+      if (sizePolicy.height !== this.SIZE_POLICY_MATCH_PARENT) {
+        maxHeight = Math.max(maxHeight, pos.y + size.height);
+      }
     }
 
     return {

@@ -145,15 +145,23 @@ Navy.Class('Navy.View.View', {
   },
 
   _updateSizeWithWrapContentSize: function() {
-    if (this._layout.sizePolicy !== this.SIZE_POLICY_WRAP_CONTENT) {
-      return;
+    var changed = false;
+
+    if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT) {
+      var size = this._calcWrapContentSize();
+      this._element.style.width = size.width + 'px';
+      changed = true;
     }
 
-    var size = this._calcWrapContentSize();
-    this._element.style.width = size.width + 'px';
-    this._element.style.height = size.height + 'px';
+    if (this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
+      var size = this._calcWrapContentSize();
+      this._element.style.height = size.height + 'px';
+      changed = true
+    }
 
-    this.trigger('sizeChanged', this, null);
+    if (changed) {
+      this.trigger('sizeChanged', this, null);
+    }
   },
 
   _setRawStyle: function(style) {
@@ -346,7 +354,7 @@ Navy.Class('Navy.View.View', {
   setSizePolicy: function(sizePolicy, disableUpdateSizeWithWrapContentSize) {
     this._layout.sizePolicy = sizePolicy;
 
-    switch (sizePolicy) {
+    switch (sizePolicy.width) {
     case this.SIZE_POLICY_FIXED:
       break;
     case this.SIZE_POLICY_WRAP_CONTENT:
@@ -355,28 +363,64 @@ Navy.Class('Navy.View.View', {
       }
       break;
     case this.SIZE_POLICY_MATCH_PARENT:
-      this._element.style.cssText += 'width: 100%; height: 100%';
+      this._element.style.width = '100%';
       break;
     default:
-      throw new Error('unknown size policy. ' + this._layout.sizePolicy);
+      throw new Error('unknown size policy width. ' + this._layout.sizePolicy.width);
+    }
+
+    switch (sizePolicy.height) {
+    case this.SIZE_POLICY_FIXED:
+      break;
+    case this.SIZE_POLICY_WRAP_CONTENT:
+      if (!disableUpdateSizeWithWrapContentSize) {
+        this._updateSizeWithWrapContentSize();
+      }
+      break;
+    case this.SIZE_POLICY_MATCH_PARENT:
+      this._element.style.height = '100%';
+      break;
+    default:
+      throw new Error('unknown size policy height. ' + this._layout.sizePolicy.height);
     }
   },
 
   getSizePolicy: function() {
-    return this._layout.sizePolicy;
+    return this._cloneObject(this._layout.sizePolicy);
   },
 
   getSize: function() {
-    switch (this._layout.sizePolicy) {
+    var width, height;
+
+    switch (this._layout.sizePolicy.width) {
     case this.SIZE_POLICY_FIXED:
-      return {width: this._layout.size.width, height: this._layout.size.height};
+      width = this._layout.size.width;
+      break;
     case this.SIZE_POLICY_WRAP_CONTENT:
-      return {width: this._element.clientWidth, height: this._element.clientHeight};
+      width = this._element.clientWidth;
+      break;
     case this.SIZE_POLICY_MATCH_PARENT:
-      return {width: this._element.clientWidth, height: this._element.clientHeight};
+      width = this._element.clientWidth;
+      break;
     default:
-      throw new Error('unknown size policy. ' + this._layout.sizePolicy);
+      throw new Error('unknown size policy width. ' + this._layout.sizePolicy.width);
     }
+
+    switch (this._layout.sizePolicy.height) {
+    case this.SIZE_POLICY_FIXED:
+      height = this._layout.size.height;
+      break;
+    case this.SIZE_POLICY_WRAP_CONTENT:
+      height = this._element.clientHeight;
+      break;
+    case this.SIZE_POLICY_MATCH_PARENT:
+      height = this._element.clientHeight;
+      break;
+    default:
+      throw new Error('unknown size policy height. ' + this._layout.sizePolicy.height);
+    }
+
+    return {width: width, height: height};
   },
 
   setSize: function(size) {
@@ -384,27 +428,23 @@ Navy.Class('Navy.View.View', {
       return;
     }
 
-    if (this._layout.sizePolicy !== this.SIZE_POLICY_FIXED) {
-      return;
-    }
-
     if (!this._layout.size) {
       this._layout.size = {};
     }
 
-    var cssText = '';
-
-    if (typeof size.width === 'number') {
-      this._layout.size.width = size.width;
-      cssText += 'width:' + size.width + 'px;';
+    if (this._layout.sizePolicy.width === this.SIZE_POLICY_FIXED) {
+      if (typeof size.width === 'number') {
+        this._layout.size.width = size.width;
+        this._element.style.width = size.width + 'px';
+      }
     }
 
-    if (typeof size.height === 'number') {
-      this._layout.size.height = size.height;
-      cssText += 'height:' + size.height + 'px;';
+    if (this._layout.sizePolicy.height === this.SIZE_POLICY_FIXED) {
+      if (typeof size.height === 'number') {
+        this._layout.size.height = size.height;
+        this._element.style.height = size.height + 'px';
+      }
     }
-
-    this._element.style.cssText += cssText;
 
     // TODO: Eventオブジェクト作る.
     this.trigger('sizeChanged', this, null);
