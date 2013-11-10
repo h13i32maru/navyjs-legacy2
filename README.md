@@ -14,40 +14,23 @@
   - JavaScriptファイル、レイアウトファイルをWebSQLDatabaseに保存して通信を抑制
   - WebSQLDatabaseに保存されたファイルの動的な更新
 
-## NavyJSのビルド
+## NavyJSのビルド & テスト
 
 ```sh
-# uglifyjsをインストール
-npm install -g uglify-js
+# リポジトリ直下に移動して作業を行う.
+cd /path/to/navyjs
 
-# uglifyjsのパスを通す
-export PATH=/path/to/npm/bin/:$PATH
+# 必要なnode_modulesをインストールする.
+npm install
 
 # ビルドコマンドを実行
 ./navyjs/tools/build.sh
 
 # ビルド完了
 ls ./navyjs/build
-```
 
-## NavyJSのテスト
-```sh
-# 事前にNavyJSをビルドしておく
-
-# busterをインストール
-npm install -g buster
-
-# phantomjsをインストール
-npm install -g phantomjs
-
-# buster-serverを起動
-buster-server
-
-# phantomjsをbuster-serverに接続
-phantomjs /path/to/npm/lib/node_modules/buster/script/phantom.js http://localhost:1111/capture
-
-# buster-testを開始
-buster-test -c navyjs/test/buster.js
+# テスト開始
+./navyjs/test/run.sh
 ```
 
 # NavyCreator
