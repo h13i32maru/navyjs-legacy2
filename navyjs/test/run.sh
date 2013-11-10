@@ -1,7 +1,7 @@
 #!/bin/bash
 
-test_dir=$(dirname $(pwd)/$0)
-js_dir=$(dirname $test_dir)
+self_dir=$(cd $(dirname $0);pwd)
+js_dir=$(dirname $self_dir)
 root_dir=$(dirname $js_dir)
 
 $root_dir/navyjs/tools/build.sh

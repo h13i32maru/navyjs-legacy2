@@ -1,6 +1,10 @@
 #!/bin/bash
 
-cd navyjs/
+self_dir=$(cd $(dirname $0);pwd)
+js_dir=$(dirname $self_dir)
+root_dir=$(dirname $js_dir)
+
+cd $root_dir/navyjs/
 
 files="\
     src/wrap_text/header.txt\
@@ -36,15 +40,6 @@ do
     cat ${file} >> build/navy.js
 done
 
-uglifyjs --version >/dev/null 2>&1
-if [ $? -eq 0 ]
-then
-    uglifyjs_command="uglifyjs"
-else
-    # for travis ci
-    uglifyjs_command="../node_modules/.bin/uglifyjs"
-fi
-
-${uglifyjs_command} build/navy.js --mangle --reserved '$super' --output build/navy.min.js
+$root_dir/node_modules/.bin/uglifyjs build/navy.js --mangle --reserved '$super' --output build/navy.min.js
 echo "build/navy.js"
 echo "build/navy.min.js"
