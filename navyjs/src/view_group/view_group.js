@@ -6,6 +6,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   _viewsOrder: null,
   _initCallback: null,
   _contentLayouts: null,
+  _wrapContentSizeView: null,
 
   /**
    * @param $super
@@ -15,6 +16,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   initialize: function($super, layout, callback) {
     this._views = {};
     this._viewsOrder = [];
+    this._wrapContentSizeView = {widthView: null, heightView: null};
 
     $super(layout, callback);
   },
@@ -65,23 +67,88 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     }
   },
 
+  /**
+   *
+   * @param view
+   * @param ev
+   * @private
+   */
+  _resizeWrapContentByChangedView: function(view) {
+    if (this._layout.sizePolicy.width !== this.SIZE_POLICY_WRAP_CONTENT && this._layout.sizePolicy.height !== this.SIZE_POLICY_WRAP_CONTENT) {
+      return;
+    }
+
+    var sizePolicy = view.getSizePolicy();
+    var currentSize, pos, size;
+
+    if (sizePolicy.width !== this.SIZE_POLICY_MATCH_PARENT || sizePolicy.height !== this.SIZE_POLICY_MATCH_PARENT) {
+      currentSize = this.getSize();
+      pos = view.getPos();
+      size = view.getSize();
+    }
+
+    if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT) {
+      if (sizePolicy.width !== this.SIZE_POLICY_MATCH_PARENT) {
+        if (pos.x + size.width > currentSize.width) {
+          this._wrapContentSizeView.widthView = view;
+          this._element.style.width = (pos.x + size.width) + 'px';
+        }
+      }
+    }
+
+    if (this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
+      if (sizePolicy.height !== this.SIZE_POLICY_MATCH_PARENT) {
+        if (pos.y + size.height > currentSize.height) {
+          this._wrapContentSizeView.heightView = view;
+          this._element.style.height = (pos.y + size.height) + 'px';
+        }
+      }
+    }
+  },
+
+  _resizeWrapContentByRemovedView: function(view) {
+    if (this._layout.sizePolicy.width !== this.SIZE_POLICY_WRAP_CONTENT && this._layout.sizePolicy.height !== this.SIZE_POLICY_WRAP_CONTENT) {
+      return;
+    }
+
+    if (this._wrapContentSizeView.widthView !== view && this._wrapContentSizeView.heightView !== view) {
+      return;
+    }
+
+    var size = this._calcWrapContentSize();
+    this._element.style.width = size.width + 'px';
+    this._element.style.height = size.height + 'px';
+  },
+
   _calcWrapContentSize: function() {
     var maxWidth = 0;
     var maxHeight = 0;
+    var widthView;
+    var heightView;
 
     var views = this._views;
     for (var id in views) {
       var view = views[id];
       var sizePolicy = view.getSizePolicy();
+      if (sizePolicy.width === this.SIZE_POLICY_MATCH_PARENT && sizePolicy.height === this.SIZE_POLICY_MATCH_PARENT) {
+        continue;
+      }
+
       var pos = view.getPos();
       var size = view.getSize();
 
       if (sizePolicy.width !== this.SIZE_POLICY_MATCH_PARENT) {
-        maxWidth = Math.max(maxWidth, pos.x + size.width);
+        if (maxWidth < pos.x + size.width) {
+          maxWidth = pos.x + size.width;
+          widthView = view;
+        }
       }
 
       if (sizePolicy.height !== this.SIZE_POLICY_MATCH_PARENT) {
-        maxHeight = Math.max(maxHeight, pos.y + size.height);
+        if (maxHeight < pos.y + size.height) {
+          maxHeight= pos.y + size.height;
+          heightView = view;
+        }
       }
     }
 
@@ -188,10 +255,8 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     view.setPage(this.getPage());
     view.setScene(this.getScene());
 
-    // TODO: sizePolicyがwrapContentの時のみonするように変更する.
-    // TODO: 無駄にupdateが呼ばれていてパフォーマンス悪い.
-    view.on('sizeChanged', this._updateSizeWithWrapContentSize.bind(this));
-    view.on('posChanged', this._updateSizeWithWrapContentSize.bind(this));
+    view.on('sizeChanged', this._resizeWrapContentByChangedView.bind(this));
+    view.on('posChanged', this._resizeWrapContentByChangedView.bind(this));
   },
 
   removeView: function(view) {
@@ -201,6 +266,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     delete this._views[view.getId()];
     this._viewsOrder.splice(this._viewsOrder.indexOf(view.getId()), 1);
     view.setParent(null);
+    this._resizeWrapContentByRemovedView(view);
   },
 
   removeAllViews: function() {

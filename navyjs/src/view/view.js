@@ -146,15 +146,18 @@ Navy.Class('Navy.View.View', {
 
   _updateSizeWithWrapContentSize: function() {
     var changed = false;
+    var size;
+
+    if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT || this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
+      size = this._calcWrapContentSize();
+    }
 
     if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT) {
-      var size = this._calcWrapContentSize();
       this._element.style.width = size.width + 'px';
       changed = true;
     }
 
     if (this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
-      var size = this._calcWrapContentSize();
       this._element.style.height = size.height + 'px';
       changed = true
     }
@@ -352,36 +355,43 @@ Navy.Class('Navy.View.View', {
   },
 
   setSizePolicy: function(sizePolicy, disableUpdateSizeWithWrapContentSize) {
+    var prevSizePolicy = this._layout.sizePolicy;
     this._layout.sizePolicy = sizePolicy;
 
-    switch (sizePolicy.width) {
-    case this.SIZE_POLICY_FIXED:
-      break;
-    case this.SIZE_POLICY_WRAP_CONTENT:
-      if (!disableUpdateSizeWithWrapContentSize) {
-        this._updateSizeWithWrapContentSize();
+    // 変更された場合のみにサイズ更新を行う.
+    if (prevSizePolicy.width !== sizePolicy.width) {
+      switch (sizePolicy.width) {
+      case this.SIZE_POLICY_FIXED:
+        break;
+      case this.SIZE_POLICY_WRAP_CONTENT:
+        if (!disableUpdateSizeWithWrapContentSize) {
+          this._updateSizeWithWrapContentSize();
+        }
+        break;
+      case this.SIZE_POLICY_MATCH_PARENT:
+        this._element.style.width = '100%';
+        break;
+      default:
+        throw new Error('unknown size policy width. ' + this._layout.sizePolicy.width);
       }
-      break;
-    case this.SIZE_POLICY_MATCH_PARENT:
-      this._element.style.width = '100%';
-      break;
-    default:
-      throw new Error('unknown size policy width. ' + this._layout.sizePolicy.width);
     }
 
-    switch (sizePolicy.height) {
-    case this.SIZE_POLICY_FIXED:
-      break;
-    case this.SIZE_POLICY_WRAP_CONTENT:
-      if (!disableUpdateSizeWithWrapContentSize) {
-        this._updateSizeWithWrapContentSize();
+    // 変更された場合のみにサイズ更新を行う.
+    if (prevSizePolicy.height !== sizePolicy.height) {
+      switch (sizePolicy.height) {
+      case this.SIZE_POLICY_FIXED:
+        break;
+      case this.SIZE_POLICY_WRAP_CONTENT:
+        if (!disableUpdateSizeWithWrapContentSize) {
+          this._updateSizeWithWrapContentSize();
+        }
+        break;
+      case this.SIZE_POLICY_MATCH_PARENT:
+        this._element.style.height = '100%';
+        break;
+      default:
+        throw new Error('unknown size policy height. ' + this._layout.sizePolicy.height);
       }
-      break;
-    case this.SIZE_POLICY_MATCH_PARENT:
-      this._element.style.height = '100%';
-      break;
-    default:
-      throw new Error('unknown size policy height. ' + this._layout.sizePolicy.height);
     }
   },
 
