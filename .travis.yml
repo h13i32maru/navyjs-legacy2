@@ -1,11 +1,5 @@
 language: node_js
 node_js:
-  - 0.8
-before_script:
-  - node_modules/.bin/buster-server &
-  - sleep 5
-  - node_modules/.bin/phantomjs node_modules/buster/script/phantom.js http://localhost:1111/capture &
-  - sleep 5
-  - ./navyjs/tools/build.sh
+  - 0.10
 script:
-  - npm test
+  - ./navyjs/test/run.sh

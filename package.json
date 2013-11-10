@@ -3,15 +3,9 @@
   "name" : "NavyJS",
   "description" : "NavyJS Unit Test with BusterJS and Travis CI",
   "version" : "0.0.1",
-  "scripts" : {
-    "test" : "node_modules/.bin/buster-test -c navyjs/test/buster.js"
-  },
   "devDependencies" : {
-    "buster" : "~0.6",
-    "phantomjs" : ">=1.0.0",
-    "uglify-js": ">=2.3.6"
-  },
-  "engines" : {
-    "node" : "~0.8"
+    "buster" : "",
+    "phantomjs" : "",
+    "uglify-js": ""
   }
 }
