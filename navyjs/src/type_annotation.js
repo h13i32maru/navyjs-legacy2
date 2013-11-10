@@ -18,7 +18,7 @@ TouchEvent;
  *  classFile: string,
  *  visible: boolean,
  *  pos: {x: number, y:number, z:number},
- *  sizePolicy: "fixed" | "wrapContent",
+ *  sizePolicy: {width: "fixed" | "wrapContent" | "mathParent", height: "fixed" | "wrapContent" | "matchParent"},
  *  size: {width: number, height: number},
  *  backgroundColor: string
  * }}
