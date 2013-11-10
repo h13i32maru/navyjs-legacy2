@@ -4,7 +4,7 @@
     "class": "Navy.View.View",
     "visible": true,
     "pos": {"x":0, "y":0},
-    "sizePolicy": "fixed",
+    "sizePolicy": {"width": "fixed", "height": "fixed"},
     "size": {"width": 640, "height": 100},
     "backgroundColor": "#0000ff"
   },
@@ -13,7 +13,7 @@
     "class": "Navy.View.Text",
     "visible": true,
     "pos": {"x": 10, "y": 10},
-    "sizePolicy": "fixed",
+    "sizePolicy": {"width": "fixed", "height": "fixed"},
     "size": {"width": 80, "height": 80},
     "backgroundColor": "#00ff00",
     "extra": {

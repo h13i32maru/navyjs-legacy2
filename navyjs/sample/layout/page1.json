@@ -4,7 +4,7 @@
     "class": "Navy.ViewGroup.ViewGroup",
     "visible": true,
     "pos": {"x": 0, "y": 100},
-    "sizePolicy": "wrapContent",
+    "sizePolicy": {"width": "wrapContent", "height": "wrapContent"},
     "link": {
       "type": "page",
       "id": "Page2"
@@ -19,7 +19,7 @@
     "class": "Navy.ViewGroup.ViewGroup",
     "visible": true,
     "pos": {"x": 0, "y": 228},
-    "sizePolicy": "wrapContent",
+    "sizePolicy": {"width": "wrapContent", "height": "wrapContent"},
     "link": {
       "type": "page",
       "id": "$back"
@@ -34,7 +34,7 @@
     "class": "Navy.ViewGroup.ViewGroup",
     "visible": true,
     "pos": {"x": 0, "y": 356},
-    "sizePolicy": "wrapContent",
+    "sizePolicy": {"width": "wrapContent", "height": "wrapContent"},
     "link": {
       "type": "scene",
       "id": "Scene2"
@@ -49,7 +49,7 @@
     "class": "Navy.ViewGroup.ViewGroup",
     "visible": true,
     "pos": {"x": 0, "y": 484},
-    "sizePolicy": "wrapContent",
+    "sizePolicy": {"width": "wrapContent", "height": "wrapContent"},
     "link": {
       "type": "scene",
       "id": "$back"

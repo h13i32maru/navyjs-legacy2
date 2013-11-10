@@ -4,7 +4,7 @@
     "class": "Navy.View.Text",
     "visible": true,
     "pos": {"x": 10, "y": 200},
-    "sizePolicy": "fixed",
+    "sizePolicy": {"width": "fixed", "height": "fixed"},
     "size": {"width": 80, "height": 80},
     "link": {
       "type": "page",
@@ -19,7 +19,7 @@
     "class": "Navy.View.Text",
     "visible": true,
     "pos": {"x": 10, "y": 300},
-    "sizePolicy": "fixed",
+    "sizePolicy": {"width": "fixed", "height": "fixed"},
     "size": {"width": 80, "height": 80},
     "link": {
       "type": "page",
