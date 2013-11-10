@@ -512,15 +512,26 @@ Navy.Class('Navy.View.View', {
   },
 
   _updateSizeWithWrapContentSize: function() {
-    if (this._layout.sizePolicy !== this.SIZE_POLICY_WRAP_CONTENT) {
-      return;
+    var changed = false;
+    var size;
+
+    if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT || this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
+      size = this._calcWrapContentSize();
     }
 
-    var size = this._calcWrapContentSize();
-    this._element.style.width = size.width + 'px';
-    this._element.style.height = size.height + 'px';
+    if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT) {
+      this._element.style.width = size.width + 'px';
+      changed = true;
+    }
 
-    this.trigger('sizeChanged', this, null);
+    if (this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
+      this._element.style.height = size.height + 'px';
+      changed = true
+    }
+
+    if (changed) {
+      this.trigger('sizeChanged', this, null);
+    }
   },
 
   _setRawStyle: function(style) {
@@ -713,7 +724,7 @@ Navy.Class('Navy.View.View', {
   setSizePolicy: function(sizePolicy, disableUpdateSizeWithWrapContentSize) {
     this._layout.sizePolicy = sizePolicy;
 
-    switch (sizePolicy) {
+    switch (sizePolicy.width) {
     case this.SIZE_POLICY_FIXED:
       break;
     case this.SIZE_POLICY_WRAP_CONTENT:
@@ -722,28 +733,64 @@ Navy.Class('Navy.View.View', {
       }
       break;
     case this.SIZE_POLICY_MATCH_PARENT:
-      this._element.style.cssText += 'width: 100%; height: 100%';
+      this._element.style.width = '100%';
       break;
     default:
-      throw new Error('unknown size policy. ' + this._layout.sizePolicy);
+      throw new Error('unknown size policy width. ' + this._layout.sizePolicy.width);
+    }
+
+    switch (sizePolicy.height) {
+    case this.SIZE_POLICY_FIXED:
+      break;
+    case this.SIZE_POLICY_WRAP_CONTENT:
+      if (!disableUpdateSizeWithWrapContentSize) {
+        this._updateSizeWithWrapContentSize();
+      }
+      break;
+    case this.SIZE_POLICY_MATCH_PARENT:
+      this._element.style.height = '100%';
+      break;
+    default:
+      throw new Error('unknown size policy height. ' + this._layout.sizePolicy.height);
     }
   },
 
   getSizePolicy: function() {
-    return this._layout.sizePolicy;
+    return this._cloneObject(this._layout.sizePolicy);
   },
 
   getSize: function() {
-    switch (this._layout.sizePolicy) {
+    var width, height;
+
+    switch (this._layout.sizePolicy.width) {
     case this.SIZE_POLICY_FIXED:
-      return {width: this._layout.size.width, height: this._layout.size.height};
+      width = this._layout.size.width;
+      break;
     case this.SIZE_POLICY_WRAP_CONTENT:
-      return {width: this._element.clientWidth, height: this._element.clientHeight};
+      width = this._element.clientWidth;
+      break;
     case this.SIZE_POLICY_MATCH_PARENT:
-      return {width: this._element.clientWidth, height: this._element.clientHeight};
+      width = this._element.clientWidth;
+      break;
     default:
-      throw new Error('unknown size policy. ' + this._layout.sizePolicy);
+      throw new Error('unknown size policy width. ' + this._layout.sizePolicy.width);
     }
+
+    switch (this._layout.sizePolicy.height) {
+    case this.SIZE_POLICY_FIXED:
+      height = this._layout.size.height;
+      break;
+    case this.SIZE_POLICY_WRAP_CONTENT:
+      height = this._element.clientHeight;
+      break;
+    case this.SIZE_POLICY_MATCH_PARENT:
+      height = this._element.clientHeight;
+      break;
+    default:
+      throw new Error('unknown size policy height. ' + this._layout.sizePolicy.height);
+    }
+
+    return {width: width, height: height};
   },
 
   setSize: function(size) {
@@ -751,27 +798,23 @@ Navy.Class('Navy.View.View', {
       return;
     }
 
-    if (this._layout.sizePolicy !== this.SIZE_POLICY_FIXED) {
-      return;
-    }
-
     if (!this._layout.size) {
       this._layout.size = {};
     }
 
-    var cssText = '';
-
-    if (typeof size.width === 'number') {
-      this._layout.size.width = size.width;
-      cssText += 'width:' + size.width + 'px;';
+    if (this._layout.sizePolicy.width === this.SIZE_POLICY_FIXED) {
+      if (typeof size.width === 'number') {
+        this._layout.size.width = size.width;
+        this._element.style.width = size.width + 'px';
+      }
     }
 
-    if (typeof size.height === 'number') {
-      this._layout.size.height = size.height;
-      cssText += 'height:' + size.height + 'px;';
+    if (this._layout.sizePolicy.height === this.SIZE_POLICY_FIXED) {
+      if (typeof size.height === 'number') {
+        this._layout.size.height = size.height;
+        this._element.style.height = size.height + 'px';
+      }
     }
-
-    this._element.style.cssText += cssText;
 
     // TODO: Eventオブジェクト作る.
     this.trigger('sizeChanged', this, null);
@@ -976,6 +1019,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   _viewsOrder: null,
   _initCallback: null,
   _contentLayouts: null,
+  _wrapContentSizeView: null,
 
   /**
    * @param $super
@@ -985,6 +1029,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   initialize: function($super, layout, callback) {
     this._views = {};
     this._viewsOrder = [];
+    this._wrapContentSizeView = {widthView: null, heightView: null};
 
     $super(layout, callback);
   },
@@ -1035,22 +1080,89 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     }
   },
 
+  /**
+   *
+   * @param view
+   * @param ev
+   * @private
+   */
+  _resizeWrapContentByChangedView: function(view) {
+    if (this._layout.sizePolicy.width !== this.SIZE_POLICY_WRAP_CONTENT && this._layout.sizePolicy.height !== this.SIZE_POLICY_WRAP_CONTENT) {
+      return;
+    }
+
+    var sizePolicy = view.getSizePolicy();
+    var currentSize, pos, size;
+
+    if (sizePolicy.width !== this.SIZE_POLICY_MATCH_PARENT || sizePolicy.height !== this.SIZE_POLICY_MATCH_PARENT) {
+      currentSize = this.getSize();
+      pos = view.getPos();
+      size = view.getSize();
+    }
+
+    if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT) {
+      if (sizePolicy.width !== this.SIZE_POLICY_MATCH_PARENT) {
+        if (pos.x + size.width > currentSize.width) {
+          this._wrapContentSizeView.widthView = view;
+          this._element.style.width = (pos.x + size.width) + 'px';
+        }
+      }
+    }
+
+    if (this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
+      if (sizePolicy.height !== this.SIZE_POLICY_MATCH_PARENT) {
+        if (pos.y + size.height > currentSize.height) {
+          this._wrapContentSizeView.heightView = view;
+          this._element.style.height = (pos.y + size.height) + 'px';
+        }
+      }
+    }
+  },
+
+  _resizeWrapContentByRemovedView: function(view) {
+    if (this._layout.sizePolicy.width !== this.SIZE_POLICY_WRAP_CONTENT && this._layout.sizePolicy.height !== this.SIZE_POLICY_WRAP_CONTENT) {
+      return;
+    }
+
+    if (this._wrapContentSizeView.widthView !== view && this._wrapContentSizeView.heightView !== view) {
+      return;
+    }
+
+    var size = this._calcWrapContentSize();
+    this._element.style.width = size.width + 'px';
+    this._element.style.height = size.height + 'px';
+  },
+
   _calcWrapContentSize: function() {
     var maxWidth = 0;
     var maxHeight = 0;
+    var widthView;
+    var heightView;
 
     var views = this._views;
     for (var id in views) {
       var view = views[id];
-      if (view.getSizePolicy() === this.SIZE_POLICY_MATCH_PARENT) {
+      var sizePolicy = view.getSizePolicy();
+      if (sizePolicy.width === this.SIZE_POLICY_MATCH_PARENT && sizePolicy.height === this.SIZE_POLICY_MATCH_PARENT) {
         continue;
       }
 
       var pos = view.getPos();
       var size = view.getSize();
 
-      maxWidth = Math.max(maxWidth, pos.x + size.width);
-      maxHeight = Math.max(maxHeight, pos.y + size.height);
+      if (sizePolicy.width !== this.SIZE_POLICY_MATCH_PARENT) {
+        if (maxWidth < pos.x + size.width) {
+          maxWidth = pos.x + size.width;
+          widthView = view;
+        }
+      }
+
+      if (sizePolicy.height !== this.SIZE_POLICY_MATCH_PARENT) {
+        if (maxHeight < pos.y + size.height) {
+          maxHeight= pos.y + size.height;
+          heightView = view;
+        }
+      }
     }
 
     return {
@@ -1156,10 +1268,8 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     view.setPage(this.getPage());
     view.setScene(this.getScene());
 
-    // TODO: sizePolicyがwrapContentの時のみonするように変更する.
-    // TODO: 無駄にupdateが呼ばれていてパフォーマンス悪い.
-    view.on('sizeChanged', this._updateSizeWithWrapContentSize.bind(this));
-    view.on('posChanged', this._updateSizeWithWrapContentSize.bind(this));
+    view.on('sizeChanged', this._resizeWrapContentByChangedView.bind(this));
+    view.on('posChanged', this._resizeWrapContentByChangedView.bind(this));
   },
 
   removeView: function(view) {
@@ -1169,6 +1279,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     delete this._views[view.getId()];
     this._viewsOrder.splice(this._viewsOrder.indexOf(view.getId()), 1);
     view.setParent(null);
+    this._resizeWrapContentByRemovedView(view);
   },
 
   removeAllViews: function() {
@@ -1233,7 +1344,7 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
   _applyExtraLayout: function($super, layout, callback) {
     function cb() {
       var size = this._imageView.getSize();
-      this._textView.setSizePolicy(this.SIZE_POLICY_FIXED);
+      this._textView.setSizePolicy({width: this.SIZE_POLICY_FIXED, height: this.SIZE_POLICY_FIXED});
       this._textView.setSize(size);
 
       // TODO: TextViewのextraで設定できるようにする
@@ -1301,7 +1412,7 @@ Navy.Class('Navy.Page', Navy.ViewGroup.ViewGroup, {
     // シーン、ページの場合はsize, posは固定値でよい
     layout.visible = true;
     layout.pos = {x:0, y:0};
-    layout.sizePolicy = this.SIZE_POLICY_FIXED;
+    layout.sizePolicy = {width: this.SIZE_POLICY_FIXED, height: this.SIZE_POLICY_FIXED};
     layout.size = {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height};
 
     $super(layout, callback);
@@ -1364,7 +1475,11 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     $super();
 
     this._id = '$root';
-    this._layout = {visible: true};
+    this._layout = {
+      visible: true,
+      sizePolicy: {width: this.SIZE_POLICY_FIXED, height: this.SIZE_POLICY_FIXED},
+      size: {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height}
+    };
 
     this._initDocument();
     var rootElm = document.createElement('div');
@@ -1553,7 +1668,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     // シーン、ページの場合はsize, posは固定値でよい
     layout.visible = true;
     layout.pos = {x:0, y:0};
-    layout.sizePolicy = this.SIZE_POLICY_FIXED;
+    layout.sizePolicy = {width: this.SIZE_POLICY_FIXED, height: this.SIZE_POLICY_FIXED};
     layout.size = {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height};
 
     $super(layout, callback);

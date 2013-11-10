@@ -11,7 +11,7 @@
       "height": 82,
       "width": 640
     },
-    "sizePolicy": "fixed",
+    "sizePolicy": {"width": "fixed", "height": "fixed"},
     "visible": true
   },
   {
@@ -30,7 +30,7 @@
       "height": 60,
       "width": 70
     },
-    "sizePolicy": "fixed"
+    "sizePolicy": {"width": "fixed", "height": "fixed"}
   },
   {
     "visible": true,
@@ -46,6 +46,6 @@
       "y": 27
     },
     "size": {},
-    "sizePolicy": "wrapContent"
+    "sizePolicy": {"width": "wrapContent", "height": "wrapContent"}
   }
 ]

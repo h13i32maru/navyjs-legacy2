@@ -97,7 +97,8 @@ Navy.Class('CreatorPage', Navy.Page, {
       class: viewClass,
       visible: true,
       pos: {x: 0, y: 0},
-      sizePolicy: 'wrapContent',
+      sizePolicy: {width: 'fixed', height: 'fixed'},
+      size: {width: 100, height: 100},
       extra: {}
     };
 
@@ -415,7 +416,7 @@ Navy.Class('CreatorPage', Navy.Page, {
       break;
     }
 
-    view.setSizePolicy('fixed');
+    view.setSizePolicy({width: 'fixed', height: 'fixed'});
     view.setSize(newSize);
     view.setPos(newPos);
     box.style.width = newSize.width + 'px';

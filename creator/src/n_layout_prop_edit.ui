@@ -76,38 +76,51 @@
        <item>
         <widget class="QWidget" name="baseViewWidget" native="true">
          <layout class="QGridLayout" name="gridLayout">
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item row="5" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_15">
-            <item>
-             <widget class="QSpinBox" name="sizeWidthSpinBox">
-              <property name="maximum">
-               <number>9999</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="sizeHeightSpinBox">
-              <property name="maximum">
-               <number>9999</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_7">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>bg color</string>
+             <string>id</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_6">
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="idLabel"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>size</string>
+             <string>class</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="classLabel">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>visible</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="visible">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>pos</string>
             </property>
            </widget>
           </item>
@@ -129,70 +142,84 @@
             </item>
            </layout>
           </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_10">
-            <property name="text">
-             <string>link</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QLineEdit" name="backgroundColor"/>
-          </item>
-          <item row="4" column="1">
-           <widget class="QComboBox" name="sizePolicy">
-            <item>
-             <property name="text">
-              <string>fixed</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>wrapContent</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>matchParent</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>id</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="classLabel">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="idLabel"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>class</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>pos</string>
-            </property>
-           </widget>
-          </item>
           <item row="4" column="0">
            <widget class="QLabel" name="label_9">
             <property name="text">
              <string>sizePolicy</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QComboBox" name="sizePolicyWidth">
+              <item>
+               <property name="text">
+                <string>fixed</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>wrapContent</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>matchParent</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="sizePolicyHeight">
+              <item>
+               <property name="text">
+                <string>fixed</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>wrapContent</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>matchParent</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>size</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_15">
+            <item>
+             <widget class="QSpinBox" name="sizeWidthSpinBox">
+              <property name="maximum">
+               <number>9999</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="sizeHeightSpinBox">
+              <property name="maximum">
+               <number>9999</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>link</string>
             </property>
            </widget>
           </item>
@@ -238,22 +265,15 @@
             </item>
            </layout>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_12">
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_7">
             <property name="text">
-             <string>visible</string>
+             <string>bg color</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QCheckBox" name="visible">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
+          <item row="7" column="1">
+           <widget class="QLineEdit" name="backgroundColor"/>
           </item>
          </layout>
         </widget>

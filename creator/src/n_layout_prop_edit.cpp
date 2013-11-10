@@ -66,7 +66,8 @@ void NLayoutPropEdit::connectWidgetToJson() {
     connect(ui->sizeWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->sizeHeightSpinBox, SIGNAL(valueChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->backgroundColor, SIGNAL(textChanged(QString)), this, SLOT(syncWidgetToJson()));
-    connect(ui->sizePolicy, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
+    connect(ui->sizePolicyWidth, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
+    connect(ui->sizePolicyHeight, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->linkType, SIGNAL(currentIndexChanged(int)), this, SLOT(syncWidgetToJson()));
     connect(ui->linkType, SIGNAL(currentIndexChanged(int)), this, SLOT(setLinkIdList()));
     connect(ui->linkId, SIGNAL(currentTextChanged(QString)), this, SLOT(syncWidgetToJson()));
@@ -95,7 +96,8 @@ void NLayoutPropEdit::syncWidgetToJson() {
     mView.set("size.width", ui->sizeWidthSpinBox->value());
     mView.set("size.height", ui->sizeHeightSpinBox->value());
     mView.set("backgroundColor", ui->backgroundColor->text());
-    mView.set("sizePolicy", ui->sizePolicy->currentText());
+    mView.set("sizePolicy.width", ui->sizePolicyWidth->currentText());
+    mView.set("sizePolicy.height", ui->sizePolicyHeight->currentText());
 
     if (ui->linkType->currentIndex() != 0) {
         mView.set("link.type", ui->linkType->currentText());
@@ -165,7 +167,8 @@ void NLayoutPropEdit::setSelectedViewsFromJS(const NJson &views) {
     ui->sizeWidthSpinBox->setValue(view.getInt("size.width"));
     ui->sizeHeightSpinBox->setValue(view.getInt("size.height"));
     ui->backgroundColor->setText(view.getStr("backgroundColor"));
-    ui->sizePolicy->setCurrentText(view.getStr("sizePolicy"));
+    ui->sizePolicyWidth->setCurrentText(view.getStr("sizePolicy.width"));
+    ui->sizePolicyHeight->setCurrentText(view.getStr("sizePolicy.height"));
 
     ui->linkType->setCurrentIndex(0);
     ui->linkType->setCurrentText(view.getStr("link.type"));

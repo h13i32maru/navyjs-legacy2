@@ -13,6 +13,6 @@
       "y": 516
     },
     "size": {},
-    "sizePolicy": "wrapContent"
+    "sizePolicy": {"width": "wrapContent", "height": "wrapContent"}
   }
 ]
