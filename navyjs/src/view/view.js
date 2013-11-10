@@ -355,43 +355,36 @@ Navy.Class('Navy.View.View', {
   },
 
   setSizePolicy: function(sizePolicy, disableUpdateSizeWithWrapContentSize) {
-    var prevSizePolicy = this._layout.sizePolicy;
     this._layout.sizePolicy = sizePolicy;
 
-    // 変更された場合のみにサイズ更新を行う.
-    if (prevSizePolicy.width !== sizePolicy.width) {
-      switch (sizePolicy.width) {
-      case this.SIZE_POLICY_FIXED:
-        break;
-      case this.SIZE_POLICY_WRAP_CONTENT:
-        if (!disableUpdateSizeWithWrapContentSize) {
-          this._updateSizeWithWrapContentSize();
-        }
-        break;
-      case this.SIZE_POLICY_MATCH_PARENT:
-        this._element.style.width = '100%';
-        break;
-      default:
-        throw new Error('unknown size policy width. ' + this._layout.sizePolicy.width);
+    switch (sizePolicy.width) {
+    case this.SIZE_POLICY_FIXED:
+      break;
+    case this.SIZE_POLICY_WRAP_CONTENT:
+      if (!disableUpdateSizeWithWrapContentSize) {
+        this._updateSizeWithWrapContentSize();
       }
+      break;
+    case this.SIZE_POLICY_MATCH_PARENT:
+      this._element.style.width = '100%';
+      break;
+    default:
+      throw new Error('unknown size policy width. ' + this._layout.sizePolicy.width);
     }
 
-    // 変更された場合のみにサイズ更新を行う.
-    if (prevSizePolicy.height !== sizePolicy.height) {
-      switch (sizePolicy.height) {
-      case this.SIZE_POLICY_FIXED:
-        break;
-      case this.SIZE_POLICY_WRAP_CONTENT:
-        if (!disableUpdateSizeWithWrapContentSize) {
-          this._updateSizeWithWrapContentSize();
-        }
-        break;
-      case this.SIZE_POLICY_MATCH_PARENT:
-        this._element.style.height = '100%';
-        break;
-      default:
-        throw new Error('unknown size policy height. ' + this._layout.sizePolicy.height);
+    switch (sizePolicy.height) {
+    case this.SIZE_POLICY_FIXED:
+      break;
+    case this.SIZE_POLICY_WRAP_CONTENT:
+      if (!disableUpdateSizeWithWrapContentSize) {
+        this._updateSizeWithWrapContentSize();
       }
+      break;
+    case this.SIZE_POLICY_MATCH_PARENT:
+      this._element.style.height = '100%';
+      break;
+    default:
+      throw new Error('unknown size policy height. ' + this._layout.sizePolicy.height);
     }
   },
 
