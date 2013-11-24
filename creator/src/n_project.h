@@ -46,6 +46,7 @@ public:
     QStringList codes();
     QStringList layouts();
     QStringList files();
+    QStringList links();
     bool existsContentsFile(const QString &relativePath);
     bool existsPage(const QString &page);
 //    QString absoluteContentsFilePath(const QString &relativePath);

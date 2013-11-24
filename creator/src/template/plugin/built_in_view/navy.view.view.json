@@ -14,7 +14,7 @@
       "value": 0
     },
     {
-      "name": "pos(y)",
+      "label": "pos(y)",
       "key": "pos.y",
       "type": "number",
       "value": 0

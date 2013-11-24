@@ -60,24 +60,6 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     connect(mNative, SIGNAL(viewsFromJS(NJson)), this, SLOT(setViewsFromJS(NJson)));
     connect(mNative, SIGNAL(selectedViewsFromJS(NJson)), this, SLOT(setSelectedsViewsFromJS(NJson)));
 
-
-    /*
-    QStandardItemModel *model = new QStandardItemModel(10, 2);
-    model->setHorizontalHeaderItem(0, new QStandardItem("hoge"));
-    model->setHorizontalHeaderItem(1, new QStandardItem("foo"));
-    ui->tableView->setModel(model);
-    QModelIndex index = model->index(0,0);
-    ui->tableView->setIndexWidget(index, new QLabel("test"));
-    index = model->index(0,1);
-    ui->tableView->setIndexWidget(index, new QCheckBox());
-    ui->tableView->setRowHeight(0, QLabel("AAA").sizeHint().height() * 1.5);
-
-    model->setItem(1,0, new QStandardItem("test2"));
-    index = model->index(1,1);
-//    ui->tableView->setIndexWidget(index, new QCheckBox());
-    ui->tableView->setIndexWidget(index, new QSpinBox());
-    */
-
     // create property widget for view.
     int height = QLabel("AAA").sizeHint().height() * 1.5;
     QList<NJson> jsonList = ViewPlugin::instance()->getJsonList();
@@ -104,10 +86,65 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
         for (int j = 0, row = 1; j < widgetDefine.length(); j++, row++) {
             QString index = QString::number(j);
             QString label = widgetDefine.getStr(index + ".label");
-            model->setItem(row, 0, new QStandardItem(label));
-            modelIndex = model->index(row, 1);
-            tableView->setIndexWidget(modelIndex, new QLineEdit(label));
-            tableView->setRowHeight(row, height);
+            QString type = widgetDefine.getStr(index + ".type");
+            QWidget *widget = NULL;
+
+            if (type == "string") {
+                QLineEdit *l = new QLineEdit();
+                l->setText(widgetDefine.getStr(index + ".value"));
+                widget = l;
+            } else if (type == "number") {
+                QSpinBox *s = new QSpinBox();
+                s->setMinimum(0);
+                s->setMaximum(9999);
+                s->setValue(widgetDefine.getInt(index + ".value"));
+                widget = s;
+            } else if (type == "boolean") {
+                QCheckBox *c = new QCheckBox();
+                c->setChecked(widgetDefine.getBool(index + ".value"));
+                widget = c;
+            } else if (type == "stringList") {
+                QComboBox *c = new QComboBox();
+                NJson strings = widgetDefine.getObject(index + ".value");
+                for (int k = 0; k < strings.length(); k++) {
+                    c->addItem(strings.getStr(QString::number(k)));
+                }
+                widget = c;
+            } else if (type == "numberList") {
+                QComboBox *c = new QComboBox();
+                NJson strings = widgetDefine.getObject(index + ".value");
+                for (int k = 0; k < strings.length(); k++) {
+                    c->addItem(strings.getStr(QString::number(k)));
+                }
+                widget = c;
+            } else if (type == "pageList") {
+                NComboBox *c = new NComboBox();
+                c->setList(NProject::instance()->pages());
+                widget = c;
+            } else if (type == "sceneList") {
+                NComboBox *c = new NComboBox();
+                c->setList(NProject::instance()->scenes());
+                widget = c;
+            } else if (type == "imageList") {
+                NComboBox *c = new NComboBox();
+                c->setList(NProject::instance()->images());
+                widget = c;
+            } else if (type == "layoutList") {
+                NComboBox *c = new NComboBox();
+                c->setList(NProject::instance()->layouts());
+                widget = c;
+            } else if (type == "linkList") {
+                NComboBox *c = new NComboBox();
+                c->setList(NProject::instance()->links());
+                widget = c;
+            }
+
+            if (widget != NULL) {
+                model->setItem(row, 0, new QStandardItem(label));
+                modelIndex = model->index(row, 1);
+                tableView->setIndexWidget(modelIndex, widget);
+                tableView->setRowHeight(row, height);
+            }
         }
 
         tableView->setMinimumHeight((widgetDefine.length() + 2) * height);

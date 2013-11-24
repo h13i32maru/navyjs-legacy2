@@ -4,6 +4,7 @@
 #include <QDebug>
 
 NComboBox::NComboBox(QWidget *parent) : QComboBox(parent) {
+    setEditable(true);
     QStringList list;
     mCompleter = new NCompleter(list, this);
 }

@@ -243,6 +243,24 @@ QStringList NProject::files() {
     return list;
 }
 
+QStringList NProject::links() {
+    QStringList list;
+    QStringList pages = this->pages();
+    QStringList scenes = this->scenes();
+
+    list.append("$back");
+
+    for (int i = 0; i < pages.length(); i++) {
+        list.append("page/" + pages[i]);
+    }
+
+    for (int i = 0; i < scenes.length(); i++) {
+        list.append("scene/" + scenes[i]);
+    }
+
+    return list;
+}
+
 bool NProject::existsPage(const QString &page) {
     QStringList pages = this->pages();
     int index = pages.indexOf(page);

@@ -11,7 +11,7 @@
  *
  * QStringList list;
  * list << "book" << "this is book" << "cook";
- * NComboBox c = new ComboBox(this);
+ * NComboBox c = new NComboBox(this);
  * c->setList(list);
  */
 
