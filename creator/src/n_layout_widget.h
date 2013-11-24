@@ -53,6 +53,8 @@ private slots:
     void deleteSelectedViewsToJS();
     void setSelectedsViewsFromJS(const NJson &json);
     void syncWidgetToView();
+    void setViewPosFromJS(int x, int y);
+    void setViewSizeFromJS(int width, int height);
 
     void alignTopToJS() { emit mNative->alignSelectedViewsToJS("TOP"); }
     void alignVCenterToJS(){ emit mNative->alignSelectedViewsToJS("V_CENTER"); }

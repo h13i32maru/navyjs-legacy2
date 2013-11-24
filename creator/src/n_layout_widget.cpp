@@ -59,6 +59,8 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     connect(mNative, SIGNAL(changedLayoutContentFromJS()), this, SLOT(changed()));
     connect(mNative, SIGNAL(viewsFromJS(NJson)), this, SLOT(setViewsFromJS(NJson)));
     connect(mNative, SIGNAL(selectedViewsFromJS(NJson)), this, SLOT(setSelectedsViewsFromJS(NJson)));
+    connect(mNative, SIGNAL(currentViewPosFromJS(int,int)), this, SLOT(setViewPosFromJS(int,int)));
+    connect(mNative, SIGNAL(currentViewSizeFromJS(int,int)), this, SLOT(setViewSizeFromJS(int,int)));
 
     // create property widget for view.
     ViewPlugin::instance()->createTableView(ui->propScrollAreaWidgetContents, &mPropMap, this, SLOT(syncWidgetToView()));
@@ -270,6 +272,26 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
         QTableView *extraTable = mPropMap[className];
         ViewPlugin::instance()->syncViewToWidget(view, table, extraTable);
     }
+}
+
+void NLayoutWidget::setViewPosFromJS(int x, int y) {
+    QSpinBox *s;
+
+    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:pos.x");
+    s->setValue(x);
+
+    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:pos.y");
+    s->setValue(y);
+}
+
+void NLayoutWidget::setViewSizeFromJS(int width, int height) {
+    QSpinBox *s;
+
+    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:size.width");
+    s->setValue(width);
+
+    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:size.height");
+    s->setValue(height);
 }
 
 /*************************************************
