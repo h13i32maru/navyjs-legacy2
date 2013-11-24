@@ -8,6 +8,7 @@
 #include "n_config_scene_widget.h"
 #include "n_config_page_widget.h"
 #include "n_project.h"
+#include "plugin/view_plugin.h"
 
 #include <QFileDialog>
 #include <QDebug>
@@ -90,6 +91,9 @@ void MainWindow::setCurrentProject(QString dirPath, QString projectName) {
 
     row = mFileSysteMmodel->index(project->contentsFilePath("navy")).row();
     mFileTreeView->setRowHidden(row, rootIndex, true);
+
+    // load plugin
+    ViewPlugin::instance()->load(NProject::instance()->pluginDirPath());
 }
 
 void MainWindow::newProject()

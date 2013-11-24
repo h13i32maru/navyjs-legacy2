@@ -1,0 +1,57 @@
+{
+  "class": "Navy.View.View",
+  "define": [
+    {
+      "label": "visible",
+      "key": "visible",
+      "type": "boolean",
+      "value": true
+    },
+    {
+      "label": "pos(x)",
+      "key": "pos.x",
+      "type": "number",
+      "value": 0
+    },
+    {
+      "name": "pos(y)",
+      "key": "pos.y",
+      "type": "number",
+      "value": 0
+    },
+    {
+      "label": "sizePolicy(x)",
+      "key": "sizePolicy.x",
+      "type": "stringList",
+      "value": ["fixed", "wrapContent", "matchParent"]
+    },
+    {
+      "label": "sizePolicy(y)",
+      "key": "sizePolicy.y",
+      "type": "stringList",
+      "value": ["fixed", "wrapContent", "matchParent"]
+    },
+    {
+      "label": "size(x)",
+      "key": "size.x",
+      "type": "number",
+      "value": 100
+    },
+    {
+      "label": "size(y)",
+      "key": "size.y",
+      "type": "number",
+      "value": 100
+    },
+    {
+      "label": "link",
+      "key": "link.id",
+      "type": "linkList"
+    },
+    {
+      "label": "bg color",
+      "key": "backgroundColor",
+      "type": "string"
+    }
+  ]
+}

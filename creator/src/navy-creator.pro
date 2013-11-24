@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     window/n_pref_dialog.cpp \
     window/n_new_project_dialog.cpp \
     window/n_project_dialog.cpp \
-    window/n_layout_setting_dialog.cpp
+    window/n_layout_setting_dialog.cpp \
+    plugin/view_plugin.cpp
 
 HEADERS  += main_window.h \
     n_code_widget.h \
@@ -67,7 +68,8 @@ HEADERS  += main_window.h \
     window/n_pref_dialog.h \
     window/n_new_project_dialog.h \
     window/n_project_dialog.h \
-    window/n_layout_setting_dialog.h
+    window/n_layout_setting_dialog.h \
+    plugin/view_plugin.h
 
 FORMS    += main_window.ui \
     n_code_widget.ui \

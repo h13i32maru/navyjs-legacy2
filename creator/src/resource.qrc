@@ -5,6 +5,9 @@
         <file>icon/image.png</file>
         <file>icon/layout.png</file>
         <file>template/project.ncproject</file>
+        <file>template/plugin/built_in_view/manifest.json</file>
+        <file>template/plugin/built_in_view/navy.view.view.json</file>
+        <file>template/plugin/built_in_view/navy.view.text.json</file>
         <file>template/contents/navy/navy.js</file>
         <file>template/contents/navy/navy.min.js</file>
         <file>template/contents/creator/creator_page.js</file>

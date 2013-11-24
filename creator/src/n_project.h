@@ -37,6 +37,7 @@ public:
     QString contentsFilePath(const QString &relativePath) const;
     QString relativeLayoutFilePath(const QString &contentsFilePath) const;
     QString contentsDirPath() const;
+    QString pluginDirPath() const;
 
     bool validate();
     QStringList scenes();

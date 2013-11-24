@@ -1,0 +1,23 @@
+{
+  "class": "Navy.View.Text",
+  "define": [
+    {
+      "label": "text",
+      "key": "extra.text",
+      "type": "string",
+      "value": "text"
+    },
+    {
+      "label": "fontSize",
+      "key": "extra.fontSize",
+      "type": "number",
+      "value": 20
+    },
+    {
+      "label": "fontColor",
+      "key": "extra.fontColor",
+      "type": "string",
+      "value": "#000000"
+    }
+  ]
+}

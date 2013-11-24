@@ -5,6 +5,7 @@
 #include "window/n_text_dialog.h"
 #include "util/n_util.h"
 #include "n_project.h"
+#include "plugin/view_plugin.h"
 
 #include <QWebView>
 #include <QWebFrame>
@@ -13,6 +14,11 @@
 #include <QWebInspector>
 #include <QDebug>
 #include <QList>
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QTableView>
+
+#include <QStandardItemModel>
 
 #include <window/n_layout_setting_dialog.h>
 #include <ui_n_layout_setting_dialog.h>
@@ -53,6 +59,62 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     connect(mNative, SIGNAL(changedLayoutContentFromJS()), this, SLOT(changed()));
     connect(mNative, SIGNAL(viewsFromJS(NJson)), this, SLOT(setViewsFromJS(NJson)));
     connect(mNative, SIGNAL(selectedViewsFromJS(NJson)), this, SLOT(setSelectedsViewsFromJS(NJson)));
+
+
+    /*
+    QStandardItemModel *model = new QStandardItemModel(10, 2);
+    model->setHorizontalHeaderItem(0, new QStandardItem("hoge"));
+    model->setHorizontalHeaderItem(1, new QStandardItem("foo"));
+    ui->tableView->setModel(model);
+    QModelIndex index = model->index(0,0);
+    ui->tableView->setIndexWidget(index, new QLabel("test"));
+    index = model->index(0,1);
+    ui->tableView->setIndexWidget(index, new QCheckBox());
+    ui->tableView->setRowHeight(0, QLabel("AAA").sizeHint().height() * 1.5);
+
+    model->setItem(1,0, new QStandardItem("test2"));
+    index = model->index(1,1);
+//    ui->tableView->setIndexWidget(index, new QCheckBox());
+    ui->tableView->setIndexWidget(index, new QSpinBox());
+    */
+
+    // create property widget for view.
+    int height = QLabel("AAA").sizeHint().height() * 1.5;
+    QList<NJson> jsonList = ViewPlugin::instance()->getJsonList();
+    for (int i = 0; i < jsonList.length(); i++) {
+        NJson json = jsonList[i];
+        NJson widgetDefine = json.getObject("define");
+
+        QModelIndex modelIndex;
+        QStandardItemModel *model = new QStandardItemModel(widgetDefine.length(), 2);
+        model->setHorizontalHeaderItem(0, new QStandardItem("Property"));
+        model->setHorizontalHeaderItem(1, new QStandardItem("Value"));
+
+        QTableView *tableView = new QTableView();
+        ui->propScrollAreaWidgetContents->layout()->addWidget(tableView);
+        tableView->setModel(model);
+        tableView->horizontalHeader()->setStretchLastSection(true);
+        tableView->verticalHeader()->setHidden(true);
+
+        model->setItem(0, 0, new QStandardItem("class"));
+        modelIndex = model->index(0, 1);
+        tableView->setIndexWidget(modelIndex, new QLineEdit(json.getStr("class")));
+        tableView->setRowHeight(0, height);
+
+        for (int j = 0, row = 1; j < widgetDefine.length(); j++, row++) {
+            QString index = QString::number(j);
+            QString label = widgetDefine.getStr(index + ".label");
+            model->setItem(row, 0, new QStandardItem(label));
+            modelIndex = model->index(row, 1);
+            tableView->setIndexWidget(modelIndex, new QLineEdit(label));
+            tableView->setRowHeight(row, height);
+        }
+
+        qDebug() << widgetDefine.length() * height << tableView->sizeHint().height();
+        tableView->setMinimumHeight((widgetDefine.length() + 2) * height);
+        tableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        tableView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    }
 }
 
 void NLayoutWidget::toggleLayerTreeWidget() {

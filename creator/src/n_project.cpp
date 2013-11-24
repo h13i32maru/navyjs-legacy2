@@ -113,6 +113,10 @@ QString NProject::contentsDirPath() const {
     return mProjectDir.absoluteFilePath("contents");
 }
 
+QString NProject::pluginDirPath() const {
+    return mProjectDir.absoluteFilePath("plugin");
+}
+
 bool NProject::existsContentsFile(const QString &relativePath) {
     QString path = contentsFilePath(relativePath);
     return QFileInfo(path).exists();

@@ -1,0 +1,12 @@
+{
+  "name": "Navy Built-In View",
+  "version": "0.1",
+  "description": "Navy Built-in View.",
+  "author": "h13i32maru",
+  "url": "https://github.com/h13i32maru/navyjs",
+  "type": "view",
+  "scripts": [
+    "navy.view.view.json",
+    "navy.view.text.json"
+  ]
+}
