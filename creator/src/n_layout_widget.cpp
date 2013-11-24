@@ -61,8 +61,8 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     connect(mNative, SIGNAL(selectedViewsFromJS(NJson)), this, SLOT(setSelectedsViewsFromJS(NJson)));
 
     // create property widget for view.
-    ViewPlugin::instance()->createTableView(ui->propScrollAreaWidgetContents, &mPropMap);
-    mCurrentPropWidget = NULL;
+    ViewPlugin::instance()->createTableView(ui->propScrollAreaWidgetContents, &mPropMap, this, SLOT(syncWidgetToView()));
+    mCurrentExtraTableView = NULL;
     mPropMap["Navy.View.View"]->show();
 }
 
@@ -128,6 +128,16 @@ QString NLayoutWidget::contentLayoutJsonText() const {
 void NLayoutWidget::injectNativeBridge (){
     QWebView *webView = ui->webView;
     webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("Native"), mNative);
+}
+
+void NLayoutWidget::syncWidgetToView() {
+    QTableView *table = mPropMap["Navy.View.View"];
+    QTableView *extraTable = mCurrentExtraTableView;
+    NJson view;
+    ViewPlugin::instance()->syncWidgetToView(view, table, extraTable);
+
+//    emit mNative->changedViewPropertyToJS(view.toVariant());
+    qDebug() << view.stringify();
 }
 
 /***************************************************
@@ -245,11 +255,11 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
     // show prop widget for view class and sync views to widget
     QString className = views.getStr("0.class");
     if (mPropMap.contains(className)) {
-        if (mCurrentPropWidget != NULL) {
-            mCurrentPropWidget->hide();
+        if (mCurrentExtraTableView != NULL) {
+            mCurrentExtraTableView->hide();
         }
-        mCurrentPropWidget = mPropMap[className];
-        mCurrentPropWidget->show();
+        mCurrentExtraTableView = mPropMap[className];
+        mCurrentExtraTableView->show();
 
         // always show
         mPropMap["Navy.View.View"]->show();

@@ -32,7 +32,7 @@ private:
     Ui::NLayoutWidget *ui;
     NativeBridge *mNative;
 
-    QWidget *mCurrentPropWidget;
+    QTableView *mCurrentExtraTableView;
     QMap<QString, QTableView*> mPropMap;
 
     QString contentLayoutJsonText() const;
@@ -52,6 +52,7 @@ private slots:
     void addViewToJS(QTreeWidgetItem *item, int index);
     void deleteSelectedViewsToJS();
     void setSelectedsViewsFromJS(const NJson &json);
+    void syncWidgetToView();
 
     void alignTopToJS() { emit mNative->alignSelectedViewsToJS("TOP"); }
     void alignVCenterToJS(){ emit mNative->alignSelectedViewsToJS("V_CENTER"); }

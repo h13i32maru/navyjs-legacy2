@@ -55,7 +55,7 @@ QList<NJson> ViewPlugin::getJsonList() const {
     return mJsonList;
 }
 
-void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView*> *propMap) const{
+void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView*> *propMap, QObject *receiver, const char *slot) const{
     int height = QLabel("AAA").sizeHint().height() * 1.5;
 
     QList<NJson> jsonList = getJsonList();
@@ -93,16 +93,19 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
             if (type == "string") {
                 QLineEdit *l = new QLineEdit();
                 l->setText(widgetDefine.getStr(index + ".value"));
+                QObject::connect(l, SIGNAL(textChanged(QString)), receiver, slot);
                 widget = l;
             } else if (type == "number") {
                 QSpinBox *s = new QSpinBox();
                 s->setMinimum(0);
                 s->setMaximum(9999);
                 s->setValue(widgetDefine.getInt(index + ".value"));
+                QObject::connect(s, SIGNAL(valueChanged(int)), receiver, slot);
                 widget = s;
             } else if (type == "boolean") {
                 QCheckBox *c = new QCheckBox();
                 c->setChecked(widgetDefine.getBool(index + ".value"));
+                QObject::connect(c, SIGNAL(toggled(bool)), receiver, slot);
                 widget = c;
             } else if (type == "stringList") {
                 QComboBox *c = new QComboBox();
@@ -110,6 +113,7 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
                 for (int k = 0; k < strings.length(); k++) {
                     c->addItem(strings.getStr(QString::number(k)));
                 }
+                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             } else if (type == "numberList") {
                 QComboBox *c = new QComboBox();
@@ -117,26 +121,32 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
                 for (int k = 0; k < strings.length(); k++) {
                     c->addItem(strings.getStr(QString::number(k)));
                 }
+                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             } else if (type == "pageList") {
                 NComboBox *c = new NComboBox();
                 c->setList(NProject::instance()->pages());
+                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             } else if (type == "sceneList") {
                 NComboBox *c = new NComboBox();
                 c->setList(NProject::instance()->scenes());
+                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             } else if (type == "imageList") {
                 NComboBox *c = new NComboBox();
                 c->setList(NProject::instance()->images());
+                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             } else if (type == "layoutList") {
                 NComboBox *c = new NComboBox();
                 c->setList(NProject::instance()->layouts());
+                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             } else if (type == "linkList") {
                 NComboBox *c = new NComboBox();
                 c->setList(NProject::instance()->links());
+                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             }
 
@@ -158,12 +168,12 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
     }
 }
 
-void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *viewTable, QTableView *extraTable) {
+void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *viewTable, QTableView *extraTable) const {
     this->syncViewToWidget(view, viewTable);
     this->syncViewToWidget(view, extraTable);
 }
 
-void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) {
+void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
     QAbstractItemModel *model = table->model();
     QModelIndex index;
     for (int row = 0; row < model->rowCount(); row++) {
@@ -202,6 +212,54 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) {
         } else if (type == "layoutList") {
             NComboBox *c = (NComboBox*) widget;
             c->setCurrentText(view.getStr(key));
+        }
+    }
+}
+
+void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table, QTableView *extraTable) const {
+    this->syncWidgetToView(view, table);
+    this->syncWidgetToView(view, extraTable);
+}
+
+void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
+    QAbstractItemModel *model = table->model();
+    QModelIndex index;
+    for (int row = 0; row < model->rowCount(); row++) {
+        index = model->index(row, 1);
+        QWidget *widget = table->indexWidget(index);
+        QString type = widget->objectName().split(":")[0];
+        QString key = widget->objectName().split(":")[1];
+
+        if (type == "string") {
+            QLineEdit *l = (QLineEdit*) widget;
+            view.set(key, l->text());
+        } else if (type == "number") {
+            QSpinBox *s = (QSpinBox*) widget;
+            view.set(key, s->value());
+        } else if (type == "boolean") {
+            QCheckBox *c = (QCheckBox*) widget;
+            view.set(key, c->isChecked());
+        } else if (type == "stringList") {
+            QComboBox *c = (QComboBox*) widget;
+            view.set(key, c->currentText());
+        } else if (type == "numberList") {
+            QComboBox *c = (QComboBox*) widget;
+            view.set(key, c->currentText());
+        } else if (type == "pageList") {
+            NComboBox *c = (NComboBox*) widget;
+            view.set(key, c->currentText());
+        } else if (type == "sceneList") {
+            NComboBox *c = (NComboBox*) widget;
+            view.set(key, c->currentText());
+        } else if (type == "imageList") {
+            NComboBox *c = (NComboBox*) widget;
+            view.set(key, c->currentText());
+        } else if (type == "linkList") {
+            NComboBox *c = (NComboBox*) widget;
+            view.set(key, c->currentText());
+        } else if (type == "layoutList") {
+            NComboBox *c = (NComboBox*) widget;
+            view.set(key, c->currentText());
         }
     }
 }
