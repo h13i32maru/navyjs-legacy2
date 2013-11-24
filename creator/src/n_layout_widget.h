@@ -31,6 +31,9 @@ private:
     Ui::NLayoutWidget *ui;
     NativeBridge *mNative;
 
+    QWidget *mCurrentPropWidget;
+    QMap<QString, QWidget*> mPropMap;
+
     QString contentLayoutJsonText() const;
 
 private slots:

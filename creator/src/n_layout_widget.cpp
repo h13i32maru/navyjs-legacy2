@@ -110,11 +110,15 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
             tableView->setRowHeight(row, height);
         }
 
-        qDebug() << widgetDefine.length() * height << tableView->sizeHint().height();
         tableView->setMinimumHeight((widgetDefine.length() + 2) * height);
         tableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         tableView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        tableView->hide();
+
+        mPropMap[json.getStr("class")] = tableView;
     }
+    mCurrentPropWidget = NULL;
+    mPropMap["Navy.View.View"]->show();
 }
 
 void NLayoutWidget::toggleLayerTreeWidget() {
@@ -291,6 +295,16 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
         ui->layoutPropEdit->setEnabled(false);
     } else {
         ui->layoutPropEdit->setEnabled(true);
+    }
+
+    // show prop widget for view class
+    QString className = views.getStr("0.class");
+    if (mPropMap.contains(className)) {
+        if (mCurrentPropWidget != NULL) {
+            mCurrentPropWidget->hide();
+        }
+        mCurrentPropWidget = mPropMap[className];
+        mCurrentPropWidget->show();
     }
 }
 
