@@ -61,99 +61,7 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     connect(mNative, SIGNAL(selectedViewsFromJS(NJson)), this, SLOT(setSelectedsViewsFromJS(NJson)));
 
     // create property widget for view.
-    int height = QLabel("AAA").sizeHint().height() * 1.5;
-    QList<NJson> jsonList = ViewPlugin::instance()->getJsonList();
-    for (int i = 0; i < jsonList.length(); i++) {
-        NJson json = jsonList[i];
-        NJson widgetDefine = json.getObject("define");
-
-        QModelIndex modelIndex;
-        QStandardItemModel *model = new QStandardItemModel(widgetDefine.length(), 2);
-        model->setHorizontalHeaderItem(0, new QStandardItem("Property"));
-        model->setHorizontalHeaderItem(1, new QStandardItem("Value"));
-
-        QTableView *tableView = new QTableView();
-        ui->propScrollAreaWidgetContents->layout()->addWidget(tableView);
-        tableView->setModel(model);
-        tableView->horizontalHeader()->setStretchLastSection(true);
-        tableView->verticalHeader()->setHidden(true);
-
-        model->setItem(0, 0, new QStandardItem("class"));
-        modelIndex = model->index(0, 1);
-        tableView->setIndexWidget(modelIndex, new QLineEdit(json.getStr("class")));
-        tableView->setRowHeight(0, height);
-
-        for (int j = 0, row = 1; j < widgetDefine.length(); j++, row++) {
-            QString index = QString::number(j);
-            QString label = widgetDefine.getStr(index + ".label");
-            QString type = widgetDefine.getStr(index + ".type");
-            QWidget *widget = NULL;
-
-            if (type == "string") {
-                QLineEdit *l = new QLineEdit();
-                l->setText(widgetDefine.getStr(index + ".value"));
-                widget = l;
-            } else if (type == "number") {
-                QSpinBox *s = new QSpinBox();
-                s->setMinimum(0);
-                s->setMaximum(9999);
-                s->setValue(widgetDefine.getInt(index + ".value"));
-                widget = s;
-            } else if (type == "boolean") {
-                QCheckBox *c = new QCheckBox();
-                c->setChecked(widgetDefine.getBool(index + ".value"));
-                widget = c;
-            } else if (type == "stringList") {
-                QComboBox *c = new QComboBox();
-                NJson strings = widgetDefine.getObject(index + ".value");
-                for (int k = 0; k < strings.length(); k++) {
-                    c->addItem(strings.getStr(QString::number(k)));
-                }
-                widget = c;
-            } else if (type == "numberList") {
-                QComboBox *c = new QComboBox();
-                NJson strings = widgetDefine.getObject(index + ".value");
-                for (int k = 0; k < strings.length(); k++) {
-                    c->addItem(strings.getStr(QString::number(k)));
-                }
-                widget = c;
-            } else if (type == "pageList") {
-                NComboBox *c = new NComboBox();
-                c->setList(NProject::instance()->pages());
-                widget = c;
-            } else if (type == "sceneList") {
-                NComboBox *c = new NComboBox();
-                c->setList(NProject::instance()->scenes());
-                widget = c;
-            } else if (type == "imageList") {
-                NComboBox *c = new NComboBox();
-                c->setList(NProject::instance()->images());
-                widget = c;
-            } else if (type == "layoutList") {
-                NComboBox *c = new NComboBox();
-                c->setList(NProject::instance()->layouts());
-                widget = c;
-            } else if (type == "linkList") {
-                NComboBox *c = new NComboBox();
-                c->setList(NProject::instance()->links());
-                widget = c;
-            }
-
-            if (widget != NULL) {
-                model->setItem(row, 0, new QStandardItem(label));
-                modelIndex = model->index(row, 1);
-                tableView->setIndexWidget(modelIndex, widget);
-                tableView->setRowHeight(row, height);
-            }
-        }
-
-        tableView->setMinimumHeight((widgetDefine.length() + 2) * height);
-        tableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        tableView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        tableView->hide();
-
-        mPropMap[json.getStr("class")] = tableView;
-    }
+    ViewPlugin::instance()->createTableView(ui->propScrollAreaWidgetContents, &mPropMap);
     mCurrentPropWidget = NULL;
     mPropMap["Navy.View.View"]->show();
 }
@@ -334,7 +242,7 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
         ui->layoutPropEdit->setEnabled(true);
     }
 
-    // show prop widget for view class
+    // show prop widget for view class and sync views to widget
     QString className = views.getStr("0.class");
     if (mPropMap.contains(className)) {
         if (mCurrentPropWidget != NULL) {
@@ -342,6 +250,15 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
         }
         mCurrentPropWidget = mPropMap[className];
         mCurrentPropWidget->show();
+
+        // always show
+        mPropMap["Navy.View.View"]->show();
+
+        // sync
+        NJson view = views.getObject("0");
+        QTableView *table = mPropMap["Navy.View.View"];
+        QTableView *extraTable = mPropMap[className];
+        ViewPlugin::instance()->syncViewToWidget(view, table, extraTable);
     }
 }
 

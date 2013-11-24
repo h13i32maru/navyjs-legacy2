@@ -20,26 +20,26 @@
       "value": 0
     },
     {
-      "label": "sizePolicy(x)",
-      "key": "sizePolicy.x",
+      "label": "sizePolicy(width)",
+      "key": "sizePolicy.width",
       "type": "stringList",
       "value": ["fixed", "wrapContent", "matchParent"]
     },
     {
-      "label": "sizePolicy(y)",
-      "key": "sizePolicy.y",
+      "label": "sizePolicy(height)",
+      "key": "sizePolicy.height",
       "type": "stringList",
       "value": ["fixed", "wrapContent", "matchParent"]
     },
     {
-      "label": "size(x)",
-      "key": "size.x",
+      "label": "size(width)",
+      "key": "size.width",
       "type": "number",
       "value": 100
     },
     {
-      "label": "size(y)",
-      "key": "size.y",
+      "label": "size(height)",
+      "key": "size.height",
       "type": "number",
       "value": 100
     },

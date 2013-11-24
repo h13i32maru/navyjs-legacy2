@@ -5,6 +5,7 @@
 #include "native_bridge.h"
 #include "util/n_json.h"
 
+#include <QTableView>
 #include <QTreeWidgetItem>
 
 namespace Ui {
@@ -32,7 +33,7 @@ private:
     NativeBridge *mNative;
 
     QWidget *mCurrentPropWidget;
-    QMap<QString, QWidget*> mPropMap;
+    QMap<QString, QTableView*> mPropMap;
 
     QString contentLayoutJsonText() const;
 
