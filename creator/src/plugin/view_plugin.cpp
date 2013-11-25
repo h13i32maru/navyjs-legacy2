@@ -202,6 +202,8 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
         QString type = widget->objectName().split(":")[0];
         QString key = widget->objectName().split(":")[1];
 
+        widget->blockSignals(true);
+
         if (type == "string") {
             QLineEdit *l = (QLineEdit*) widget;
             l->setText(view.getStr(key));
@@ -233,6 +235,8 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
             NComboBox *c = (NComboBox*) widget;
             c->setCurrentText(view.getStr(key));
         }
+
+        widget->blockSignals(false);
     }
 }
 

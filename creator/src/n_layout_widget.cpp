@@ -279,20 +279,28 @@ void NLayoutWidget::setViewPosFromJS(int x, int y) {
     QSpinBox *s;
 
     s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:pos.x");
+    s->blockSignals(true);
     s->setValue(x);
+    s->blockSignals(false);
 
     s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:pos.y");
+    s->blockSignals(true);
     s->setValue(y);
+    s->blockSignals(false);
 }
 
 void NLayoutWidget::setViewSizeFromJS(int width, int height) {
     QSpinBox *s;
 
     s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:size.width");
+    s->blockSignals(true);
     s->setValue(width);
+    s->blockSignals(false);
 
     s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:size.height");
+    s->blockSignals(true);
     s->setValue(height);
+    s->blockSignals(false);
 }
 
 /*************************************************
