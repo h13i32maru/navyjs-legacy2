@@ -74,16 +74,34 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
         tableView->horizontalHeader()->setStretchLastSection(true);
         tableView->verticalHeader()->setHidden(true);
 
-        // set class
-        model->setItem(0, 0, new QStandardItem("class"));
-        modelIndex = model->index(0, 1);
-        QLineEdit *l = new QLineEdit(json.getStr("class"));
-        l->setReadOnly(true);
-        l->setObjectName("string:class");
-        tableView->setIndexWidget(modelIndex, l);
-        tableView->setRowHeight(0, height);
+        int row = 0;
+        QString className = json.getStr("class");
+        if (className == "Navy.View.View") {
+            row = 2;
 
-        for (int j = 0, row = 1; j < widgetDefine.length(); j++, row++) {
+            // set id
+            {
+                model->setItem(0, 0, new QStandardItem("id"));
+                modelIndex = model->index(0, 1);
+                QLineEdit *l = new QLineEdit();
+                l->setObjectName("string:id");
+                tableView->setIndexWidget(modelIndex, l);
+                tableView->setRowHeight(0, height);
+            }
+
+            // set class
+            {
+                model->setItem(1, 0, new QStandardItem("class"));
+                modelIndex = model->index(1, 1);
+                QLineEdit *l = new QLineEdit(className);
+                l->setReadOnly(true);
+                l->setObjectName("string:class");
+                tableView->setIndexWidget(modelIndex, l);
+                tableView->setRowHeight(1, height);
+            }
+        }
+
+        for (int j = 0; j < widgetDefine.length(); j++, row++) {
             QString index = QString::number(j);
             QString label = widgetDefine.getStr(index + ".label");
             QString type = widgetDefine.getStr(index + ".type");
@@ -159,7 +177,7 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
             }
         }
 
-        tableView->setMinimumHeight((widgetDefine.length() + 2) * height);
+        tableView->setMinimumHeight((row + 1 ) * height);
         tableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         tableView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         tableView->hide();
