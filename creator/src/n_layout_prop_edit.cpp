@@ -126,7 +126,7 @@ void NLayoutPropEdit::syncWidgetToJson() {
         mView.set("extra.disabled.src", ui->extraDisabledSrc->currentText());
     }
 
-    emit mNative->changedViewPropertyToJS(mView.toVariant());
+//    emit mNative->changedViewPropertyToJS(mView.toVariant());
 }
 
 void NLayoutPropEdit::hideAllExtraPropWidget() {

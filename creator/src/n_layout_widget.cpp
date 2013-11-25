@@ -138,8 +138,7 @@ void NLayoutWidget::syncWidgetToView() {
     NJson view;
     ViewPlugin::instance()->syncWidgetToView(view, table, extraTable);
 
-//    emit mNative->changedViewPropertyToJS(view.toVariant());
-    qDebug() << view.stringify();
+    emit mNative->changedViewPropertyToJS(view.toVariant());
 }
 
 /***************************************************
