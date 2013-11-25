@@ -42,7 +42,7 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     QString layoutPath = NProject::instance()->relativeLayoutFilePath(filePath);
     mNative->setLayoutPath(layoutPath);
     injectNativeBridge();
-    ui->layoutPropEdit->setNativeBridge(mNative);
+//    ui->layoutPropEdit->setNativeBridge(mNative);
 
     connect(ui->layerToggleButton, SIGNAL(clicked()), this, SLOT(toggleLayerTreeWidget()));
     connect(ui->propToggleButton, SIGNAL(clicked()), this, SLOT(toggleLayoutPropWidget()));
@@ -73,7 +73,7 @@ void NLayoutWidget::toggleLayerTreeWidget() {
 }
 
 void NLayoutWidget::toggleLayoutPropWidget() {
-    ui->layoutPropEdit->setVisible(ui->layoutPropEdit->isVisible() ^ true);
+//    ui->layoutPropEdit->setVisible(ui->layoutPropEdit->isVisible() ^ true);
 }
 
 void NLayoutWidget::toggleViewClassTreeWidget() {
@@ -118,7 +118,7 @@ bool NLayoutWidget::innerSave() {
 }
 
 void NLayoutWidget::refreshForActive() {
-    ui->layoutPropEdit->refreshForActive();
+//    ui->layoutPropEdit->refreshForActive();
 }
 
 QString NLayoutWidget::contentLayoutJsonText() const {
@@ -248,10 +248,10 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
 
     // 複数選択しているときはプロパティの設定をできないようにする
     if (views.length() >= 2) {
-        ui->layoutPropEdit->setEnabled(false);
+//        ui->layoutPropEdit->setEnabled(false);
         ui->propScrollAreaWidgetContents->setEnabled(false);
     } else {
-        ui->layoutPropEdit->setEnabled(true);
+//        ui->layoutPropEdit->setEnabled(true);
         ui->propScrollAreaWidgetContents->setEnabled(true);
     }
 
@@ -320,9 +320,9 @@ void NLayoutWidget::selectViewToJS() {
 
     // 複数選択しているときはプロパティの設定をできないようにする
     if (items.length() >= 2) {
-        ui->layoutPropEdit->setEnabled(false);
+//        ui->layoutPropEdit->setEnabled(false);
     } else {
-        ui->layoutPropEdit->setEnabled(true);
+//        ui->layoutPropEdit->setEnabled(true);
     }
 
     emit mNative->unselectAllViewsToJS();

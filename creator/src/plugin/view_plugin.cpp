@@ -184,6 +184,8 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
 
         propMap->insert(json.getStr("class"), tableView);
     }
+
+    ((QHBoxLayout *)parentWidget->layout())->addStretch();
 }
 
 void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *viewTable, QTableView *extraTable) const {
