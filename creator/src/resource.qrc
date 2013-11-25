@@ -8,6 +8,9 @@
         <file>template/plugin/built_in_view/manifest.json</file>
         <file>template/plugin/built_in_view/navy.view.view.json</file>
         <file>template/plugin/built_in_view/navy.view.text.json</file>
+        <file>template/plugin/built_in_view/navy.view.image.json</file>
+        <file>template/plugin/built_in_view/navy.view_group.view_group.json</file>
+        <file>template/plugin/built_in_view/navy.view_group.button.json</file>
         <file>template/contents/navy/navy.js</file>
         <file>template/contents/navy/navy.min.js</file>
         <file>template/contents/creator/creator_page.js</file>
