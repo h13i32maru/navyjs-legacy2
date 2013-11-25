@@ -250,8 +250,10 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
     // 複数選択しているときはプロパティの設定をできないようにする
     if (views.length() >= 2) {
         ui->layoutPropEdit->setEnabled(false);
+        ui->propScrollAreaWidgetContents->setEnabled(false);
     } else {
         ui->layoutPropEdit->setEnabled(true);
+        ui->propScrollAreaWidgetContents->setEnabled(true);
     }
 
     // show prop widget for view class and sync views to widget
@@ -324,10 +326,8 @@ void NLayoutWidget::selectViewToJS() {
         ui->layoutPropEdit->setEnabled(true);
     }
 
-    disconnect(mNative, SIGNAL(selectedViewsFromJS(NJson)), this, SLOT(setSelectedsViewsFromJS(NJson)));
     emit mNative->unselectAllViewsToJS();
     emit mNative->changedSelectedViewToJS(viewIds);
-    connect(mNative, SIGNAL(selectedViewsFromJS(NJson)), this, SLOT(setSelectedsViewsFromJS(NJson)));
 }
 
 void NLayoutWidget::addViewToJS(QTreeWidgetItem *item, int /* index */) {
