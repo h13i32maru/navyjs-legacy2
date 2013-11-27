@@ -248,12 +248,12 @@ QStringList NProject::links() {
     QStringList pages = this->pages();
     QStringList scenes = this->scenes();
 
-    list.append("$back");
-
+    list.append("page/$back");
     for (int i = 0; i < pages.length(); i++) {
         list.append("page/" + pages[i]);
     }
 
+    list.append("scene/$back");
     for (int i = 0; i < scenes.length(); i++) {
         list.append("scene/" + scenes[i]);
     }

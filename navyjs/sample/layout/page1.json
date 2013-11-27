@@ -6,8 +6,7 @@
     "pos": {"x": 0, "y": 100},
     "sizePolicy": {"width": "wrapContent", "height": "wrapContent"},
     "link": {
-      "type": "page",
-      "id": "Page2"
+      "id": "page/Page2"
     },
     "extra": {
       "contentLayoutFile": "layout/group1.json"
@@ -21,8 +20,7 @@
     "pos": {"x": 0, "y": 228},
     "sizePolicy": {"width": "wrapContent", "height": "wrapContent"},
     "link": {
-      "type": "page",
-      "id": "$back"
+      "id": "page/$back"
     },
     "extra": {
       "contentLayoutFile": "layout/group1.json"
@@ -36,8 +34,7 @@
     "pos": {"x": 0, "y": 356},
     "sizePolicy": {"width": "wrapContent", "height": "wrapContent"},
     "link": {
-      "type": "scene",
-      "id": "Scene2"
+      "id": "scene/Scene2"
     },
     "extra": {
       "contentLayoutFile": "layout/group1.json"
@@ -51,8 +48,7 @@
     "pos": {"x": 0, "y": 484},
     "sizePolicy": {"width": "wrapContent", "height": "wrapContent"},
     "link": {
-      "type": "scene",
-      "id": "$back"
+      "id": "scene/$back"
     },
     "extra": {
       "contentLayoutFile": "layout/group1.json"

@@ -7,8 +7,7 @@
     "sizePolicy": {"width": "fixed", "height": "fixed"},
     "size": {"width": 80, "height": 80},
     "link": {
-      "type": "page",
-      "id": "Page1"
+      "id": "page/Page1"
     },
     "extra": {
       "text": "go Page1"
@@ -22,8 +21,7 @@
     "sizePolicy": {"width": "fixed", "height": "fixed"},
     "size": {"width": 80, "height": 80},
     "link": {
-      "type": "page",
-      "id": "$back"
+      "id": "page/$back"
     },
     "extra": {
       "text": "back"

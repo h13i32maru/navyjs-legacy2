@@ -193,8 +193,9 @@ Navy.Class('Navy.View.View', {
     this.trigger('link', this, ev);
 
     // TODO: evがpreventDefault的なことをされていれば遷移しないようにする.
-    var type = this._layout.link.type;
-    var id = this._layout.link.id;
+    var tmp = this._layout.link.id.split('/');
+    var type = tmp[0];
+    var id = tmp[1];
 
     switch (type) {
     case 'page':
