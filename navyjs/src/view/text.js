@@ -50,7 +50,11 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
   setText: function(text) {
     this._layout.extra.text = text;
     this._textElement.textContent = text;
-    this.trigger('sizeChanged', this, null);
+
+    if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT || this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
+      this._updateSizeWithWrapContentSize();
+      this.trigger('sizeChanged', this, null);
+    }
   },
 
   getText: function() {
@@ -60,7 +64,11 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
   setFontSize: function(fontSize) {
     this._layout.extra.fontSize = fontSize;
     this._element.style.fontSize = fontSize + 'px';
-    this.trigger('sizeChanged', this, null);
+
+    if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT || this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
+      this._updateSizeWithWrapContentSize();
+      this.trigger('sizeChanged', this, null);
+    }
   },
 
   getFontSize: function() {
