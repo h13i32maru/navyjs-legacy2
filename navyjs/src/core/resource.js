@@ -2,14 +2,17 @@ Navy.Class.instance('Navy.Resource', {
   _layouts: null,
   _scripts: null,
   _images: null,
+  _loadingLayouts: null,
 
   initialize: function(){
     this._layouts = {};
     this._scripts = {};
     this._images = {};
+    this._loadingLayouts = {};
   },
 
   loadLayout: function(layoutFile, callback) {
+    // 既にローディング済みの場合はキャッシュから読み出す.
     if (this._layouts[layoutFile]) {
       var layoutText = this._layouts[layoutFile];
       var layout = JSON.parse(layoutText);
@@ -17,14 +20,27 @@ Navy.Class.instance('Navy.Resource', {
       return;
     }
 
+    // 現在ローディング中の場合は無駄なXHRを発行しない
+    if (this._loadingLayouts[layoutFile]) {
+      this._loadingLayouts[layoutFile].push(callback);
+      return;
+    }
+
+    this._loadingLayouts[layoutFile] = [callback];
+
     var xhr = new XMLHttpRequest();
     xhr.open('GET', layoutFile);
     xhr.onload = function(ev){
       var xhr = ev.target;
       var layoutText = xhr.responseText;
       this._layouts[layoutFile] = layoutText;
-      var layout = JSON.parse(layoutText);
-      callback(layout);
+      var callbacks = this._loadingLayouts[layoutFile];
+      this._loadingLayouts[layoutFile] = null;
+
+      for (var i = 0; i < callbacks.length; i++) {
+        var layout = JSON.parse(layoutText);
+        callbacks[i](layout);
+      }
     }.bind(this);
     xhr.send();
   },
