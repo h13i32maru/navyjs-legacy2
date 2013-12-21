@@ -15,6 +15,19 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
       for (var i = 0; i < items.length; i++) {
         var viewId = this._viewsOrder[i];
         var view = this.findViewById(viewId);
+        var item = items[i];
+
+        for (var key in item) {
+          var childView = view.findViewById(key);
+          if (!childView) { continue; }
+
+          if (childView.setText) {
+            childView.setText(item[key]);
+          } else if (childView.setSrc) {
+            childView.setSrc(item[key]);
+          }
+        }
+
         view.getElement().style.position = 'relative';
         view.getElement().style.marginBottom = margin;
         view.setVisible(true);
