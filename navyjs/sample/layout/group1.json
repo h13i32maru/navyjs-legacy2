@@ -1,12 +1,22 @@
 [
   {
+    "id": "bg",
+    "class": "Navy.View.View",
+    "visible": true,
+    "sizePolicy": {"width": "fixed", "height": "fixed"},
+    "size": {"width": 600, "height": 168},
+    "pos": {"x": 0, "y": 0},
+    "backgroundColor": "#aaaaaa"
+  },
+  {
     "id": "image",
     "visible": true,
-    "class": "Navy.ViewGroup.Button",
-    "sizePolicy": {"width": "wrapContent", "height": "wrapContent"},
-    "pos": {"x": 0, "y": 0},
+    "class": "Navy.View.Image",
+    "sizePolicy": {"width": "fixed", "height": "fixed"},
+    "size": {"width": 128, "height": 128},
+    "pos": {"x": 0, "y": 20},
     "extra": {
-      "text": "NavyJS",
+      "text": "N",
       "fontSize": 20,
       "fontColor": "#ffffff",
       "normal": {
@@ -20,13 +30,12 @@
       }
     }
   },
-
   {
     "id": "text",
     "class": "Navy.View.Text",
     "visible": true,
     "sizePolicy": {"width": "wrapContent", "height": "wrapContent"},
-    "pos": {"x": 80, "y": 80},
+    "pos": {"x": 148, "y": 20},
     "extra": {
       "text": "NavyJS",
       "fontSize": 20

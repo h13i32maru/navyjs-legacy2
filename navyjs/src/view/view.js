@@ -54,7 +54,6 @@ Navy.Class('Navy.View.View', {
 
     function onApplyLayout() {
       this._updateSizeWithWrapContentSize();
-      this._element.style.visibility = '';
       callback && callback(this);
     }
 
@@ -340,9 +339,9 @@ Navy.Class('Navy.View.View', {
     this._layout.visible = visible;
 
     if (visible) {
-      this._element.style.display = 'block';
+      this._element.style.visibility = '';
     } else {
-      this._element.style.display = 'none';
+      this._element.style.visibility = 'hidden';
     }
   },
 
