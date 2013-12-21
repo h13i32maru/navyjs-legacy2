@@ -1,7 +1,6 @@
 #include "n_layout_widget.h"
 #include "native_bridge.h"
 #include "ui_n_layout_widget.h"
-//#include "n_layout_prop_edit.h"
 #include "window/n_text_dialog.h"
 #include "util/n_util.h"
 #include "n_project.h"
