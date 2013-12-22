@@ -7,6 +7,9 @@ Navy.Class('Page1', Navy.Page, {
     for (var i = 0; i < 30; i++) {
       items.push({id: i, name: 'name' + i});
     }
-    listView.setItems(items);
+
+    listView.setItems(items, function(item, viewGroup){
+      viewGroup.findViewById('name').setText(item.name.toUpperCase());
+    });
   }
 });

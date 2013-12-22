@@ -16,16 +16,16 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
     }
   },
 
-  setItems: function(items) {
+  setItems: function(items, callback) {
     this.clear();
-    this.insertItems(items, 0);
+    this.insertItems(items, 0, callback);
   },
 
-  addItems: function(items) {
-    this.insertItems(items, this._viewsOrder.length);
+  addItems: function(items, callback) {
+    this.insertItems(items, this._viewsOrder.length, callback);
   },
 
-  insertItems: function(items, index) {
+  insertItems: function(items, index, callback) {
     // 範囲チェック
     if (index < 0 || index > this._viewsOrder.length) {
       throw new Error('out of range. index = ' + index);
@@ -45,15 +45,23 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
         var view = viewGroups[i];
         var item = items[i];
 
-        // itemのキーをviewのidと解釈して値を設定する.
-        for (var key in item) {
-          var childView = view.findViewById(key);
-          if (!childView) { continue; }
+        var callbackResult = false;
+        if (callback) {
+          callbackResult = callback(item, view, i, currentViewCount + i);
+        }
 
-          if (childView.setText) {
-            childView.setText(item[key]);
-          } else if (childView.setSrc) {
-            childView.setSrc(item[key]);
+        // undefinedの場合はtrueとして扱いたいので===で比較している.
+        if (callbackResult === false) {
+          // itemのキーをviewのidと解釈して値を設定する.
+          for (var key in item) {
+            var childView = view.findViewById(key);
+            if (!childView) { continue; }
+
+            if (childView.setText) {
+              childView.setText(item[key]);
+            } else if (childView.setSrc) {
+              childView.setSrc(item[key]);
+            }
           }
         }
 
