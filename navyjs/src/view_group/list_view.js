@@ -7,6 +7,14 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
     $super(layout, callback);
 
     this._element.style.overflow = 'scroll';
+
+    if (this._layout.extra.mock) {
+      var items = [];
+      for (var i = 0; i < 30; i++) {
+        items.push({});
+      }
+      this.setItems(items);
+    }
   },
 
   clear: function() {
