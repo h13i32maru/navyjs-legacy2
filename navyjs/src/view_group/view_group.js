@@ -116,8 +116,13 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     }
 
     var size = this._calcWrapContentSize();
-    this._element.style.width = size.width + 'px';
-    this._element.style.height = size.height + 'px';
+    if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT) {
+      this._element.style.width = size.width + 'px';
+    }
+
+    if (this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
+      this._element.style.height = size.height + 'px';
+    }
   },
 
   _calcWrapContentSize: function() {

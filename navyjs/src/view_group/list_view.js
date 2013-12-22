@@ -9,14 +9,43 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
     this._element.style.overflow = 'scroll';
   },
 
+  clear: function() {
+    for (var viewId in this._views) {
+      var view = this._views[viewId];
+      this.removeView(view);
+    }
+  },
+
   setItems: function(items) {
+    this.clear();
+    this.insertItems(items, 0);
+  },
+
+  addItems: function(items) {
+    this.insertItems(items, this._viewsOrder.length);
+  },
+
+  insertItems: function(items, index) {
+    // 範囲チェック
+    if (index < 0 || index > this._viewsOrder.length) {
+      throw new Error('out of range. index = ' + index);
+    }
+
+    // 一番最後のindexを指定した場合はaddになる. そうでない場合は指定したindexに挿入.
+    if (index === this._viewsOrder.length) {
+      var referenceView = null;
+    } else {
+      var viewId = this._viewsOrder[index];
+      var referenceView = this.findViewById(viewId);
+    }
+
     var notify = new Navy.Notify(items.length, function(){
       var margin = this._layout.extra.itemLayoutMargin + 'px';
       for (var i = 0; i < items.length; i++) {
-        var viewId = this._viewsOrder[i];
-        var view = this.findViewById(viewId);
+        var view = viewGroups[i];
         var item = items[i];
 
+        // itemのキーをviewのidと解釈して値を設定する.
         for (var key in item) {
           var childView = view.findViewById(key);
           if (!childView) { continue; }
@@ -35,9 +64,11 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
     }.bind(this));
     var pass = notify.pass.bind(notify);
 
+    var currentViewCount = this._viewsOrder.length;
+    var viewGroups = [];
     for (var i = 0; i < items.length; i++) {
       var layout = {
-        id: 'item' + i,
+        id: 'item' + (currentViewCount + i),
         visible: false,
         sizePolicy: {width: 'wrapContent', height: 'wrapContent'},
         pos: {x: 0, y:0},
@@ -47,7 +78,8 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
       };
 
       var viewGroup = new Navy.ViewGroup.ViewGroup(layout, pass);
-      this.addView(viewGroup);
+      this.addView(viewGroup, referenceView);
+      viewGroups.push(viewGroup);
     }
   }
 });

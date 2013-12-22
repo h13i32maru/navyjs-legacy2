@@ -4,8 +4,8 @@
     "class": "Navy.ViewGroup.ListView",
     "visible": true,
     "pos": {"x": 0, "y": 100},
-    "sizePolicy": {"width": "wrapContent", "height": "fixed"},
-    "size": {"width": 0, "height": 600},
+    "sizePolicy": {"width": "fixed", "height": "fixed"},
+    "size": {"width": 640, "height": 600},
     "extra": {
       "itemLayoutFile": "layout/group1.json",
       "itemLayoutMargin": 10
