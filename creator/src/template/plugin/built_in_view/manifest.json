@@ -10,6 +10,7 @@
     "navy.view.text.json",
     "navy.view.image.json",
     "navy.view_group.view_group.json",
-    "navy.view_group.button.json"
+    "navy.view_group.button.json",
+    "navy.view_group.list_view.json"
   ]
 }

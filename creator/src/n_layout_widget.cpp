@@ -64,6 +64,14 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     ViewPlugin::instance()->createTableView(ui->propScrollAreaWidgetContents, &mPropMap, this, SLOT(syncWidgetToView()));
     mCurrentExtraTableView = NULL;
     mPropMap["Navy.View.View"]->show();
+    QStringList viewClassNames = mPropMap.keys();
+    for (QString className: viewClassNames) {
+        QTreeWidgetItem *item = new QTreeWidgetItem();
+        QString label = className.split(".").last();
+        item->setText(ViewClassColName, label);
+        item->setText(ViewClassColClass, className);
+        ui->viewClassTreeWidget->addTopLevelItem(item);
+    }
 }
 
 void NLayoutWidget::toggleLayerTreeWidget() {

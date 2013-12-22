@@ -1,0 +1,22 @@
+{
+  "class": "Navy.ViewGroup.ListView",
+  "define": [
+    {
+      "label": "mock",
+      "key": "extra.mock",
+      "type": "boolean",
+      "value": false
+    },
+    {
+      "label": "itemLayoutFile",
+      "key": "extra.itemLayoutFile",
+      "type": "layoutList"
+    },
+    {
+      "label": "itemLayoutMargin",
+      "key": "extra.itemLayoutMargin",
+      "type": "number",
+      "value": 10
+    }
+  ]
+}
