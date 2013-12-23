@@ -4,7 +4,8 @@
     {
       "label": "src",
       "key": "extra.src",
-      "type": "imageList"
+      "type": "imageList",
+      "value": ""
     }
   ]
 }

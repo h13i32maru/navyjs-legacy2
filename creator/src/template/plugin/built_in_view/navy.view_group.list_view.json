@@ -10,7 +10,8 @@
     {
       "label": "itemLayoutFile",
       "key": "extra.itemLayoutFile",
-      "type": "layoutList"
+      "type": "layoutList",
+      "value": ""
     },
     {
       "label": "itemLayoutMargin",

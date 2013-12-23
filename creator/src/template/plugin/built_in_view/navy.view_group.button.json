@@ -22,17 +22,20 @@
     {
       "label": "normal(src)",
       "key": "extra.normal.src",
-      "type": "imageList"
+      "type": "imageList",
+      "value": ""
     },
     {
       "label": "active(src)",
       "key": "extra.active.src",
-      "type": "imageList"
+      "type": "imageList",
+      "value": ""
     },
     {
       "label": "disabled(src)",
       "key": "extra.disabled.src",
-      "type": "imageList"
+      "type": "imageList",
+      "value": ""
     }
   ]
 }

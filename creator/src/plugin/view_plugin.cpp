@@ -148,6 +148,7 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
             } else if (type == "pageList") {
                 NComboBox *c = new NComboBox();
                 c->setList(NProject::instance()->pages());
+                viewJson.set(key, widgetDefine.getStr(index + ".value"));
                 QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             } else if (type == "sceneList") {
@@ -158,16 +159,19 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
             } else if (type == "imageList") {
                 NComboBox *c = new NComboBox();
                 c->setList(NProject::instance()->images());
+                viewJson.set(key, widgetDefine.getStr(index + ".value"));
                 QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             } else if (type == "layoutList") {
                 NComboBox *c = new NComboBox();
                 c->setList(NProject::instance()->layouts());
+                viewJson.set(key, widgetDefine.getStr(index + ".value"));
                 QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             } else if (type == "linkList") {
                 NComboBox *c = new NComboBox();
                 c->setList(NProject::instance()->links());
+                viewJson.set(key, widgetDefine.getStr(index + ".value"));
                 QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             }
