@@ -10,5 +10,19 @@
       "itemLayoutFile": "layout/group1.json",
       "itemLayoutMargin": 10
     }
+  },
+  {
+    "id": "text_edit",
+    "class": "Navy.View.TextEdit",
+    "visible": true,
+    "pos": {"x": 0, "y": 700},
+    "sizePolicy": {"width": "fixed", "height": "fixed"},
+    "size": {"width": 300, "height": 50},
+    "extra": {
+      "text": "",
+      "fontSize": 20,
+      "fontColor": "#000000",
+      "placeHolder": "user name"
+    }
   }
 ]

@@ -45,6 +45,15 @@ TextLayout;
 ImageLayout;
 
 /**
+ * @typedef {TextLayout | {
+ *  extra: {
+ *    placeHolder: string
+ *  }
+ * }}
+ */
+TextEditLayout;
+
+/**
  * @typedef {ViewLayout | {
  *  extra: {
  *    text: string,
