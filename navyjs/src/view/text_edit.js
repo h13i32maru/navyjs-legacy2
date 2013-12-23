@@ -42,7 +42,7 @@ Navy.Class('Navy.View.TextEdit', Navy.View.View, {
 
     this.setFontSize(layout.extra.fontSize);
     this.setFontColor(layout.extra.fontColor);
-    this.setPlaceHolder(layout.extra.placeHolder);
+    this.setPlaceholder(layout.extra.placeholder);
 
     $super(layout, callback);
   },
@@ -84,12 +84,12 @@ Navy.Class('Navy.View.TextEdit', Navy.View.View, {
     return this._layout.extra.fontColor;
   },
 
-  getPlaceHolder: function() {
+  getPlaceholder: function() {
     return this._layout.extra.placeHolder;
   },
 
-  setPlaceHolder: function(placeHolder) {
-    this._textElement.placeholder = placeHolder;
-    this._layout.extra.placeHolder = placeHolder;
+  setPlaceholder: function(placeholder) {
+    this._textElement.placeholder = placeholder;
+    this._layout.extra.placeholder = placeholder;
   }
 });

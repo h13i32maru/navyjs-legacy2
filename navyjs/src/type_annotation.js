@@ -47,7 +47,7 @@ ImageLayout;
 /**
  * @typedef {TextLayout | {
  *  extra: {
- *    placeHolder: string
+ *    placeholder: string
  *  }
  * }}
  */

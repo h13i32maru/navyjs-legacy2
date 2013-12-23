@@ -22,7 +22,7 @@
       "text": "",
       "fontSize": 20,
       "fontColor": "#000000",
-      "placeHolder": "user name"
+      "placeholder": "user name"
     }
   }
 ]
