@@ -9,6 +9,7 @@
         <file>template/plugin/built_in_view/navy.view.view.json</file>
         <file>template/plugin/built_in_view/navy.view.text.json</file>
         <file>template/plugin/built_in_view/navy.view.image.json</file>
+        <file>template/plugin/built_in_view/navy.view.text_edit.json</file>
         <file>template/plugin/built_in_view/navy.view_group.view_group.json</file>
         <file>template/plugin/built_in_view/navy.view_group.button.json</file>
         <file>template/plugin/built_in_view/navy.view_group.list_view.json</file>
