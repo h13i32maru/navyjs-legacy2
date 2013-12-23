@@ -1696,6 +1696,8 @@ Navy.Class('Navy.Page', Navy.ViewGroup.ViewGroup, {
 // file: src/view_screen/root.js
 Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   _sceneStack: null,
+  _loadingElement: null,
+  _loadingCount: 0,
 
   /**
    * @param $super
@@ -1711,6 +1713,7 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     };
 
     this._initDocument();
+    this._initLoading();
     var rootElm = document.createElement('div');
     rootElm.style.cssText = 'position:absolute; width:100%; height:100%; overflow:hidden;';
     document.body.appendChild(rootElm);
@@ -1757,6 +1760,27 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     }
   },
 
+  startLoading: function() {
+    if (this._loadingCount === 0) {
+      document.body.appendChild(this._loadingElement);
+      this._loadingElement.addEventListener('touchstart', this._preventDOMEvent, true);
+    }
+
+    this._loadingCount++;
+  },
+
+  stopLoading: function() {
+    if (this._loadingCount === 0) {
+      return;
+    }
+
+    this._loadingCount--;
+    if (this._loadingCount === 0) {
+      document.body.removeChild(this._loadingElement);
+      this._loadingElement.removeEventListener('touchstart', this._preventDOMEvent, true);
+    }
+  },
+
   _initDocument: function(){
     var style = '* {margin:0; padding:0; -webkit-user-select: none; -webkit-user-drag:none;} html {width:100%; height:100%} body {background-color:#000;}';
     var styleElm = document.createElement('style');
@@ -1782,6 +1806,35 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     // FIXME: Google Chrome, Android Browser, Android Chrome, Mobile Safariでどうなっているか最新のバージョンで確かめる必要あり.
     document.body.style.left = (left / scale) + 'px';
     document.body.style.top = (top / scale) + 'px';
+  },
+
+  _initLoading: function() {
+    var width = Navy.Config.app.size.width;
+    var height = Navy.Config.app.size.height;
+
+    var elm = document.createElement('div');
+    elm.style.cssText = 'position: absolute; top:0; left:0; background: rgba(0,0,0,0.8)';
+    elm.style.width = width + 'px';
+    elm.style.height = height + 'px';
+
+    var imgWidth = width * 0.15;
+    var img = document.createElement('img');
+    img.onload = function() {
+      this.style.left = (width/2 -  this.width/ 2) + 'px';
+      this.style.top = (height/2 - this.height/2) + 'px';
+      this.onload = null;
+    };
+    img.src = 'image/loading.png';
+    img.style.position = 'absolute';
+    img.width = imgWidth;
+    img.style.cssText += '-webkit-animation-name: navy_loading; -webkit-animation-duration: 1s; -webkit-animation-timing-function: linear; -webkit-animation-iteration-count: infinite;';
+    elm.appendChild(img);
+
+    this._loadingElement = elm;
+
+    var style = document.createElement('style');
+    style.textContent = '@-webkit-keyframes navy_loading { 0% { -webkit-transform: rotate(0deg); }  100% { -webkit-transform: rotate(360deg); }';
+    document.head.appendChild(style);
   },
 
   _createScene: function(sceneName, callback) {
