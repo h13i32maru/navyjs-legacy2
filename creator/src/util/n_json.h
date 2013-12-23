@@ -50,6 +50,7 @@ public:
     void set(QString keysStr, bool value);
     void set(QString keysStr, int value);
     void set(QString keysStr, QString value);
+    void set(QString keysStr, NJson value);
 
     void remove(const QString &keysStr);
 

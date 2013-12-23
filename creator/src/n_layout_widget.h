@@ -34,6 +34,7 @@ private:
 
     QTableView *mCurrentExtraTableView;
     QMap<QString, QTableView*> mPropMap;
+    QMap<QString, NJson> mDefaultMap;
 
     QString contentLayoutJsonText() const;
 

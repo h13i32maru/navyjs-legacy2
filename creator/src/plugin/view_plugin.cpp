@@ -55,7 +55,7 @@ QList<NJson> ViewPlugin::getJsonList() const {
     return mJsonList;
 }
 
-void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView*> *propMap, QObject *receiver, const char *slot) const{
+void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView*> *propMap, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot) const{
     int height = QLabel("AAA").sizeHint().height() * 1.5;
 
     QList<NJson> jsonList = getJsonList();
@@ -101,6 +101,8 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
             }
         }
 
+        NJson viewJson;
+
         for (int j = 0; j < widgetDefine.length(); j++, row++) {
             QString index = QString::number(j);
             QString label = widgetDefine.getStr(index + ".label");
@@ -110,24 +112,25 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
 
             if (type == "string") {
                 QLineEdit *l = new QLineEdit();
-                l->setText(widgetDefine.getStr(index + ".value"));
+                viewJson.set(key, widgetDefine.getStr(index + ".value"));
                 QObject::connect(l, SIGNAL(textChanged(QString)), receiver, slot);
                 widget = l;
             } else if (type == "number") {
                 QSpinBox *s = new QSpinBox();
                 s->setMinimum(0);
                 s->setMaximum(9999);
-                s->setValue(widgetDefine.getInt(index + ".value"));
+                viewJson.set(key, widgetDefine.getInt(index + ".value"));
                 QObject::connect(s, SIGNAL(valueChanged(int)), receiver, slot);
                 widget = s;
             } else if (type == "boolean") {
                 QCheckBox *c = new QCheckBox();
-                c->setChecked(widgetDefine.getBool(index + ".value"));
+                viewJson.set(key, widgetDefine.getBool(index + ".value"));
                 QObject::connect(c, SIGNAL(toggled(bool)), receiver, slot);
                 widget = c;
             } else if (type == "stringList") {
                 QComboBox *c = new QComboBox();
                 NJson strings = widgetDefine.getObject(index + ".value");
+                viewJson.set(key, strings.getStr("0"));
                 for (int k = 0; k < strings.length(); k++) {
                     c->addItem(strings.getStr(QString::number(k)));
                 }
@@ -136,6 +139,7 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
             } else if (type == "numberList") {
                 QComboBox *c = new QComboBox();
                 NJson strings = widgetDefine.getObject(index + ".value");
+                viewJson.set(key, strings.getInt("0"));
                 for (int k = 0; k < strings.length(); k++) {
                     c->addItem(strings.getStr(QString::number(k)));
                 }
@@ -182,7 +186,8 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
         tableView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         tableView->hide();
 
-        propMap->insert(json.getStr("class"), tableView);
+        propMap->insert(className, tableView);
+        defaultMap->insert(className, viewJson);
     }
 
     ((QHBoxLayout *)parentWidget->layout())->addStretch();

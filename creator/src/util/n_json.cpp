@@ -138,6 +138,10 @@ void NJson::set(QString keysStr, QString value)
     mRootValue = set(mRootValue, keysStr, QJsonValue(value));
 }
 
+void NJson::set(QString keysStr, NJson value)
+{
+    mRootValue = set(mRootValue, keysStr, QJsonValue::fromVariant(value.toVariant()));
+}
 
 // 再帰を利用して値を更新する
 // QJsonValueなどは基本的にリファレンスで値を保持しているわけではないので、値を更新する場合は再帰的に値を更新していく必要がある

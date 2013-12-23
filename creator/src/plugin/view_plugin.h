@@ -2,6 +2,7 @@
 #define VIEW_PLUGIN_H
 
 #include <QList>
+#include <QMap>
 #include <QTableView>
 #include "util/n_json.h"
 
@@ -17,7 +18,7 @@ private:
 
 public:
     void load(const QString &pluginDirPath);
-    void createTableView(QWidget *parentWidget, QMap<QString, QTableView*> *propMap, QObject *receiver, const char *slot) const;
+    void createTableView(QWidget *parentWidget, QMap<QString, QTableView*> *propMap, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot) const;
     void syncViewToWidget(const NJson &view, QTableView *viewTable, QTableView *extraTable) const;
     void syncViewToWidget(const NJson &view, QTableView *Table) const;
     void syncWidgetToView(NJson &view, QTableView *table, QTableView *extraTable) const;

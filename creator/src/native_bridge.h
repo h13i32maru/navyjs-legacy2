@@ -53,7 +53,7 @@ signals:
     void changedViewPropertyToJS(const QVariant &json);
 
     // Viewが追加されたときにJSに送信される
-    void addViewToJS(const QString &viewId, const QString &viewClass);
+    void addViewToJS(const QString &viewId, const QString &viewClass, const QVariant &json);
 
     // Viewが削除された時にJSに送信される
     void deleteSelectedViewsToJS();

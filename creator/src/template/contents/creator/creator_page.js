@@ -91,34 +91,9 @@ Navy.Class('CreatorPage', Navy.Page, {
     return order;
   },
 
-  _addView: function(viewId, viewClass) {
-    var layout = {
-      id: viewId,
-      class: viewClass,
-      visible: true,
-      pos: {x: 0, y: 0},
-      sizePolicy: {width: 'fixed', height: 'fixed'},
-      size: {width: 100, height: 100},
-      extra: {}
-    };
-
-    switch (viewClass) {
-    case 'Navy.View.Text':
-      layout.extra.text = 'text';
-      layout.extra.fontSize = 20;
-      break;
-    case 'Navy.View.Image':
-      layout.extra.src = null;
-      break;
-    case 'Navy.ViewGroup.ViewGroup':
-      layout.extra.contentLayoutFile = null;
-      break;
-    case 'Navy.ViewGroup.Button':
-      layout.extra.normal = {};
-      layout.extra.active = {};
-      layout.extra.disabled = {};
-      break;
-    }
+  _addView: function(viewId, viewClass, layout) {
+    layout.id = viewId;
+    layout.class = viewClass;
 
     var _class = Navy.Resource.getClass(viewClass);
     var view = new _class(layout, function(){

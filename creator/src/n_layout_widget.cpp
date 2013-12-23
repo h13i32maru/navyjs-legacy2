@@ -61,7 +61,7 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     connect(mNative, SIGNAL(currentViewSizeFromJS(int,int)), this, SLOT(setViewSizeFromJS(int,int)));
 
     // create property widget for view.
-    ViewPlugin::instance()->createTableView(ui->propScrollAreaWidgetContents, &mPropMap, this, SLOT(syncWidgetToView()));
+    ViewPlugin::instance()->createTableView(ui->propScrollAreaWidgetContents, &mPropMap, &mDefaultMap, this, SLOT(syncWidgetToView()));
     mCurrentExtraTableView = NULL;
     mPropMap["Navy.View.View"]->show();
     QStringList viewClassNames = mPropMap.keys();
@@ -359,7 +359,11 @@ void NLayoutWidget::addViewToJS(QTreeWidgetItem *item, int /* index */) {
     viewsItem->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemNeverHasChildren);
     tree->addTopLevelItem(viewsItem);
 
-    emit mNative->addViewToJS(viewId, viewClass);
+    NJson viewJson = mDefaultMap["Navy.View.View"];
+    NJson extraViewJson = mDefaultMap[viewClass];
+    viewJson.set("extra", extraViewJson.getObject("extra"));
+
+    emit mNative->addViewToJS(viewId, viewClass, viewJson.toVariant());
 }
 
 void NLayoutWidget::deleteSelectedViewsToJS() {
