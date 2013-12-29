@@ -422,7 +422,14 @@ Navy.Class('CreatorPage', Navy.Page, {
      */
 
     var views = this._selectedViews;
-    var view = views[0];
+
+    if (type.indexOf('ROOT_') === 0) {
+      // Rootを起点とする場合はanchorViewを選択されたものじゃなくてRoot固定にして、typeをちょっといじる.
+      var anchorView = Navy.Root;
+      type = type.substr(5);
+    } else {
+      var anchorView = views[0];
+    }
 
     if (type === 'TOP' || type === 'V_CENTER' || type === 'BOTTOM') {
       switch(type) {
@@ -437,9 +444,12 @@ Navy.Class('CreatorPage', Navy.Page, {
         break;
       }
 
-      var anchor = view.getPos().y + parseInt(view.getSize().height * delta, 10);
-      for (var i = 1; i < views.length; i++) {
+      var anchor = anchorView.getPos().y + parseInt(anchorView.getSize().height * delta, 10);
+      for (var i = 0; i < views.length; i++) {
         var view = views[i];
+        if (view === anchorView) {
+          continue;
+        }
         var box = view.__box__;
         var pos = view.getPos();
         var size = view.getSize();
@@ -462,9 +472,12 @@ Navy.Class('CreatorPage', Navy.Page, {
         break;
       }
 
-      var anchor = view.getPos().x + parseInt(view.getSize().width * delta, 10);
-      for (var i = 1; i < views.length; i++) {
+      var anchor = anchorView.getPos().x + parseInt(anchorView.getSize().width * delta, 10);
+      for (var i = 0; i < views.length; i++) {
         var view = views[i];
+        if (view === anchorView) {
+          continue;
+        }
         var box = view.__box__;
         var pos = view.getPos();
         var size = view.getSize();
