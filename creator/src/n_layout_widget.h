@@ -57,12 +57,19 @@ private slots:
     void setViewPosFromJS(int x, int y);
     void setViewSizeFromJS(int width, int height);
 
-    void alignTopToJS() { emit mNative->alignSelectedViewsToJS("TOP"); }
-    void alignVCenterToJS(){ emit mNative->alignSelectedViewsToJS("V_CENTER"); }
-    void alignBottomToJS() { emit mNative->alignSelectedViewsToJS("BOTTOM"); }
     void alignLeftToJS() { emit mNative->alignSelectedViewsToJS("LEFT"); }
     void alignHCenterToJS() { emit mNative->alignSelectedViewsToJS("H_CENTER"); }
     void alignRightToJS() { emit mNative->alignSelectedViewsToJS("RIGHT"); }
+    void alignTopToJS() { emit mNative->alignSelectedViewsToJS("TOP"); }
+    void alignVCenterToJS(){ emit mNative->alignSelectedViewsToJS("V_CENTER"); }
+    void alignBottomToJS() { emit mNative->alignSelectedViewsToJS("BOTTOM"); }
+
+    void alignRootLeftToJS() { emit mNative->alignSelectedViewsToJS("ROOT_LEFT"); }
+    void alignRootHCenterToJS() { emit mNative->alignSelectedViewsToJS("ROOT_H_CENTER"); }
+    void alignRootRightToJS() { emit mNative->alignSelectedViewsToJS("ROOT_RIGHT"); }
+    void alignRootTopToJS() { emit mNative->alignSelectedViewsToJS("ROOT_TOP"); }
+    void alignRootVCenterToJS(){ emit mNative->alignSelectedViewsToJS("ROOT_V_CENTER"); }
+    void alignRootBottomToJS() { emit mNative->alignSelectedViewsToJS("ROOT_BOTTOM"); }
 
     void arrangeHorizontalClosely() { emit mNative->arrangeSelectedViewsToJS("H_CLOSELY"); }
     void arrangeVerticalClosely() { emit mNative->arrangeSelectedViewsToJS("V_CLOSELY"); }
