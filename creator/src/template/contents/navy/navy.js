@@ -1709,7 +1709,8 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     this._layout = {
       visible: true,
       sizePolicy: {width: this.SIZE_POLICY_FIXED, height: this.SIZE_POLICY_FIXED},
-      size: {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height}
+      size: {width: Navy.Config.app.size.width, height: Navy.Config.app.size.height},
+      pos: {x: 0, y: 0}
     };
 
     this._initDocument();
