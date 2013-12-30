@@ -67,6 +67,9 @@ signals:
     void alignSelectedViewsToJS(const QString &type);
     void arrangeSelectedViewsToJS(const QString &type);
 
+    void groupingViewsToJS();
+    void ungroupingViewsToJS();
+
 public slots:
 
 };

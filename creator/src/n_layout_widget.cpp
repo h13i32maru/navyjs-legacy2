@@ -192,6 +192,13 @@ void NLayoutWidget::contextMenuForWebView(const QPoint &/*point*/) {
     arrangementSubMenu->addAction(tr("&Horizontal Even"), this, SLOT(arrangeHorizontalEven()));
     arrangementSubMenu->addAction(tr("&Vertical Even"), this, SLOT(arrangeVerticalEven()));
 
+    menu.addSeparator();
+
+    menu.addAction(tr("&Grouping Views"), this, SLOT(groupingViews()));
+    menu.addAction(tr("&Ungrouping Views"), this, SLOT(ungroupingViews()));
+
+    menu.addSeparator();
+
     menu.addAction(tr("&Delete Selected Views"), this, SLOT(deleteSelectedViewsToJS()));
 
     menu.addSeparator();

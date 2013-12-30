@@ -76,6 +76,9 @@ private slots:
     void arrangeHorizontalEven() { emit mNative->arrangeSelectedViewsToJS("H_EVEN"); }
     void arrangeVerticalEven() { emit mNative->arrangeSelectedViewsToJS("V_EVEN"); }
 
+    void groupingViews() { emit mNative->groupingViewsToJS(); }
+    void ungroupingViews() { emit mNative->ungroupingViewsToJS(); }
+
     // for webview
     void reload();
     void showRawData();
