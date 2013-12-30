@@ -5,8 +5,9 @@ Navy.Class('CreatorPage', Navy.Page, {
   _selectedViews: null,
   _resizeType: null,
 
+  _groupingUniqueId: null,
+
   onCreate: function($super) {
-    console.log(true);
     $super();
 
     // 雑多な設定
@@ -15,6 +16,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     window.getContentLayout = this._getContentLayout.bind(this);
     this._bodyPos = {x: parseFloat(document.body.style.left), y: parseFloat(document.body.style.top)};
     this._zoom = parseFloat(document.body.style.zoom);
+    this._initGroupingUniqueId();
     // --
 
     this._selectedViews = [];
@@ -44,6 +46,8 @@ Navy.Class('CreatorPage', Navy.Page, {
     Native.unselectAllViewsToJS.connect(this._unselectAllView.bind(this));
     Native.alignSelectedViewsToJS.connect(this._alignSelectedViews.bind(this));
     Native.arrangeSelectedViewsToJS.connect(this._arrangeSelectedViews.bind(this));
+    Native.groupingViewsToJS.connect(this._groupingViews.bind(this));
+    Native.ungroupingViewsToJS.connect(this._ungroupingViews.bind(this));
   },
 
   onResumeAfter: function($super) {
@@ -198,6 +202,118 @@ Navy.Class('CreatorPage', Navy.Page, {
     Native.changedLayoutContentFromJS();
   },
 
+  _initGroupingUniqueId: function() {
+    var max = 0;
+    var views = this._views;
+    for (var viewId in views) {
+      var view = views[viewId];
+
+      var __creator__ = view._layout.__creator__;
+      if (!__creator__) {
+        continue;
+      }
+
+      var groupingIds = __creator__.groupingIds;
+      if (!groupingIds) {
+        continue;
+      }
+
+      max = Math.max.apply(Math, [max].concat(groupingIds));
+    }
+
+    this._groupingUniqueId = max + 1;
+  },
+
+  _getGroupingUniqueId: function() {
+    return this._groupingUniqueId++;
+  },
+
+  _groupingViews: function() {
+    var views = this._selectedViews;
+    var groupingId = this._getGroupingUniqueId();
+    for (var i = 0; i < views.length; i++) {
+      var view = views[i];
+      view._layout.__creator__ = view._layout.__creator__ || {};
+      view._layout.__creator__.groupingIds = view._layout.__creator__.groupingIds || [];
+      view._layout.__creator__.groupingIds.unshift(groupingId);
+    }
+
+    Native.changedLayoutContentFromJS();
+  },
+
+  _ungroupingViews: function() {
+    var views = this._selectedViews;
+    for (var i = 0; i < views.length; i++) {
+      var view = views[i];
+      var layout = view._layout;
+      if (layout.__creator__ && layout.__creator__.groupingIds && layout.__creator__.groupingIds.length > 0) {
+        if (layout.__creator__.groupingIds.length === 1) {
+          delete layout.__creator__;
+        } else {
+          layout.__creator__.groupingIds.shift();
+        }
+      }
+    }
+  },
+
+  _convertViewsToGroupingViews: function(views) {
+    var groupingViewMap = {};
+    var groupingViews = [];
+
+    for (var i = 0; i < views.length; i++) {
+      var view = views[i];
+      var layout = view._layout;
+
+      if (layout.__creator__ && layout.__creator__.groupingIds && layout.__creator__.groupingIds.length > 0) {
+        var groupingId = layout.__creator__.groupingIds[0];
+        var groupingView = groupingViewMap[groupingId] || new GroupingView();
+        groupingView.addView(view);
+        groupingViewMap[groupingId] = groupingView;
+      } else {
+        groupingViews.push(new GroupingView([view]));
+      }
+    }
+
+    for (var groupingId in groupingViewMap) {
+      groupingViews.push(groupingViewMap[groupingId]);
+    }
+
+    return groupingViews;
+  },
+
+  _getViewsAtSameGroupingId: function(viewIds) {
+    var resultViews = [];
+
+    var groupingIdMap = {};
+    for (var i = 0; i < viewIds.length; i++) {
+      var viewId = viewIds[i];
+      var view = this._views[viewId];
+      var layout = view._layout;
+      if (layout.__creator__ && layout.__creator__.groupingIds && layout.__creator__.groupingIds.length > 0) {
+        var groupingId = layout.__creator__.groupingIds[0];
+        groupingIdMap[groupingId] = true;
+      }
+      resultViews.push(view);
+    }
+
+    var groupingIds = Object.keys(groupingIdMap);
+    for (var viewId in this._views) {
+      var view = this._views[viewId];
+      if (resultViews.indexOf(view) >= 0) {
+        continue;
+      }
+      var layout = view._layout;
+      if (layout.__creator__ && layout.__creator__.groupingIds && layout.__creator__.groupingIds.length > 0) {
+        var groupingId = layout.__creator__.groupingIds[0];
+        if (groupingIds.indexOf("" + groupingId) >= 0) {
+          resultViews.push(view);
+        }
+      }
+    }
+
+    return resultViews;
+  },
+
   _selectView: function(viewId) {
     var view = this._views[viewId];
     var box = view.__box__;
@@ -208,8 +324,9 @@ Navy.Class('CreatorPage', Navy.Page, {
   },
 
   _selectViews: function(viewIds) {
-    for (var i = 0; i < viewIds.length; i++) {
-      this._selectView(viewIds[i]);
+    var views = this._getViewsAtSameGroupingId(viewIds);
+    for (var i = 0; i < views.length; i++) {
+      this._selectView(views[i].getId());
     }
   },
 
@@ -261,7 +378,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     }
 
     this._unselectAllView();
-    this._selectView(view.getId());
+    this._selectViews([view.getId()]);
   },
 
   _mouseDown: function(view, ev) {
@@ -284,7 +401,7 @@ Navy.Class('CreatorPage', Navy.Page, {
         this._unselectView(viewId);
       } else {
         // viewを選択状態にする
-        this._selectView(viewId);
+        this._selectViews([viewId]);
         this._updateSelectedViewMouseDistance(ev);
       }
     } else {
@@ -297,7 +414,7 @@ Navy.Class('CreatorPage', Navy.Page, {
       } else {
         // 現在選択されているviewをすべてリセットして新たにviewを選択する
         this._unselectAllView();
-        this._selectView(viewId);
+        this._selectViews([viewId]);
         this._updateSelectedViewMouseDistance(ev);
       }
     }
@@ -421,7 +538,7 @@ Navy.Class('CreatorPage', Navy.Page, {
      * 起点は[上辺座標 + 高さ * 0.5]となり、各viewはこの起点から自身の高さ * 0.5だけずれる.
      */
 
-    var views = this._selectedViews;
+    var views = this._convertViewsToGroupingViews(this._selectedViews);
 
     if (type.indexOf('ROOT_') === 0) {
       // Rootを起点とする場合はanchorViewを選択されたものじゃなくてRoot固定にして、typeをちょっといじる.
@@ -450,12 +567,10 @@ Navy.Class('CreatorPage', Navy.Page, {
         if (view === anchorView) {
           continue;
         }
-        var box = view.__box__;
         var pos = view.getPos();
         var size = view.getSize();
         var y = anchor - parseInt(size.height * delta, 10);
         view.setPos({x: pos.x, y: y});
-        box.style.top = y + 'px';
       }
     }
 
@@ -478,12 +593,10 @@ Navy.Class('CreatorPage', Navy.Page, {
         if (view === anchorView) {
           continue;
         }
-        var box = view.__box__;
         var pos = view.getPos();
         var size = view.getSize();
         var x = anchor - parseInt(size.width * delta, 10);
         view.setPos({x: x, y: pos.y});
-        box.style.left = x + 'px';
       }
     }
 
@@ -491,7 +604,7 @@ Navy.Class('CreatorPage', Navy.Page, {
   },
 
   _arrangeSelectedViews: function(type) {
-    var views = this._selectedViews;
+    var views = this._convertViewsToGroupingViews(this._selectedViews);
 
     if (views.length <= 1) {
       return;
@@ -504,9 +617,7 @@ Navy.Class('CreatorPage', Navy.Page, {
         var view = views[i];
         var pos = view.getPos();
         var size = view.getSize();
-        var box = view.__box__;
         view.setPos({x: x, y: pos.y});
-        box.style.left = x + 'px';
         x = x + size.width;
       }
     }
@@ -518,9 +629,7 @@ Navy.Class('CreatorPage', Navy.Page, {
         var view = views[i];
         var pos = view.getPos();
         var size = view.getSize();
-        var box = view.__box__;
         view.setPos({x: pos.x, y: y});
-        box.style.top = y + 'px';
         y = y + size.height;
       }
     }
@@ -545,9 +654,7 @@ Navy.Class('CreatorPage', Navy.Page, {
         var view = views[i];
         var pos = view.getPos();
         var size = view.getSize();
-        var box = view.__box__;
         view.setPos({x: x, y: pos.y});
-        box.style.left = x + 'px';
         x = x + size.width + space;
       }
     }
@@ -572,9 +679,7 @@ Navy.Class('CreatorPage', Navy.Page, {
         var view = views[i];
         var pos = view.getPos();
         var size = view.getSize();
-        var box = view.__box__;
         view.setPos({x: pos.x, y: y});
-        box.style.top = y + 'px';
         y = y + size.height + space;
       }
     }

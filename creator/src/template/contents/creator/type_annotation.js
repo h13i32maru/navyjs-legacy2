@@ -15,6 +15,8 @@
  *   unselectAllViewsToJS: {connect: function},
  *   alignSelectedViewsToJS: {connect: function},
  *   arrangeSelectedViewsToJS: {connect: function},
+ *   groupingViewsToJS: {connect: function},
+ *   ungroupingViewsToJS: {connect: function}
  * }}
  */
 Native;
