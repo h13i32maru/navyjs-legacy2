@@ -31,10 +31,11 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
   },
 
   _calcWrapContentSize: function() {
-    var borderWidth = this.getBorderWidth();
+    var border = this.getBorderSize();
+    var padding = this.getPaddingSize();
     return {
-      width: this._imgElm.width + borderWidth.left + borderWidth.right,
-      height: this._imgElm.height + borderWidth.top + borderWidth.bottom
+      width: this._imgElm.width + border.left + border.right + padding.left + padding.right,
+      height: this._imgElm.height + border.top + border.bottom + padding.top + padding.bottom
     };
   },
 

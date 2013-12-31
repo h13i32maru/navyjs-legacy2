@@ -42,10 +42,11 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
   },
 
   _calcWrapContentSize: function() {
-    var borderWidth = this.getBorderWidth();
+    var border = this.getBorderSize();
+    var padding = this.getPaddingSize();
     return {
-      width: this._textElement.offsetWidth + borderWidth.left + borderWidth.right,
-      height: this._textElement.offsetHeight + borderWidth.top + borderWidth.bottom
+      width: this._textElement.offsetWidth + border.left + border.right + padding.left + padding.right,
+      height: this._textElement.offsetHeight + border.top + border.bottom + padding.top + padding.bottom
     };
   },
 

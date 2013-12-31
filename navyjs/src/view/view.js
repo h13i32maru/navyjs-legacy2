@@ -97,6 +97,7 @@ Navy.Class('Navy.View.View', {
     this.setSize(layout.size);
     this.setBackgroundColor(layout.backgroundColor);
     this.setBorder(layout.border);
+    this.setPadding(layout.padding);
     this.setLink(layout.link);
 
     this._setRawStyle({overflow:'hidden'});
@@ -364,27 +365,47 @@ Navy.Class('Navy.View.View', {
     return this._layout.border;
   },
 
-  getBorderWidth: function() {
-    var width = {left: 0, top: 0, right: 0, bottom: 0};
+  getBorderSize: function() {
+    var size = {left: 0, top: 0, right: 0, bottom: 0};
     var style = this._element.style;
 
     if (style.borderLeftStyle !== 'hidden' && style.borderLeftStyle !== 'none') {
-      width.left = parseInt(style.borderLeftWidth, 10) || 0;
+      size.left = parseInt(style.borderLeftWidth, 10) || 0;
     }
 
     if (style.borderRightStyle !== 'hidden' && style.borderRightStyle !== 'none') {
-      width.right = parseInt(style.borderRightWidth, 10) || 0;
+      size.right = parseInt(style.borderRightWidth, 10) || 0;
     }
 
     if (style.borderTopStyle !== 'hidden' && style.borderTopStyle !== 'none') {
-      width.top = parseInt(style.borderTopWidth, 10) || 0;
+      size.top = parseInt(style.borderTopWidth, 10) || 0;
     }
 
     if (style.borderBottomStyle !== 'hidden' && style.borderBottomStyle !== 'none') {
-      width.bottom = parseInt(style.borderBottomWidth, 10) || 0;
+      size.bottom = parseInt(style.borderBottomWidth, 10) || 0;
     }
 
-    return width;
+    return size;
+  },
+
+  setPadding: function(padding) {
+    this._layout.padding = padding;
+    this._element.style.padding = padding;
+  },
+
+  getPadding: function() {
+    return this._layout.padding;
+  },
+
+  getPaddingSize: function() {
+    var size = {};
+    var style = this._element.style;
+    size.left = parseInt(style.paddingLeft, 10) || 0;
+    size.top = parseInt(style.paddingTop, 10) || 0;
+    size.right = parseInt(style.paddingRight, 10) || 0;
+    size.bottom = parseInt(style.paddingBottom, 10) || 0;
+
+    return size;
   },
 
   setSizePolicy: function(sizePolicy, disableUpdateSizeWithWrapContentSize) {

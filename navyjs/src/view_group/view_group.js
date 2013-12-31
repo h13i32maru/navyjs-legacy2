@@ -157,9 +157,11 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
       }
     }
 
+    var border = this.getBorderSize();
+    var padding = this.getPaddingSize();
     return {
-      width: maxWidth,
-      height: maxHeight
+      width: maxWidth + border.left + border.right + padding.left + padding.right,
+      height: maxHeight + border.top + border.bottom + padding.top + padding.bottom
     };
   },
 
