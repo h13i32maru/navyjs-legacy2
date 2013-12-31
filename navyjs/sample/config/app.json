@@ -1,5 +1,6 @@
 {
   "size": {"width": 640, "height": 1136},
+  "fontFamily": "sans-serif",
   "start": {
     "scene": "Scene1"
   }
