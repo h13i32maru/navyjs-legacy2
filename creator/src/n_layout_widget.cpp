@@ -259,12 +259,17 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
     tree->blockSignals(true);
 
     tree->clearSelection();
+
+    // ExtendedSelectionの状態ではCtrlキーを押下しながらじゃないと複数のItemを選択することができない
+    // なので、一時的にMultiSelectionに変更して複数のItemを選択できるようにする
+    tree->setSelectionMode(QAbstractItemView::MultiSelection);
     for (int i = 0; i < views.length(); i++) {
         QString index = QString::number(i);
         QString viewId = views.getStr(index + ".id");
         QTreeWidgetItem *item = tree->findItems(viewId, Qt::MatchFixedString, 0)[0];
         tree->setCurrentItem(item);
     }
+    tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     tree->blockSignals(false);
 
