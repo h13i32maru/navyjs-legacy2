@@ -58,6 +58,12 @@
       "key": "border",
       "type": "string",
       "value": "none 4px #000000"
+    },
+    {
+      "label": "padding",
+      "key": "padding",
+      "type": "string",
+      "value": "0px"
     }
   ]
 }
