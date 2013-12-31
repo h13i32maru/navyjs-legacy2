@@ -96,6 +96,7 @@ Navy.Class('Navy.View.View', {
     this.setSizePolicy(layout.sizePolicy, true);
     this.setSize(layout.size);
     this.setBackgroundColor(layout.backgroundColor);
+    this.setBorder(layout.border);
     this.setLink(layout.link);
 
     this._setRawStyle({overflow:'hidden'});
@@ -354,6 +355,15 @@ Navy.Class('Navy.View.View', {
     return this._layout.backgroundColor;
   },
 
+  setBorder: function(border) {
+    this._layout.border = border;
+    this._element.style.border = border;
+  },
+
+  getBorder: function() {
+    return this._layout.border;
+  },
+
   setSizePolicy: function(sizePolicy, disableUpdateSizeWithWrapContentSize) {
     this._layout.sizePolicy = sizePolicy;
 
@@ -400,10 +410,10 @@ Navy.Class('Navy.View.View', {
       width = this._layout.size.width;
       break;
     case this.SIZE_POLICY_WRAP_CONTENT:
-      width = this._element.clientWidth;
+      width = this._element.offsetWidth;
       break;
     case this.SIZE_POLICY_MATCH_PARENT:
-      width = this._element.clientWidth;
+      width = this._element.offsetWidth;
       break;
     default:
       throw new Error('unknown size policy width. ' + this._layout.sizePolicy.width);
@@ -414,10 +424,10 @@ Navy.Class('Navy.View.View', {
       height = this._layout.size.height;
       break;
     case this.SIZE_POLICY_WRAP_CONTENT:
-      height = this._element.clientHeight;
+      height = this._element.offsetHeight;
       break;
     case this.SIZE_POLICY_MATCH_PARENT:
-      height = this._element.clientHeight;
+      height = this._element.offsetHeight;
       break;
     default:
       throw new Error('unknown size policy height. ' + this._layout.sizePolicy.height);

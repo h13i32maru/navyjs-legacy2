@@ -88,7 +88,7 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
 
   _initDocument: function(){
     var style = '';
-    style += '* {margin:0; padding:0; -webkit-user-select: none; -webkit-user-drag:none;}';
+    style += '* {margin:0; padding:0; -webkit-user-select: none; -webkit-user-drag:none; box-sizing: border-box;}';
     style += 'html {width:100%; height:100%}';
     style += 'body {background-color:#000; font-family: {fontFamily}}'.replace('{fontFamily}', Navy.Config.app.fontFamily);
 
