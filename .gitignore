@@ -1,4 +1,5 @@
 creator/src/navy-creator.pro.user
+creator/src/template/contents/navy
 creator/build
 navyjs/build
 node_modules
