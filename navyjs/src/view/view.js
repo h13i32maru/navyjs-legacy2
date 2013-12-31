@@ -364,6 +364,29 @@ Navy.Class('Navy.View.View', {
     return this._layout.border;
   },
 
+  getBorderWidth: function() {
+    var width = {left: 0, top: 0, right: 0, bottom: 0};
+    var style = this._element.style;
+
+    if (style.borderLeftStyle !== 'hidden' && style.borderLeftStyle !== 'none') {
+      width.left = parseInt(style.borderLeftWidth, 10) || 0;
+    }
+
+    if (style.borderRightStyle !== 'hidden' && style.borderRightStyle !== 'none') {
+      width.right = parseInt(style.borderRightWidth, 10) || 0;
+    }
+
+    if (style.borderTopStyle !== 'hidden' && style.borderTopStyle !== 'none') {
+      width.top = parseInt(style.borderTopWidth, 10) || 0;
+    }
+
+    if (style.borderBottomStyle !== 'hidden' && style.borderBottomStyle !== 'none') {
+      width.bottom = parseInt(style.borderBottomWidth, 10) || 0;
+    }
+
+    return width;
+  },
+
   setSizePolicy: function(sizePolicy, disableUpdateSizeWithWrapContentSize) {
     this._layout.sizePolicy = sizePolicy;
 
