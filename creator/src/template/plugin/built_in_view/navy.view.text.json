@@ -20,10 +20,16 @@
       "value": "#000000"
     },
     {
-      "label": "textAlign",
-      "key": "extra.textAlign",
+      "label": "textAlign(H)",
+      "key": "extra.textAlign.horizontal",
       "type": "stringList",
       "value": ["left", "center", "right"]
+    },
+    {
+      "label": "textAlign(V)",
+      "key": "extra.textAlign.vertical",
+      "type": "stringList",
+      "value": ["top", "middle", "baseline", "bottom"]
     }
   ]
 }
