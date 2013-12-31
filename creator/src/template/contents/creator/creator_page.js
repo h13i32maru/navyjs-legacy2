@@ -102,8 +102,10 @@ Navy.Class('CreatorPage', Navy.Page, {
       this.addView(view);
       Native.changedLayoutContentFromJS();
       this._setupGroupingView(view);
+
+      var groupingView = this._viewIdToGroupingViewMap[view.getId()];
       this._unselectAllGroupingViews();
-      this._selectView(view);
+      this._selectGroupingView(groupingView);
     }.bind(this));
   },
 
