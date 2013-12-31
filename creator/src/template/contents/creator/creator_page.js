@@ -63,16 +63,22 @@ Navy.Class('CreatorPage', Navy.Page, {
     var groupingId = this._getGroupingId(view);
 
     if (groupingId !== null) {
-      var groupingView = this._groupingIdToGroupingViewMap[groupingId];
-      groupingView.addView(view);
-      return;
+      if (this._groupingIdToGroupingViewMap[groupingId]) {
+        var groupingView = this._groupingIdToGroupingViewMap[groupingId];
+        groupingView.addView(view);
+        this._viewIdToGroupingViewMap[view.getId()] = groupingView;
+      } else {
+        var groupingView = new GroupingView([view]);
+        this._viewIdToGroupingViewMap[view.getId()] = groupingView;
+        this._groupingIdToGroupingViewMap[groupingId] = groupingView;
+      }
+    } else {
+      groupingId = this._getGroupingUniqueId();
+      view._layout.__creator__ = {groupingIds: [groupingId]};
+      var groupingView = new GroupingView([view]);
+      this._viewIdToGroupingViewMap[view.getId()] = groupingView;
+      this._groupingIdToGroupingViewMap[groupingId] = groupingView;
     }
-
-    groupingId = this._getGroupingUniqueId();
-    view._layout.__creator__ = {groupingIds: [groupingId]};
-    var groupingView = new GroupingView([view]);
-    this._viewIdToGroupingViewMap[view.getId()] = groupingView;
-    this._groupingIdToGroupingViewMap[groupingId] = groupingView;
   },
 
   _getContentLayout: function() {
