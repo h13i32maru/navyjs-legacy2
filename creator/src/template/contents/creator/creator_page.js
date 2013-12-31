@@ -208,10 +208,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     var view = views[0];
     view.setLayout(layout, function(){
       var groupingView = this._viewIdToGroupingViewMap[view.getId()];
-      var size = view.getSize();
-      var pos = view.getPos();
-      groupingView.setSize(size);
-      groupingView.setPos(pos);
+      groupingView.updateBoxGeometry();
       Native.changedLayoutContentFromJS();
     }.bind(this));
   },

@@ -17,10 +17,10 @@ Navy.Class('GroupingView', {
     document.body.appendChild(this._box);
     this._box.__groupingView__ = this;
 
-    this._updateBoxGeometry();
+    this.updateBoxGeometry();
   },
 
-  _updateBoxGeometry: function() {
+  updateBoxGeometry: function() {
     var box = this._box;
     var size = this.getSize();
     var pos = this.getPos();
@@ -78,7 +78,7 @@ Navy.Class('GroupingView', {
   addView: function(view) {
     this._views.push(view);
 
-    this._updateBoxGeometry();
+    this.updateBoxGeometry();
   },
 
   getAllViews: function() {
@@ -114,7 +114,7 @@ Navy.Class('GroupingView', {
       view.setPos({x: x, y: y});
     }
 
-    this._updateBoxGeometry();
+    this.updateBoxGeometry();
   },
 
   getSize: function() {
@@ -144,6 +144,6 @@ Navy.Class('GroupingView', {
       view.setSize(size);
     }
 
-    this._updateBoxGeometry();
+    this.updateBoxGeometry();
   }
 });

@@ -479,6 +479,7 @@ Navy.Class('Navy.View.View', {
     this.setSizePolicy(layout.sizePolicy, true);
     this.setSize(layout.size);
     this.setBackgroundColor(layout.backgroundColor);
+    this.setBorder(layout.border);
     this.setLink(layout.link);
 
     this._setRawStyle({overflow:'hidden'});
@@ -737,6 +738,15 @@ Navy.Class('Navy.View.View', {
     return this._layout.backgroundColor;
   },
 
+  setBorder: function(border) {
+    this._layout.border = border;
+    this._element.style.border = border;
+  },
+
+  getBorder: function() {
+    return this._layout.border;
+  },
+
   setSizePolicy: function(sizePolicy, disableUpdateSizeWithWrapContentSize) {
     this._layout.sizePolicy = sizePolicy;
 
@@ -783,10 +793,10 @@ Navy.Class('Navy.View.View', {
       width = this._layout.size.width;
       break;
     case this.SIZE_POLICY_WRAP_CONTENT:
-      width = this._element.clientWidth;
+      width = this._element.offsetWidth;
       break;
     case this.SIZE_POLICY_MATCH_PARENT:
-      width = this._element.clientWidth;
+      width = this._element.offsetWidth;
       break;
     default:
       throw new Error('unknown size policy width. ' + this._layout.sizePolicy.width);
@@ -797,10 +807,10 @@ Navy.Class('Navy.View.View', {
       height = this._layout.size.height;
       break;
     case this.SIZE_POLICY_WRAP_CONTENT:
-      height = this._element.clientHeight;
+      height = this._element.offsetHeight;
       break;
     case this.SIZE_POLICY_MATCH_PARENT:
-      height = this._element.clientHeight;
+      height = this._element.offsetHeight;
       break;
     default:
       throw new Error('unknown size policy height. ' + this._layout.sizePolicy.height);
@@ -922,9 +932,10 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
   },
 
   _calcWrapContentSize: function() {
+    var borderWidth = parseInt(this._element.style.borderWidth, 10) || 0;
     return {
-      width: this._imgElm.width,
-      height: this._imgElm.height
+      width: this._imgElm.width + borderWidth * 2,
+      height: this._imgElm.height + borderWidth * 2
     };
   },
 
@@ -991,9 +1002,10 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
   },
 
   _calcWrapContentSize: function() {
+    var borderWidth = parseInt(this._element.style.borderWidth, 10) || 0;
     return {
-      width: this._textElement.offsetWidth,
-      height: this._textElement.offsetHeight
+      width: this._textElement.offsetWidth + borderWidth * 2,
+      height: this._textElement.offsetHeight + borderWidth * 2
     };
   },
 
@@ -1794,7 +1806,7 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
 
   _initDocument: function(){
     var style = '';
-    style += '* {margin:0; padding:0; -webkit-user-select: none; -webkit-user-drag:none;}';
+    style += '* {margin:0; padding:0; -webkit-user-select: none; -webkit-user-drag:none; box-sizing: border-box;}';
     style += 'html {width:100%; height:100%}';
     style += 'body {background-color:#000; font-family: {fontFamily}}'.replace('{fontFamily}', Navy.Config.app.fontFamily);
 

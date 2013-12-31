@@ -52,6 +52,12 @@
       "label": "bg color",
       "key": "backgroundColor",
       "type": "string"
+    },
+    {
+      "label": "border",
+      "key": "border",
+      "type": "string",
+      "value": "none 4px #000000"
     }
   ]
 }
