@@ -979,6 +979,7 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
 
     this.setFontSize(layout.extra.fontSize);
     this.setFontColor(layout.extra.fontColor);
+    this.setTextAlign(layout.extra.textAlign);
 
     $super(layout, callback);
   },
@@ -1031,6 +1032,15 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
 
   getFontColor: function() {
     return this._layout.extra.fontColor;
+  },
+
+  setTextAlign: function(textAlign) {
+    this._layout.extra.textAlign = textAlign;
+    this._element.style.textAlign = textAlign;
+  },
+
+  getTextAlign: function() {
+    return this._layout.extra.textAlign;
   }
 });
 

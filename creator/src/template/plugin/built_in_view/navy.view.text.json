@@ -18,6 +18,12 @@
       "key": "extra.fontColor",
       "type": "string",
       "value": "#000000"
+    },
+    {
+      "label": "textAlign",
+      "key": "extra.textAlign",
+      "type": "stringList",
+      "value": ["left", "center", "right"]
     }
   ]
 }
