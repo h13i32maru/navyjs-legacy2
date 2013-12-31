@@ -1793,7 +1793,11 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   },
 
   _initDocument: function(){
-    var style = '* {margin:0; padding:0; -webkit-user-select: none; -webkit-user-drag:none;} html {width:100%; height:100%} body {background-color:#000;}';
+    var style = '';
+    style += '* {margin:0; padding:0; -webkit-user-select: none; -webkit-user-drag:none;}';
+    style += 'html {width:100%; height:100%}';
+    style += 'body {background-color:#000; font-family: {fontFamily}}'.replace('{fontFamily}', Navy.Config.app.fontFamily);
+
     var styleElm = document.createElement('style');
     styleElm.textContent = style;
     document.head.appendChild(styleElm);

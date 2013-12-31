@@ -20,6 +20,7 @@ NConfigAppWidget::NConfigAppWidget(const QString &filePath, QWidget *parent) : N
     connect(ui->appSizeWidth, SIGNAL(valueChanged(int)), this, SLOT(changed()));
     connect(ui->appSizeHeight, SIGNAL(valueChanged(int)), this, SLOT(changed()));
     connect(ui->appStartScene, SIGNAL(currentTextChanged(QString)), this, SLOT(changed()));
+    connect(ui->appFontFamily, SIGNAL(textChanged(QString)), this, SLOT(changed()));
 
     refreshForActive();
 }
@@ -48,12 +49,14 @@ void NConfigAppWidget::syncJsonToWidget() {
     ui->appSizeWidth->setValue(mConfigApp.getInt("size.width"));
     ui->appSizeHeight->setValue(mConfigApp.getInt("size.height"));
     ui->appStartScene->setCurrentText(mConfigApp.getStr("start.scene"));
+    ui->appFontFamily->setText(mConfigApp.getStr("fontFamily"));
 }
 
 void NConfigAppWidget::syncWidgetToJson() {
     mConfigApp.set("size.width", ui->appSizeWidth->value());
     mConfigApp.set("size.height", ui->appSizeHeight->value());
     mConfigApp.set("start.scene", ui->appStartScene->currentText());
+    mConfigApp.set("fontFamily", ui->appFontFamily->text());
 }
 
 void NConfigAppWidget::contextMenu(QPoint /*point*/) {

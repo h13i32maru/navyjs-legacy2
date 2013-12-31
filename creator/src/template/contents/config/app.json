@@ -3,6 +3,7 @@
         "height": 1136,
         "width": 640
     },
+    "fontFamily": "sans-serif",
     "start": {
         "scene": "MainScene"
     }
