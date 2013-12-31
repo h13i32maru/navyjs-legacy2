@@ -3,13 +3,86 @@
  */
 Navy.Class('GroupingView', {
   _views: null,
+  _box: null,
 
   initialize: function(views) {
     this._views = views || [];
+    this._createBox();
+  },
+
+  _createBox: function() {
+    var doc = document.implementation.createHTMLDocument('');
+    doc.body.innerHTML = document.getElementById('box_template').textContent;
+    this._box = doc.body.firstElementChild;
+    document.body.appendChild(this._box);
+    this._box.__groupingView__ = this;
+
+    this._updateBoxGeometry();
+  },
+
+  _updateBoxGeometry: function() {
+    var box = this._box;
+    var size = this.getSize();
+    var pos = this.getPos();
+    box.style.width = size.width + 'px';
+    box.style.height = size.height + 'px';
+    box.style.left = pos.x + 'px';
+    box.style.top = pos.y + 'px';
+  },
+
+  selected: function() {
+    this._box.style.opacity = '1';
+  },
+
+  unselected: function() {
+    this._box.style.opacity = '0';
+  },
+
+  showResizer: function() {
+    var elms = this._box.querySelectorAll('.resizer');
+    for (var i = 0; i < elms.length; i++) {
+      elms[i].style.display = '';
+    }
+  },
+
+  hideResizer: function() {
+    var elms = this._box.querySelectorAll('.resizer');
+    for (var i = 0; i < elms.length; i++) {
+      elms[i].style.display = 'none';
+    }
+  },
+
+  releaseAllViews: function() {
+    document.body.removeChild(this._box);
+
+    var names = Object.getOwnPropertyNames(this);
+    for (var i = 0; i < names.length; i++) {
+      this[names[i]] = null;
+    }
+  },
+
+  destroy: function() {
+    for (var i = 0; i < this._views.length; i++) {
+      var view = this._views[0];
+      view.destroy();
+    }
+
+    document.body.removeChild(this._box);
+
+    var names = Object.getOwnPropertyNames(this);
+    for (var i = 0; i < names.length; i++) {
+      this[names[i]] = null;
+    }
   },
 
   addView: function(view) {
     this._views.push(view);
+
+    this._updateBoxGeometry();
+  },
+
+  getAllViews: function() {
+    return [].concat(this._views);
   },
 
   getPos: function() {
@@ -39,11 +112,9 @@ Navy.Class('GroupingView', {
       var x = pos.x + dx;
       var y = pos.y + dy;
       view.setPos({x: x, y: y});
-
-      var box = view.__box__;
-      box.style.left = x + 'px';
-      box.style.top = y + 'px';
     }
+
+    this._updateBoxGeometry();
   },
 
   getSize: function() {
@@ -64,5 +135,15 @@ Navy.Class('GroupingView', {
     }
 
     return {width: right - left, height: bottom - top};
+  },
+
+  setSize: function(size) {
+    for (var i = 0; i < this._views.length; i++) {
+      var view = this._views[0];
+      view.setSizePolicy({width: 'fixed', height: 'fixed'});
+      view.setSize(size);
+    }
+
+    this._updateBoxGeometry();
   }
 });

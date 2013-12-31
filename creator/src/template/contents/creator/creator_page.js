@@ -2,10 +2,13 @@ Navy.Class('CreatorPage', Navy.Page, {
   _bodyPos: null,
   _zoom: null,
 
-  _selectedViews: null,
+  _selectedGroupingViews: null,
   _resizeType: null,
 
   _groupingUniqueId: null,
+
+  _viewIdToGroupingViewMap: null,
+  _groupingIdToGroupingViewMap: null,
 
   onCreate: function($super) {
     $super();
@@ -16,18 +19,16 @@ Navy.Class('CreatorPage', Navy.Page, {
     window.getContentLayout = this._getContentLayout.bind(this);
     this._bodyPos = {x: parseFloat(document.body.style.left), y: parseFloat(document.body.style.top)};
     this._zoom = parseFloat(document.body.style.zoom);
+    this._selectedGroupingViews = [];
+    this._viewIdToGroupingViewMap = {};
+    this._groupingIdToGroupingViewMap = {};
     this._initGroupingUniqueId();
     // --
 
-    this._selectedViews = [];
-
     // 要素を移動させるためのマウス操作の追跡
     document.body.addEventListener('mouseup', this._mouseUp.bind(this));
-    document.body.addEventListener('mousedown', function(ev){
-      if (ev.target === this.getElement()) {
-        this._unselectAllView();
-      }
-    }.bind(this));
+    document.body.addEventListener('mousedown', this._mouseDown.bind(this));
+    document.body.addEventListener('click', this._click.bind(this));
     this._mouseMoveForMoveView = this._mouseMoveForMoveView.bind(this);
     this._mouseMoveForResizeView = this._mouseMoveForResizeView.bind(this);
     // --
@@ -36,45 +37,42 @@ Navy.Class('CreatorPage', Navy.Page, {
       Native.setViewsFromJS(JSON.stringify(layout));
     });
 
-    Native.changedViewsOrderToJS.connect(this._updateViewsOrder.bind(this));
-    Native.changedSelectedViewToJS.connect(this._selectViews.bind(this));
-    Native.changedViewPropertyToJS.connect(this._updateSelectedViewLayout.bind(this));
-    Native.addViewToJS.connect(this._addView.bind(this));
-    Native.deleteSelectedViewsToJS.connect(this._deleteSelectedViews.bind(this));
-    Native.setScreenToJS.connect(this._setScreen.bind(this));
-    Native.setScreenEnableToJS.connect(this._setScreenEnable.bind(this));
-    Native.unselectAllViewsToJS.connect(this._unselectAllView.bind(this));
-    Native.alignSelectedViewsToJS.connect(this._alignSelectedViews.bind(this));
-    Native.arrangeSelectedViewsToJS.connect(this._arrangeSelectedViews.bind(this));
-    Native.groupingViewsToJS.connect(this._groupingViews.bind(this));
-    Native.ungroupingViewsToJS.connect(this._ungroupingViews.bind(this));
+    Native.changedViewsOrderToJS.connect(this._updateViewsOrderFromNative.bind(this));
+    Native.changedSelectedViewToJS.connect(this._selectViewsFromNative.bind(this));
+    Native.changedViewPropertyToJS.connect(this._updateSelectedViewLayoutFromNative.bind(this));
+    Native.addViewToJS.connect(this._addViewFromNative.bind(this));
+    Native.deleteSelectedViewsToJS.connect(this._deleteSelectedViewsFromNative.bind(this));
+    Native.setScreenToJS.connect(this._setScreenFromNative.bind(this));
+    Native.setScreenEnableToJS.connect(this._setScreenEnableFromNative.bind(this));
+    Native.unselectAllViewsToJS.connect(this._unselectAllViewsFromNative.bind(this));
+    Native.alignSelectedViewsToJS.connect(this._alignSelectedViewsFromNative.bind(this));
+    Native.arrangeSelectedViewsToJS.connect(this._arrangeSelectedViewsFromNative.bind(this));
+    Native.groupingViewsToJS.connect(this._execGroupingViewsFromNative.bind(this));
+    Native.ungroupingViewsToJS.connect(this._execUngroupingViewsFromNative.bind(this));
   },
 
   onResumeAfter: function($super) {
     $super();
     for (var viewId in this._views) {
       var view = this._views[viewId];
-      this._setupSelectedBox(view);
+      this._setupGroupingView(view);
     }
   },
 
-  _setupSelectedBox: function(view) {
-    var doc = document.implementation.createHTMLDocument('');
-    doc.body.innerHTML = document.getElementById('box_template').textContent;
+  _setupGroupingView: function(view) {
+    var groupingId = this._getGroupingId(view);
 
-    var size = view.getSize();
-    var pos = view.getPos();
-    var box = doc.body.firstElementChild;
+    if (groupingId !== null) {
+      var groupingView = this._groupingIdToGroupingViewMap[groupingId];
+      groupingView.addView(view);
+      return;
+    }
 
-    box.style.width = size.width + 'px';
-    box.style.height = size.height + 'px';
-    box.style.left = pos.x + 'px';
-    box.style.top = pos.y + 'px';
-    document.body.appendChild(box);
-    box.addEventListener('mousedown', this._mouseDown.bind(this, view));
-    box.addEventListener('click', this._click.bind(this, view));
-    box.__view__ = view;
-    view.__box__ = box;
+    groupingId = this._getGroupingUniqueId();
+    view._layout.__creator__ = {groupingIds: [groupingId]};
+    var groupingView = new GroupingView([view]);
+    this._viewIdToGroupingViewMap[view.getId()] = groupingView;
+    this._groupingIdToGroupingViewMap[groupingId] = groupingView;
   },
 
   _getContentLayout: function() {
@@ -95,7 +93,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     return order;
   },
 
-  _addView: function(viewId, viewClass, layout) {
+  _addViewFromNative: function(viewId, viewClass, layout) {
     layout.id = viewId;
     layout.class = viewClass;
 
@@ -103,25 +101,26 @@ Navy.Class('CreatorPage', Navy.Page, {
     var view = new _class(layout, function(){
       this.addView(view);
       Native.changedLayoutContentFromJS();
-      this._setupSelectedBox(view);
-      this._unselectAllView();
-      this._selectView(view.getId());
+      this._setupGroupingView(view);
+      this._unselectAllGroupingViews();
+      this._selectView(view);
     }.bind(this));
   },
 
-  _deleteSelectedViews: function() {
-    var views = this._selectedViews;
-    for (var i = 0; i < views.length; i++) {
-      var view = views[i];
-      var box = view.__box__;
-      this.removeView(view);
-      document.body.removeChild(box);
-    }
-    this._selectedViews = [];
-    Native.changedLayoutContentFromJS();
+  _deleteSelectedViewsFromNative: function() {
+    this._deleteSelectedGroupingViews();
   },
 
-  _setScreen: function(sceneId, pageId) {
+  _deleteSelectedGroupingViews: function() {
+    for (var i = 0; i < this._selectedGroupingViews.length; i++) {
+      var groupingView = this._selectedGroupingViews[i];
+      groupingView.destroy();
+    }
+    Native.changedLayoutContentFromJS();
+    this._selectedGroupingViews = [];
+  },
+
+  _setScreenFromNative: function(sceneId, pageId) {
     if (sceneId && Navy.Config.scene[sceneId]) {
       var sceneLayout = JSON.parse(JSON.stringify(Navy.Config.scene[sceneId]));
     }
@@ -153,7 +152,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     }
   },
 
-  _setScreenEnable: function(enable) {
+  _setScreenEnableFromNative: function(enable) {
     var scene = this.getScene();
     var views = scene.getAllViews();
     for (var viewId in views) {
@@ -173,7 +172,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     }
   },
 
-  _updateViewsOrder: function(viewIds) {
+  _updateViewsOrderFromNative: function(viewIds) {
     for (var i = 0; i < viewIds.length; i++) {
       var id = viewIds[i];
       var view = this._views[id];
@@ -183,23 +182,30 @@ Navy.Class('CreatorPage', Navy.Page, {
     Native.changedLayoutContentFromJS();
   },
 
-  _updateSelectedViewLayout: function(layout) {
-    if (this._selectedViews.length === 0) {
+  _updateSelectedViewLayoutFromNative: function(layout) {
+    /*
+     * 選択されているviewが一つの場合のみレイアウトの設定を反映する.
+     * 2つ以上選択されているとどのviewにレイアウトを設定したら良いのかが判断できないため.
+     */
+
+    if (this._selectedGroupingViews.length !== 1) {
       return;
     }
 
-    var view = this._selectedViews[this._selectedViews.length - 1];
+    var views = this._selectedGroupingViews[0].getAllViews();
+    if (views.length !== 1) {
+      return;
+    }
+
+    var view = views[0];
     view.setLayout(layout, function(){
+      var groupingView = this._viewIdToGroupingViewMap[view.getId()];
       var size = view.getSize();
       var pos = view.getPos();
-      var box = view.__box__;
-      box.style.width = size.width + 'px';
-      box.style.height = size.height + 'px';
-      box.style.left = pos.x + 'px';
-      box.style.top = pos.y + 'px';
+      groupingView.setSize(size);
+      groupingView.setPos(pos);
+      Native.changedLayoutContentFromJS();
     }.bind(this));
-
-    Native.changedLayoutContentFromJS();
   },
 
   _initGroupingUniqueId: function() {
@@ -207,18 +213,10 @@ Navy.Class('CreatorPage', Navy.Page, {
     var views = this._views;
     for (var viewId in views) {
       var view = views[viewId];
-
-      var __creator__ = view._layout.__creator__;
-      if (!__creator__) {
-        continue;
+      var groupingIds = this._getGroupingIds(view);
+      if (groupingIds.length > 0) {
+        max = Math.max.apply(Math, [max].concat(groupingIds));
       }
-
-      var groupingIds = __creator__.groupingIds;
-      if (!groupingIds) {
-        continue;
-      }
-
-      max = Math.max.apply(Math, [max].concat(groupingIds));
     }
 
     this._groupingUniqueId = max + 1;
@@ -228,232 +226,276 @@ Navy.Class('CreatorPage', Navy.Page, {
     return this._groupingUniqueId++;
   },
 
-  _groupingViews: function() {
-    var views = this._selectedViews;
-    var groupingId = this._getGroupingUniqueId();
+  _getGroupingIds: function(view) {
+    var layout = view._layout;
+    if (layout.__creator__ && layout.__creator__.groupingIds && layout.__creator__.groupingIds.length > 0) {
+      return [].concat(layout.__creator__.groupingIds);
+    } else {
+      return [];
+    }
+  },
+
+  _getGroupingId: function(view) {
+    var groupingIds = this._getGroupingIds(view);
+    if (groupingIds.length > 0) {
+      return groupingIds[0];
+    } else {
+      return null;
+    }
+  },
+
+  _execGroupingViewsFromNative: function() {
+    var groupingViews = this._selectedGroupingViews;
+    if (groupingViews.length <= 1) {
+      return;
+    }
+
+    var newGroupingId = this._getGroupingUniqueId();
+    var views = [];
+
+    this._unselectAllGroupingViews();
+
+    for (var i = 0; i < groupingViews.length; i++) {
+      var groupingView = groupingViews[i];
+      var allViews = groupingView.getAllViews();
+      var groupingId = this._getGroupingId(allViews[0]);
+
+      this._groupingIdToGroupingViewMap[groupingId] = null;
+      delete this._groupingIdToGroupingViewMap[groupingId];
+      views = views.concat(allViews);
+      groupingView.releaseAllViews();
+    }
+
+    var newGroupingView = new GroupingView(views);
+    this._groupingIdToGroupingViewMap[newGroupingId] = newGroupingView;
+
     for (var i = 0; i < views.length; i++) {
       var view = views[i];
-      view._layout.__creator__ = view._layout.__creator__ || {};
-      view._layout.__creator__.groupingIds = view._layout.__creator__.groupingIds || [];
-      view._layout.__creator__.groupingIds.unshift(groupingId);
+      view._layout.__creator__.groupingIds.unshift(newGroupingId);
+      this._viewIdToGroupingViewMap[view.getId()] = newGroupingView;
+    }
+
+    this._selectGroupingView(newGroupingView);
+    Native.changedLayoutContentFromJS();
+  },
+
+  _execUngroupingViewsFromNative: function() {
+    var groupingViews = this._selectedGroupingViews;
+
+    // 複数のGroupingViewが選択されている場合は処理を行わない.
+    // つまり1つのGroupingViewしか分解しない.
+    if (groupingViews.length !== 1) {
+      return;
+    }
+
+    // GroupingViewに含まれるViewが1つの場合はこれ以上分解できないので処理を行わい.
+    if (groupingViews[0].getAllViews().length === 1) {
+      return;
+    }
+
+    /*
+     * 現在のGroupingViewを削除する.
+     */
+    var groupingView = groupingViews[0];
+    var views = groupingView.getAllViews();
+    var groupingId = this._getGroupingId(views[0]);
+
+    this._groupingIdToGroupingViewMap[groupingId] = null;
+    delete this._groupingIdToGroupingViewMap[groupingId];
+
+    this._unselectAllGroupingViews();
+    groupingView.releaseAllViews();
+
+    /*
+     * 一つ前のGroupingViewに戻す.
+     */
+    for (var i = 0; i < views.length; i++) {
+      var view = views[i];
+      view._layout.__creator__.groupingIds.shift();
+      var groupingId = this._getGroupingId(view);
+      var groupingView = this._groupingIdToGroupingViewMap[groupingId] || new GroupingView();
+      groupingView.addView(view);
+      this._groupingIdToGroupingViewMap[groupingId] = groupingView;
+      this._viewIdToGroupingViewMap[view.getId()] = groupingView;
+      this._selectGroupingView(groupingView);
     }
 
     Native.changedLayoutContentFromJS();
   },
 
-  _ungroupingViews: function() {
-    var views = this._selectedViews;
-    for (var i = 0; i < views.length; i++) {
-      var view = views[i];
-      var layout = view._layout;
-      if (layout.__creator__ && layout.__creator__.groupingIds && layout.__creator__.groupingIds.length > 0) {
-        if (layout.__creator__.groupingIds.length === 1) {
-          delete layout.__creator__;
-        } else {
-          layout.__creator__.groupingIds.shift();
-        }
-      }
+  _convertGroupingViewsToViews: function(groupingViews) {
+    var views = [];
+    for (var i = 0; i < groupingViews.length; i++) {
+      views = views.concat(groupingViews[i].getAllViews());
     }
+    return views;
   },
 
-  _convertViewsToGroupingViews: function(views) {
-    var groupingViewMap = {};
-    var groupingViews = [];
-
-    for (var i = 0; i < views.length; i++) {
-      var view = views[i];
-      var layout = view._layout;
-
-      if (layout.__creator__ && layout.__creator__.groupingIds && layout.__creator__.groupingIds.length > 0) {
-        var groupingId = layout.__creator__.groupingIds[0];
-        var groupingView = groupingViewMap[groupingId] || new GroupingView();
-        groupingView.addView(view);
-        groupingViewMap[groupingId] = groupingView;
-      } else {
-        groupingViews.push(new GroupingView([view]));
-      }
-    }
-
-    for (var groupingId in groupingViewMap) {
-      groupingViews.push(groupingViewMap[groupingId]);
-    }
-
-    return groupingViews;
-  },
-
-  _getViewsAtSameGroupingId: function(viewIds) {
-    var resultViews = [];
-
-    var groupingIdMap = {};
+  _selectViewsFromNative: function(viewIds) {
     for (var i = 0; i < viewIds.length; i++) {
-      var viewId = viewIds[i];
-      var view = this._views[viewId];
-      var layout = view._layout;
-      if (layout.__creator__ && layout.__creator__.groupingIds && layout.__creator__.groupingIds.length > 0) {
-        var groupingId = layout.__creator__.groupingIds[0];
-        groupingIdMap[groupingId] = true;
-      }
-      resultViews.push(view);
+      var groupingView = this._viewIdToGroupingViewMap[viewIds[i]];
+      this._selectGroupingView(groupingView);
+    }
+  },
+
+  _selectGroupingView: function(groupingView) {
+    if (this._selectedGroupingViews.indexOf(groupingView) >= 0) {
+      return;
     }
 
-    var groupingIds = Object.keys(groupingIdMap);
-    for (var viewId in this._views) {
-      var view = this._views[viewId];
-      if (resultViews.indexOf(view) >= 0) {
-        continue;
-      }
-      var layout = view._layout;
-      if (layout.__creator__ && layout.__creator__.groupingIds && layout.__creator__.groupingIds.length > 0) {
-        var groupingId = layout.__creator__.groupingIds[0];
-        if (groupingIds.indexOf("" + groupingId) >= 0) {
-          resultViews.push(view);
-        }
+    this._selectedGroupingViews.push(groupingView);
+    groupingView.selected();
+
+    var views = this._convertGroupingViewsToViews(this._selectedGroupingViews);
+    if (views.length === 1) {
+      this._selectedGroupingViews[0].showResizer();
+    } else {
+      for (var i = 0; i < this._selectedGroupingViews.length; i++) {
+        this._selectedGroupingViews[i].hideResizer();
       }
     }
 
-    return resultViews;
+    Native.setSelectedViewsFromJS(JSON.stringify(views));
+
   },
 
-  _selectView: function(viewId) {
-    var view = this._views[viewId];
-    var box = view.__box__;
-    box.style.opacity = '1';
-    this._selectedViews.push(view);
-
-    Native.setSelectedViewsFromJS(JSON.stringify(this._selectedViews));
-  },
-
-  _selectViews: function(viewIds) {
-    var views = this._getViewsAtSameGroupingId(viewIds);
-    for (var i = 0; i < views.length; i++) {
-      this._selectView(views[i].getId());
+  _unselectGroupingView: function(groupingView) {
+    var index = this._selectedGroupingViews.indexOf(groupingView);
+    if (index === -1) {
+      return;
     }
+
+    groupingView.unselected();
+    this._selectedGroupingViews.splice(index, 1);
+
+    var views = this._convertGroupingViewsToViews(this._selectedGroupingViews);
+    Native.setSelectedViewsFromJS(JSON.stringify(views));
   },
 
-  _unselectView: function(viewId) {
-    //FIXME: findViewByIdを実装する
-    var view = this._views[viewId];
-    var box = view.__box__;
-    box.style.opacity = '0';
-    var index = this._selectedViews.indexOf(view);
-    this._selectedViews.splice(index, 1);
-
-    Native.setSelectedViewsFromJS(JSON.stringify(this._selectedViews));
+  _unselectAllViewsFromNative: function() {
+    this._unselectAllGroupingViews();
   },
 
-  _unselectAllView: function() {
-    for (var i = 0; i < this._selectedViews.length; i++) {
-      var box = this._selectedViews[i].__box__;
-      box.style.opacity = '0';
+  _unselectAllGroupingViews: function() {
+    for (var i = 0; i < this._selectedGroupingViews.length; i++) {
+      this._selectedGroupingViews[i].unselected();
     }
-    this._selectedViews = [];
 
-    Native.setSelectedViewsFromJS(JSON.stringify(this._selectedViews));
+    this._selectedGroupingViews = [];
+
+    Native.setSelectedViewsFromJS(JSON.stringify([]));
   },
 
-  _isSelectedView: function(viewId) {
-    var view = this._views[viewId];
-    var index = this._selectedViews.indexOf(view);
+  _isSelectedGroupingView: function(groupingView) {
+    var index = this._selectedGroupingViews.indexOf(groupingView);
     return index !== -1;
   },
 
-  _updateSelectedViewMouseDistance: function(ev) {
+  _updateSelectedGroupingViewMouseDistance: function(ev) {
     var clientX = ev.clientX/this._zoom;
     var clientY = ev.clientY/this._zoom;
-    for (var i = 0; i < this._selectedViews.length; i++) {
-      var pos = this._selectedViews[i].getPos();
-      var box = this._selectedViews[i].__box__;
-      box.__mouseDx__ = clientX - pos.x;
-      box.__mouseDy__ = clientY - pos.y;
+    for (var i = 0; i < this._selectedGroupingViews.length; i++) {
+      var groupingView = this._selectedGroupingViews[i];
+      var pos = groupingView.getPos();
+      groupingView.__mouseDx__ = clientX - pos.x;
+      groupingView.__mouseDy__ = clientY - pos.y;
     }
   },
 
-  _click: function(view /* , ev */) {
-    if (!this._unselectAllViewForClick) {
+  _click: function(ev) {
+    if (this._ignoreClick) {
       return;
     }
 
-    if (this._movingSelectedView) {
-      return;
-    }
+    this._unselectAllGroupingViews();
 
-    this._unselectAllView();
-    this._selectViews([view.getId()]);
-  },
-
-  _mouseDown: function(view, ev) {
-    if (ev.target.classList.contains('creator_selected_box')) {
-      this._mouseDownForMoveView(view, ev);
-    } else {
-      this._mouseDownForResizeView(view, ev);
+    var groupingView = ev.target.__groupingView__;
+    if (groupingView) {
+      this._selectGroupingView(groupingView);
     }
   },
 
-  _mouseDownForMoveView: function(view, ev){
-    var viewId = view.getId();
+  _isBox: function(elm) {
+    return !!elm.__groupingView__;
+  },
 
-    // クリックイベントで選択要素をすべてリセットして、対象の要素だけを選択状態にするかどうか
-    this._unselectAllViewForClick = false;
-    this._movingSelectedView = false;
+  _isResizer: function(elm) {
+    return !!elm.parentElement.__groupingView__;
+  },
 
-    if (ev.ctrlKey) {
-      if (this._isSelectedView(viewId)) {
-        this._unselectView(viewId);
-      } else {
-        // viewを選択状態にする
-        this._selectViews([viewId]);
-        this._updateSelectedViewMouseDistance(ev);
-      }
+  _mouseDown: function(ev) {
+    if (this._isBox(ev.target)) {
+      var groupingView = ev.target.__groupingView__;
+      this._mouseDownForMoveView(groupingView, ev);
+    } else if (this._isResizer(ev.target)) {
+      var groupingView = ev.target.parentElement.__groupingView__;
+      this._mouseDownForResizeView(groupingView, ev);
     } else {
-      if (this._isSelectedView(viewId)) {
-        // viewを移動させようとしているので選択されているすべてのviewのdx,dyを更新する
-        this._updateSelectedViewMouseDistance(ev);
+      this._unselectAllGroupingViews();
+    }
+  },
 
-        // マウスを動かさずにクリックイベントが発火した場合、すべてのviewを非選択にするためのフラグを立てる.
-        this._unselectAllViewForClick = true;
-      } else {
-        // 現在選択されているviewをすべてリセットして新たにviewを選択する
-        this._unselectAllView();
-        this._selectViews([viewId]);
-        this._updateSelectedViewMouseDistance(ev);
-      }
+  _mouseDownForMoveView: function(groupingView, ev){
+    this._ignoreClick = true;
+    var isSelected = this._isSelectedGroupingView(groupingView);
+
+    if (ev.ctrlKey && isSelected) {
+      /*
+       * 既に選択されているViewを解除しようとしている
+       */
+      this._unselectGroupingView(groupingView);
+    } else if (ev.ctrlKey && !isSelected) {
+      /*
+       * 別のViewを追加で選択しようとしている.
+       */
+      this._selectGroupingView(groupingView);
+      this._updateSelectedGroupingViewMouseDistance(ev);
+    } else if (!ev.ctrlKey && isSelected) {
+      /*
+       * 選択しているViewを移動させようとしている.
+       */
+      this._ignoreClick = false; // この時点ではclickを無視して良いのか判断が使いの. mouseUp時に判断する.
+      this._updateSelectedGroupingViewMouseDistance(ev);
+    } else if (!ev.ctrlKey && !isSelected) {
+      /*
+       * 現在選択されているviewをすべてリセットして新たにviewを選択しようとしている.
+       */
+      this._unselectAllGroupingViews();
+      this._selectGroupingView(groupingView);
+      this._updateSelectedGroupingViewMouseDistance(ev);
     }
 
+    // 左ボタンの場合はマウスの移動にviewを追従させる
     if (ev.button === 0) {
-      // 左ボタンの場合はマウスの移動にviewを追従させる
       document.body.addEventListener('mousemove', this._mouseMoveForMoveView);
     }
   },
 
   _mouseMoveForMoveView: function(ev) {
-    // クリックイベント発火時にマウスが移動したかどうかを判定してviewの選択状態を変えているのでそれに使用するフラグを立てる.
-    this._movingSelectedView = true;
-
+    this._ignoreClick = true;
     var clientX = ev.clientX / this._zoom;
     var clientY = ev.clientY / this._zoom;
-    var selectedViews = this._selectedViews;
+    var selectedGroupingViews = this._selectedGroupingViews;
 
-    for (var i = 0; i < selectedViews.length; i++) {
-      var view = selectedViews[i];
-      var box = view.__box__;
-      var x = clientX - box.__mouseDx__;
-      var y = clientY - box.__mouseDy__;
+    for (var i = 0; i < selectedGroupingViews.length; i++) {
+      var groupingView = selectedGroupingViews[i];
+      var x = clientX - groupingView.__mouseDx__;
+      var y = clientY - groupingView.__mouseDy__;
 
-      view.setPos({x: x, y: y});
-      var pos = view.getPos();
-
-      box.style.left = pos.x + 'px';
-      box.style.top = pos.y + 'px';
+      groupingView.setPos({x: x, y: y});
     }
 
     Native.changedLayoutContentFromJS();
-    Native.setCurrentViewPosFromJS(pos.x, pos.y);
+
+    // 移動したViewが1つの場合だけ座標を通知する.
+    if (selectedGroupingViews.length === 1 && selectedGroupingViews[0].getAllViews().length === 1) {
+      Native.setCurrentViewPosFromJS(x, y);
+    }
   },
 
-  _mouseDownForResizeView: function(view, ev) {
-    var viewId = view.getId();
-    this._unselectAllView();
-    this._selectView(viewId);
+  _mouseDownForResizeView: function(groupingView, ev) {
+    this._unselectAllGroupingViews();
+    this._selectGroupingView(groupingView);
     this._resizeType = ev.target.dataset['resizeType'];
     document.body.addEventListener('mousemove', this._mouseMoveForResizeView);
   },
@@ -469,10 +511,9 @@ Navy.Class('CreatorPage', Navy.Page, {
     var clientX = Math.round(ev.clientX / this._zoom - this._bodyPos.x);
     var clientY = Math.round(ev.clientY / this._zoom - this._bodyPos.y);
 
-    var view = this._selectedViews[0];
-    var box = view.__box__;
-    var pos = view.getPos();
-    var size = view.getSize();
+    var groupingView = this._selectedGroupingViews[0];
+    var pos = groupingView.getPos();
+    var size = groupingView.getSize();
     var newSize;
     var newPos = pos;
 
@@ -508,13 +549,8 @@ Navy.Class('CreatorPage', Navy.Page, {
       break;
     }
 
-    view.setSizePolicy({width: 'fixed', height: 'fixed'});
-    view.setSize(newSize);
-    view.setPos(newPos);
-    box.style.width = newSize.width + 'px';
-    box.style.height = newSize.height + 'px';
-    box.style.left = newPos.x + 'px';
-    box.style.top = newPos.y + 'px';
+    groupingView.setSize(newSize);
+    groupingView.setPos(newPos);
 
     Native.changedLayoutContentFromJS();
     Native.setCurrentViewSizeFromJS(newSize.width, newSize.height);
@@ -526,7 +562,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     document.body.removeEventListener('mousemove', this._mouseMoveForResizeView);
   },
 
-  _alignSelectedViews: function(type) {
+  _alignSelectedViewsFromNative: function(type) {
     /*
      * 位置揃えのアルゴリズムは一番目のviewの起点(anchor)から各viewがどれだけ移動すればよいかを求めれば良い.
      *
@@ -538,14 +574,14 @@ Navy.Class('CreatorPage', Navy.Page, {
      * 起点は[上辺座標 + 高さ * 0.5]となり、各viewはこの起点から自身の高さ * 0.5だけずれる.
      */
 
-    var views = this._convertViewsToGroupingViews(this._selectedViews);
+    var groupingViews = this._selectedGroupingViews;
 
     if (type.indexOf('ROOT_') === 0) {
       // Rootを起点とする場合はanchorViewを選択されたものじゃなくてRoot固定にして、typeをちょっといじる.
       var anchorView = Navy.Root;
       type = type.substr(5);
     } else {
-      var anchorView = views[0];
+      var anchorView = groupingViews[0];
     }
 
     if (type === 'TOP' || type === 'V_CENTER' || type === 'BOTTOM') {
@@ -562,8 +598,8 @@ Navy.Class('CreatorPage', Navy.Page, {
       }
 
       var anchor = anchorView.getPos().y + parseInt(anchorView.getSize().height * delta, 10);
-      for (var i = 0; i < views.length; i++) {
-        var view = views[i];
+      for (var i = 0; i < groupingViews.length; i++) {
+        var view = groupingViews[i];
         if (view === anchorView) {
           continue;
         }
@@ -588,8 +624,8 @@ Navy.Class('CreatorPage', Navy.Page, {
       }
 
       var anchor = anchorView.getPos().x + parseInt(anchorView.getSize().width * delta, 10);
-      for (var i = 0; i < views.length; i++) {
-        var view = views[i];
+      for (var i = 0; i < groupingViews.length; i++) {
+        var view = groupingViews[i];
         if (view === anchorView) {
           continue;
         }
@@ -603,18 +639,18 @@ Navy.Class('CreatorPage', Navy.Page, {
     Native.changedLayoutContentFromJS();
   },
 
-  _arrangeSelectedViews: function(type) {
-    var views = this._convertViewsToGroupingViews(this._selectedViews);
+  _arrangeSelectedViewsFromNative: function(type) {
+    var groupingViews = this._selectedGroupingViews;
 
-    if (views.length <= 1) {
+    if (groupingViews.length <= 1) {
       return;
     }
 
     if (type === 'H_CLOSELY') {
-      this._sortViewsByX(views);
-      var x = views[0].getPos().x + views[0].getSize().width;
-      for (var i = 1; i < views.length; i++) {
-        var view = views[i];
+      this._sortViewsByX(groupingViews);
+      var x = groupingViews[0].getPos().x + groupingViews[0].getSize().width;
+      for (var i = 1; i < groupingViews.length; i++) {
+        var view = groupingViews[i];
         var pos = view.getPos();
         var size = view.getSize();
         view.setPos({x: x, y: pos.y});
@@ -623,10 +659,10 @@ Navy.Class('CreatorPage', Navy.Page, {
     }
 
     if (type === 'V_CLOSELY') {
-      this._sortViewsByY(views);
-      var y = views[0].getPos().y + views[0].getSize().height;
-      for (var i = 1; i < views.length; i++) {
-        var view = views[i];
+      this._sortViewsByY(groupingViews);
+      var y = groupingViews[0].getPos().y + groupingViews[0].getSize().height;
+      for (var i = 1; i < groupingViews.length; i++) {
+        var view = groupingViews[i];
         var pos = view.getPos();
         var size = view.getSize();
         view.setPos({x: pos.x, y: y});
@@ -635,23 +671,23 @@ Navy.Class('CreatorPage', Navy.Page, {
     }
 
     if (type === 'H_EVEN') {
-      this._sortViewsByX(views);
-      var startView = views[0];
-      var endView = views[views.length - 1];
+      this._sortViewsByX(groupingViews);
+      var startView = groupingViews[0];
+      var endView = groupingViews[groupingViews.length - 1];
       var totalSpace = (endView.getPos().x + endView.getSize().width) - startView.getPos().x;
-      for (var i = 0; i < views.length; i++) {
-        totalSpace -= views[i].getSize().width;
+      for (var i = 0; i < groupingViews.length; i++) {
+        totalSpace -= groupingViews[i].getSize().width;
       }
 
       if (totalSpace <= 0) {
         return;
       }
 
-      var space = totalSpace / (views.length - 1);
+      var space = totalSpace / (groupingViews.length - 1);
 
-      var x = views[0].getPos().x + views[0].getSize().width + space;
-      for (var i = 1; i < views.length; i++) {
-        var view = views[i];
+      var x = groupingViews[0].getPos().x + groupingViews[0].getSize().width + space;
+      for (var i = 1; i < groupingViews.length; i++) {
+        var view = groupingViews[i];
         var pos = view.getPos();
         var size = view.getSize();
         view.setPos({x: x, y: pos.y});
@@ -660,23 +696,23 @@ Navy.Class('CreatorPage', Navy.Page, {
     }
 
     if (type === 'V_EVEN') {
-      this._sortViewsByY(views);
-      var startView = views[0];
-      var endView = views[views.length - 1];
+      this._sortViewsByY(groupingViews);
+      var startView = groupingViews[0];
+      var endView = groupingViews[groupingViews.length - 1];
       var totalSpace = (endView.getPos().y + endView.getSize().height) - startView.getPos().y;
-      for (var i = 0; i < views.length; i++) {
-        totalSpace -= views[i].getSize().height;
+      for (var i = 0; i < groupingViews.length; i++) {
+        totalSpace -= groupingViews[i].getSize().height;
       }
 
       if (totalSpace <= 0) {
         return;
       }
 
-      var space = totalSpace / (views.length - 1);
+      var space = totalSpace / (groupingViews.length - 1);
 
-      var y = views[0].getPos().y + views[0].getSize().height + space;
-      for (var i = 1; i < views.length; i++) {
-        var view = views[i];
+      var y = groupingViews[0].getPos().y + groupingViews[0].getSize().height + space;
+      for (var i = 1; i < groupingViews.length; i++) {
+        var view = groupingViews[i];
         var pos = view.getPos();
         var size = view.getSize();
         view.setPos({x: pos.x, y: y});

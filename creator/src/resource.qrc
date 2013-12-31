@@ -17,6 +17,7 @@
         <file>template/contents/navy/navy.min.js</file>
         <file>template/contents/creator/creator_page.js</file>
         <file>template/contents/creator/creator_scene.js</file>
+        <file>template/contents/creator/grouping_view.js</file>
         <file>template/contents/index_creator.html</file>
         <file>template/contents/image/button_normal.png</file>
         <file>template/contents/image/button_active.png</file>
