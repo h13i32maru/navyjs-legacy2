@@ -20,6 +20,7 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
     this._textElement = document.createElement('span');
     // inlineだとdivとの間に隙間ができてY方向でぴったり揃わないのでinline-blockにする.
     this._textElement.style.display = 'inline-block';
+    this._textElement.style.lineHeight = 'normal';
     this._element.appendChild(this._textElement);
   },
 
@@ -48,6 +49,11 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
       width: this._textElement.offsetWidth + border.left + border.right + padding.left + padding.right,
       height: this._textElement.offsetHeight + border.top + border.bottom + padding.top + padding.bottom
     };
+  },
+
+  setSize: function($super, size) {
+    $super(size);
+    this._element.style.lineHeight = size.height + 'px';
   },
 
   setText: function(text) {
@@ -89,10 +95,14 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
 
   setTextAlign: function(textAlign) {
     this._layout.extra.textAlign = textAlign;
-    this._element.style.textAlign = textAlign;
+
+    if (textAlign) {
+      this._element.style.textAlign = textAlign.horizontal;
+      this._textElement.style.verticalAlign = textAlign.vertical;
+    }
   },
 
   getTextAlign: function() {
-    return this._layout.extra.textAlign;
+    return this._cloneObject(this._layout.extra.textAlign);
   }
 });
