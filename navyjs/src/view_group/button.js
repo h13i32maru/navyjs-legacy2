@@ -67,16 +67,22 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
     var notify = new Navy.Notify(2, cb.bind(this));
     var pass = notify.pass.bind(notify);
 
-    var imageLayout = this._cloneObject(layout);
+    var imageLayout = {};
     imageLayout.id = 'image';
+    imageLayout.visible = true;
     imageLayout.pos = {x: 0, y: 0};
+    imageLayout.sizePolicy = {width: this.SIZE_POLICY_WRAP_CONTENT, height: this.SIZE_POLICY_WRAP_CONTENT};
+    imageLayout.extra = this._cloneObject(layout.extra);
     imageLayout.extra.src = layout.extra.normal.src;
     this._imageView = new Navy.View.Image(imageLayout, pass);
     this.addView(this._imageView);
 
-    var textLayout = this._cloneObject(layout);
+    var textLayout = {};
     textLayout.id = 'text';
+    textLayout.visible = true;
     textLayout.pos = {x:0, y:0};
+    textLayout.sizePolicy = {width: this.SIZE_POLICY_WRAP_CONTENT, height: this.SIZE_POLICY_WRAP_CONTENT};
+    textLayout.extra = this._cloneObject(layout.extra);
     this._textView = new Navy.View.Text(textLayout, pass);
     this.addView(this._textView);
   },

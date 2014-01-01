@@ -53,7 +53,7 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
 
   setSize: function($super, size) {
     $super(size);
-    this._element.style.lineHeight = size.height + 'px';
+    this._element.style.lineHeight = this._element.clientHeight + 'px';
   },
 
   setText: function(text) {
