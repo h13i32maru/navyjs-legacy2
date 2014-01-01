@@ -1,6 +1,6 @@
 Navy.Class('Page1', Navy.Page, {
-  onCreate: function($super) {
-    $super();
+  onCreate: function($super, ev) {
+    $super(ev);
 
     var listView = this.findViewById('list_view');
     var items = [];
