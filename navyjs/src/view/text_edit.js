@@ -58,7 +58,7 @@ Navy.Class('Navy.View.TextEdit', Navy.View.View, {
   },
 
   getText: function() {
-    return this._layout.extra.text;
+    return this._textElement.value;
   },
 
   setFontSize: function(fontSize) {
