@@ -10,8 +10,8 @@ Navy.Class('CreatorPage', Navy.Page, {
   _viewIdToGroupingViewMap: null,
   _groupingIdToGroupingViewMap: null,
 
-  onCreate: function($super) {
-    $super();
+  onCreate: function($super, ev) {
+    $super(ev);
 
     // 雑多な設定
     document.body.style.background = '#666';
@@ -51,8 +51,8 @@ Navy.Class('CreatorPage', Navy.Page, {
     Native.ungroupingViewsToJS.connect(this._execUngroupingViewsFromNative.bind(this));
   },
 
-  onResumeAfter: function($super) {
-    $super();
+  onResumeAfter: function($super, ev) {
+    $super(ev);
     for (var viewId in this._views) {
       var view = this._views[viewId];
       this._setupGroupingView(view);
