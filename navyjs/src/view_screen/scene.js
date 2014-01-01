@@ -1,6 +1,6 @@
 /**
  * @class Navy.Scene
- * @eventNames create, resumeBefore, resumeAfter, pauseBefore, pauseAfter, destroy
+ * @eventNames Create, ResumeBefore, ResumeAfter, PauseBefore, PauseAfter, Destroy
  */
 Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   LIFE_CYCLE_STATE_CREATE: 1,
@@ -90,7 +90,6 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
   onCreate: function(ev) {
     this._lifeCycleState = this.LIFE_CYCLE_STATE_CREATE;
-    console.log('onCreate', this.$className);
 
     ev.addDefaultCallback(function(){
       var page = this.getCurrentPage();
@@ -100,7 +99,6 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
   onResumeBefore: function(ev){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_BEFORE;
-    console.log('onResumeBefore', this.$className);
 
     ev.addDefaultCallback(function(){
       var page = this.getCurrentPage();
@@ -110,7 +108,6 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
   onResumeAfter: function(ev){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_AFTER;
-    console.log('onResumeAfter', this.$className);
 
     ev.addDefaultCallback(function(){
       var page = this.getCurrentPage();
@@ -120,7 +117,6 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
   onPauseBefore: function(ev){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_BEFORE;
-    console.log('onPauseBefore', this.$className);
 
     ev.addDefaultCallback(function(){
       var page = this.getCurrentPage();
@@ -130,7 +126,6 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
   onPauseAfter: function(ev){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_AFTER;
-    console.log('onPauseAfter', this.$className);
 
     ev.addDefaultCallback(function(){
       var page = this.getCurrentPage();
@@ -140,7 +135,6 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
   onDestroy: function(ev){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_DESTROY;
-    console.log('onDestroy', this.$className);
 
     ev.addDefaultCallback(function(){
       // TODO: いきなりsceneが終わる場合もあるのですべてのスタックを綺麗にする必要ありそう.
