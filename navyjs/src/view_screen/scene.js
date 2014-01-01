@@ -20,7 +20,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     $super(layout, function(){
       var viewId = this._viewsOrder[0];
       this._sceneFixedFirstView = this._views[viewId];
-      this.nextPage(layout.extra.page, callback.bind(null, this));
+      this.nextPage(layout.extra.page, null, callback.bind(null, this));
     }.bind(this));
   },
 
@@ -64,16 +64,16 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     }
   },
 
-  nextPage: function(pageName, callback) {
+  nextPage: function(pageName, data, callback) {
     Navy.Root.lockView();
 
     this._createPage(pageName, function(page){
-      this._addPage(page);
+      this._addPage(page, data);
       callback && callback(page);
     }.bind(this));
   },
 
-  backPage: function() {
+  backPage: function(data) {
     if (this._pageStack.length >= 2) {
       Navy.Root.lockView();
 
@@ -81,7 +81,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
       var prevStackObj = this._getPrevStack();
 
       currentStackObj.page.trigger('PauseBefore');
-      prevStackObj.page.trigger('ResumeBefore');
+      prevStackObj.page.trigger('ResumeBefore', data);
 
       var transition = currentStackObj.transition;
       transition.back(this._onTransitionBackEnd.bind(this));
@@ -200,8 +200,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     this.addView(page, this._sceneFixedFirstView);
   },
 
-  _addPage: function(page) {
-    this._lifeCycleState >= this.LIFE_CYCLE_STATE_CREATE && page.trigger('Create');
+  _addPage: function(page, data) {
+    this._lifeCycleState >= this.LIFE_CYCLE_STATE_CREATE && page.trigger('Create', data);
     this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_BEFORE && page.trigger('ResumeBefore');
 
     var currentStackObj = this._getCurrentStack();

@@ -48,9 +48,9 @@ Navy.Class('Navy.EventTarget', {
     }
   },
 
-  trigger: function(eventName, event, defaultCallback) {
+  trigger: function(eventName, data, event, defaultCallback) {
     if (!event) {
-      event = new Navy.Event(this);
+      event = new Navy.Event(this, data);
     }
 
     var onEventName = 'on' + eventName;
