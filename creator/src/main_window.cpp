@@ -176,7 +176,7 @@ void MainWindow::launchGoogleChrome() {
 
     if (!s->value(NPrefDialog::PREVIEW_USER_DATA_DIR).toString().isEmpty()) {
         QString dirPath = s->value(NPrefDialog::PREVIEW_USER_DATA_DIR).toString();
-        arguments.append("--user-data-dir=\"" + dirPath + "\"");
+        arguments.append("--user-data-dir=" + dirPath + "");
     }
 
     if (!s->value((NPrefDialog::PREVIEW_OTHER_OPTIONS)).toString().isEmpty()) {
