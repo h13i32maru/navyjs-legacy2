@@ -124,8 +124,10 @@ void MainWindow::openProject() {
     NProject *project = NProject::instance();
     QDir(project->contentsFilePath("navy")).removeRecursively();
     QDir(project->contentsFilePath("creator")).removeRecursively();
+    QDir(project->pluginDirPath()).removeRecursively();
     NUtil::copyDir(":/template/contents/navy", project->contentsFilePath("navy"));
     NUtil::copyDir(":/template/contents/creator", project->contentsFilePath("creator"));
+    NUtil::copyDir(":/template/plugin", project->pluginDirPath());
 }
 
 void MainWindow::showFileOpener() {
