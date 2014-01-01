@@ -53,7 +53,7 @@ Navy.Class('Navy.View.TextEdit', Navy.View.View, {
 
     if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT || this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
       this._updateSizeWithWrapContentSize();
-      this.trigger('sizeChanged');
+      this.trigger('SizeChanged');
     }
   },
 
@@ -67,7 +67,7 @@ Navy.Class('Navy.View.TextEdit', Navy.View.View, {
 
     if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT || this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
       this._updateSizeWithWrapContentSize();
-      this.trigger('sizeChanged');
+      this.trigger('SizeChanged');
     }
   },
 

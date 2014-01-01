@@ -41,7 +41,7 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
 
   _onLoadImage: function(src, width, height){
     this._imgElm.src = src;
-    this.trigger('sizeChanged');
+    this.trigger('SizeChanged');
   },
 
   setSrc: function(src, callback) {

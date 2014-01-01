@@ -163,7 +163,7 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
     }
 
     if (changed) {
-      this.trigger('sizeChanged');
+      this.trigger('SizeChanged');
     }
   },
 
@@ -190,7 +190,7 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
 
   _onLink: function(ev) {
     // TODO: Navy.Eventオブジェクトを作る.
-    this.trigger('link');
+    this.trigger('Link');
 
     // TODO: evがpreventDefault的なことをされていれば遷移しないようにする.
     var tmp = this._layout.link.id.split('/');
@@ -449,7 +449,7 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
     }
 
     // TODO: Eventオブジェクト作る.
-    this.trigger('sizeChanged');
+    this.trigger('SizeChanged');
   },
 
   setPos: function(pos) {
@@ -476,7 +476,7 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
     this._element.style.cssText += cssText;
 
     // TODO: Eventオブジェクト作る.
-    this.trigger('posChanged');
+    this.trigger('PosChanged');
   },
 
   addPos: function(deltaPos) {

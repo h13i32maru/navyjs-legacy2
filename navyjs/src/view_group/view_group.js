@@ -262,8 +262,8 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     view.setPage(this.getPage());
     view.setScene(this.getScene());
 
-    view.on('sizeChanged', this._resizeWrapContentByChangedView.bind(this));
-    view.on('posChanged', this._resizeWrapContentByChangedView.bind(this));
+    view.on('SizeChanged', this._resizeWrapContentByChangedView.bind(this));
+    view.on('PosChanged', this._resizeWrapContentByChangedView.bind(this));
   },
 
   removeView: function(view) {
