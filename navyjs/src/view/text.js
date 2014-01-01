@@ -62,7 +62,7 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
 
     if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT || this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
       this._updateSizeWithWrapContentSize();
-      this.trigger('sizeChanged', this, null);
+      this.trigger('sizeChanged');
     }
   },
 
@@ -76,7 +76,7 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
 
     if (this._layout.sizePolicy.width === this.SIZE_POLICY_WRAP_CONTENT || this._layout.sizePolicy.height === this.SIZE_POLICY_WRAP_CONTENT) {
       this._updateSizeWithWrapContentSize();
-      this.trigger('sizeChanged', this, null);
+      this.trigger('sizeChanged');
     }
   },
 

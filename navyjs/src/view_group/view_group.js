@@ -69,15 +69,15 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
 
   /**
    *
-   * @param view
    * @param ev
    * @private
    */
-  _resizeWrapContentByChangedView: function(view) {
+  _resizeWrapContentByChangedView: function(ev) {
     if (this._layout.sizePolicy.width !== this.SIZE_POLICY_WRAP_CONTENT && this._layout.sizePolicy.height !== this.SIZE_POLICY_WRAP_CONTENT) {
       return;
     }
 
+    var view = ev.target;
     var sizePolicy = view.getSizePolicy();
     var currentSize, pos, size;
 

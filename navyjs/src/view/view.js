@@ -2,7 +2,7 @@
  * @class Navy.View.View
  * @eventNames link, sizeChanged, posChanged
  */
-Navy.Class('Navy.View.View', {
+Navy.Class('Navy.View.View', Navy.EventTarget, {
   SIZE_POLICY_FIXED: 'fixed',
   SIZE_POLICY_WRAP_CONTENT: 'wrapContent',
   SIZE_POLICY_MATCH_PARENT: 'matchParent',
@@ -14,18 +14,17 @@ Navy.Class('Navy.View.View', {
   _element: null,
   _parentView: null,
 
-  _eventCallbackMap: null,
-  _eventCallbackId: 0,
-
   _linkGesture: null,
 
   /**
    *
+   * @param {function} $super
    * @param {function} callback
    * @param {ViewLayout} layout
    */
-  initialize: function(layout, callback) {
-    this._eventCallbackMap = {};
+  initialize: function($super, layout, callback) {
+    $super();
+
     this._preventDOMEvent = this._preventDOMEvent.bind(this);
 
     if (layout) {
@@ -164,7 +163,7 @@ Navy.Class('Navy.View.View', {
     }
 
     if (changed) {
-      this.trigger('sizeChanged', this, null);
+      this.trigger('sizeChanged');
     }
   },
 
@@ -191,7 +190,7 @@ Navy.Class('Navy.View.View', {
 
   _onLink: function(ev) {
     // TODO: Navy.Eventオブジェクトを作る.
-    this.trigger('link', this, ev);
+    this.trigger('link');
 
     // TODO: evがpreventDefault的なことをされていれば遷移しないようにする.
     var tmp = this._layout.link.id.split('/');
@@ -205,60 +204,6 @@ Navy.Class('Navy.View.View', {
     case 'scene':
       Navy.Root.linkScene(id);
       break;
-    }
-  },
-
-  on: function(eventName, callback) {
-    if (!this._eventCallbackMap[eventName]) {
-      this._eventCallbackMap[eventName] = [];
-    }
-
-    var eventCallbackId = this._eventCallbackId++;
-    this._eventCallbackMap[eventName].push({
-      callbackId: eventCallbackId,
-      callback: callback
-    });
-
-    return eventCallbackId;
-  },
-
-  off: function(eventName, callbackOrId) {
-    var eventCallbacks = this._eventCallbackMap[eventName];
-    if (!eventCallbacks) {
-      return;
-    }
-
-    if (typeof callbackOrId === 'function') {
-      var callback = callbackOrId;
-      for (var i = 0; i < eventCallbacks.length; i++) {
-        if (callback === eventCallbacks[i].callback) {
-          eventCallbacks.splice(i, 1);
-          i--;
-        }
-      }
-
-    } else {
-      var callbackId = callbackOrId;
-      for (var i = 0; i < eventCallbacks.length; i++) {
-        if (callbackId === eventCallbacks[i].callbackId) {
-          eventCallbacks.splice(i, 1);
-          return;
-        }
-      }
-    }
-  },
-
-  trigger: function(eventName, view, event) {
-    var eventCallbacks = this._eventCallbackMap[eventName];
-    if (!eventCallbacks) {
-      return;
-    }
-
-    for (var i = 0; i < eventCallbacks.length; i++) {
-      var callback = eventCallbacks[i].callback;
-      callback(view, event);
-
-      // TODO: preventDefault, stopPropagation, stopNext的なのを実装
     }
   },
 
@@ -504,7 +449,7 @@ Navy.Class('Navy.View.View', {
     }
 
     // TODO: Eventオブジェクト作る.
-    this.trigger('sizeChanged', this, null);
+    this.trigger('sizeChanged');
   },
 
   setPos: function(pos) {
@@ -531,7 +476,7 @@ Navy.Class('Navy.View.View', {
     this._element.style.cssText += cssText;
 
     // TODO: Eventオブジェクト作る.
-    this.trigger('posChanged', this, null);
+    this.trigger('posChanged');
   },
 
   addPos: function(deltaPos) {

@@ -80,74 +80,73 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
       var currentStackObj = this._getCurrentStack();
       var prevStackObj = this._getPrevStack();
 
-      currentStackObj.page.onPauseBefore();
-      prevStackObj.page.onResumeBefore();
+      currentStackObj.page.trigger('PauseBefore');
+      prevStackObj.page.trigger('ResumeBefore');
 
       var transition = currentStackObj.transition;
       transition.back(this._onTransitionBackEnd.bind(this));
     }
   },
 
-  onCreate: function() {
+  onCreate: function(ev) {
     this._lifeCycleState = this.LIFE_CYCLE_STATE_CREATE;
     console.log('onCreate', this.$className);
 
-    // TODO: eventオブジェクトをちゃんと生成する.(他のライフサイクルも同じく)
-    this.trigger('create', this, null);
-
-    var page = this.getCurrentPage();
-    page.onCreate();
+    ev.addDefaultCallback(function(){
+      var page = this.getCurrentPage();
+      page.trigger('Create');
+    });
   },
 
-  onResumeBefore: function(){
+  onResumeBefore: function(ev){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_BEFORE;
     console.log('onResumeBefore', this.$className);
 
-    this.trigger('resumeBefore', this, null);
-
-    var page = this.getCurrentPage();
-    page.onResumeBefore();
+    ev.addDefaultCallback(function(){
+      var page = this.getCurrentPage();
+      page.trigger('ResumeBefore');
+    });
   },
 
-  onResumeAfter: function(){
+  onResumeAfter: function(ev){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_AFTER;
     console.log('onResumeAfter', this.$className);
 
-    this.trigger('resumeAfter', this, null);
-
-    var page = this.getCurrentPage();
-    page.onResumeAfter();
+    ev.addDefaultCallback(function(){
+      var page = this.getCurrentPage();
+      page.trigger('ResumeAfter');
+    });
   },
 
-  onPauseBefore: function(){
+  onPauseBefore: function(ev){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_BEFORE;
     console.log('onPauseBefore', this.$className);
 
-    this.trigger('pauseBefore', this, null);
-
-    var page = this.getCurrentPage();
-    page.onPauseBefore();
+    ev.addDefaultCallback(function(){
+      var page = this.getCurrentPage();
+      page.trigger('PauseBefore');
+    });
   },
 
-  onPauseAfter: function(){
+  onPauseAfter: function(ev){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_PAUSE_AFTER;
     console.log('onPauseAfter', this.$className);
 
-    this.trigger('pauseAfter', this, null);
-
-    var page = this.getCurrentPage();
-    page.onPauseAfter();
+    ev.addDefaultCallback(function(){
+      var page = this.getCurrentPage();
+      page.trigger('PauseAfter');
+    });
   },
 
-  onDestroy: function(){
+  onDestroy: function(ev){
     this._lifeCycleState = this.LIFE_CYCLE_STATE_DESTROY;
     console.log('onDestroy', this.$className);
 
-    this.trigger('destroy', this, null);
-
-    // TODO: いきなりsceneが終わる場合もあるのですべてのスタックを綺麗にする必要ありそう.
-    var page = this.getCurrentPage();
-    page.onDestroy();
+    ev.addDefaultCallback(function(){
+      // TODO: いきなりsceneが終わる場合もあるのですべてのスタックを綺麗にする必要ありそう.
+      var page = this.getCurrentPage();
+      page.trigger('Destroy');
+    });
   },
 
   // fixme: 不要？
@@ -202,13 +201,13 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   },
 
   _addPage: function(page) {
-    this._lifeCycleState >= this.LIFE_CYCLE_STATE_CREATE && page.onCreate();
-    this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_BEFORE && page.onResumeBefore();
+    this._lifeCycleState >= this.LIFE_CYCLE_STATE_CREATE && page.trigger('Create');
+    this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_BEFORE && page.trigger('ResumeBefore');
 
     var currentStackObj = this._getCurrentStack();
     if (currentStackObj) {
       var beforePage = currentStackObj.page;
-      beforePage.onPauseBefore();
+      beforePage.trigger('PauseBefore');
     }
 
     // TODO: 組み込みだけじゃんくてカスタムのTransitionにも対応する.
@@ -240,12 +239,12 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   _onTransitionStartEnd: function(){
     var prevStackObj = this._getPrevStack();
     if (prevStackObj) {
-      prevStackObj.page.onPauseAfter();
+      prevStackObj.page.trigger('PauseAfter');
     }
 
     var currentStackObj = this._getCurrentStack();
     if (currentStackObj) {
-      this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_AFTER && currentStackObj.page.onResumeAfter();
+      this._lifeCycleState >= this.LIFE_CYCLE_STATE_RESUME_AFTER && currentStackObj.page.trigger('ResumeAfter');
     }
 
     Navy.Root.unlockView();
@@ -254,13 +253,13 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   _onTransitionBackEnd: function(){
     var prevStackObj = this._getPrevStack();
     if (prevStackObj) {
-      prevStackObj.page.onResumeAfter();
+      prevStackObj.page.trigger('ResumeAfter');
     }
 
     var currentStackObj = this._getCurrentStack();
     if (currentStackObj) {
-      currentStackObj.page.onPauseAfter();
-      currentStackObj.page.onDestroy();
+      currentStackObj.page.trigger('PauseAfter');
+      currentStackObj.page.trigger('Destroy');
 
       var stackObj = this._pageStack.pop();
       stackObj.page.destroy();

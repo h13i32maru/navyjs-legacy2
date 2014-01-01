@@ -57,10 +57,10 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     if (this._sceneStack.length >= 2) {
       this.lockView();
       var prevStackObj = this._getPrevStack();
-      prevStackObj.scene.onResumeBefore();
+      prevStackObj.scene.trigger('ResumeBefore');
 
       var currentStackObj = this._getCurrentStack();
-      currentStackObj.scene.onPauseBefore();
+      currentStackObj.scene.trigger('PauseBefore');
       currentStackObj.transition.back(this._onTransitionBackEnd.bind(this));
     }
   },
@@ -158,13 +158,13 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   },
 
   _addScene: function(scene) {
-    scene.onCreate();
-    scene.onResumeBefore();
+    scene.trigger('Create');
+    scene.trigger('ResumeBefore');
 
     var currentStackObj = this._getCurrentStack();
     if (currentStackObj) {
       var beforeScene = currentStackObj.scene;
-      beforeScene.onPauseBefore();
+      beforeScene.trigger('PauseBefore');
     }
 
     // TODO: 組み込みだけじゃんくてカスタムのTransitionにも対応する.
@@ -201,12 +201,12 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   _onTransitionStartEnd: function(){
     var prevStackObj = this._getPrevStack();
     if (prevStackObj) {
-      prevStackObj.scene.onPauseAfter();
+      prevStackObj.scene.trigger('PauseAfter');
     }
 
     var currentStackObj = this._getCurrentStack();
     if (currentStackObj) {
-      currentStackObj.scene.onResumeAfter();
+      currentStackObj.scene.trigger('ResumeAfter');
     }
     this.unlockView();
   },
@@ -214,13 +214,13 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   _onTransitionBackEnd: function(){
     var prevStackObj = this._getPrevStack();
     if (prevStackObj) {
-      prevStackObj.scene.onResumeAfter();
+      prevStackObj.scene.trigger('ResumeAfter');
     }
 
     var currentStackObj = this._getCurrentStack();
     if (currentStackObj) {
-      currentStackObj.scene.onPauseAfter();
-      currentStackObj.scene.onDestroy();
+      currentStackObj.scene.trigger('PauseAfter');
+      currentStackObj.scene.trigger('Destroy');
 
       this._removeCurrentScene();
     }
