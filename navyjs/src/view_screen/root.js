@@ -135,6 +135,8 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
       this.style.top = (height/2 - this.height/2) + 'px';
       this.onload = null;
     };
+
+    // TODO: パスを検討する.
     img.src = 'image/loading.png';
     img.style.position = 'absolute';
     img.width = imgWidth;

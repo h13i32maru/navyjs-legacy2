@@ -22,6 +22,7 @@
         <file>template/contents/image/button_normal.png</file>
         <file>template/contents/image/button_active.png</file>
         <file>template/contents/image/button_disabled.png</file>
+        <file>template/contents/image/loading.png</file>
         <file>template/contents/config/app.json</file>
         <file>template/contents/config/page.json</file>
         <file>template/contents/config/scene.json</file>
