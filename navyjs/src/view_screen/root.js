@@ -149,13 +149,16 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   },
 
   _createScene: function(sceneName, callback) {
-    var layout = Navy.Config.scene[sceneName];
+    var layout = this._cloneObject(Navy.Config.scene[sceneName]);
     Navy.Resource.loadScript(layout.classFile, this._onLoadScript.bind(this, layout, callback));
   },
 
   _onLoadScript: function(layout, callback) {
     var SceneClass = Navy.Resource.getClass(layout.class);
     var scene = new SceneClass(layout, callback);
+
+    // addViewしてしまうとsceneが見えてしまうので遷移アニメーションが開始するまで非表示にしておく.
+    scene.setVisible(false);
     this.addView(scene);
   },
 

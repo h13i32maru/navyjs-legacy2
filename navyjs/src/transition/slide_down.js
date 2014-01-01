@@ -20,6 +20,7 @@ Navy.Class('Navy.Transition.SlideDown', Navy.Transition.Transition, {
 
     var height = Navy.Config.app.size.height;
     afterView._setRawStyle({webkitAnimation: '0.5s', webkitTransform: 'translateY(-' + height + 'px)'});
+    afterView.setVisible(true);
   },
 
   _addAnimationStyle: function(){

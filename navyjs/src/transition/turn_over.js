@@ -20,6 +20,7 @@ Navy.Class('Navy.Transition.TurnOver', Navy.Transition.Transition, {
 
     beforeView._setRawStyle({webkitAnimation: '0.25s', webkitAnimationTimingFunction: 'linear', webkitTransform: 'rotateY(0)'});
     afterView._setRawStyle({webkitAnimation: '0.25s', webkitAnimationTimingFunction: 'linear',webkitTransform: 'rotateY(-90deg)'});
+    afterView.setVisible(true);
   },
 
   _addAnimationStyle: function(){

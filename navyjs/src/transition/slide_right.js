@@ -20,6 +20,7 @@ Navy.Class('Navy.Transition.SlideRight', Navy.Transition.Transition, {
 
     var width = Navy.Config.app.size.width;
     afterView._setRawStyle({webkitAnimation: '0.5s', webkitTransform: 'translateX(' + width + 'px)'});
+    afterView.setVisible(true);
   },
 
   _addAnimationStyle: function(){

@@ -16,7 +16,8 @@ Navy.Class('Navy.Transition.Fade', Navy.Transition.Transition, {
     }
 
     beforeView && beforeView._setRawStyle({webkitAnimation: '0.5s'});
-    afterView && afterView._setRawStyle({webkitAnimation: '0.5s', opacity: 0});
+    afterView._setRawStyle({webkitAnimation: '0.5s', opacity: 0});
+    afterView.setVisible(true);
   },
 
   _addAnimationStyle: function(){

@@ -184,7 +184,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   */
 
   _createPage: function(pageName, callback) {
-    var layout = Navy.Config.page[pageName];
+    var layout = this._cloneObject(Navy.Config.page[pageName]);
     Navy.Resource.loadScript(layout.classFile, this._onLoadScript.bind(this, layout, callback));
   },
 
@@ -197,6 +197,9 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   _onLoadScript: function(layout, callback) {
     var PageClass = Navy.Resource.getClass(layout.class);
     var page = new PageClass(layout, callback);
+
+    // addViewしてしまうとpageが見えてしまうので遷移アニメーションが開始するまで非表示にしておく.
+    page.setVisible(false);
     this.addView(page, this._sceneFixedFirstView);
   },
 

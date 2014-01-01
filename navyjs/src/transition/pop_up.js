@@ -22,7 +22,8 @@ Navy.Class('Navy.Transition.PopUp', Navy.Transition.Transition, {
       this.$class.initAnimationStyle = true;
     }
 
-    afterView && afterView._setRawStyle({webkitAnimation: '0.5s', webkitTransform: 'scale(0)'});
+    afterView._setRawStyle({webkitAnimation: '0.5s', webkitTransform: 'scale(0)'});
+    afterView.setVisible(true);
   },
 
   _addAnimationStyle: function(){
