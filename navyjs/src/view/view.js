@@ -188,23 +188,25 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
     this._element.style.cssText += cssText;
   },
 
-  _onLink: function(ev) {
-    // TODO: Navy.Eventオブジェクトを作る.
-    this.trigger('Link');
+  _onLink: function(/* domEvent */) {
+    var linkId = this._layout.link.id;
 
-    // TODO: evがpreventDefault的なことをされていれば遷移しないようにする.
-    var tmp = this._layout.link.id.split('/');
-    var type = tmp[0];
-    var id = tmp[1];
+    var defaultCallback = function() {
+      var tmp = linkId.split('/');
+      var type = tmp[0];
+      var id = tmp[1];
 
-    switch (type) {
-    case 'page':
-      this.getScene().linkPage(id);
-      break;
-    case 'scene':
-      Navy.Root.linkScene(id);
-      break;
-    }
+      switch (type) {
+      case 'page':
+        this.getScene().linkPage(id);
+        break;
+      case 'scene':
+        Navy.Root.linkScene(id);
+        break;
+      }
+    }.bind(this);
+
+    this.trigger('Link', {linkId: linkId}, null, defaultCallback);
   },
 
   addRawEventListener: function(eventName, callback) {
