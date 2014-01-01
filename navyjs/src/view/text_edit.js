@@ -18,7 +18,7 @@ Navy.Class('Navy.View.TextEdit', Navy.View.View, {
     $super(layout);
 
     this._textElement = document.createElement('input');
-    this._textElement.style.cssText = 'width: 100%; height:100%; box-sizing:border-box; border:none;';
+    this._textElement.style.cssText = '-webkit-user-select:auto; width: 100%; height:100%; box-sizing:border-box; border:none;';
     this._element.appendChild(this._textElement);
   },
 
