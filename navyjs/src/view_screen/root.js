@@ -48,16 +48,18 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     }
   },
 
-  nextScene: function(sceneName) {
+  nextScene: function(sceneName, data) {
     this.lockView();
-    this._createScene(sceneName, this._addScene.bind(this));
+    this._createScene(sceneName, function(scene){
+      this._addScene(scene, data);
+    }.bind(this));
   },
 
-  backScene: function() {
+  backScene: function(data) {
     if (this._sceneStack.length >= 2) {
       this.lockView();
       var prevStackObj = this._getPrevStack();
-      prevStackObj.scene.trigger('ResumeBefore');
+      prevStackObj.scene.trigger('ResumeBefore', data);
 
       var currentStackObj = this._getCurrentStack();
       currentStackObj.scene.trigger('PauseBefore');
@@ -157,8 +159,8 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     this.addView(scene);
   },
 
-  _addScene: function(scene) {
-    scene.trigger('Create');
+  _addScene: function(scene, data) {
+    scene.trigger('Create', data);
     scene.trigger('ResumeBefore');
 
     var currentStackObj = this._getCurrentStack();
