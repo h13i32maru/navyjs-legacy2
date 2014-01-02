@@ -23,7 +23,8 @@
       "text": "",
       "fontSize": 20,
       "fontColor": "#000000",
-      "placeholder": "user name"
+      "placeholder": "user name",
+      "textType": "password"
     }
   }
 ]
