@@ -93,7 +93,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
     ev.addDefaultCallback(function(){
       var page = this.getCurrentPage();
-      page.trigger('Create');
+      page.trigger('Create', ev.data);
     });
   },
 
@@ -102,7 +102,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
     ev.addDefaultCallback(function(){
       var page = this.getCurrentPage();
-      page.trigger('ResumeBefore');
+      page.trigger('ResumeBefore', ev.data);
     });
   },
 
@@ -111,7 +111,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
     ev.addDefaultCallback(function(){
       var page = this.getCurrentPage();
-      page.trigger('ResumeAfter');
+      page.trigger('ResumeAfter', ev.data);
     });
   },
 
@@ -120,7 +120,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
     ev.addDefaultCallback(function(){
       var page = this.getCurrentPage();
-      page.trigger('PauseBefore');
+      page.trigger('PauseBefore', ev.data);
     });
   },
 
@@ -129,7 +129,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
     ev.addDefaultCallback(function(){
       var page = this.getCurrentPage();
-      page.trigger('PauseAfter');
+      page.trigger('PauseAfter', ev.data);
     });
   },
 
@@ -139,7 +139,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     ev.addDefaultCallback(function(){
       // TODO: いきなりsceneが終わる場合もあるのですべてのスタックを綺麗にする必要ありそう.
       var page = this.getCurrentPage();
-      page.trigger('Destroy');
+      page.trigger('Destroy', ev.data);
     });
   },
 
