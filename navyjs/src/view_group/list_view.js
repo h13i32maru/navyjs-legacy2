@@ -50,10 +50,15 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
     }
 
     var notify = new Navy.Notify(items.length, function(){
+      var link = this._cloneObject(this._layout.extra.itemLink || '');
       var margin = this._layout.extra.itemLayoutMargin + 'px';
       for (var i = 0; i < items.length; i++) {
         var view = viewGroups[i];
         var item = items[i];
+
+        if (link) {
+          view.setLink(link);
+        }
 
         var callbackResult = false;
         if (callback) {

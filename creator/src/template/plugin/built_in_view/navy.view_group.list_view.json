@@ -18,6 +18,11 @@
       "key": "extra.itemLayoutMargin",
       "type": "number",
       "value": 10
+    },
+    {
+      "label": "itemLink",
+      "key": "extra.itemLink.id",
+      "type": "linkList"
     }
   ]
 }
