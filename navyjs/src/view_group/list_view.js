@@ -6,7 +6,9 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
   _applyExtraLayout: function($super, layout, callback) {
     $super(layout, callback);
 
-    this._element.style.overflow = 'scroll';
+    this._element.style.overflowY = 'scroll';
+    this._element.style.overflowX = 'hidden';
+    this._element.style.webkitOverflowScrolling = 'touch'; // for ios
 
     if (this._layout.extra.mock) {
       var items = [];
