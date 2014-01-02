@@ -273,8 +273,8 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
 
     tree->blockSignals(false);
 
-    // 複数選択しているときはプロパティの設定をできないようにする
-    if (views.length() >= 2) {
+    // 選択しているViewが1つじゃない場合はどのViewの設定をいじればよいかがわからないので、ウィジェットを無効に設定しておく
+    if (views.length() != 1) {
         ui->propScrollAreaWidgetContents->setEnabled(false);
     } else {
         ui->propScrollAreaWidgetContents->setEnabled(true);
