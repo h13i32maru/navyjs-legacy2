@@ -24,6 +24,12 @@
       "key": "extra.placeholder",
       "type": "string",
       "value": ""
+    },
+    {
+      "label": "textType",
+      "key": "extra.textType",
+      "type": "stringList",
+      "value": ["text", "password"]
     }
   ]
 }
