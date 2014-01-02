@@ -87,6 +87,7 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
                 l->setObjectName("string:id");
                 tableView->setIndexWidget(modelIndex, l);
                 tableView->setRowHeight(0, height);
+                QObject::connect(l, SIGNAL(textChanged(QString)), receiver, slot);
             }
 
             // set class

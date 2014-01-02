@@ -139,10 +139,27 @@ void NLayoutWidget::injectNativeBridge (){
 }
 
 void NLayoutWidget::syncWidgetToView() {
+    QList<QTreeWidgetItem *> items = ui->layerTreeWidget->selectedItems();
+    if (items.length() != 1) {
+        return;
+    }
+
     QTableView *table = mPropMap["Navy.View.View"];
     QTableView *extraTable = mCurrentExtraTableView;
     NJson view;
     ViewPlugin::instance()->syncWidgetToView(view, table, extraTable);
+
+    QString selectedViewId = items[0]->text(ViewsColId);
+    QString id = view.getStr("id");
+    if (id != selectedViewId) {
+        QList<QTreeWidgetItem *> sameIdItems = ui->layerTreeWidget->findItems(id, Qt::MatchFixedString, ViewsColId);
+        if (sameIdItems.length() != 0) {
+            QMessageBox::critical(NULL, "Error", "same id is exists.");
+            return;
+        }
+
+        items[0]->setText(ViewsColId, id);
+    }
 
     emit mNative->changedViewPropertyToJS(view.toVariant());
 }
