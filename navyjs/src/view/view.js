@@ -191,17 +191,17 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
   _onLink: function(/* domEvent */) {
     var linkId = this._layout.link.id;
 
-    var defaultCallback = function() {
+    var defaultCallback = function(ev) {
       var tmp = linkId.split('/');
       var type = tmp[0];
       var id = tmp[1];
 
       switch (type) {
       case 'page':
-        this.getScene().linkPage(id);
+        this.getScene().linkPage(id, ev.data);
         break;
       case 'scene':
-        Navy.Root.linkScene(id);
+        Navy.Root.linkScene(id, ev.data);
         break;
       }
     }.bind(this);

@@ -40,11 +40,11 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   },
 
   // fixme: callbackを実装する.
-  linkScene: function(id) {
+  linkScene: function(id, data) {
     if (id === '$back') {
-      this.backScene();
+      this.backScene(data);
     } else {
-      this.nextScene(id);
+      this.nextScene(id, data);
     }
   },
 

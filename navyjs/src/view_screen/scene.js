@@ -56,11 +56,11 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   },
 
   // fixme: callbackを実装する.
-  linkPage: function(id) {
+  linkPage: function(id, data) {
     if (id === '$back') {
-      this.backPage();
+      this.backPage(data);
     } else {
-      this.nextPage(id);
+      this.nextPage(id, data);
     }
   },
 
