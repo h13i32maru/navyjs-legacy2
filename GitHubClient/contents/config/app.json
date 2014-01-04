@@ -1,0 +1,10 @@
+{
+    "fontFamily": "sans-serif",
+    "size": {
+        "height": 1096,
+        "width": 640
+    },
+    "start": {
+        "scene": "LoginScene"
+    }
+}

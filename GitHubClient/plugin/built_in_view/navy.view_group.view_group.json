@@ -1,0 +1,11 @@
+{
+  "class": "Navy.ViewGroup.ViewGroup",
+  "define": [
+    {
+      "label": "contentLayoutFile",
+      "key": "extra.contentLayoutFile",
+      "type": "layoutList",
+      "value": ""
+    }
+  ]
+}

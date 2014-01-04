@@ -1,0 +1,257 @@
+[
+  {
+    "backgroundColor": "",
+    "border": "",
+    "class": "Navy.View.Text",
+    "extra": {
+      "fontColor": "#000000",
+      "fontSize": 50,
+      "text": "GitHub",
+      "textAlign": {
+        "horizontal": "center",
+        "vertical": "baseline"
+      }
+    },
+    "id": "Text1",
+    "link": {
+      "id": ""
+    },
+    "padding": "0px",
+    "pos": {
+      "x": 201,
+      "y": 242
+    },
+    "size": {
+      "height": 94,
+      "width": 239
+    },
+    "sizePolicy": {
+      "width": "fixed",
+      "height": "fixed"
+    },
+    "visible": true,
+    "__creator__": {
+      "groupingIds": [
+        1
+      ]
+    }
+  },
+  {
+    "backgroundColor": "",
+    "border": "solid 4px #000000",
+    "class": "Navy.View.TextEdit",
+    "extra": {
+      "fontColor": "#000000",
+      "fontSize": 20,
+      "placeholder": "user name",
+      "text": ""
+    },
+    "id": "LoginName",
+    "link": {
+      "id": ""
+    },
+    "padding": "0px",
+    "pos": {
+      "x": 100,
+      "y": 376
+    },
+    "size": {
+      "height": 64,
+      "width": 440
+    },
+    "sizePolicy": {
+      "height": "fixed",
+      "width": "fixed"
+    },
+    "visible": true,
+    "__creator__": {
+      "groupingIds": [
+        2
+      ]
+    }
+  },
+  {
+    "backgroundColor": "",
+    "border": "none 4px #000000",
+    "class": "Navy.ViewGroup.Button",
+    "extra": {
+      "active": {
+        "src": "image/button_active.png"
+      },
+      "disabled": {
+        "src": "image/button_disabled.png"
+      },
+      "fontColor": "#ffffff",
+      "fontSize": 30,
+      "normal": {
+        "src": "image/button_normal.png"
+      },
+      "text": "login",
+      "contentLayoutFile": null
+    },
+    "id": "LoginButton",
+    "link": {
+      "id": "scene/MainScene"
+    },
+    "padding": "0px",
+    "pos": {
+      "x": 228,
+      "y": 563
+    },
+    "size": {
+      "height": 100,
+      "width": 100
+    },
+    "sizePolicy": {
+      "height": "wrapContent",
+      "width": "wrapContent"
+    },
+    "visible": true,
+    "__creator__": {
+      "groupingIds": [
+        3
+      ]
+    }
+  },
+  {
+    "backgroundColor": "",
+    "border": "solid 4px #000000",
+    "class": "Navy.View.TextEdit",
+    "extra": {
+      "fontColor": "#000000",
+      "fontSize": 20,
+      "placeholder": "password",
+      "text": "",
+      "textType": "password"
+    },
+    "id": "Password",
+    "link": {
+      "id": ""
+    },
+    "padding": "0px",
+    "pos": {
+      "x": 100,
+      "y": 459
+    },
+    "size": {
+      "height": 64,
+      "width": 440
+    },
+    "sizePolicy": {
+      "height": "fixed",
+      "width": "fixed"
+    },
+    "visible": true
+  },
+  {
+    "backgroundColor": "",
+    "border": "none 4px #000000",
+    "class": "Navy.View.Text",
+    "extra": {
+      "fontColor": "#ff0000",
+      "fontSize": 24,
+      "text": "Fail Login",
+      "textAlign": {
+        "horizontal": "center",
+        "vertical": "baseline"
+      }
+    },
+    "id": "FailLogin",
+    "link": {
+      "id": ""
+    },
+    "padding": "0px",
+    "pos": {
+      "x": 153,
+      "y": 666
+    },
+    "size": {
+      "height": 63,
+      "width": 335
+    },
+    "sizePolicy": {
+      "height": "fixed",
+      "width": "fixed"
+    },
+    "visible": false,
+    "__creator__": {
+      "groupingIds": [
+        5
+      ]
+    }
+  },
+  {
+    "backgroundColor": "",
+    "border": "none 4px #000000",
+    "class": "Navy.View.Text",
+    "extra": {
+      "fontColor": "#000000",
+      "fontSize": 20,
+      "text": "This client saves access token to LocalStorage.",
+      "textAlign": {
+        "horizontal": "center",
+        "vertical": "top"
+      }
+    },
+    "id": "Text6",
+    "link": {
+      "id": ""
+    },
+    "padding": "0px",
+    "pos": {
+      "x": 20,
+      "y": 740
+    },
+    "size": {
+      "height": 53,
+      "width": 600
+    },
+    "sizePolicy": {
+      "height": "wrapContent",
+      "width": "fixed"
+    },
+    "visible": true,
+    "__creator__": {
+      "groupingIds": [
+        6
+      ]
+    }
+  },
+  {
+    "backgroundColor": "",
+    "border": "none 4px #000000",
+    "class": "Navy.View.Text",
+    "extra": {
+      "fontColor": "#000000",
+      "fontSize": 20,
+      "text": "It does not save the password.",
+      "textAlign": {
+        "horizontal": "center",
+        "vertical": "top"
+      }
+    },
+    "id": "Text7",
+    "link": {
+      "id": ""
+    },
+    "padding": "0px",
+    "pos": {
+      "x": 54,
+      "y": 762
+    },
+    "size": {
+      "height": 100,
+      "width": 533
+    },
+    "sizePolicy": {
+      "height": "wrapContent",
+      "width": "fixed"
+    },
+    "visible": true,
+    "__creator__": {
+      "groupingIds": [
+        7
+      ]
+    }
+  }
+]

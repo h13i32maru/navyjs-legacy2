@@ -1,0 +1,11 @@
+{
+  "class": "Navy.View.Image",
+  "define": [
+    {
+      "label": "src",
+      "key": "extra.src",
+      "type": "imageList",
+      "value": ""
+    }
+  ]
+}

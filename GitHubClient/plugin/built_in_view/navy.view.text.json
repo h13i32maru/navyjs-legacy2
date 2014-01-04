@@ -1,0 +1,35 @@
+{
+  "class": "Navy.View.Text",
+  "define": [
+    {
+      "label": "text",
+      "key": "extra.text",
+      "type": "string",
+      "value": "text"
+    },
+    {
+      "label": "fontSize",
+      "key": "extra.fontSize",
+      "type": "number",
+      "value": 20
+    },
+    {
+      "label": "fontColor",
+      "key": "extra.fontColor",
+      "type": "string",
+      "value": "#000000"
+    },
+    {
+      "label": "textAlign(H)",
+      "key": "extra.textAlign.horizontal",
+      "type": "stringList",
+      "value": ["left", "center", "right"]
+    },
+    {
+      "label": "textAlign(V)",
+      "key": "extra.textAlign.vertical",
+      "type": "stringList",
+      "value": ["top", "middle", "baseline", "bottom"]
+    }
+  ]
+}
