@@ -97,7 +97,12 @@
       "height": "fixed",
       "width": "fixed"
     },
-    "visible": true
+    "visible": true,
+    "__creator__": {
+      "groupingIds": [
+        6
+      ]
+    }
   },
   {
     "backgroundColor": "#000",
@@ -160,7 +165,12 @@
       "height": "fixed",
       "width": "fixed"
     },
-    "visible": true
+    "visible": true,
+    "__creator__": {
+      "groupingIds": [
+        7
+      ]
+    }
   },
   {
     "backgroundColor": "#999",
@@ -177,11 +187,11 @@
     },
     "id": "Text6",
     "link": {
-      "id": "scene/SearchRepoScene"
+      "id": "page/SearchRepoPage"
     },
     "padding": "0px",
     "pos": {
-      "x": 549,
+      "x": 547,
       "y": 5
     },
     "size": {
@@ -192,7 +202,12 @@
       "height": "fixed",
       "width": "fixed"
     },
-    "visible": true
+    "visible": true,
+    "__creator__": {
+      "groupingIds": [
+        10
+      ]
+    }
   },
   {
     "backgroundColor": "#999",
@@ -224,6 +239,11 @@
       "height": "fixed",
       "width": "fixed"
     },
-    "visible": true
+    "visible": true,
+    "__creator__": {
+      "groupingIds": [
+        9
+      ]
+    }
   }
 ]

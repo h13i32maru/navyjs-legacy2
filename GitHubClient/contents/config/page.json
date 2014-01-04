@@ -42,7 +42,7 @@
         "extra": {
             "contentLayoutFile": "layout/search_repo_page.json",
             "transition": {
-                "class": "Navy.Transition.SlideRight"
+                "class": "Navy.Transition.SlideDown"
             }
         },
         "id": "SearchRepoPage"
