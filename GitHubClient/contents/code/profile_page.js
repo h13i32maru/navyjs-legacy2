@@ -16,7 +16,12 @@ Navy.Class('ProfilePage', Navy.Page, {
     this.findViewById('FollowingNum').setText(user.getFollowingNum());
 
     this.findViewById('Repos').setItems(user.getRepos(), function(repo, view){
+      console.log(repo);
       view.findViewById('Name').setText(repo.name);
+      view.findViewById('Lang').setText(repo.language);
+      view.findViewById('StarCount').setText(repo.stargazers_count);
+      view.findViewById('WatchCount').setText(repo.watchers_count);
+      view.findViewById('Description').setText(repo.description);
     });
     console.log(user.getRepos());
 

@@ -57,7 +57,12 @@
       "width": "fixed",
       "height": "fixed"
     },
-    "visible": true
+    "visible": true,
+    "__creator__": {
+      "groupingIds": [
+        4
+      ]
+    }
   },
   {
     "backgroundColor": "",
@@ -89,7 +94,12 @@
       "height": "fixed",
       "width": "fixed"
     },
-    "visible": true
+    "visible": true,
+    "__creator__": {
+      "groupingIds": [
+        5
+      ]
+    }
   },
   {
     "backgroundColor": "",
@@ -100,7 +110,7 @@
       "fontSize": 20,
       "text": "lang",
       "textAlign": {
-        "horizontal": "right",
+        "horizontal": "left",
         "vertical": "top"
       }
     },
@@ -110,16 +120,16 @@
     },
     "padding": "0px",
     "pos": {
-      "x": 530,
-      "y": 14
+      "x": 484,
+      "y": 22
     },
     "size": {
       "height": 41,
       "width": 100
     },
     "sizePolicy": {
-      "width": "fixed",
-      "height": "fixed"
+      "height": "fixed",
+      "width": "fixed"
     },
     "visible": true
   },
@@ -133,7 +143,7 @@
       "text": "★",
       "textAlign": {
         "horizontal": "left",
-        "vertical": "baseline"
+        "vertical": "top"
       }
     },
     "id": "Text5",
@@ -142,8 +152,8 @@
     },
     "padding": "0px",
     "pos": {
-      "x": 499,
-      "y": 71
+      "x": 484,
+      "y": 68
     },
     "size": {
       "height": 42,
@@ -168,14 +178,14 @@
         "vertical": "top"
       }
     },
-    "id": "Text6",
+    "id": "StarCount",
     "link": {
       "id": ""
     },
     "padding": "0px",
     "pos": {
       "x": 538,
-      "y": 75
+      "y": 68
     },
     "size": {
       "height": 39,
@@ -197,7 +207,7 @@
       "text": "◎",
       "textAlign": {
         "horizontal": "left",
-        "vertical": "baseline"
+        "vertical": "top"
       }
     },
     "id": "Text7",
@@ -206,7 +216,7 @@
     },
     "padding": "0px",
     "pos": {
-      "x": 500,
+      "x": 484,
       "y": 103
     },
     "size": {
@@ -232,13 +242,13 @@
         "vertical": "top"
       }
     },
-    "id": "Text8",
+    "id": "WatchCount",
     "link": {
       "id": ""
     },
     "padding": "0px",
     "pos": {
-      "x": 530,
+      "x": 538,
       "y": 103
     },
     "size": {
@@ -246,8 +256,8 @@
       "width": 106
     },
     "sizePolicy": {
-      "width": "fixed",
-      "height": "fixed"
+      "height": "fixed",
+      "width": "fixed"
     },
     "visible": true
   }
