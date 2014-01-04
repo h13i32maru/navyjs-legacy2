@@ -1,5 +1,6 @@
 {
     "fontFamily": "sans-serif",
+    "name": "GitHubClient",
     "size": {
         "height": 1096,
         "width": 640

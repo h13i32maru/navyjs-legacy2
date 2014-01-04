@@ -89,6 +89,10 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   },
 
   _initDocument: function(){
+    var title = document.createElement('title');
+    title.textContent = Navy.Config.app.name;
+    document.head.appendChild(title);
+
     var style = '';
     style += '* {margin:0; padding:0; -webkit-user-select: none; -webkit-user-drag:none; box-sizing: border-box;}';
     style += 'html {width:100%; height:100%}';
