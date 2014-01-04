@@ -62,7 +62,7 @@
     },
     "sizePolicy": {
       "height": "fixed",
-      "width": "fixed"
+      "width": "matchParent"
     },
     "visible": true
   }

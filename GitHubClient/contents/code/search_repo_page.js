@@ -22,6 +22,10 @@ Navy.Class('SearchRepoPage', Navy.Page, {
   _onSearch: function(repos) {
     this.findViewById('Repos').setItems(repos, function(repo, view, index){
       view.findViewById('Name').setText(repo.name);
+      view.findViewById('Lang').setText(repo.language);
+      view.findViewById('StarCount').setText(repo.stargazers_count);
+      view.findViewById('WatchCount').setText(repo.watchers_count);
+      view.findViewById('Description').setText(repo.description);
       view.on('Link', function(ev){
         ev.data.loginName = repo.owner.login;
       });
