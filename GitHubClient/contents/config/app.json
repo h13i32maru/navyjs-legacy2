@@ -1,6 +1,7 @@
 {
     "fontFamily": "sans-serif",
     "name": "GitHubClient",
+    "touchIcon": "image/touch-icon.png",
     "size": {
         "height": 1096,
         "width": 640

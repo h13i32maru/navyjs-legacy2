@@ -93,6 +93,11 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     title.textContent = Navy.Config.app.name;
     document.head.appendChild(title);
 
+    var link = document.createElement('link');
+    link.rel = 'apple-touch-icon';
+    link.href = Navy.Config.app.touchIcon;
+    document.head.appendChild(link);
+
     var style = '';
     style += '* {margin:0; padding:0; -webkit-user-select: none; -webkit-user-drag:none; box-sizing: border-box;}';
     style += 'html {width:100%; height:100%}';
