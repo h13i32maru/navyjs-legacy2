@@ -75,6 +75,8 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
         tableView->setModel(model);
         tableView->horizontalHeader()->setStretchLastSection(true);
         tableView->verticalHeader()->setHidden(true);
+        //table viewのtab navigationを切ることで内部のwidgetがtab navigationできるようになる.
+        tableView->setTabKeyNavigation(false);
 
         int row = 0;
         QString className = json.getStr("class");
@@ -85,6 +87,7 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
             {
                 QStandardItem *propLabel = new QStandardItem("id");
                 propLabel->setEditable(false);
+                propLabel->setSelectable(false);
                 model->setItem(0, 0, propLabel);
                 modelIndex = model->index(0, 1);
                 QLineEdit *l = new QLineEdit();
@@ -98,6 +101,7 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
             {
                 QStandardItem *propLabel = new QStandardItem("class");
                 propLabel->setEditable(false);
+                propLabel->setSelectable(false);
                 model->setItem(1, 0, propLabel);
                 modelIndex = model->index(1, 1);
                 QLineEdit *l = new QLineEdit(className);
@@ -183,6 +187,7 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
                 widget->setObjectName(type + ":" + key);
                 QStandardItem *propLabel = new QStandardItem(label);
                 propLabel->setEditable(false);
+                propLabel->setSelectable(false);
                 model->setItem(row, 0, propLabel);
                 modelIndex = model->index(row, 1);
                 tableView->setIndexWidget(modelIndex, widget);

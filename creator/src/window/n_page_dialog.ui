@@ -185,6 +185,7 @@
   <tabstop>classFile</tabstop>
   <tabstop>layout</tabstop>
   <tabstop>backgroundColor</tabstop>
+  <tabstop>transition</tabstop>
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
  </tabstops>
