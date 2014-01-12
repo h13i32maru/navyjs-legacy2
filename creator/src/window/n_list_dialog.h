@@ -20,6 +20,9 @@ public:
 
 private:
     Ui::NListDialog *ui;
+
+protected slots:
+    void filterTextList(const QString &text);
 };
 
 #endif // N_LIST_DIALOG_H
