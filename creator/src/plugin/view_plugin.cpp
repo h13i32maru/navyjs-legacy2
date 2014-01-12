@@ -14,7 +14,7 @@
 #include <QPushButton>
 
 #include <extend/n_combo_box.h>
-#include <extend/n_push_button.h>
+#include <extend/n_text_list_selector.h>
 
 ViewPlugin* ViewPlugin::mInstance = NULL;
 
@@ -166,7 +166,7 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
                 QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             } else if (type == "layoutList") {
-                NPushButton *b = new NPushButton(NPushButton::LAYOUT);
+                NTextListSelector *b = new NTextListSelector(NTextListSelector::LAYOUT);
                 viewJson.set(key, widgetDefine.getStr(index + ".value"));
                 QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
                 widget = b;
@@ -254,7 +254,7 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
             NComboBox *c = (NComboBox*) widget;
             c->setCurrentText(view.getStr(key));
             */
-            NPushButton *b = (NPushButton*)widget;
+            NTextListSelector *b = (NTextListSelector*)widget;
             b->setText(view.getStr(key));
         }
 
@@ -308,7 +308,7 @@ void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
             NComboBox *c = (NComboBox*) widget;
             view.set(key, c->currentText());
             */
-            NPushButton *b = (NPushButton*)widget;
+            NTextListSelector *b = (NTextListSelector*)widget;
             view.set(key, b->text());
         }
     }

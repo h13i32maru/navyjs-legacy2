@@ -1,14 +1,14 @@
-#ifndef N_PUSH_BUTTON_H
-#define N_PUSH_BUTTON_H
+#ifndef N_TEXT_LIST_SELECTOR_H
+#define N_TEXT_LIST_SELECTOR_H
 
 #include <QPushButton>
 
-class NPushButton : public QPushButton
+class NTextListSelector : public QPushButton
 {
     Q_OBJECT
 public:
     enum TYPE{LAYOUT,PAGE,SCENE,LINK,IMAGE};
-    explicit NPushButton(TYPE type, QWidget *parent = 0);
+    explicit NTextListSelector(TYPE type, QWidget *parent = 0);
     void setText(const QString &text);
     void setType(const QString &type);
 
@@ -23,4 +23,4 @@ public slots:
 
 };
 
-#endif // N_PUSH_BUTTON_H
+#endif // N_TEXT_LIST_SELECTOR_H

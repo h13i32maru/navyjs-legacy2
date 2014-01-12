@@ -11,10 +11,6 @@ NListDialog::NListDialog(QWidget *parent) : QDialog(parent), ui(new Ui::NListDia
 
 void NListDialog::setTextList(const QStringList &list) {
     ui->listWidget->addItems(list);
-
-    for (int i = 0; i < 150; i++) {
-        ui->listWidget->addItems(list);
-    }
 }
 
 QString NListDialog::selectedText() {

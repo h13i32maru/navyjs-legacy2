@@ -1,15 +1,15 @@
-#include "n_push_button.h"
+#include "n_text_list_selector.h"
 
 #include <window/n_list_dialog.h>
 
 #include <n_project.h>
 
-NPushButton::NPushButton(TYPE type, QWidget *parent) : QPushButton(parent) {
+NTextListSelector::NTextListSelector(TYPE type, QWidget *parent) : QPushButton(parent) {
     mType = type;
     connect(this, SIGNAL(clicked()), this, SLOT(execListDialog()));
 }
 
-void NPushButton::setText(const QString &text) {
+void NTextListSelector::setText(const QString &text) {
     QString oldText = this->text();
     QPushButton::setText(text);
 
@@ -18,7 +18,7 @@ void NPushButton::setText(const QString &text) {
     }
 }
 
-void NPushButton::execListDialog() {
+void NTextListSelector::execListDialog() {
     NListDialog dialog;
 
     QStringList list;
