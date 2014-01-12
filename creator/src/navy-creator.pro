@@ -39,7 +39,9 @@ SOURCES += main.cpp\
     window/n_new_project_dialog.cpp \
     window/n_project_dialog.cpp \
     window/n_layout_setting_dialog.cpp \
-    plugin/view_plugin.cpp
+    plugin/view_plugin.cpp \
+    extend/n_push_button.cpp \
+    window/n_list_dialog.cpp
 
 HEADERS  += main_window.h \
     n_code_widget.h \
@@ -67,7 +69,9 @@ HEADERS  += main_window.h \
     window/n_new_project_dialog.h \
     window/n_project_dialog.h \
     window/n_layout_setting_dialog.h \
-    plugin/view_plugin.h
+    plugin/view_plugin.h \
+    extend/n_push_button.h \
+    window/n_list_dialog.h
 
 FORMS    += main_window.ui \
     n_code_widget.ui \
@@ -85,7 +89,8 @@ FORMS    += main_window.ui \
     window/n_pref_dialog.ui \
     window/n_new_project_dialog.ui \
     window/n_project_dialog.ui \
-    window/n_layout_setting_dialog.ui
+    window/n_layout_setting_dialog.ui \
+    window/n_list_dialog.ui
 
 RESOURCES += \
     resource.qrc

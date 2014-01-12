@@ -11,8 +11,10 @@
 #include <n_project.h>
 #include <QLayout>
 #include <QHeaderView>
+#include <QPushButton>
 
 #include <extend/n_combo_box.h>
+#include <extend/n_push_button.h>
 
 ViewPlugin* ViewPlugin::mInstance = NULL;
 
@@ -164,11 +166,17 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
                 QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             } else if (type == "layoutList") {
+                NPushButton *b = new NPushButton(NPushButton::LAYOUT);
+                viewJson.set(key, widgetDefine.getStr(index + ".value"));
+                QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
+                widget = b;
+                /*
                 NComboBox *c = new NComboBox();
                 c->setList(NProject::instance()->layouts());
                 viewJson.set(key, widgetDefine.getStr(index + ".value"));
                 QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
+                */
             } else if (type == "linkList") {
                 NComboBox *c = new NComboBox();
                 c->setList(NProject::instance()->links());
@@ -242,8 +250,12 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
             NComboBox *c = (NComboBox*) widget;
             c->setCurrentText(view.getStr(key));
         } else if (type == "layoutList") {
+            /*
             NComboBox *c = (NComboBox*) widget;
             c->setCurrentText(view.getStr(key));
+            */
+            NPushButton *b = (NPushButton*)widget;
+            b->setText(view.getStr(key));
         }
 
         widget->blockSignals(false);
@@ -292,8 +304,12 @@ void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
             NComboBox *c = (NComboBox*) widget;
             view.set(key, c->currentText());
         } else if (type == "layoutList") {
+            /*
             NComboBox *c = (NComboBox*) widget;
             view.set(key, c->currentText());
+            */
+            NPushButton *b = (NPushButton*)widget;
+            view.set(key, b->text());
         }
     }
 }
