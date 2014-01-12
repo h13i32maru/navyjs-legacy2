@@ -83,7 +83,9 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
 
             // set id
             {
-                model->setItem(0, 0, new QStandardItem("id"));
+                QStandardItem *propLabel = new QStandardItem("id");
+                propLabel->setEditable(false);
+                model->setItem(0, 0, propLabel);
                 modelIndex = model->index(0, 1);
                 QLineEdit *l = new QLineEdit();
                 l->setObjectName("string:id");
@@ -94,7 +96,9 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
 
             // set class
             {
-                model->setItem(1, 0, new QStandardItem("class"));
+                QStandardItem *propLabel = new QStandardItem("class");
+                propLabel->setEditable(false);
+                model->setItem(1, 0, propLabel);
                 modelIndex = model->index(1, 1);
                 QLineEdit *l = new QLineEdit(className);
                 l->setReadOnly(true);
@@ -177,7 +181,9 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
 
             if (widget != NULL) {
                 widget->setObjectName(type + ":" + key);
-                model->setItem(row, 0, new QStandardItem(label));
+                QStandardItem *propLabel = new QStandardItem(label);
+                propLabel->setEditable(false);
+                model->setItem(row, 0, propLabel);
                 modelIndex = model->index(row, 1);
                 tableView->setIndexWidget(modelIndex, widget);
                 tableView->setRowHeight(row, height);
