@@ -149,40 +149,30 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
                 QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
                 widget = c;
             } else if (type == "pageList") {
-                NComboBox *c = new NComboBox();
-                c->setList(NProject::instance()->pages());
+                NTextListSelector *b = new NTextListSelector(NTextListSelector::PAGE);
                 viewJson.set(key, widgetDefine.getStr(index + ".value"));
-                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
-                widget = c;
+                QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
+                widget = b;
             } else if (type == "sceneList") {
-                NComboBox *c = new NComboBox();
-                c->setList(NProject::instance()->scenes());
-                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
-                widget = c;
-            } else if (type == "imageList") {
-                NComboBox *c = new NComboBox();
-                c->setList(NProject::instance()->images());
+                NTextListSelector *b = new NTextListSelector(NTextListSelector::SCENE);
                 viewJson.set(key, widgetDefine.getStr(index + ".value"));
-                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
-                widget = c;
+                QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
+                widget = b;
+            } else if (type == "imageList") {
+                NTextListSelector *b = new NTextListSelector(NTextListSelector::IMAGE);
+                viewJson.set(key, widgetDefine.getStr(index + ".value"));
+                QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
+                widget = b;
             } else if (type == "layoutList") {
                 NTextListSelector *b = new NTextListSelector(NTextListSelector::LAYOUT);
                 viewJson.set(key, widgetDefine.getStr(index + ".value"));
                 QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
                 widget = b;
-                /*
-                NComboBox *c = new NComboBox();
-                c->setList(NProject::instance()->layouts());
-                viewJson.set(key, widgetDefine.getStr(index + ".value"));
-                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
-                widget = c;
-                */
             } else if (type == "linkList") {
-                NComboBox *c = new NComboBox();
-                c->setList(NProject::instance()->links());
+                NTextListSelector *b = new NTextListSelector(NTextListSelector::LINK);
                 viewJson.set(key, widgetDefine.getStr(index + ".value"));
-                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
-                widget = c;
+                QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
+                widget = b;
             }
 
             if (widget != NULL) {
@@ -238,22 +228,18 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
             QComboBox *c = (QComboBox*) widget;
             c->setCurrentText(QString::number(view.getInt(key)));
         } else if (type == "pageList") {
-            NComboBox *c = (NComboBox*) widget;
-            c->setCurrentText(view.getStr(key));
+            NTextListSelector *b = (NTextListSelector*)widget;
+            b->setText(view.getStr(key));
         } else if (type == "sceneList") {
-            NComboBox *c = (NComboBox*) widget;
-            c->setCurrentText(view.getStr(key));
+            NTextListSelector *b = (NTextListSelector*)widget;
+            b->setText(view.getStr(key));
         } else if (type == "imageList") {
-            NComboBox *c = (NComboBox*) widget;
-            c->setCurrentText(view.getStr(key));
+            NTextListSelector *b = (NTextListSelector*)widget;
+            b->setText(view.getStr(key));
         } else if (type == "linkList") {
-            NComboBox *c = (NComboBox*) widget;
-            c->setCurrentText(view.getStr(key));
+            NTextListSelector *b = (NTextListSelector*)widget;
+            b->setText(view.getStr(key));
         } else if (type == "layoutList") {
-            /*
-            NComboBox *c = (NComboBox*) widget;
-            c->setCurrentText(view.getStr(key));
-            */
             NTextListSelector *b = (NTextListSelector*)widget;
             b->setText(view.getStr(key));
         }
@@ -292,22 +278,18 @@ void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
             QComboBox *c = (QComboBox*) widget;
             view.set(key, c->currentText());
         } else if (type == "pageList") {
-            NComboBox *c = (NComboBox*) widget;
-            view.set(key, c->currentText());
+            NTextListSelector *b = (NTextListSelector*)widget;
+            view.set(key, b->text());
         } else if (type == "sceneList") {
-            NComboBox *c = (NComboBox*) widget;
-            view.set(key, c->currentText());
+            NTextListSelector *b = (NTextListSelector*)widget;
+            view.set(key, b->text());
         } else if (type == "imageList") {
-            NComboBox *c = (NComboBox*) widget;
-            view.set(key, c->currentText());
+            NTextListSelector *b = (NTextListSelector*)widget;
+            view.set(key, b->text());
         } else if (type == "linkList") {
-            NComboBox *c = (NComboBox*) widget;
-            view.set(key, c->currentText());
+            NTextListSelector *b = (NTextListSelector*)widget;
+            view.set(key, b->text());
         } else if (type == "layoutList") {
-            /*
-            NComboBox *c = (NComboBox*) widget;
-            view.set(key, c->currentText());
-            */
             NTextListSelector *b = (NTextListSelector*)widget;
             view.set(key, b->text());
         }
