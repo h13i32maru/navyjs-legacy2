@@ -7,11 +7,19 @@
 NTextListSelector::NTextListSelector(TYPE type, QWidget *parent) : QPushButton(parent) {
     mType = type;
     connect(this, SIGNAL(clicked()), this, SLOT(execListDialog()));
+
+    this->setFlat(true);
+    this->setStyleSheet("QPushButton { \
+                        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(230, 230, 230, 255), stop:1 rgba(200, 200, 200, 255)); \
+                        border: 0px solid #aaaaaa; \
+                        text-align: left;\
+                      }");
 }
 
 void NTextListSelector::setText(const QString &text) {
     QString oldText = this->text();
     QPushButton::setText(text);
+    this->setToolTip(text);
 
     if (oldText != text) {
         emit this->textChanged(text);
