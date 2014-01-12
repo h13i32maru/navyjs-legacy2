@@ -10,14 +10,15 @@
 NConfigAppWidget::NConfigAppWidget(const QString &filePath, QWidget *parent) : NFileWidget(filePath, parent), ui(new Ui::NConfigAppWidget)
 {
     ui->setupUi(this);
+    ui->appTouchIcon->setType(NTextListSelector::IMAGE);
 
     mConfigApp.parseFromFilePath(filePath);
-
 
     syncJsonToWidget();
 
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
     connect(ui->appName, SIGNAL(textChanged(QString)), this, SLOT(changed()));
+    connect(ui->appTouchIcon, SIGNAL(textChanged(QString)), this, SLOT(changed()));
     connect(ui->appSizeWidth, SIGNAL(valueChanged(int)), this, SLOT(changed()));
     connect(ui->appSizeHeight, SIGNAL(valueChanged(int)), this, SLOT(changed()));
     connect(ui->appStartScene, SIGNAL(currentTextChanged(QString)), this, SLOT(changed()));
@@ -48,6 +49,7 @@ bool NConfigAppWidget::innerSave() {
 
 void NConfigAppWidget::syncJsonToWidget() {
     ui->appName->setText(mConfigApp.getStr("name"));
+    ui->appTouchIcon->setText(mConfigApp.getStr("touchIcon"));
     ui->appSizeWidth->setValue(mConfigApp.getInt("size.width"));
     ui->appSizeHeight->setValue(mConfigApp.getInt("size.height"));
     ui->appStartScene->setCurrentText(mConfigApp.getStr("start.scene"));
@@ -56,6 +58,7 @@ void NConfigAppWidget::syncJsonToWidget() {
 
 void NConfigAppWidget::syncWidgetToJson() {
     mConfigApp.set("name", ui->appName->text());
+    mConfigApp.set("touchIcon", ui->appTouchIcon->text());
     mConfigApp.set("size.width", ui->appSizeWidth->value());
     mConfigApp.set("size.height", ui->appSizeHeight->value());
     mConfigApp.set("start.scene", ui->appStartScene->currentText());
