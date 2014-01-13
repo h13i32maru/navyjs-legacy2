@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} Include.Move
  */
-Navy.Class.instance('Include.Move', {
+Navy.Class.instance('Include.Move', Include.Include, {
   _click: function(ev) {
     if (this._ignoreClick) {
       return;

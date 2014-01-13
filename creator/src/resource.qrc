@@ -18,6 +18,7 @@
         <file>template/contents/creator/creator_page.js</file>
         <file>template/contents/creator/creator_scene.js</file>
         <file>template/contents/creator/grouping_view.js</file>
+        <file>template/contents/creator/include/include.js</file>
         <file>template/contents/creator/include/tidy.js</file>
         <file>template/contents/creator/include/grouping.js</file>
         <file>template/contents/creator/include/native_bridge.js</file>

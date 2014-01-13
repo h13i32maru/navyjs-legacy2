@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} Include.Grouping
  */
-Navy.Class.instance('Include.Grouping', {
+Navy.Class.instance('Include.Grouping', Include.Include, {
 
   _setupGroupingView: function(view) {
     var groupingId = this._getGroupingId(view);

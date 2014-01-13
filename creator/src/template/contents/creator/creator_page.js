@@ -13,10 +13,10 @@ Navy.Class('CreatorPage', Navy.Page, {
   onCreate: function($super, ev) {
     $super(ev);
 
-    this._include(Include.Tidy);
-    this._include(Include.Grouping);
-    this._include(Include.NativeBridge);
-    this._include(Include.Move);
+    Include.Tidy.initialize(this);
+    Include.Grouping.initialize(this);
+    Include.NativeBridge.initialize(this);
+    Include.Move.initialize(this);
 
     // 雑多な設定
     document.body.style.background = '#666';

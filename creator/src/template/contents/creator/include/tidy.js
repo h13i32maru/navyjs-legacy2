@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} Include.Tidy
  */
-Navy.Class.instance('Include.Tidy', {
+Navy.Class.instance('Include.Tidy', Include.Include, {
 
   _alignSelectedViewsFromNative: function(type) {
     /*
@@ -176,5 +176,3 @@ Navy.Class.instance('Include.Tidy', {
     });
   }
  });
-
-Include.Tidy.initialize();

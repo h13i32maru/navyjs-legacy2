@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} Include.NativeBridge
  */
-Navy.Class.instance('Include.NativeBridge', {
+Navy.Class.instance('Include.NativeBridge', Include.Include, {
   _addViewFromNative: function(viewId, viewClass, layout) {
     this._createNewView(viewId, viewClass, layout);
   },
