@@ -2,6 +2,24 @@
  * @typedef {Object} Include.Move
  */
 Navy.Class.instance('Include.Move', Include.Include, {
+  _bodyPos: null,
+  _zoom: null,
+
+  initialize: function($super, targetObject) {
+    $super(targetObject);
+
+    (function(){
+      this._bodyPos = {x: parseFloat(document.body.style.left), y: parseFloat(document.body.style.top)};
+      this._zoom = parseFloat(document.body.style.zoom);
+
+      document.body.addEventListener('mouseup', this._mouseUp.bind(this));
+      document.body.addEventListener('mousedown', this._mouseDown.bind(this));
+      document.body.addEventListener('click', this._click.bind(this));
+      this._mouseMoveForMoveView = this._mouseMoveForMoveView.bind(this);
+      this._mouseMoveForResizeView = this._mouseMoveForResizeView.bind(this);
+    }).apply(targetObject);
+  },
+
   _click: function(ev) {
     if (this._ignoreClick) {
       return;

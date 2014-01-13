@@ -1,7 +1,4 @@
 Navy.Class('CreatorPage', Navy.Page, {
-  _bodyPos: null,
-  _zoom: null,
-
   _selectedGroupingViews: null,
   _resizeType: null,
 
@@ -20,19 +17,9 @@ Navy.Class('CreatorPage', Navy.Page, {
     document.body.style.background = '#666';
     window.CreatorPageInstance = this;
     window.getContentLayout = this._getContentLayout.bind(this);
-    this._bodyPos = {x: parseFloat(document.body.style.left), y: parseFloat(document.body.style.top)};
-    this._zoom = parseFloat(document.body.style.zoom);
     this._selectedGroupingViews = [];
     this._viewIdToGroupingViewMap = {};
     this._groupingIdToGroupingViewMap = {};
-    // --
-
-    // 要素を移動させるためのマウス操作の追跡
-    document.body.addEventListener('mouseup', this._mouseUp.bind(this));
-    document.body.addEventListener('mousedown', this._mouseDown.bind(this));
-    document.body.addEventListener('click', this._click.bind(this));
-    this._mouseMoveForMoveView = this._mouseMoveForMoveView.bind(this);
-    this._mouseMoveForResizeView = this._mouseMoveForResizeView.bind(this);
     // --
 
     Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, function(layout){
