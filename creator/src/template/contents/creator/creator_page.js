@@ -35,6 +35,7 @@ Navy.Class('CreatorPage', Navy.Page, {
       if (creator.screenEnable) {
         this._setScreen(creator.screenSceneId, creator.screenPageId, creator.screenEnable);
       }
+      Native.setMetaFromJS(JSON.stringify(creator));
     } else {
       this._contentLayoutMeta = {__creator__: {}};
     }

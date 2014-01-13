@@ -1,6 +1,7 @@
 /**
  * @typedef {{
  *   setViewsFromJS: function,
+ *   setMetaFromJS: function,
  *   setSelectedViewsFromJS: function,
  *   setCurrentViewPosFromJS: function,
  *   setCurrentViewSizeFromJS: function,

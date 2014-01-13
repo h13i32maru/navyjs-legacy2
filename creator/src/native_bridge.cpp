@@ -20,6 +20,11 @@ void NativeBridge::setViewsFromJS(const QString &viewsJsonText) {
     emit this->viewsFromJS(json);
 }
 
+void NativeBridge::setMetaFromJS(const QString &metaJsonText) {
+    NJson json(metaJsonText);
+    emit this->metaFromJS(json);
+}
+
 void NativeBridge::setSelectedViewsFromJS(const QString &viewsJsonText) {
     NJson json(viewsJsonText);
     emit this->selectedViewsFromJS(json);

@@ -8,6 +8,8 @@
 #include <QTableView>
 #include <QTreeWidgetItem>
 
+#include <window/n_layout_setting_dialog.h>
+
 namespace Ui {
 class NLayoutWidget;
 }
@@ -38,6 +40,8 @@ private:
 
     QString contentLayoutJsonText() const;
 
+    NLayoutSettingDialog mLayoutSettingDialog;
+
 private slots:
     void toggleLayerTreeWidget();
     void toggleLayoutPropWidget();
@@ -48,6 +52,7 @@ private slots:
     void contextMenuForWebView(const QPoint &point);
     void injectNativeBridge();
     void setViewsFromJS(const NJson &views);
+    void setMetaFromJS(const NJson &meta);
     void updateViewsToJS(QTreeWidgetItem *droppedItem);
     void selectViewToJS();
     void addViewToJS(QTreeWidgetItem *item, int index);

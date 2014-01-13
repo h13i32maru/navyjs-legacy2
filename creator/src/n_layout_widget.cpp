@@ -56,6 +56,7 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(injectNativeBridge()));
     connect(mNative, SIGNAL(changedLayoutContentFromJS()), this, SLOT(changed()));
     connect(mNative, SIGNAL(viewsFromJS(NJson)), this, SLOT(setViewsFromJS(NJson)));
+    connect(mNative, SIGNAL(metaFromJS(NJson)), this, SLOT(setMetaFromJS(NJson)));
     connect(mNative, SIGNAL(selectedViewsFromJS(NJson)), this, SLOT(setSelectedsViewsFromJS(NJson)));
     connect(mNative, SIGNAL(currentViewPosFromJS(int,int)), this, SLOT(setViewPosFromJS(int,int)));
     connect(mNative, SIGNAL(currentViewSizeFromJS(int,int)), this, SLOT(setViewSizeFromJS(int,int)));
@@ -87,15 +88,14 @@ void NLayoutWidget::toggleViewClassTreeWidget() {
 }
 
 void NLayoutWidget::showLayoutSettingDialog() {
-    NLayoutSettingDialog dialog;
-    int ret = dialog.exec();
+    int ret = mLayoutSettingDialog.exec();
     if (ret != NLayoutSettingDialog::Accepted) {
         return;
     }
 
-    QString sceneId = dialog.ui->screenScene->currentText();
-    QString pageId = dialog.ui->screenPage->currentText();
-    bool enable = dialog.ui->screenEnable->isChecked();
+    QString sceneId = mLayoutSettingDialog.ui->screenScene->currentText();
+    QString pageId = mLayoutSettingDialog.ui->screenPage->currentText();
+    bool enable = mLayoutSettingDialog.ui->screenEnable->isChecked();
     emit mNative->setScreenToJS(sceneId, pageId, enable);
 
     // screenのせっていでもレイアウトが変更されるのでchangedを発行する.
@@ -266,6 +266,12 @@ void NLayoutWidget::setViewsFromJS(const NJson &views) {
 
         layerTreeWidget->addTopLevelItem(item);
     }
+}
+
+void NLayoutWidget::setMetaFromJS(const NJson &meta) {
+    mLayoutSettingDialog.ui->screenEnable->setChecked(meta.getBool("screenEnable"));
+    mLayoutSettingDialog.ui->screenScene->setCurrentText(meta.getStr("screenSceneId"));
+    mLayoutSettingDialog.ui->screenPage->setCurrentText(meta.getStr("screenPageId"));
 }
 
 void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {

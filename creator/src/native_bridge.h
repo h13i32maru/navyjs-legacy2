@@ -18,6 +18,7 @@ public:
 
     Q_INVOKABLE QString getLayoutPath() const;
     Q_INVOKABLE void setViewsFromJS(const QString &viewsJsonText);
+    Q_INVOKABLE void setMetaFromJS(const QString &metaJsonText);
     Q_INVOKABLE void setSelectedViewsFromJS(const QString &viewsJsonText);
     Q_INVOKABLE void setCurrentViewPosFromJS(const int &x, const int &y);
     Q_INVOKABLE void setCurrentViewSizeFromJS(const int &width, const int &height);
@@ -28,6 +29,8 @@ private:
 signals:
     // すべてのViewの情報がJSから送信される(proxy)
     void viewsFromJS(const NJson &views);
+
+    void metaFromJS(const NJson &meta);
 
     // 選択されたViewがJSから送信される(proxy)
     void selectedViewsFromJS(const NJson &json);
