@@ -12,7 +12,6 @@ Navy.Class.instance('Include.NativeBridge', Include.Include, {
       Native.addViewToJS.connect(this._addViewFromNative.bind(this));
       Native.deleteSelectedViewsToJS.connect(this._deleteSelectedViewsFromNative.bind(this));
       Native.setScreenToJS.connect(this._setScreenFromNative.bind(this));
-      Native.setScreenEnableToJS.connect(this._setScreenEnableFromNative.bind(this));
       Native.unselectAllViewsToJS.connect(this._unselectAllViewsFromNative.bind(this));
       Native.alignSelectedViewsToJS.connect(this._alignSelectedViewsFromNative.bind(this));
       Native.arrangeSelectedViewsToJS.connect(this._arrangeSelectedViewsFromNative.bind(this));
@@ -29,12 +28,8 @@ Navy.Class.instance('Include.NativeBridge', Include.Include, {
     this._deleteSelectedGroupingViews();
   },
 
-  _setScreenFromNative: function(sceneId, pageId) {
-    this._setScreen(sceneId, pageId);
-  },
-
-  _setScreenEnableFromNative: function(enable) {
-    this._setScreenEnable(enable);
+  _setScreenFromNative: function(sceneId, pageId, enable) {
+    this._setScreen(sceneId, pageId, enable);
   },
 
   _updateViewsOrderFromNative: function(viewIds) {

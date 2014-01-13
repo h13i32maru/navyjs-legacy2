@@ -93,16 +93,10 @@ void NLayoutWidget::showLayoutSettingDialog() {
         return;
     }
 
-    bool enable = dialog.ui->screenEnable->isEnabled();
-
-    if (enable) {
-        QString sceneId = dialog.ui->screenScene->currentText();
-        QString pageId = dialog.ui->screenPage->currentText();
-        emit mNative->setScreenEnableToJS(true);
-        emit mNative->setScreenToJS(sceneId, pageId);
-    } else {
-        emit mNative->setScreenEnableToJS(false);
-    }
+    QString sceneId = dialog.ui->screenScene->currentText();
+    QString pageId = dialog.ui->screenPage->currentText();
+    bool enable = dialog.ui->screenEnable->isChecked();
+    emit mNative->setScreenToJS(sceneId, pageId, enable);
 
     // screenのせっていでもレイアウトが変更されるのでchangedを発行する.
     changed();

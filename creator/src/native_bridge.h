@@ -59,10 +59,7 @@ signals:
     void deleteSelectedViewsToJS();
 
     // Scene, Pageの設定が変更された時にJSに送信される
-    void setScreenToJS(const QString &sceneId, const QString &pageId);
-
-    // Scene, Pageの有効無効が切り替わった時にJSに送信される
-    void setScreenEnableToJS(const bool &enable);
+    void setScreenToJS(const QString &sceneId, const QString &pageId, bool enable);
 
     void alignSelectedViewsToJS(const QString &type);
     void arrangeSelectedViewsToJS(const QString &type);

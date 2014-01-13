@@ -2,7 +2,7 @@
  * @typedef {Object} Include.Screen
  */
 Navy.Class.instance('Include.Screen', Include.Include, {
-  _setScreen: function(sceneId, pageId) {
+  _setScreen: function(sceneId, pageId, enable) {
     if (sceneId && Navy.Config.scene[sceneId]) {
       var sceneLayout = JSON.parse(JSON.stringify(Navy.Config.scene[sceneId]));
       this._contentLayoutMeta.__creator__.screenSceneId = sceneId;
@@ -27,12 +27,16 @@ Navy.Class.instance('Include.Screen', Include.Include, {
           scene.removeView(view);
         }
       }
-      scene.setLayout(sceneLayout);
+      scene.setLayout(sceneLayout, this._setScreenEnable.bind(this, enable));
 
       this.setBackgroundColor(pageLayout.backgroundColor);
     } else if (sceneLayout) {
       var scene = this.getScene();
       scene.setBackgroundColor(sceneLayout.backgroundColor);
+
+      this._setScreenEnable(enable);
+    } else {
+      this._setScreenEnable(enable);
     }
   },
 

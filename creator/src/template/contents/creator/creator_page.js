@@ -6,32 +6,18 @@ Navy.Class('CreatorPage', Navy.Page, {
   onCreate: function($super, ev) {
     $super(ev);
 
+    document.body.style.background = '#666';
+    window.CreatorPageInstance = this;
+    this._selectedGroupingViews = [];
+    this._viewIdToGroupingViewMap = {};
+
     Include.Tidy.initialize(this);
     Include.Grouping.initialize(this);
     Include.Move.initialize(this);
     Include.Screen.initialize(this);
     Include.NativeBridge.initialize(this);
 
-    // 雑多な設定
-    document.body.style.background = '#666';
-    window.CreatorPageInstance = this;
-    this._selectedGroupingViews = [];
-    this._viewIdToGroupingViewMap = {};
-    // --
-
-    Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, function(contentLayout){
-      this._contentLayoutMeta = contentLayout.meta;
-
-      if (!this._contentLayoutMeta) {
-        this._contentLayoutMeta = {};
-      }
-
-      if (!this._contentLayoutMeta.__creator__) {
-        this._contentLayoutMeta.__creator__ = {};
-      }
-
-      Native.setViewsFromJS(JSON.stringify(contentLayout.layouts));
-    }.bind(this));
+    Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, this._onLoadLayout.bind(this));
   },
 
   onResumeAfter: function($super, ev) {
@@ -40,6 +26,20 @@ Navy.Class('CreatorPage', Navy.Page, {
       var view = this._views[viewId];
       this._setupGroupingView(view);
     }
+  },
+
+  _onLoadLayout: function(contentLayout) {
+    if (contentLayout.meta) {
+      this._contentLayoutMeta = contentLayout.meta;
+      var creator = contentLayout.meta.__creator__;
+      if (creator.screenEnable) {
+        this._setScreen(creator.screenSceneId, creator.screenPageId, creator.screenEnable);
+      }
+    } else {
+      this._contentLayoutMeta = {__creator__: {}};
+    }
+
+    Native.setViewsFromJS(JSON.stringify(contentLayout.layouts));
   },
 
   getContentLayout: function() {
