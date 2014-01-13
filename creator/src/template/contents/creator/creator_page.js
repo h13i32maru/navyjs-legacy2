@@ -74,10 +74,9 @@ Navy.Class('CreatorPage', Navy.Page, {
     this._selectedGroupingViews = [];
   },
 
-  _updateViewsOrder: function(viewIds) {
-    for (var i = 0; i < viewIds.length; i++) {
-      var id = viewIds[i];
-      var view = this._views[id];
+  _updateViewsOrder: function(views) {
+    for (var i = 0; i < views.length; i++) {
+      var view = views[i];
       this.removeView(view);
       this.addView(view);
     }

@@ -38,7 +38,14 @@ Navy.Class.instance('Include.NativeBridge', Include.Include, {
   },
 
   _updateViewsOrderFromNative: function(viewIds) {
-    this._updateViewsOrder(viewIds);
+    var views = [];
+    for (var i = 0; i < viewIds.length; i++) {
+      var id = viewIds[i];
+      var view = this._views[id];
+      views.push(view);
+    }
+
+    this._updateViewsOrder(views);
   },
 
   _updateSelectedViewLayoutFromNative: function(layout) {
