@@ -1,18 +1,20 @@
-[
-  {
-    "visible": true,
-    "backgroundColor": "",
-    "class": "Navy.View.Text",
-    "extra": {
-      "fontSize": 50,
-      "text": "MainPage"
-    },
-    "id": "Text1",
-    "pos": {
-      "x": 223,
-      "y": 516
-    },
-    "size": {},
-    "sizePolicy": {"width": "wrapContent", "height": "wrapContent"}
-  }
-]
+{
+  "layouts": [
+    {
+      "visible": true,
+      "backgroundColor": "",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontSize": 50,
+        "text": "MainPage"
+      },
+      "id": "Text1",
+      "pos": {
+        "x": 223,
+        "y": 516
+      },
+      "size": {},
+      "sizePolicy": {"width": "wrapContent", "height": "wrapContent"}
+    }
+  ]
+}
