@@ -4,6 +4,7 @@
 Navy.Class.instance('Include.Move', Include.Include, {
   _bodyPos: null,
   _zoom: null,
+  _resizeType: null,
 
   initialize: function($super, targetObject) {
     $super(targetObject);

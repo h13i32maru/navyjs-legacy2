@@ -1,7 +1,5 @@
 Navy.Class('CreatorPage', Navy.Page, {
   _selectedGroupingViews: null,
-  _resizeType: null,
-
   _viewIdToGroupingViewMap: null,
   _groupingIdToGroupingViewMap: null,
 
