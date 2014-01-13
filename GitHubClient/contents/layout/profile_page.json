@@ -243,7 +243,12 @@
         "height": "fixed",
         "width": "matchParent"
       },
-      "visible": true
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          18
+        ]
+      }
     },
     {
       "backgroundColor": "#aaaaff",
@@ -282,5 +287,12 @@
         ]
       }
     }
-  ]
+  ],
+  "meta": {
+    "__creator__": {
+      "screenSceneId": "MainScene",
+      "screenPageId": "ProfilePage",
+      "screenEnable": true
+    }
+  }
 }

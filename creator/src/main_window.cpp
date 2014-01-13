@@ -128,6 +128,8 @@ void MainWindow::openProject() {
     NUtil::copyDir(":/template/contents/navy", project->contentsFilePath("navy"));
     NUtil::copyDir(":/template/contents/creator", project->contentsFilePath("creator"));
     NUtil::copyDir(":/template/plugin", project->pluginDirPath());
+    NUtil::createFileFromTemplate(":/template/contents/index.html", project->contentsFilePath("index.html"));
+    NUtil::createFileFromTemplate(":/template/contents/index_creator.html", project->contentsFilePath("index_creator.html"));
 }
 
 void MainWindow::showFileOpener() {
