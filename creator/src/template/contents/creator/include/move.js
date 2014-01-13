@@ -23,6 +23,17 @@ Navy.Class.instance('Include.Move', {
     return !!elm.parentElement.__groupingView__;
   },
 
+  _updateSelectedGroupingViewMouseDistance: function(ev) {
+    var clientX = ev.clientX/this._zoom;
+    var clientY = ev.clientY/this._zoom;
+    for (var i = 0; i < this._selectedGroupingViews.length; i++) {
+      var groupingView = this._selectedGroupingViews[i];
+      var pos = groupingView.getPos();
+      groupingView.__mouseDx__ = clientX - pos.x;
+      groupingView.__mouseDy__ = clientY - pos.y;
+    }
+  },
+
   _mouseDown: function(ev) {
     if (this._isBox(ev.target)) {
       var groupingView = ev.target.__groupingView__;

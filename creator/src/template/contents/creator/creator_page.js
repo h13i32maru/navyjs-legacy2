@@ -257,16 +257,5 @@ Navy.Class('CreatorPage', Navy.Page, {
   _isSelectedGroupingView: function(groupingView) {
     var index = this._selectedGroupingViews.indexOf(groupingView);
     return index !== -1;
-  },
-
-  _updateSelectedGroupingViewMouseDistance: function(ev) {
-    var clientX = ev.clientX/this._zoom;
-    var clientY = ev.clientY/this._zoom;
-    for (var i = 0; i < this._selectedGroupingViews.length; i++) {
-      var groupingView = this._selectedGroupingViews[i];
-      var pos = groupingView.getPos();
-      groupingView.__mouseDx__ = clientX - pos.x;
-      groupingView.__mouseDy__ = clientY - pos.y;
-    }
   }
 });
