@@ -14,7 +14,6 @@ Navy.Class('CreatorPage', Navy.Page, {
     // 雑多な設定
     document.body.style.background = '#666';
     window.CreatorPageInstance = this;
-    window.getContentLayout = this._getContentLayout.bind(this);
     this._selectedGroupingViews = [];
     this._viewIdToGroupingViewMap = {};
     // --
@@ -32,7 +31,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     }
   },
 
-  _getContentLayout: function() {
+  getContentLayout: function() {
     var order = this._getOrderedViews();
     return JSON.stringify(order, null, 2);
   },

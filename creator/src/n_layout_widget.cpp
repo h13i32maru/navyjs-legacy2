@@ -129,7 +129,7 @@ void NLayoutWidget::refreshForActive() {
 
 QString NLayoutWidget::contentLayoutJsonText() const {
     QWebFrame *frame = ui->webView->page()->mainFrame();
-    QVariant variant = frame->evaluateJavaScript("window.getContentLayout();");
+    QVariant variant = frame->evaluateJavaScript("window.CreatorPageInstance.getContentLayout();");
     return variant.toString();
 }
 
