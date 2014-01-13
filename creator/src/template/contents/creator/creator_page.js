@@ -1,7 +1,6 @@
 Navy.Class('CreatorPage', Navy.Page, {
   _selectedGroupingViews: null,
   _viewIdToGroupingViewMap: null,
-  _groupingIdToGroupingViewMap: null,
 
   onCreate: function($super, ev) {
     $super(ev);
@@ -17,7 +16,6 @@ Navy.Class('CreatorPage', Navy.Page, {
     window.getContentLayout = this._getContentLayout.bind(this);
     this._selectedGroupingViews = [];
     this._viewIdToGroupingViewMap = {};
-    this._groupingIdToGroupingViewMap = {};
     // --
 
     Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, function(layout){

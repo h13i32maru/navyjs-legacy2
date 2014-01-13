@@ -3,11 +3,15 @@
  */
 Navy.Class.instance('Include.Grouping', Include.Include, {
   _groupingUniqueId: null,
+  _groupingIdToGroupingViewMap: null,
 
   initialize: function($super, targetObject) {
     $super(targetObject);
 
-    targetObject._initGroupingUniqueId();
+    (function(){
+      this._initGroupingUniqueId();
+      this._groupingIdToGroupingViewMap = {};
+    }).apply(targetObject);
   },
 
   _setupGroupingView: function(view) {
