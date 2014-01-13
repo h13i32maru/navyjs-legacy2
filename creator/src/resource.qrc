@@ -21,8 +21,9 @@
         <file>template/contents/creator/include/include.js</file>
         <file>template/contents/creator/include/tidy.js</file>
         <file>template/contents/creator/include/grouping.js</file>
-        <file>template/contents/creator/include/native_bridge.js</file>
         <file>template/contents/creator/include/move.js</file>
+        <file>template/contents/creator/include/screen.js</file>
+        <file>template/contents/creator/include/native_bridge.js</file>
         <file>template/contents/index_creator.html</file>
         <file>template/contents/image/button_normal.png</file>
         <file>template/contents/image/button_active.png</file>
