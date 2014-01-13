@@ -1,66 +1,68 @@
-[
-  {
-    "backgroundColor": "",
-    "border": "none 4px #000000",
-    "class": "Navy.View.Text",
-    "extra": {
-      "fontColor": "#fff",
-      "fontSize": 30,
-      "text": "Logout API of GitHub is broken. Please manually delete access token.",
-      "textAlign": {
-        "horizontal": "left",
-        "vertical": "top"
-      }
+{
+  "layouts": [
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#fff",
+        "fontSize": 30,
+        "text": "Logout API of GitHub is broken. Please manually delete access token.",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "top"
+        }
+      },
+      "id": "Text1",
+      "link": {
+        "id": ""
+      },
+      "padding": "10px",
+      "pos": {
+        "x": 1,
+        "y": 332
+      },
+      "size": {
+        "height": 115,
+        "width": 541
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "matchParent"
+      },
+      "visible": true
     },
-    "id": "Text1",
-    "link": {
-      "id": ""
-    },
-    "padding": "10px",
-    "pos": {
-      "x": 1,
-      "y": 332
-    },
-    "size": {
-      "height": 115,
-      "width": 541
-    },
-    "sizePolicy": {
-      "height": "fixed",
-      "width": "matchParent"
-    },
-    "visible": true
-  },
-  {
-    "backgroundColor": "",
-    "border": "none 4px #000000",
-    "class": "Navy.View.Text",
-    "extra": {
-      "fontColor": "#fff",
-      "fontSize": 30,
-      "text": " github.com > account settings > applications > personal access tokens > delete NavyJS GitHub Client.",
-      "textAlign": {
-        "horizontal": "left",
-        "vertical": "top"
-      }
-    },
-    "id": "Text2",
-    "link": {
-      "id": ""
-    },
-    "padding": "10px",
-    "pos": {
-      "x": 1,
-      "y": 447
-    },
-    "size": {
-      "height": 183,
-      "width": 489
-    },
-    "sizePolicy": {
-      "height": "fixed",
-      "width": "matchParent"
-    },
-    "visible": true
-  }
-]
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#fff",
+        "fontSize": 30,
+        "text": " github.com > account settings > applications > personal access tokens > delete NavyJS GitHub Client.",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "top"
+        }
+      },
+      "id": "Text2",
+      "link": {
+        "id": ""
+      },
+      "padding": "10px",
+      "pos": {
+        "x": 1,
+        "y": 447
+      },
+      "size": {
+        "height": 183,
+        "width": 489
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "matchParent"
+      },
+      "visible": true
+    }
+  ]
+}
