@@ -7,7 +7,7 @@ Navy.Class.instance('Include.Grouping', Include.Include, {
   initialize: function($super, targetObject) {
     $super(targetObject);
 
-    this._initGroupingUniqueId();
+    targetObject._initGroupingUniqueId();
   },
 
   _setupGroupingView: function(view) {
