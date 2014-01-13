@@ -40,3 +40,8 @@ Navy.Config;
  * @typedef function
  */
 document.implementation.createHTMLDocument;
+
+/**
+ * @typedef Object
+ */
+Include;
