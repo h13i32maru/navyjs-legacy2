@@ -19,7 +19,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     // --
 
     Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, function(layout){
-      Native.setViewsFromJS(JSON.stringify(layout));
+      Native.setViewsFromJS(JSON.stringify(layout.layouts));
     });
   },
 
@@ -33,7 +33,9 @@ Navy.Class('CreatorPage', Navy.Page, {
 
   getContentLayout: function() {
     var order = this._getOrderedViews();
-    return JSON.stringify(order, null, 2);
+    var contentLayout = {};
+    contentLayout.layouts = order;
+    return JSON.stringify(contentLayout, null, 2);
   },
 
   _getOrderedViews: function() {
