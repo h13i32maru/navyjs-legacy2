@@ -1,50 +1,52 @@
-[
-  {
-    "id": "bg",
-    "class": "Navy.View.View",
-    "visible": true,
-    "sizePolicy": {"width": "fixed", "height": "fixed"},
-    "size": {"width": 600, "height": 168},
-    "pos": {"x": 0, "y": 0},
-    "backgroundColor": "#aaaaaa"
-  },
-  {
-    "id": "image",
-    "visible": true,
-    "class": "Navy.View.Image",
-    "sizePolicy": {"width": "fixed", "height": "fixed"},
-    "size": {"width": 128, "height": 128},
-    "pos": {"x": 0, "y": 20},
-    "backgroundColor": "#ffff00",
-    "link": {
-      "id": "page/Page1"
+{
+  "layouts": [
+    {
+      "id": "bg",
+      "class": "Navy.View.View",
+      "visible": true,
+      "sizePolicy": {"width": "fixed", "height": "fixed"},
+      "size": {"width": 600, "height": 168},
+      "pos": {"x": 0, "y": 0},
+      "backgroundColor": "#aaaaaa"
     },
-    "extra": {
-      "text": "N",
-      "fontSize": 20,
-      "fontColor": "#ffffff",
-      "normal": {
-        "src": "image/button_normal.png"
+    {
+      "id": "image",
+      "visible": true,
+      "class": "Navy.View.Image",
+      "sizePolicy": {"width": "fixed", "height": "fixed"},
+      "size": {"width": 128, "height": 128},
+      "pos": {"x": 0, "y": 20},
+      "backgroundColor": "#ffff00",
+      "link": {
+        "id": "page/Page1"
       },
-      "active": {
-        "src": "image/button_active.png"
-      },
-      "disabled": {
-        "src": "image/button_disabled.png"
+      "extra": {
+        "text": "N",
+        "fontSize": 20,
+        "fontColor": "#ffffff",
+        "normal": {
+          "src": "image/button_normal.png"
+        },
+        "active": {
+          "src": "image/button_active.png"
+        },
+        "disabled": {
+          "src": "image/button_disabled.png"
+        }
+      }
+    },
+    {
+      "id": "name",
+      "class": "Navy.View.Text",
+      "visible": true,
+      "sizePolicy": {"width": "fixed", "height": "fixed"},
+      "size": {"width": 300, "height": 100},
+      "backgroundColor": "#00ffff",
+      "pos": {"x": 148, "y": 20},
+      "extra": {
+        "text": "NavyJS",
+        "fontSize": 20
       }
     }
-  },
-  {
-    "id": "name",
-    "class": "Navy.View.Text",
-    "visible": true,
-    "sizePolicy": {"width": "fixed", "height": "fixed"},
-    "size": {"width": 300, "height": 100},
-    "backgroundColor": "#00ffff",
-    "pos": {"x": 148, "y": 20},
-    "extra": {
-      "text": "NavyJS",
-      "fontSize": 20
-    }
-  }
-]
+  ]
+}

@@ -24,8 +24,8 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   _loadExtraResource: function($super, layout, callback) {
     if (layout && layout.extra.contentLayoutFile) {
       this._layout.extra.contentLayoutFile = layout.extra.contentLayoutFile;
-      Navy.Resource.loadLayout(layout.extra.contentLayoutFile, function(contentLayouts){
-        this._contentLayouts = contentLayouts;
+      Navy.Resource.loadLayout(layout.extra.contentLayoutFile, function(contentLayout){
+        this._contentLayouts = contentLayout.layouts;
         $super(layout, callback);
       }.bind(this));
     } else {

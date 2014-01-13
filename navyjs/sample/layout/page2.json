@@ -1,30 +1,32 @@
-[
-  {
-    "id": "text1",
-    "class": "Navy.View.Text",
-    "visible": true,
-    "pos": {"x": 10, "y": 200},
-    "sizePolicy": {"width": "fixed", "height": "fixed"},
-    "size": {"width": 80, "height": 80},
-    "link": {
-      "id": "page/Page1"
+{
+  "layouts": [
+    {
+      "id": "text1",
+      "class": "Navy.View.Text",
+      "visible": true,
+      "pos": {"x": 10, "y": 200},
+      "sizePolicy": {"width": "fixed", "height": "fixed"},
+      "size": {"width": 80, "height": 80},
+      "link": {
+        "id": "page/Page1"
+      },
+      "extra": {
+        "text": "go Page1"
+      }
     },
-    "extra": {
-      "text": "go Page1"
+    {
+      "id": "text2",
+      "class": "Navy.View.Text",
+      "visible": true,
+      "pos": {"x": 10, "y": 300},
+      "sizePolicy": {"width": "fixed", "height": "fixed"},
+      "size": {"width": 80, "height": 80},
+      "link": {
+        "id": "page/$back"
+      },
+      "extra": {
+        "text": "back"
+      }
     }
-  },
-  {
-    "id": "text2",
-    "class": "Navy.View.Text",
-    "visible": true,
-    "pos": {"x": 10, "y": 300},
-    "sizePolicy": {"width": "fixed", "height": "fixed"},
-    "size": {"width": 80, "height": 80},
-    "link": {
-      "id": "page/$back"
-    },
-    "extra": {
-      "text": "back"
-    }
-  }
-]
+  ]
+}
