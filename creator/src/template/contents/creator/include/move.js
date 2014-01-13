@@ -173,5 +173,3 @@ Navy.Class.instance('Include.Move', Include.Include, {
     document.body.removeEventListener('mousemove', this._mouseMoveForResizeView);
   }
 });
-
-Include.Move.initialize();

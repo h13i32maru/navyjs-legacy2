@@ -140,5 +140,3 @@ Navy.Class.instance('Include.Grouping', Include.Include, {
     Native.changedLayoutContentFromJS();
   }
 });
-
-Include.Grouping.initialize();

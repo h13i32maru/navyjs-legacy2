@@ -45,5 +45,3 @@ Navy.Class.instance('Include.NativeBridge', Include.Include, {
     this._unselectAllGroupingViews();
   }
 });
-
-Include.NativeBridge.initialize();
