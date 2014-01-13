@@ -64,16 +64,6 @@ Navy.Class('CreatorPage', Navy.Page, {
     }
   },
 
-  _include: function(targetObject) {
-    for (var name in targetObject) {
-      if (this[name]) {
-        continue;
-      }
-
-      this[name] = targetObject[name];
-    }
-  },
-
   _getContentLayout: function() {
     var order = this._getOrderedViews();
     return JSON.stringify(order, null, 2);
