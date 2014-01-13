@@ -5,8 +5,6 @@ Navy.Class('CreatorPage', Navy.Page, {
   _selectedGroupingViews: null,
   _resizeType: null,
 
-  _groupingUniqueId: null,
-
   _viewIdToGroupingViewMap: null,
   _groupingIdToGroupingViewMap: null,
 
@@ -27,7 +25,6 @@ Navy.Class('CreatorPage', Navy.Page, {
     this._selectedGroupingViews = [];
     this._viewIdToGroupingViewMap = {};
     this._groupingIdToGroupingViewMap = {};
-    this._initGroupingUniqueId();
     // --
 
     // 要素を移動させるためのマウス操作の追跡

@@ -2,6 +2,13 @@
  * @typedef {Object} Include.Grouping
  */
 Navy.Class.instance('Include.Grouping', Include.Include, {
+  _groupingUniqueId: null,
+
+  initialize: function($super, targetObject) {
+    $super(targetObject);
+
+    this._initGroupingUniqueId();
+  },
 
   _setupGroupingView: function(view) {
     var groupingId = this._getGroupingId(view);
