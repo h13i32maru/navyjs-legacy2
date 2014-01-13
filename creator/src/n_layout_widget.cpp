@@ -103,6 +103,9 @@ void NLayoutWidget::showLayoutSettingDialog() {
     } else {
         emit mNative->setScreenEnableToJS(false);
     }
+
+    // screenのせっていでもレイアウトが変更されるのでchangedを発行する.
+    changed();
 }
 
 bool NLayoutWidget::innerSave() {

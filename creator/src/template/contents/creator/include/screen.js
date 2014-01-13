@@ -5,10 +5,12 @@ Navy.Class.instance('Include.Screen', Include.Include, {
   _setScreen: function(sceneId, pageId) {
     if (sceneId && Navy.Config.scene[sceneId]) {
       var sceneLayout = JSON.parse(JSON.stringify(Navy.Config.scene[sceneId]));
+      this._contentLayoutMeta.__creator__.screenSceneId = sceneId;
     }
 
     if (pageId && Navy.Config.page[pageId]) {
       var pageLayout = JSON.parse(JSON.stringify(Navy.Config.page[pageId]));
+      this._contentLayoutMeta.__creator__.screenPageId = pageId;
     }
 
     if (sceneLayout && pageLayout) {
@@ -35,6 +37,8 @@ Navy.Class.instance('Include.Screen', Include.Include, {
   },
 
   _setScreenEnable: function(enable) {
+    this._contentLayoutMeta.__creator__.screenEnable = enable;
+
     var scene = this.getScene();
     var views = scene.getAllViews();
     for (var viewId in views) {

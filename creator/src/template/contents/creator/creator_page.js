@@ -1,6 +1,7 @@
 Navy.Class('CreatorPage', Navy.Page, {
   _selectedGroupingViews: null,
   _viewIdToGroupingViewMap: null,
+  _contentLayoutMeta: null,
 
   onCreate: function($super, ev) {
     $super(ev);
@@ -18,9 +19,19 @@ Navy.Class('CreatorPage', Navy.Page, {
     this._viewIdToGroupingViewMap = {};
     // --
 
-    Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, function(layout){
-      Native.setViewsFromJS(JSON.stringify(layout.layouts));
-    });
+    Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, function(contentLayout){
+      this._contentLayoutMeta = contentLayout.meta;
+
+      if (!this._contentLayoutMeta) {
+        this._contentLayoutMeta = {};
+      }
+
+      if (!this._contentLayoutMeta.__creator__) {
+        this._contentLayoutMeta.__creator__ = {};
+      }
+
+      Native.setViewsFromJS(JSON.stringify(contentLayout.layouts));
+    }.bind(this));
   },
 
   onResumeAfter: function($super, ev) {
@@ -33,8 +44,10 @@ Navy.Class('CreatorPage', Navy.Page, {
 
   getContentLayout: function() {
     var order = this._getOrderedViews();
-    var contentLayout = {};
-    contentLayout.layouts = order;
+    var contentLayout = {
+      layouts: order,
+      meta: this._contentLayoutMeta
+    };
     return JSON.stringify(contentLayout, null, 2);
   },
 
