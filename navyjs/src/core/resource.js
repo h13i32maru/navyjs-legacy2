@@ -68,12 +68,18 @@ Navy.Class.instance('Navy.Resource', {
       return;
     }
 
-    var image = new Image();
-    image.onload = function(){
-      this._images[imageFile] = {width: image.width, height: image.height};
-      callback(imageFile, image.width, image.height);
+    this.loadImageWithElement(new Image(), imageFile, callback);
+  },
+
+  loadImageWithElement: function(imageElement, imageFile, callback) {
+    var onload = function() {
+      imageElement.removeEventListener('load', onload);
+      this._images[imageFile] = {width: imageElement.width, height: imageElement.height};
+      callback(imageFile, imageElement.width, imageElement.height);
     }.bind(this);
-    image.src = imageFile;
+
+    imageElement.addEventListener('load', onload);
+    imageElement.src = imageFile;
   },
 
   getClass: function(className) {

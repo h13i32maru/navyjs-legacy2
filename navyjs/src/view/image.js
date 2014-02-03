@@ -40,13 +40,12 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
   },
 
   _onLoadImage: function(src, width, height){
-    this._imgElm.src = src;
     this.trigger('SizeChanged');
   },
 
   setSrc: function(src, callback) {
     this._layout.extra.src = src;
-    Navy.Resource.loadImage(src, function(src, width, height){
+    Navy.Resource.loadImageWithElement(this._imgElm, src, function(src, width, height){
       this._onLoadImage(src, width, height);
       callback && callback();
     }.bind(this));
