@@ -4,8 +4,12 @@
   "description" : "NavyJS Unit Test with BusterJS and Travis CI",
   "version" : "0.0.1",
   "devDependencies" : {
-    "buster" : "",
     "phantomjs" : "",
-    "uglify-js": ""
+    "uglify-js": "",
+    "karma": "",
+    "karma-coverage": ""
+  },
+  "scripts": {
+    "install": "./navyjs/tools/install_jasmine2.sh"
   }
 }
