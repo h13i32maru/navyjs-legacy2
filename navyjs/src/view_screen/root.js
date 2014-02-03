@@ -133,7 +133,7 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     var height = Navy.Config.app.size.height;
 
     var elm = document.createElement('div');
-    elm.style.cssText = 'position: absolute; top:0; left:0; background: rgba(0,0,0,0.8)';
+    elm.style.cssText = 'position: absolute; top:0; left:0; background: rgba(0,0,0,0.5)';
     elm.style.width = width + 'px';
     elm.style.height = height + 'px';
 
