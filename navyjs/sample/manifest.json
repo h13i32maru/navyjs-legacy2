@@ -1,0 +1,8 @@
+{
+  "baseUrl": "",
+  "resources": [
+    {"path": "code/page1.js", "md5": "page1.js md5"},
+    {"path": "config/app.json", "md5": "app.json md5"},
+    {"path": "image/loadingaaa.png", "md5": "loading.png md5"}
+  ]
+}
