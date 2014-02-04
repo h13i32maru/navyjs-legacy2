@@ -8,6 +8,7 @@ class NProject
 public:
     enum TYPE {
         TYPE_UNKNOWN,
+        TYPE_MANIFEST,
         TYPE_CONFIG_APP,
         TYPE_CONFIG_SCENE,
         TYPE_CONFIG_PAGE,

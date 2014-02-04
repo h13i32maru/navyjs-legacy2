@@ -8,6 +8,7 @@
 #include "n_config_scene_widget.h"
 #include "n_config_page_widget.h"
 #include "n_project.h"
+#include "n_manifest_widget.h"
 #include "plugin/view_plugin.h"
 
 #include <QFileDialog>
@@ -329,6 +330,7 @@ void MainWindow::openFile(const QString &filePath) {
 
     NFileWidget *fileWidget = NULL;
     switch(NProject::instance()->fileType(filePath)) {
+    case NProject::TYPE_MANIFEST:      fileWidget = new NManifestWidget(filePath); break;
     case NProject::TYPE_CONFIG_APP:    fileWidget = new NConfigAppWidget(filePath); break;
     case NProject::TYPE_CONFIG_SCENE:  fileWidget = new NConfigSceneWidget(filePath); break;
     case NProject::TYPE_CONFIG_PAGE:   fileWidget = new NConfigPageWidget(filePath); break;

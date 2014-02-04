@@ -43,7 +43,8 @@ SOURCES += main.cpp\
     window/n_layout_setting_dialog.cpp \
     plugin/view_plugin.cpp \
     window/n_list_dialog.cpp \
-    extend/n_text_list_selector.cpp
+    extend/n_text_list_selector.cpp \
+    n_manifest_widget.cpp
 
 HEADERS  += main_window.h \
     n_code_widget.h \
@@ -73,7 +74,8 @@ HEADERS  += main_window.h \
     window/n_layout_setting_dialog.h \
     plugin/view_plugin.h \
     window/n_list_dialog.h \
-    extend/n_text_list_selector.h
+    extend/n_text_list_selector.h \
+    n_manifest_widget.h
 
 FORMS    += main_window.ui \
     n_code_widget.ui \
@@ -92,7 +94,8 @@ FORMS    += main_window.ui \
     window/n_new_project_dialog.ui \
     window/n_project_dialog.ui \
     window/n_layout_setting_dialog.ui \
-    window/n_list_dialog.ui
+    window/n_list_dialog.ui \
+    n_manifest_widget.ui
 
 RESOURCES += \
     resource.qrc

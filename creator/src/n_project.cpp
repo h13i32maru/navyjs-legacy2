@@ -58,6 +58,10 @@ QString NProject::projectName() const {
 }
 
 NProject::TYPE NProject::fileType(const QString &filePath) const {
+    if (filePath == contentsFilePath("manifest.json")) {
+        return TYPE_MANIFEST;
+    }
+
     if (filePath == contentsFilePath("config/app.json")) {
         return TYPE_CONFIG_APP;
     }
