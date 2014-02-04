@@ -2,6 +2,18 @@
  * @typedef {Object} Navy.WebInstaller
  */
 Navy.Class.instance('Navy.WebInstaller', {
+  $static: {
+    contentType: {
+      '.js': 'text/javascript',
+      '.css': 'text/stylesheet',
+      '.json': 'text/json',
+      '.png': 'image/png',
+      '.jpg': 'image/jpg',
+      '.jpeg': 'image/jpg',
+      '.gif': 'image/gif'
+    }
+  },
+
   _db: null,
   _remoteManifest: null,
   _localManifest: null,
@@ -98,6 +110,9 @@ Navy.Class.instance('Navy.WebInstaller', {
     }
 
     var resource = this._invalidResources.shift();
+    var path = resource.path;
+    resource.contentType = resource.contentType || this._getContentType(path);
+
     loader.load(resource);
   },
 
@@ -111,6 +126,9 @@ Navy.Class.instance('Navy.WebInstaller', {
     this._loadInvalidResource(loader);
   },
 
+  _saveResource: function(resource, responseText) {
+  },
+
   _manifestToResourceMap: function(manifest) {
     var resources = manifest.resources;
     var map = {};
@@ -119,6 +137,18 @@ Navy.Class.instance('Navy.WebInstaller', {
     }
 
     return map;
+  },
+
+  _getContentType: function(path) {
+    // TODO クエリパラメータやハッシュが付いている場合に対応.
+    var pos = path.lastIndexOf('.');
+    var ext = path.substr(pos).toLowerCase();
+    var contentType = this.$class.contentType[ext];
+    if (!contentType) {
+      throw new Error('unknown file extension. ' + ext);
+    }
+
+    return contentType;
   }
 
 });
@@ -127,18 +157,6 @@ Navy.Class.instance('Navy.WebInstaller', {
  * @class Navy.WebInstaller.Loader
  */
 Navy.Class('Navy.WebInstaller.Loader', {
-  $static: {
-    contentType: {
-      '.js': 'text/javascript',
-      '.css': 'text/stylesheet',
-      '.json': 'text/json',
-      '.png': 'image/png',
-      '.jpg': 'image/jpg',
-      '.jpeg': 'image/jpg',
-      '.gif': 'image/gif'
-    }
-  },
-
   onload: null,
   onerror: null,
 
@@ -148,7 +166,7 @@ Navy.Class('Navy.WebInstaller.Loader', {
   load: function(resource) {
     this._resource = resource;
     var path = resource.path;
-    var contentType = resource.contentType || this._getContentType(path);
+    var contentType = resource.contentType;
 
     if (contentType.indexOf('text/') === 0) {
       var xhr = new XMLHttpRequest();
@@ -189,17 +207,5 @@ Navy.Class('Navy.WebInstaller.Loader', {
     }
 
     this.onerror(this, this._resource);
-  },
-
-  _getContentType: function(path) {
-    // TODO クエリパラメータやハッシュが付いている場合に対応.
-    var pos = path.lastIndexOf('.');
-    var ext = path.substr(pos).toLowerCase();
-    var contentType = this.$class.contentType[ext];
-    if (!contentType) {
-      throw new Error('unknown file extension. ' + ext);
-    }
-
-    return contentType;
   }
 });
