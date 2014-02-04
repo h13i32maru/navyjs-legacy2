@@ -41,9 +41,44 @@ Navy.Class.instance('Navy.WebInstaller', {
     this._initDB();
   },
 
+  loadText: function(path, callback) {
+    var transaction = function(tr) {
+      tr.executeSql('SELECT content, contentType from resource where path = ?', [path], function(transaction, result){
+        var rows = result.rows;
+        if (rows.length !== 1) {
+          throw new Error('not found the path in DB. path = ' + path);
+        }
+
+        var item = rows.item(0);
+        var content = item.content;
+        var contentType = item.contentType;
+
+        callback && callback(path, content, contentType);
+      });
+    };
+
+    var error = function(e) {
+      console.error(e);
+    };
+
+    this._db.transaction(transaction, error);
+  },
+
+  loadJavaScript: function(path, scriptElement, callback) {
+    this.loadText(path, function(path, content, contentType){
+      if (contentType !== 'text/javascript') {
+        throw new Error('the path is not javascript. path = ' + path);
+      }
+
+      scriptElement.textContent = content;
+      callback && callback(scriptElement);
+
+    });
+  },
+
   _initDB: function() {
     var transaction = function(tr) {
-      tr.executeSql('CREATE TABLE IF NOT EXISTS resource (path TEXT PRIMARY KEY, md5 TEXT, content_type TEXT, content TEXT)');
+      tr.executeSql('CREATE TABLE IF NOT EXISTS resource (path TEXT PRIMARY KEY, md5 TEXT, contentType TEXT, content TEXT)');
     };
 
     var error = function(e) {
@@ -168,7 +203,7 @@ Navy.Class.instance('Navy.WebInstaller', {
       var md5 = resource.md5;
       var contentType = resource.contentType;
       var content = responseText || null;
-      tr.executeSql('INSERT OR REPLACE INTO resource (path, md5, content_type, content) VALUES (?, ?, ?, ?)', [path, md5, contentType, content]);
+      tr.executeSql('INSERT OR REPLACE INTO resource (path, md5, contentType, content) VALUES (?, ?, ?, ?)', [path, md5, contentType, content]);
     }
 
     var error = function(e) {
