@@ -27,6 +27,7 @@ Navy.Class.instance('Navy.WebInstaller', {
   _callbackOnProgress: null,
   _callbackOnComplete: null,
   _callbackOnError: null,
+  _forceUpdate: false,
 
   initialize: function(manifestUrl) {
     this._localManifest = {baseUrl: '', resources: []};
@@ -37,6 +38,7 @@ Navy.Class.instance('Navy.WebInstaller', {
     this._callbackOnProgress = options.onProgress || function(){};
     this._callbackOnComplete = options.onComplete || function(){};
     this._callbackOnError = options.onError || function(){};
+    this._forceUpdate = options.forceUpdate || false;
 
     this._initDB();
   },
@@ -181,6 +183,11 @@ Navy.Class.instance('Navy.WebInstaller', {
 
     for (var remotePath in remoteResourceMap) {
       var remoteMD5 = remoteResourceMap[remotePath].md5;
+
+      if (this._forceUpdate) {
+        invalidResources.push({path: remotePath, md5: remoteMD5});
+        continue;
+      }
 
       if (!localResourceMap[remotePath]) {
         invalidResources.push({path: remotePath, md5: remoteMD5});
