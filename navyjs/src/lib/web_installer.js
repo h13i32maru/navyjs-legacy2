@@ -64,16 +64,19 @@ Navy.Class.instance('Navy.WebInstaller', {
             md5: item.md5
           });
         }
-        this._pickInvalidResources();
       }.bind(this));
     }.bind(this);
 
-    function error(e) {
+    var error = function(e) {
+      this._pickInvalidResources();
       console.error(e);
-    }
+    };
 
-    // FIXME: successコールバックを試す.
-    this._db.transaction(transaction, error);
+    var success = function() {
+      this._pickInvalidResources();
+    }.bind(this);
+
+    this._db.transaction(transaction, error, success);
   },
 
   _pickInvalidResources: function() {
