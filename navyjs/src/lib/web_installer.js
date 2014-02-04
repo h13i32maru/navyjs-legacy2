@@ -41,7 +41,60 @@ Navy.Class.instance('Navy.WebInstaller', {
     this._initDB();
   },
 
-  loadText: function(path, callback) {
+  loadJavaScript: function(path, scriptElement, callback) {
+    this._loadLocalResource(path, function(path, content, contentType){
+      if (contentType !== 'text/javascript') {
+        throw new Error('the path is not javascript. path = ' + path);
+      }
+
+      scriptElement.textContent = content;
+      callback && callback(scriptElement);
+    });
+  },
+
+  loadJSON: function(path, callback) {
+    this._loadLocalResource(path, function(path, content, contentType){
+      if (contentType !== 'text/json') {
+        throw new Error('the path is not json. path = ' + path);
+      }
+
+      var obj = JSON.parse(content);
+      callback && callback(obj);
+    });
+  },
+
+  loadCSS: function(path, styleElement, callback) {
+    this._loadLocalResource(path, function(path, content, contentType){
+      if (contentType !== 'text/css') {
+        throw new Error('the path is not css. path = ' + path);
+      }
+
+      styleElement.textContent = content;
+      callback && callback(styleElement);
+    });
+  },
+
+  loadImage: function(path, imageElement, callback) {
+    this._loadLocalResource(path, function(path, content, contentType){
+      if (contentType.indexOf('image/') !== 0) {
+        throw new Error('the path is not image. path = ' + path);
+      }
+
+      imageElement.addEventListener('load', function onload(){
+        this.removeEventListener('load', onload);
+        callback && callback(this);
+      });
+
+      imageElement.addEventListener('error', function onerror(){
+        this.removeEventListener('error', onerror);
+        throw new Error('fail loading image. path = ' + path);
+      });
+
+      imageElement.src = path;
+    });
+  },
+
+  _loadLocalResource: function(path, callback) {
     var transaction = function(tr) {
       tr.executeSql('SELECT content, contentType from resource where path = ?', [path], function(transaction, result){
         var rows = result.rows;
@@ -62,18 +115,6 @@ Navy.Class.instance('Navy.WebInstaller', {
     };
 
     this._db.transaction(transaction, error);
-  },
-
-  loadJavaScript: function(path, scriptElement, callback) {
-    this.loadText(path, function(path, content, contentType){
-      if (contentType !== 'text/javascript') {
-        throw new Error('the path is not javascript. path = ' + path);
-      }
-
-      scriptElement.textContent = content;
-      callback && callback(scriptElement);
-
-    });
   },
 
   _initDB: function() {
