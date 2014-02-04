@@ -210,11 +210,11 @@ Navy.Class.instance('Navy.WebInstaller', {
       var loader = new Navy.WebInstaller.Loader();
       loader.onload = this._onLoadInvalidResource.bind(this);
       loader.onerror = this._onLoadInvalidResourceError.bind(this);
-      this._loadInvalidResource(loader);
+      this._loadRemoteResource(loader);
     }
   },
 
-  _loadInvalidResource: function(loader) {
+  _loadRemoteResource: function(loader) {
     if (this._invalidResources.length === 0) {
       if (this._doneInvalidCount === this._totalInvalidCount) {
         this._callbackOnComplete();
@@ -255,7 +255,7 @@ Navy.Class.instance('Navy.WebInstaller', {
     var success = function() {
       this._doneInvalidCount++;
       this._callbackOnProgress(this._doneInvalidCount, this._totalInvalidCount);
-      this._loadInvalidResource(loader);
+      this._loadRemoteResource(loader);
     }.bind(this);
 
     this._db.transaction(transaction, error, success);
