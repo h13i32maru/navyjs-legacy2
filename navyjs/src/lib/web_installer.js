@@ -15,27 +15,19 @@ Navy.Class.instance('Navy.WebInstaller', {
   },
 
   _db: null,
+  _manifestUrl: null,
   _remoteManifest: null,
   _localManifest: null,
   _invalidResources: null,
   _concurrency: 4,
 
-  initialize: function() {
+  initialize: function(manifestUrl) {
     this._localManifest = {baseUrl: '', resources: []};
+    this._manifestUrl = manifestUrl;
   },
 
-  update: function(manifestUrl, callback) {
-    var xhr = new XMLHttpRequest();
-
-    xhr.open('GET', manifestUrl);
-    xhr.onload = function(ev){
-      var xhr = ev.target;
-      this._remoteManifest = JSON.parse(xhr.responseText);
-
-      this._initDB();
-    }.bind(this);
-
-    xhr.send();
+  update: function(callback) {
+    this._initDB();
   },
 
   _initDB: function() {
@@ -48,11 +40,25 @@ Navy.Class.instance('Navy.WebInstaller', {
     };
 
     var success = function() {
-      this._loadLocalManifest();
+      this._loadRemoteManifest();
     }.bind(this);
 
     this._db = openDatabase('web_installer', "0.1", "WebInstaller", 5 * 1000 * 1000);
     this._db.transaction(transaction, error, success);
+  },
+
+  _loadRemoteManifest: function() {
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('GET', this._manifestUrl);
+    xhr.onload = function(ev){
+      var xhr = ev.target;
+      this._remoteManifest = JSON.parse(xhr.responseText);
+
+      this._loadLocalManifest();
+    }.bind(this);
+
+    xhr.send();
   },
 
   _loadLocalManifest: function() {

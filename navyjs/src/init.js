@@ -7,6 +7,6 @@ window.addEventListener('DOMContentLoaded', function(){
 
   Navy.App.initialize();
 
-  Navy.WebInstaller.initialize();
-  Navy.WebInstaller.update('./manifest.json');
+  Navy.WebInstaller.initialize('./manifest.json');
+  Navy.WebInstaller.update();
 });
