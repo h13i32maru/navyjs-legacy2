@@ -21,12 +21,23 @@ Navy.Class.instance('Navy.WebInstaller', {
   _invalidResources: null,
   _concurrency: 4,
 
+  _totalInvalidCount: 0,
+  _doneInvalidCount: 0,
+
+  _callbackOnProgress: null,
+  _callbackOnComplete: null,
+  _callbackOnError: null,
+
   initialize: function(manifestUrl) {
     this._localManifest = {baseUrl: '', resources: []};
     this._manifestUrl = manifestUrl;
   },
 
-  update: function(callback) {
+  update: function(options) {
+    this._callbackOnProgress = options.onProgress || function(){};
+    this._callbackOnComplete = options.onComplete || function(){};
+    this._callbackOnError = options.onError || function(){};
+
     this._initDB();
   },
 
@@ -107,11 +118,18 @@ Navy.Class.instance('Navy.WebInstaller', {
     }
 
     this._invalidResources = invalidResources;
+    this._totalInvalidCount = invalidResources.length;
+    this._doneInvalidCount = 0;
 
     this._startLoadingInvalidResources();
   },
 
   _startLoadingInvalidResources: function() {
+    if (this._totalInvalidCount === 0) {
+      this._callbackOnComplete();
+      return
+    }
+
     for (var i = 0; i < this._concurrency; i++) {
       var loader = new Navy.WebInstaller.Loader();
       loader.onload = this._onLoadInvalidResource.bind(this);
@@ -122,6 +140,9 @@ Navy.Class.instance('Navy.WebInstaller', {
 
   _loadInvalidResource: function(loader) {
     if (this._invalidResources.length === 0) {
+      if (this._doneInvalidCount === this._totalInvalidCount) {
+        this._callbackOnComplete();
+      }
       return;
     }
 
@@ -133,16 +154,15 @@ Navy.Class.instance('Navy.WebInstaller', {
   },
 
   _onLoadInvalidResource: function(loader, resource, responseText) {
-    this._saveResource(resource, responseText);
-    this._loadInvalidResource(loader);
+    this._saveResource(loader, resource, responseText);
   },
 
   _onLoadInvalidResourceError: function(loader, resource) {
     console.error(resource);
-    this._loadInvalidResource(loader);
+    this._callbackOnError(resource.path);
   },
 
-  _saveResource: function(resource, responseText) {
+  _saveResource: function(loader, resource, responseText) {
     function transaction(tr) {
       var path = resource.path;
       var md5 = resource.md5;
@@ -151,11 +171,18 @@ Navy.Class.instance('Navy.WebInstaller', {
       tr.executeSql('INSERT OR REPLACE INTO resource (path, md5, content_type, content) VALUES (?, ?, ?, ?)', [path, md5, contentType, content]);
     }
 
-    function error(e) {
-      console.error(e);
-    }
+    var error = function(e) {
+      console.error(e, resource);
+      this._callbackOnError(resource.path);
+    }.bind(this);
 
-    this._db.transaction(transaction, error);
+    var success = function() {
+      this._doneInvalidCount++;
+      this._callbackOnProgress(this._doneInvalidCount, this._totalInvalidCount);
+      this._loadInvalidResource(loader);
+    }.bind(this);
+
+    this._db.transaction(transaction, error, success);
   },
 
   _manifestToResourceMap: function(manifest) {

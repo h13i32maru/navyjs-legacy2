@@ -8,5 +8,15 @@ window.addEventListener('DOMContentLoaded', function(){
   Navy.App.initialize();
 
   Navy.WebInstaller.initialize('./manifest.json');
-  Navy.WebInstaller.update();
+  Navy.WebInstaller.update({
+    onProgress: function(progress, total) {
+      console.log(progress, total);
+    },
+    onComplete: function() {
+      console.log('complete');
+    },
+    onError: function(path) {
+      console.error(path);
+    }
+  });
 });
