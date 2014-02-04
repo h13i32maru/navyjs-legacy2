@@ -54,10 +54,6 @@
       "md5": "2ea71b8e82e4a5ff53226d73bb8020f6"
     },
     {
-      "path": "image/pxm/loading.pxm",
-      "md5": "45b5739134f2f0e1c9b5db2ef102e6ad"
-    },
-    {
       "path": "layout/group1.json",
       "md5": "3bc685e711b1f3d3be4455744c2395a9"
     },
@@ -79,7 +75,7 @@
     },
     {
       "path": "navy/navy.js",
-      "md5": "403cf45ec2ae40491bd9debc9ee03ad1"
+      "md5": "9d24c3a65782fb30abd80f8906c7cbfa"
     },
     {
       "path": "navy/navy.min.js",
