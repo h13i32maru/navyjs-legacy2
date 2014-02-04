@@ -197,10 +197,10 @@ Navy.Class.instance('Navy.WebInstaller', {
     this._totalInvalidCount = invalidResources.length;
     this._doneInvalidCount = 0;
 
-    this._startLoadingInvalidResources();
+    this._startLoadingRemoteResources();
   },
 
-  _startLoadingInvalidResources: function() {
+  _startLoadingRemoteResources: function() {
     if (this._totalInvalidCount === 0) {
       this._callbackOnComplete();
       return
