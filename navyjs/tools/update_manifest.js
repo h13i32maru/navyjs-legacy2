@@ -1,0 +1,1 @@
+../../creator/src/template/tools/update_manifest.js
