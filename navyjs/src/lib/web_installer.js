@@ -208,8 +208,8 @@ Navy.Class.instance('Navy.WebInstaller', {
 
     for (var i = 0; i < this._concurrency; i++) {
       var loader = new Navy.WebInstaller.Loader();
-      loader.onload = this._onLoadInvalidResource.bind(this);
-      loader.onerror = this._onLoadInvalidResourceError.bind(this);
+      loader.onload = this._onLoadRemoteResource.bind(this);
+      loader.onerror = this._onLoadRemoteResourceError.bind(this);
       this._loadRemoteResource(loader);
     }
   },
@@ -229,16 +229,16 @@ Navy.Class.instance('Navy.WebInstaller', {
     loader.load(resource);
   },
 
-  _onLoadInvalidResource: function(loader, resource, responseText) {
-    this._saveResource(loader, resource, responseText);
+  _onLoadRemoteResource: function(loader, resource, responseText) {
+    this._saveRemoteResource(loader, resource, responseText);
   },
 
-  _onLoadInvalidResourceError: function(loader, resource) {
+  _onLoadRemoteResourceError: function(loader, resource) {
     console.error(resource);
     this._callbackOnError(resource.path);
   },
 
-  _saveResource: function(loader, resource, responseText) {
+  _saveRemoteResource: function(loader, resource, responseText) {
     function transaction(tr) {
       var path = resource.path;
       var md5 = resource.md5;
