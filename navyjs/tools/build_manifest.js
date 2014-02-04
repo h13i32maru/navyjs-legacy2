@@ -70,7 +70,7 @@ var ManifestBuilder = {
 
 function printHelp() {
   var name = require('path').basename(process.argv[1]);
-  console.log(name + ' [--format] rootDir');
+  console.log('node ' + name + ' [--format] rootDir');
 }
 
 var rootDir = null;
