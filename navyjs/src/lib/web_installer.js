@@ -58,7 +58,11 @@ Navy.Class.instance('Navy.WebInstaller', {
       tr.executeSql('SELECT path, md5 from resource', null, function(transaction, result){
         var rows = result.rows;
         for (var i = 0; i < rows.length; i++) {
-          console.log(rows.item(0));
+          var item = rows.item(i);
+          this._localManifest.resources.push({
+            path: item.path,
+            md5: item.md5
+          });
         }
         this._pickInvalidResources();
       }.bind(this));
@@ -68,6 +72,7 @@ Navy.Class.instance('Navy.WebInstaller', {
       console.error(e);
     }
 
+    // FIXME: successコールバックを試す.
     this._db.transaction(transaction, error);
   },
 
@@ -117,7 +122,7 @@ Navy.Class.instance('Navy.WebInstaller', {
   },
 
   _onLoadInvalidResource: function(loader, resource, responseText) {
-    console.log(resource, responseText);
+    this._saveResource(resource, responseText);
     this._loadInvalidResource(loader);
   },
 
@@ -127,6 +132,19 @@ Navy.Class.instance('Navy.WebInstaller', {
   },
 
   _saveResource: function(resource, responseText) {
+    function transaction(tr) {
+      var path = resource.path;
+      var md5 = resource.md5;
+      var contentType = resource.contentType;
+      var content = responseText || null;
+      tr.executeSql('INSERT OR REPLACE INTO resource (path, md5, content_type, content) VALUES (?, ?, ?, ?)', [path, md5, contentType, content]);
+    }
+
+    function error(e) {
+      console.error(e);
+    }
+
+    this._db.transaction(transaction, error);
   },
 
   _manifestToResourceMap: function(manifest) {
