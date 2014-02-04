@@ -13,12 +13,9 @@ const QString NPrefDialog::PREVIEW_ALLOW_FILE_ACCESS_FROM_FILE = "preview/allowF
 const QString NPrefDialog::PREVIEW_DISABLE_WEB_SECURITY = "preview/disableWebSecurity";
 const QString NPrefDialog::PREVIEW_USER_DATA_DIR = "preview/userDataDir";
 const QString NPrefDialog::PREVIEW_OTHER_OPTIONS = "preview/otherOptions";
+const QString NPrefDialog::NODE_JS_PATH = "pref/nodejsPath";
 
-NPrefDialog::NPrefDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::NPrefDialog),
-    mSettings("h13i32maru.jp", "NavyCreator")
-{
+NPrefDialog::NPrefDialog(QWidget *parent) : QDialog(parent), ui(new Ui::NPrefDialog), mSettings("h13i32maru.jp", "NavyCreator") {
     ui->setupUi(this);
 
     if (!mSettings.value(DONE_PREFERENCE).toBool()) {
@@ -31,14 +28,23 @@ NPrefDialog::NPrefDialog(QWidget *parent) :
 }
 
 void NPrefDialog::setDefault() {
+    // nodejs
+    ui->nodejsPath->setText("/usr/local/bin/node");
+
+    // chrome
     ui->googleChromeEdit->setText("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
     ui->allowFileAccessFromFileCheck->setChecked(true);
     ui->disableWebSecurityCheck->setChecked(true);
     ui->userDataDirEdit->setText(QDir::homePath() + "/.navy_creator_chrome");
     ui->otherOptionsEdit->setText("");
+
 }
 
 void NPrefDialog::syncSettingsToWidget() {
+    // nodejs
+    ui->nodejsPath->setText(mSettings.value(NODE_JS_PATH).toString());
+
+    // chrome
     ui->googleChromeEdit->setText(mSettings.value(PREVIEW_GOOGLE_CHROME_PATH).toString());
     ui->allowFileAccessFromFileCheck->setChecked(mSettings.value(PREVIEW_ALLOW_FILE_ACCESS_FROM_FILE).toBool());
     ui->disableWebSecurityCheck->setChecked(mSettings.value(PREVIEW_DISABLE_WEB_SECURITY).toBool());
@@ -47,6 +53,10 @@ void NPrefDialog::syncSettingsToWidget() {
 }
 
 void NPrefDialog::syncWidgetToSettings() {
+    // nodejs
+    mSettings.setValue(NODE_JS_PATH, ui->nodejsPath->text());
+
+    // chrome
     mSettings.setValue(PREVIEW_GOOGLE_CHROME_PATH, ui->googleChromeEdit->text());
     mSettings.setValue(PREVIEW_ALLOW_FILE_ACCESS_FROM_FILE, ui->allowFileAccessFromFileCheck->isChecked());
     mSettings.setValue(PREVIEW_DISABLE_WEB_SECURITY, ui->disableWebSecurityCheck->isChecked());
@@ -55,6 +65,10 @@ void NPrefDialog::syncWidgetToSettings() {
 }
 
 bool NPrefDialog::validate() {
+    if (ui->nodejsPath->text().isEmpty() || !QFileInfo(ui->nodejsPath->text()).exists()) {
+        return false;
+    }
+
     if (ui->googleChromeEdit->text().isEmpty() || !QFileInfo(ui->googleChromeEdit->text()).exists()) {
         return false;
     }

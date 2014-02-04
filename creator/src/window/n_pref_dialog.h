@@ -19,6 +19,7 @@ public:
     static const QString PREVIEW_DISABLE_WEB_SECURITY;
     static const QString PREVIEW_USER_DATA_DIR;
     static const QString PREVIEW_OTHER_OPTIONS;
+    static const QString NODE_JS_PATH;
 
 public:
     explicit NPrefDialog(QWidget *parent = 0);
