@@ -80,19 +80,19 @@ Navy.Class.instance('Navy.WebInstaller', {
 
     this._invalidResources = invalidResources;
 
-    this._startFetchingResources();
+    this._startLoadingInvalidResources();
   },
 
-  _startFetchingResources: function() {
+  _startLoadingInvalidResources: function() {
     for (var i = 0; i < this._concurrency; i++) {
       var loader = new Navy.WebInstaller.Loader();
-      loader.onload = this._onFetchResource.bind(this);
-      loader.onerror = this._onFetchResourceError.bind(this);
-      this._fetchResource(loader);
+      loader.onload = this._onLoadInvalidResource.bind(this);
+      loader.onerror = this._onLoadInvalidResourceError.bind(this);
+      this._loadInvalidResource(loader);
     }
   },
 
-  _fetchResource: function(loader) {
+  _loadInvalidResource: function(loader) {
     if (this._invalidResources.length === 0) {
       return;
     }
@@ -101,14 +101,14 @@ Navy.Class.instance('Navy.WebInstaller', {
     loader.load(resource);
   },
 
-  _onFetchResource: function(loader, resource, responseText) {
+  _onLoadInvalidResource: function(loader, resource, responseText) {
     console.log(resource, responseText);
-    this._fetchResource(loader);
+    this._loadInvalidResource(loader);
   },
 
-  _onFetchResourceError: function(loader, resource) {
+  _onLoadInvalidResourceError: function(loader, resource) {
     console.error(resource);
-    this._fetchResource(loader);
+    this._loadInvalidResource(loader);
   },
 
   _manifestToResourceMap: function(manifest) {
