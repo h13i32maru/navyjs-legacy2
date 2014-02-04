@@ -30,6 +30,7 @@ private:
     QWidget *mTabBackgroundWidget;
     QFileSystemModel *mFileSysteMmodel;
     QProcess *mGoogleChromeProcess;
+    QProcess *mNodeJSProcess;
     NPrefDialog *mPrefDialog;
 
 private:
@@ -44,6 +45,7 @@ private slots:
     void showProjectSetting();
     void showFileOpener();
     void saveAll();
+    void updateManifest();
     void launchGoogleChrome();
     void validate();
     void contextMenu(QPoint point);

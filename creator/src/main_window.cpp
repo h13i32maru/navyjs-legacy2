@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     mPrefDialog = new NPrefDialog();
     mGoogleChromeProcess = new QProcess();
+    mNodeJSProcess = new QProcess();
 
     connect(ui->actionPreferences, SIGNAL(triggered()), mPrefDialog, SLOT(exec()));
     connect(ui->actionNewProject, SIGNAL(triggered(bool)), this, SLOT(newProject()));
@@ -48,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionProjectSetting, SIGNAL(triggered()), this, SLOT(showProjectSetting()));
     connect(ui->actionOpenFile, SIGNAL(triggered(bool)), this, SLOT(showFileOpener()));
     connect(ui->actionSaveAll, SIGNAL(triggered(bool)), this, SLOT(saveAll()));
+    connect(ui->actionUpdateManifest, SIGNAL(triggered(bool)), this, SLOT(updateManifest()));
     connect(ui->actionLaunchGoogleChrome, SIGNAL(triggered(bool)), this, SLOT(launchGoogleChrome()));
     connect(ui->actionValidate, SIGNAL(triggered()), this, SLOT(validate()));
     connect(ui->actionCloseTab, SIGNAL(triggered(bool)), this, SLOT(closeCurrentFile()));
@@ -125,9 +127,11 @@ void MainWindow::openProject() {
     QDir(project->contentsFilePath("navy")).removeRecursively();
     QDir(project->contentsFilePath("creator")).removeRecursively();
     QDir(project->pluginDirPath()).removeRecursively();
+    QDir(project->toolsDirPath()).removeRecursively();
     NUtil::copyDir(":/template/contents/navy", project->contentsFilePath("navy"));
     NUtil::copyDir(":/template/contents/creator", project->contentsFilePath("creator"));
     NUtil::copyDir(":/template/plugin", project->pluginDirPath());
+    NUtil::copyDir(":/template/tools", project->toolsDirPath());
     NUtil::createFileFromTemplate(":/template/contents/index.html", project->contentsFilePath("index.html"));
     NUtil::createFileFromTemplate(":/template/contents/index_creator.html", project->contentsFilePath("index_creator.html"));
 }
@@ -151,6 +155,22 @@ void MainWindow::saveAll() {
     for (int i = 0; i < tab->count(); i++) {
         saveFile(i);
     }
+}
+
+void MainWindow::updateManifest() {
+    if (NProject::instance()->projectName().isEmpty()) {
+        return;
+    }
+
+    QSettings *s = mPrefDialog->getSettings();
+    QString program = s->value(NPrefDialog::NODE_JS_PATH).toString();
+
+    QStringList arguments;
+    arguments.append(NProject::instance()->toolsDirPath() + "/update_manifest.js");
+    arguments.append("--format");
+    arguments.append(NProject::instance()->contentsDirPath());
+
+    mNodeJSProcess->start(program, arguments);
 }
 
 void MainWindow::launchGoogleChrome() {

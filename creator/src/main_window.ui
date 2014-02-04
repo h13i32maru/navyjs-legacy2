@@ -131,6 +131,7 @@
     <property name="title">
      <string>Preview</string>
     </property>
+    <addaction name="actionUpdateManifest"/>
     <addaction name="actionLaunchGoogleChrome"/>
     <addaction name="actionValidate"/>
    </widget>
@@ -237,6 +238,11 @@
   <action name="actionProjectSetting">
    <property name="text">
     <string>Project Setting</string>
+   </property>
+  </action>
+  <action name="actionUpdateManifest">
+   <property name="text">
+    <string>Update Manifest</string>
    </property>
   </action>
  </widget>

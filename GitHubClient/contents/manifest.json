@@ -1,0 +1,153 @@
+{
+  "baseUrl": "",
+  "resources": [
+    {
+      "path": "code/login_page.js",
+      "md5": "eb3792056156568bb275603a14431fdc"
+    },
+    {
+      "path": "code/login_scene.js",
+      "md5": "8f4475b78445bb3eccc9181b78b288fb"
+    },
+    {
+      "path": "code/logout_page.js",
+      "md5": "03abbd4c0881f87f80673d175f36a80f"
+    },
+    {
+      "path": "code/main_scene.js",
+      "md5": "15b487ad509857f4db770bd8e7b3bf70"
+    },
+    {
+      "path": "code/profile_page.js",
+      "md5": "ed5d31dd832596c75bf91a742e7994d8"
+    },
+    {
+      "path": "code/search_repo_page.js",
+      "md5": "d92a766bdfd21b1b1123a9f62e0759e3"
+    },
+    {
+      "path": "code/users_page.js",
+      "md5": "5a581aa5b15f1b4faf681d0353558727"
+    },
+    {
+      "path": "config/app.json",
+      "md5": "5535ec6d4404f6a2cd67a286f26f5054"
+    },
+    {
+      "path": "config/page.json",
+      "md5": "1e5514bcc2679f31e7eaf7a0bff2cf7b"
+    },
+    {
+      "path": "config/scene.json",
+      "md5": "2417da9fcb71b3a3ba2498c1d11ecf26"
+    },
+    {
+      "path": "creator/creator_page.js",
+      "md5": "2ab24e0e048dad7fde615eee1f984b82"
+    },
+    {
+      "path": "creator/creator_scene.js",
+      "md5": "1e6f82461d573e941e4629ec49087210"
+    },
+    {
+      "path": "creator/grouping_view.js",
+      "md5": "84c4b11d581c8f1a3030aa3eb9b10a62"
+    },
+    {
+      "path": "creator/include/grouping.js",
+      "md5": "e3afc0b12e320aaa37268bc755819923"
+    },
+    {
+      "path": "creator/include/include.js",
+      "md5": "3ab2ec14f76f64250b1b4c7fb049489e"
+    },
+    {
+      "path": "creator/include/move.js",
+      "md5": "d10e0beb5b620babc5b7d01787fae68f"
+    },
+    {
+      "path": "creator/include/native_bridge.js",
+      "md5": "4bb0ac3459c80c6b0fafc7ffe5116795"
+    },
+    {
+      "path": "creator/include/screen.js",
+      "md5": "ef2d03ff6fa5db317c7b6d0d1cfe4dfc"
+    },
+    {
+      "path": "creator/include/tidy.js",
+      "md5": "04a745197c078413e59b0ef3ce0b33de"
+    },
+    {
+      "path": "image/button_active.png",
+      "md5": "a794470fedc30acfff93875a92a50f7d"
+    },
+    {
+      "path": "image/button_disabled.png",
+      "md5": "e780949bf5030fad813adc6387957772"
+    },
+    {
+      "path": "image/button_normal.png",
+      "md5": "28901ef32d4ed7b44ae39b194cab3754"
+    },
+    {
+      "path": "image/loading.png",
+      "md5": "437ad1830069cd318a9225746c183fbc"
+    },
+    {
+      "path": "image/touch-icon.png",
+      "md5": "b51411685a8d51dfa3ed1934661c5460"
+    },
+    {
+      "path": "image/touch-icon.pxm",
+      "md5": "9740895761b98965239fe9349b2ab7c2"
+    },
+    {
+      "path": "layout/footer.json",
+      "md5": "faff692f631c8c27a43e1308c4567582"
+    },
+    {
+      "path": "layout/item_repo.json",
+      "md5": "3bd9a5457fdf6b680ddcdb3264f4029b"
+    },
+    {
+      "path": "layout/item_user.json",
+      "md5": "026f2cc953f39dc6d6613ca746ba1eb2"
+    },
+    {
+      "path": "layout/login_page.json",
+      "md5": "23015bb1b2412717d5d34ddf8f049281"
+    },
+    {
+      "path": "layout/login_scene.json",
+      "md5": "e921fa038e11f9e02a0973047a8a52c3"
+    },
+    {
+      "path": "layout/logout_page.json",
+      "md5": "ca3a775d5f086a4ae0ec64e02848bc5e"
+    },
+    {
+      "path": "layout/main_scene.json",
+      "md5": "0dbcc66f89cab7dba156947ac8f9e3d6"
+    },
+    {
+      "path": "layout/profile_page.json",
+      "md5": "1e87e94a5f9241e41ad4986038942bac"
+    },
+    {
+      "path": "layout/search_repo_page.json",
+      "md5": "73f8d501ea088b661225d07baaabc4e1"
+    },
+    {
+      "path": "layout/users_page.json",
+      "md5": "ed11fa746e33ac11ab3c61dc967e8689"
+    },
+    {
+      "path": "navy/navy.js",
+      "md5": "403cf45ec2ae40491bd9debc9ee03ad1"
+    },
+    {
+      "path": "navy/navy.min.js",
+      "md5": "125cef2aa7bd73cb1bbf55b5cef5fd2d"
+    }
+  ]
+}

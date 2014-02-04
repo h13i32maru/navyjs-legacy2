@@ -4,6 +4,7 @@
         <file>icon/config.png</file>
         <file>icon/image.png</file>
         <file>icon/layout.png</file>
+        <file>template/tools/update_manifest.js</file>
         <file>template/project.ncproject</file>
         <file>template/plugin/built_in_view/manifest.json</file>
         <file>template/plugin/built_in_view/navy.view.view.json</file>
