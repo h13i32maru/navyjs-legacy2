@@ -45,4 +45,29 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
     };
     Navy.WebInstaller.update(options);
   });
+
+  it('can load javascript.', function(done){
+    var scriptElement = document.createElement('script');
+    Navy.WebInstaller.loadJavaScript('/base/fixture/code/code1.js', scriptElement, function(scriptElement){
+      expect(scriptElement.textContent).toBe('// dummy code1\n');
+      done();
+    });
+  });
+
+  it('can load json.', function(done){
+    Navy.WebInstaller.loadJSON('/base/fixture/layout/layout1.json', function(obj){
+      expect(obj).toEqual({prop1: 'dummy layout1'});
+      done();
+    });
+  });
+
+  it('can load image.', function(done){
+    var imageElement = new Image();
+    Navy.WebInstaller.loadImage('/base/fixture/image/image1.png', imageElement, function(imageElement){
+      var src = imageElement.src;
+      expect(src).toContain('/base/fixture/image/image1.png');
+      expect(imageElement.complete).toBeTruthy();
+      done();
+    });
+  });
 });
