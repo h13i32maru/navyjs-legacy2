@@ -15,7 +15,7 @@ Navy.Class.instance('Navy.WebInstaller', {
   },
 
   _db: null,
-  _manifestUrl: null,
+  _manifestURL: null,
   _remoteManifest: null,
   _localManifest: null,
   _invalidResources: null,
@@ -32,15 +32,15 @@ Navy.Class.instance('Navy.WebInstaller', {
   // DBを使うか使わないかで中身が変更されるメソッド.
   _loadResource: null,
 
-  initialize: function(manifestUrl) {
+  initialize: function(manifestURL) {
     this._localManifest = {baseUrl: '', resources: []};
-    this._manifestUrl = manifestUrl;
+    this.setManifestURL(manifestURL);
 
     this.setEnableDatabase(true);
   },
 
   setManifestURL: function(manifestURL) {
-    this._manifestUrl = manifestURL;
+    this._manifestURL = manifestURL;
   },
 
   setEnableDatabase: function(enable) {
@@ -193,7 +193,7 @@ Navy.Class.instance('Navy.WebInstaller', {
   _loadRemoteManifest: function() {
     var xhr = new XMLHttpRequest();
 
-    xhr.open('GET', this._manifestUrl);
+    xhr.open('GET', this._manifestURL);
     xhr.onload = function(ev){
       var xhr = ev.target;
       this._remoteManifest = JSON.parse(xhr.responseText);
