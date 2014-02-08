@@ -77,31 +77,38 @@ Navy.Class.instance('Navy.WebInstaller', {
   },
 
   loadImage: function(path, imageElement, callback) {
+    imageElement.addEventListener('load', function onload(){
+      this.removeEventListener('load', onload);
+      callback && callback(this);
+    });
+
+    imageElement.addEventListener('error', function onerror(){
+      this.removeEventListener('error', onerror);
+      throw new Error('fail loading image. path = ' + path);
+    });
+
     this._loadLocalResource(path, function(path, content, contentType){
       if (contentType.indexOf('image/') !== 0) {
         throw new Error('the path is not image. path = ' + path);
       }
 
-      imageElement.addEventListener('load', function onload(){
-        this.removeEventListener('load', onload);
-        callback && callback(this);
-      });
-
-      imageElement.addEventListener('error', function onerror(){
-        this.removeEventListener('error', onerror);
-        throw new Error('fail loading image. path = ' + path);
-      });
-
+      imageElement.src = path;
+    }, function(path){
       imageElement.src = path;
     });
   },
 
-  _loadLocalResource: function(path, callback) {
+  _loadLocalResource: function(path, callback, errorCallback) {
     var transaction = function(tr) {
       tr.executeSql('SELECT content, contentType from resource where path = ?', [path], function(transaction, result){
         var rows = result.rows;
         if (rows.length !== 1) {
-          throw new Error('not found the path in DB. path = ' + path);
+          if (errorCallback) {
+            errorCallback(path);
+            return;
+          } else {
+            throw new Error('not found the path in DB. path = ' + path);
+          }
         }
 
         var item = rows.item(0);
