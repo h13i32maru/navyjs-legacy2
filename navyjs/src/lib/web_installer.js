@@ -20,6 +20,7 @@ Navy.Class.instance('Navy.WebInstaller', {
   _localManifest: null,
   _invalidResources: null,
   _concurrency: 4,
+  _enableDatabase: true,
 
   _totalInvalidCount: 0,
   _doneInvalidCount: 0,
@@ -34,11 +35,22 @@ Navy.Class.instance('Navy.WebInstaller', {
     this._manifestUrl = manifestUrl;
   },
 
+  setEnableDatabase: function(enable) {
+    this._enableDatabase = enable;
+  },
+
   update: function(options) {
     this._callbackOnProgress = options.onProgress || function(){};
     this._callbackOnComplete = options.onComplete || function(){};
     this._callbackOnError = options.onError || function(){};
     this._forceUpdate = options.forceUpdate || false;
+
+    if (!this._enableDatabase) {
+      setTimeout(function(){
+        this._callbackOnComplete();
+      }.bind(this), 0);
+      return;
+    }
 
     this._initDB();
   },
@@ -95,10 +107,15 @@ Navy.Class.instance('Navy.WebInstaller', {
       imageElement.src = path;
     }, function(path){
       imageElement.src = path;
-    });
+    }, 'image/*');
   },
 
-  _loadLocalResource: function(path, callback, errorCallback) {
+  _loadLocalResource: function(path, callback, errorCallback, contentType) {
+    if (!this._enableDatabase) {
+      this._loadRemoteResourceHoge(path, callback, errorCallback, contentType);
+      return;
+    }
+
     var transaction = function(tr) {
       tr.executeSql('SELECT content, contentType from resource where path = ?', [path], function(transaction, result){
         var rows = result.rows;
@@ -124,6 +141,22 @@ Navy.Class.instance('Navy.WebInstaller', {
     };
 
     this._db.transaction(transaction, error);
+  },
+
+  _loadRemoteResourceHoge: function(path, callback, errorCallback, contentType) {
+    var resource = {
+      path: path,
+      contentType: contentType || this._getContentType(path)
+    };
+
+    var loader = new Navy.WebInstaller.Loader();
+    loader.onload = function(loader, resource, responseText) {
+      callback && callback(resource.path, responseText, resource.contentType);
+    };
+    loader.onerror = function(loader, resource) {
+      errorCallback && errorCallback(resource.path);
+    };
+    loader.load(resource);
   },
 
   _initDB: function() {

@@ -10,11 +10,13 @@ window.addEventListener('DOMContentLoaded', function(){
     forceUpdate: true,
     onProgress: function(progress, total) {
       var progressElement = document.querySelector('#web_installer_inner_progress');
-      progressElement.style.width = (100 * progress / total) + '%';
+      if (progressElement) {
+        progressElement.style.width = (100 * progress / total) + '%';
+      }
     },
     onComplete: function() {
       var progressElement = document.querySelector('#web_installer_progress');
-      progressElement.parentElement.removeChild(progressElement);
+      progressElement && progressElement.parentElement.removeChild(progressElement);
       Navy.App.initialize();
     },
     onError: function(path) {
