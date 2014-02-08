@@ -1,0 +1,6 @@
+{
+  "resources": [
+    {"path": "/base/fixture/code/code.js", "md5": "md5 of code/code.js"},
+    {"path": "/base/fixture/layout/layout.json", "md5": "md5 of layout/layout.json"}
+  ]
+}

@@ -16,7 +16,9 @@ module.exports = function(config) {
     files: [
       '../build/navy.js',
       './env.js',
-      './**/*_spec.js'
+      './src/**/*_spec.js',
+      {pattern: './fixture/**/*.json', served: true, included: false},
+      {pattern: './fixture/**/*.js', served: true, included: false}
     ],
 
 
