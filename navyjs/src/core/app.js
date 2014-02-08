@@ -1,3 +1,6 @@
+/**
+ * @typedef {Object} Navy.App
+ */
 Navy.Class.instance('Navy.App', {
   _initRootBeforeCallback: null,
 
