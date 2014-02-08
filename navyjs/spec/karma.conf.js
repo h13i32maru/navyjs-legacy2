@@ -19,7 +19,8 @@ module.exports = function(config) {
       './src/**/*_spec.js',
       {pattern: './fixture/**/*.json', served: true, included: false},
       {pattern: './fixture/**/*.js', served: true, included: false},
-      {pattern: './fixture/**/*.png', served: true, included: false}
+      {pattern: './fixture/**/*.png', served: true, included: false},
+      {pattern: './fixture/**/*.css', served: true, included: false}
     ],
 
 

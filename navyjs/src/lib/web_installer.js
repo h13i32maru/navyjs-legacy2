@@ -10,7 +10,7 @@ Navy.Class.instance('Navy.WebInstaller', {
       '.png': 'image/png',
       '.jpg': 'image/jpg',
       '.jpeg': 'image/jpg',
-      '.gif': 'image/gif'
+      '.gif': 'image/gif',
     }
   },
 
@@ -98,7 +98,7 @@ Navy.Class.instance('Navy.WebInstaller', {
 
   loadCSS: function(path, styleElement, callback) {
     this._loadResource(path, function(path, content, contentType){
-      if (contentType !== 'text/css') {
+      if (contentType !== 'text/stylesheet') {
         throw new Error('the path is not css. path = ' + path);
       }
 

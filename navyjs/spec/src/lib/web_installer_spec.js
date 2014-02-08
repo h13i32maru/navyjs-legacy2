@@ -12,7 +12,7 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
         totalUpdatingCount = total;
       },
       onComplete: function() {
-        expect(updatingCount).toBe(4);
+        expect(updatingCount).toBe(5);
         expect(updatingCount).toBe(totalUpdatingCount);
         done();
       },
@@ -70,4 +70,12 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
       done();
     });
   });
+
+  it('can load css.', function(done){
+    var styleElement = document.createElement('style');
+    Navy.WebInstaller.loadCSS('/base/fixture/css/style1.css', styleElement, function(styleElement){
+      expect(styleElement.textContent).toBe('/* dummy style1 */\n');
+      done();
+    })
+  })
 });
