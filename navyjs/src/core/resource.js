@@ -21,11 +21,11 @@ Navy.Class.instance('Navy.Resource', {
 
   getClass: function(className) {
     var chain = className.split('.');
-    var _class = window;
+    var clazz = window;
     for (var i = 0; i < chain.length; i++) {
-      _class = _class[chain[i]];
+      clazz = clazz[chain[i]];
     }
 
-    return _class;
+    return clazz;
   }
 });
