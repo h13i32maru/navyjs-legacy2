@@ -28,7 +28,6 @@ Navy.Class.instance('Navy.WebInstaller', {
   _callbackOnProgress: null,
   _callbackOnComplete: null,
   _callbackOnError: null,
-  _forceUpdate: false,
 
   // DBを使うか使わないかで中身が変更されるメソッド.
   _loadResource: null,
@@ -55,7 +54,7 @@ Navy.Class.instance('Navy.WebInstaller', {
     this._callbackOnProgress = options.onProgress || function(){};
     this._callbackOnComplete = options.onComplete || function(){};
     this._callbackOnError = options.onError || function(){};
-    this._forceUpdate = options.forceUpdate || false;
+    var forceUpdate = options.forceUpdate || false;
 
     if (!this._enableDatabase) {
       setTimeout(function(){
@@ -64,24 +63,11 @@ Navy.Class.instance('Navy.WebInstaller', {
       return;
     }
 
-    this._initDB();
-  },
-
-  deleteAll: function() {
-    var transaction = function(tr) {
-      tr.executeSql('DROP TABLE IF EXISTS resource');
-    };
-
-    var error = function(e) {
-      console.error(e);
-    };
-
-    var success = function() {
-      this._loadRemoteManifest();
-    }.bind(this);
-
-    var db = openDatabase('web_installer', "0.1", "WebInstaller", 5 * 1000 * 1000);
-    db.transaction(transaction, error, success);
+    if (forceUpdate) {
+      this._deleteAll(this._initDB.bind(this));
+    } else {
+      this._initDB();
+    }
   },
 
   loadJavaScript: function(path, scriptElement, callback) {
@@ -248,11 +234,6 @@ Navy.Class.instance('Navy.WebInstaller', {
     for (var remotePath in remoteResourceMap) {
       var remoteMD5 = remoteResourceMap[remotePath].md5;
 
-      if (this._forceUpdate) {
-        invalidResources.push({path: remotePath, md5: remoteMD5});
-        continue;
-      }
-
       if (!localResourceMap[remotePath]) {
         invalidResources.push({path: remotePath, md5: remoteMD5});
         continue;
@@ -330,6 +311,23 @@ Navy.Class.instance('Navy.WebInstaller', {
     }.bind(this);
 
     this._db.transaction(transaction, error, success);
+  },
+
+  _deleteAll: function(callback) {
+    var transaction = function(tr) {
+      tr.executeSql('DROP TABLE IF EXISTS resource');
+    };
+
+    var error = function(e) {
+      console.error(e);
+    };
+
+    var success = function() {
+      callback && callback();
+    }.bind(this);
+
+    var db = openDatabase('web_installer', "0.1", "WebInstaller", 5 * 1000 * 1000);
+    db.transaction(transaction, error, success);
   },
 
   _manifestToResourceMap: function(manifest) {
