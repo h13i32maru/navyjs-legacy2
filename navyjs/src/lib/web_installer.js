@@ -39,6 +39,10 @@ Navy.Class.instance('Navy.WebInstaller', {
     this.setEnableDatabase(true);
   },
 
+  setManifestURL: function(manifestURL) {
+    this._manifestUrl = manifestURL;
+  },
+
   setEnableDatabase: function(enable) {
     this._enableDatabase = enable;
 

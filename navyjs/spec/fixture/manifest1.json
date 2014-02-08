@@ -1,0 +1,8 @@
+{
+  "resources": [
+    {"path": "/base/fixture/code/code1.js", "md5": "md5 of code/code1.js"},
+    {"path": "/base/fixture/config/config1.json", "md5": "md5 of config/config1.json"},
+    {"path": "/base/fixture/image/image1.png", "md5": "md5 of image/image1.png"},
+    {"path": "/base/fixture/layout/layout1.json", "md5": "md5 of layout/layout1.json"}
+  ]
+}
