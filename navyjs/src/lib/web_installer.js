@@ -380,8 +380,12 @@ Navy.Class('Navy.WebInstaller.Loader', {
     }
 
     if ('responseText' in this._loaderElement) {
-      var responseText = this._loaderElement.responseText;
-      this.onload(this, this._resource, responseText);
+      if (this._loaderElement.status === 200) {
+        var responseText = this._loaderElement.responseText;
+        this.onload(this, this._resource, responseText);
+      } else {
+        this._onError();
+      }
     } else {
       this.onload(this, this._resource);
     }
