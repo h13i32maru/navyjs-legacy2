@@ -67,6 +67,23 @@ Navy.Class.instance('Navy.WebInstaller', {
     this._initDB();
   },
 
+  deleteAll: function() {
+    var transaction = function(tr) {
+      tr.executeSql('DROP TABLE IF EXISTS resource');
+    };
+
+    var error = function(e) {
+      console.error(e);
+    };
+
+    var success = function() {
+      this._loadRemoteManifest();
+    }.bind(this);
+
+    var db = openDatabase('web_installer', "0.1", "WebInstaller", 5 * 1000 * 1000);
+    db.transaction(transaction, error, success);
+  },
+
   loadJavaScript: function(path, scriptElement, callback) {
     this._loadResource(path, function(path, content, contentType){
       if (contentType !== 'text/javascript') {
