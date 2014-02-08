@@ -20,7 +20,7 @@ Navy.Class.instance('Navy.WebInstaller', {
   _localManifest: null,
   _invalidResources: null,
   _concurrency: 4,
-  _enableDatabase: true,
+  _enableDatabase: null,
 
   _totalInvalidCount: 0,
   _doneInvalidCount: 0,
@@ -30,13 +30,25 @@ Navy.Class.instance('Navy.WebInstaller', {
   _callbackOnError: null,
   _forceUpdate: false,
 
+  // DBを使うか使わないかで中身が変更されるメソッド.
+  _loadResource: null,
+
   initialize: function(manifestUrl) {
     this._localManifest = {baseUrl: '', resources: []};
     this._manifestUrl = manifestUrl;
+
+    this.setEnableDatabase(true);
   },
 
   setEnableDatabase: function(enable) {
     this._enableDatabase = enable;
+
+    // DBを使う場合はローカルから、使わない場合はリモートからリソースを取得する.
+    if (enable) {
+      this._loadResource = this._loadLocalResource;
+    } else {
+      this._loadResource = this._loadRemoteResource;
+    }
   },
 
   update: function(options) {
@@ -56,7 +68,7 @@ Navy.Class.instance('Navy.WebInstaller', {
   },
 
   loadJavaScript: function(path, scriptElement, callback) {
-    this._loadLocalResource(path, function(path, content, contentType){
+    this._loadResource(path, function(path, content, contentType){
       if (contentType !== 'text/javascript') {
         throw new Error('the path is not javascript. path = ' + path);
       }
@@ -67,7 +79,7 @@ Navy.Class.instance('Navy.WebInstaller', {
   },
 
   loadJSON: function(path, callback) {
-    this._loadLocalResource(path, function(path, content, contentType){
+    this._loadResource(path, function(path, content, contentType){
       if (contentType !== 'text/json') {
         throw new Error('the path is not json. path = ' + path);
       }
@@ -78,7 +90,7 @@ Navy.Class.instance('Navy.WebInstaller', {
   },
 
   loadCSS: function(path, styleElement, callback) {
-    this._loadLocalResource(path, function(path, content, contentType){
+    this._loadResource(path, function(path, content, contentType){
       if (contentType !== 'text/css') {
         throw new Error('the path is not css. path = ' + path);
       }
@@ -99,7 +111,7 @@ Navy.Class.instance('Navy.WebInstaller', {
       throw new Error('fail loading image. path = ' + path);
     });
 
-    this._loadLocalResource(path, function(path, content, contentType){
+    this._loadResource(path, function(path, content, contentType){
       if (contentType.indexOf('image/') !== 0) {
         throw new Error('the path is not image. path = ' + path);
       }
@@ -111,11 +123,6 @@ Navy.Class.instance('Navy.WebInstaller', {
   },
 
   _loadLocalResource: function(path, callback, errorCallback, contentType) {
-    if (!this._enableDatabase) {
-      this._loadRemoteResource(path, callback, errorCallback, contentType);
-      return;
-    }
-
     var transaction = function(tr) {
       tr.executeSql('SELECT content, contentType from resource where path = ?', [path], function(transaction, result){
         var rows = result.rows;

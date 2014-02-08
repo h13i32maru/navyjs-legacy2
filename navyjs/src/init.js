@@ -5,7 +5,12 @@ window.addEventListener('DOMContentLoaded', function(){
     return;
   }
 
+  var hash = Navy.Lib.URL.parseHash(location.href);
+
   Navy.WebInstaller.initialize('./manifest.json');
+  if (hash['web_installer_db'] === 'false') {
+    Navy.WebInstaller.setEnableDatabase(false);
+  }
   Navy.WebInstaller.update({
     forceUpdate: true,
     onProgress: function(progress, total) {
