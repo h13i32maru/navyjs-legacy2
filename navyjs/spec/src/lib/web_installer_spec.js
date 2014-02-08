@@ -77,5 +77,15 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
       expect(styleElement.textContent).toBe('/* dummy style1 */\n');
       done();
     })
+  });
+
+  it('can load remote resource.', function(done){
+    Navy.WebInstaller.setEnableDatabase(false);
+    expect(Navy.WebInstaller._loadResource).toBe(Navy.WebInstaller._loadRemoteResource);
+    Navy.WebInstaller.loadJSON('/base/fixture/config/config1.json', function(obj){
+      expect(obj).toEqual({prop1: 'dummy config1'});
+      Navy.WebInstaller.setEnableDatabase(true);
+      done();
+    });
   })
 });
