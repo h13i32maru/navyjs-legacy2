@@ -10,7 +10,7 @@ Navy.Class.instance('Navy.WebInstaller', {
       '.png': 'image/png',
       '.jpg': 'image/jpg',
       '.jpeg': 'image/jpg',
-      '.gif': 'image/gif',
+      '.gif': 'image/gif'
     }
   },
 
