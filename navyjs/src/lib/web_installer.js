@@ -112,7 +112,7 @@ Navy.Class.instance('Navy.WebInstaller', {
 
   _loadLocalResource: function(path, callback, errorCallback, contentType) {
     if (!this._enableDatabase) {
-      this._loadRemoteResourceHoge(path, callback, errorCallback, contentType);
+      this._loadRemoteResource(path, callback, errorCallback, contentType);
       return;
     }
 
@@ -143,7 +143,7 @@ Navy.Class.instance('Navy.WebInstaller', {
     this._db.transaction(transaction, error);
   },
 
-  _loadRemoteResourceHoge: function(path, callback, errorCallback, contentType) {
+  _loadRemoteResource: function(path, callback, errorCallback, contentType) {
     var resource = {
       path: path,
       contentType: contentType || this._getContentType(path)
@@ -244,10 +244,10 @@ Navy.Class.instance('Navy.WebInstaller', {
     this._totalInvalidCount = invalidResources.length;
     this._doneInvalidCount = 0;
 
-    this._startLoadingRemoteResources();
+    this._startLoadingRemoteResourcesToLocal();
   },
 
-  _startLoadingRemoteResources: function() {
+  _startLoadingRemoteResourcesToLocal: function() {
     if (this._totalInvalidCount === 0) {
       this._callbackOnComplete();
       return
@@ -255,13 +255,13 @@ Navy.Class.instance('Navy.WebInstaller', {
 
     for (var i = 0; i < this._concurrency; i++) {
       var loader = new Navy.WebInstaller.Loader();
-      loader.onload = this._onLoadRemoteResource.bind(this);
-      loader.onerror = this._onLoadRemoteResourceError.bind(this);
-      this._loadRemoteResource(loader);
+      loader.onload = this._onLoadRemoteResourceToLocal.bind(this);
+      loader.onerror = this._onLoadRemoteResourceErrorToLocal.bind(this);
+      this._loadRemoteResourceToLocal(loader);
     }
   },
 
-  _loadRemoteResource: function(loader) {
+  _loadRemoteResourceToLocal: function(loader) {
     if (this._invalidResources.length === 0) {
       if (this._doneInvalidCount === this._totalInvalidCount) {
         this._callbackOnComplete();
@@ -276,11 +276,11 @@ Navy.Class.instance('Navy.WebInstaller', {
     loader.load(resource);
   },
 
-  _onLoadRemoteResource: function(loader, resource, responseText) {
+  _onLoadRemoteResourceToLocal: function(loader, resource, responseText) {
     this._saveRemoteResource(loader, resource, responseText);
   },
 
-  _onLoadRemoteResourceError: function(loader, resource) {
+  _onLoadRemoteResourceErrorToLocal: function(loader, resource) {
     console.error(resource);
     this._callbackOnError(resource.path);
   },
@@ -302,7 +302,7 @@ Navy.Class.instance('Navy.WebInstaller', {
     var success = function() {
       this._doneInvalidCount++;
       this._callbackOnProgress(this._doneInvalidCount, this._totalInvalidCount);
-      this._loadRemoteResource(loader);
+      this._loadRemoteResourceToLocal(loader);
     }.bind(this);
 
     this._db.transaction(transaction, error, success);
