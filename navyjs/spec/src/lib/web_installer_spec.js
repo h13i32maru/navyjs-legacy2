@@ -161,5 +161,16 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
       var imageElement = new Image();
       Navy.WebInstaller.loadImage('/not_exists_image.png', imageElement, function(){});
     });
+
+    it('throws not found path exception.', function(done){
+      window.onerror = function(errorMsg){
+        window.onerror = null;
+        expect(errorMsg).toContain('not found the path in DB');
+        expect(errorMsg).toContain('not_exists_json.json');
+        done();
+      };
+
+      Navy.WebInstaller.loadJSON('/not_exists_json.json', function(){});
+    });
   });
 });
