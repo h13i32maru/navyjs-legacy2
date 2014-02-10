@@ -48,7 +48,7 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
 
   it('do not update when not changed manifest', function(done){
     var options = {
-      onProgress: function(count, total) {
+      onProgress: function() {
         throw new Error('onProgress should not be called.');
       },
       onComplete: function() {
@@ -208,6 +208,19 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
 
       Navy.WebInstaller.setEnableDatabase(false);
       Navy.WebInstaller.loadJSON('/not_exists_json.json', function(){});
+      Navy.WebInstaller.setEnableDatabase(true);
+    });
+
+    it('throws unknown file extension exception.', function(){
+      var exception = null;
+      try {
+        Navy.WebInstaller._getContentType('foo.invalid');
+      } catch(e) {
+        exception = e;
+      }
+
+      expect(exception.message).toContain('unknown file extension');
+      expect(exception.message).toContain('.invalid');
     });
   });
 });
