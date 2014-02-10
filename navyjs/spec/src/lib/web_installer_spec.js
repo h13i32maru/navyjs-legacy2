@@ -46,6 +46,19 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
     Navy.WebInstaller.update(options);
   });
 
+  it('do not update when not changed manifest', function(done){
+    var options = {
+      onProgress: function(count, total) {
+        throw new Error('onProgress should not be called.');
+      },
+      onComplete: function() {
+        expect(true).toBeTruthy();
+        done();
+      }
+    };
+    Navy.WebInstaller.update(options);
+  });
+
   it('can load javascript.', function(done){
     var scriptElement = document.createElement('script');
     Navy.WebInstaller.loadJavaScript('/base/fixture/code/code1.js', scriptElement, function(scriptElement){
