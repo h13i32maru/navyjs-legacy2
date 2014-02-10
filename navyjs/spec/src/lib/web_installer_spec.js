@@ -149,5 +149,17 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
       var imageElement = new Image();
       Navy.WebInstaller.loadImage('/base/fixture/code/code1.js', imageElement, function(){});
     });
+
+    it('throws not exists image.', function(done){
+      window.onerror = function(errorMsg){
+        window.onerror = null;
+        expect(errorMsg).toContain('fail loading image');
+        expect(errorMsg).toContain('not_exists_image.png');
+        done();
+      };
+
+      var imageElement = new Image();
+      Navy.WebInstaller.loadImage('/not_exists_image.png', imageElement, function(){});
+    });
   });
 });
