@@ -59,6 +59,18 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
     Navy.WebInstaller.update(options);
   });
 
+  it('call onError when remote file is not exists.', function(done){
+    Navy.WebInstaller.setManifestURL('/base/fixture/manifest3_error.json');
+
+    var options = {
+      onError: function(path) {
+        expect(path).toBe('/not_exists.js');
+        done();
+      }
+    };
+    Navy.WebInstaller.update(options);
+  });
+
   it('can load javascript.', function(done){
     var scriptElement = document.createElement('script');
     Navy.WebInstaller.loadJavaScript('/base/fixture/code/code1.js', scriptElement, function(scriptElement){
