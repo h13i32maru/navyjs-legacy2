@@ -1,3 +1,5 @@
+window.Navy = window.Navy || {};
+
 Navy.UnitTest = true;
 
 // PhantomJSにはbindが存在しない.
