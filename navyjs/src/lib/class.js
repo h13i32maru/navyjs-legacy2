@@ -22,6 +22,10 @@ Navy.Class = function(var_args){
     throw new Error('arguments of Navy.Class is 2 or 3.');
   }
 
+  if (Navy.Class._getByReflection(className)) {
+    throw new Error('already defined this className. ' + className);
+  }
+
   var _class = Navy.Class._create(className, superClass, protoObj);
   Navy.Class._setByReflection(className, _class);
   return _class;
@@ -48,6 +52,9 @@ Navy.Class._getByReflection = function _getByReflection(propertyName) {
 
   var obj = window;
   for (var i = 0; i < names.length; i++) {
+    if (!obj) {
+      return null;
+    }
     obj = obj[names[i]];
   }
 

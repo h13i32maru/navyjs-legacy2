@@ -162,6 +162,19 @@ describe('Navy.Class exception', function() {
 
     expect(exception).not.toBeNull();
   });
+
+  it('throws already defined exception.', function(){
+    var exception = null;
+
+    Navy.Class('ClassA5', {});
+    try {
+      Navy.Class('ClassA5', {});
+    } catch(e) {
+      exception = e;
+    }
+
+    expect(exception).not.toBeNull();
+  });
 });
 
 describe('Navy.Class extend', function() {
