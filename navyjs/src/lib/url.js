@@ -12,7 +12,7 @@ Navy.Class.instance('Navy.URL', {
 
     var hashes = matched[1].split('&');
     for (var i = 0; i < hashes.length; i++) {
-      var hash = hashes[0];
+      var hash = hashes[i];
       var key = hash.split('=')[0];
       var value = hash.split('=')[1];
       result[key] = value;

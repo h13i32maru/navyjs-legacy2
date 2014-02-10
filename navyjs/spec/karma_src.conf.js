@@ -18,6 +18,7 @@ module.exports = function(config) {
       '../src/lib/class.js',
       '../src/lib/notify.js',
       '../src/lib/web_installer.js',
+      '../src/lib/url.js',
       './src/**/*_spec.js',
       {pattern: './fixture/**/*.json', served: true, included: false},
       {pattern: './fixture/**/*.js', served: true, included: false},
