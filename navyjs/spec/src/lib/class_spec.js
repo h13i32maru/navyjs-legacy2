@@ -238,3 +238,32 @@ describe('Navy.Class extend static', function() {
     expect(ClassBBB.say()).toBe('ClassA:ClassB');
   });
 });
+
+describe('Navy.Class.instance create singleton instance:', function(){
+  /**
+   * @typedef {Object} Instance1
+   */
+  Navy.Class.instance('Instance1', {
+    getName: function() {
+      return 'Instance1';
+    }
+  });
+
+  /**
+   * @class Class4
+   */
+  Navy.Class('Class4', Instance1, {
+    getName: function($super) {
+      return $super() + ':Class4';
+    }
+  });
+
+  it('can be used like singleton.', function(){
+    expect(Instance1.getName()).toBe('Instance1');
+  });
+
+  it('can extend singleton instance', function(){
+    var obj = new Class4();
+    expect(obj.getName()).toBe('Instance1:Class4');
+  });
+});
