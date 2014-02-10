@@ -151,6 +151,17 @@ describe('Navy.Class exception', function() {
 
     expect(true).toBeFalsy();
   });
+
+  it('throws not function exception.', function(){
+    var exception = null;
+    try {
+      Navy.Class._wrapFunction({doSomething: 'not function'}, 'doSomething', function(){});
+    } catch(e) {
+      exception = e;
+    }
+
+    expect(exception).not.toBeNull();
+  });
 });
 
 describe('Navy.Class extend', function() {
