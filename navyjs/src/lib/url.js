@@ -1,7 +1,7 @@
 /**
- * @typedef {Object} Navy.Lib.URL
+ * @typedef {Object} Navy.URL
  */
-Navy.Class.instance('Navy.Lib.URL', {
+Navy.Class.instance('Navy.URL', {
   parseHash: function(url) {
     var result = {};
 
