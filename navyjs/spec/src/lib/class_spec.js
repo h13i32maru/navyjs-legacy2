@@ -175,6 +175,20 @@ describe('Navy.Class exception', function() {
 
     expect(exception).not.toBeNull();
   });
+
+  it('throws object property exception.', function(){
+    var exception = null;
+
+    try {
+      Navy.Class('InvalidClassA6', {
+        prop: {}
+      });
+    } catch(e) {
+      exception = e;
+    }
+
+    expect(exception).not.toBeNull();
+  });
 });
 
 describe('Navy.Class extend', function() {
