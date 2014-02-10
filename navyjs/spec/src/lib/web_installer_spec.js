@@ -1,5 +1,8 @@
 describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
 
+  /**
+   * 正常系のテスト
+   */
   it('updates local resources by using manifest.', function(done){
     Navy.WebInstaller.initialize('/base/fixture/manifest1.json');
 
@@ -129,6 +132,9 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
     });
   });
 
+  /**
+   * 異常系のテスト
+   */
   describe('exceptions', function(){
     it('throws not javascript exception.', function(done){
       window.onerror = function(errorMsg){
@@ -224,6 +230,9 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
     });
   });
 
+  /**
+   * 内部クラスのテスト
+   */
   describe('Navy.WebInstaller.Loader exception:', function(){
     var loader = new Navy.WebInstaller.Loader();
 
