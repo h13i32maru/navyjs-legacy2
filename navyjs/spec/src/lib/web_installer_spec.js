@@ -79,9 +79,24 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
     })
   });
 
+  it('can be updated if disabled database.', function(done){
+    Navy.WebInstaller.setEnableDatabase(false);
+
+    Navy.WebInstaller.update({
+      onProgress: function(){
+        throw new Error('onProgress should not be called');
+      },
+      onComplete: function(){
+        expect(true).toBeTruthy();
+        done();
+      }
+    });
+  });
+
   it('can load remote resource.', function(done){
     Navy.WebInstaller.setEnableDatabase(false);
     expect(Navy.WebInstaller._loadResource).toBe(Navy.WebInstaller._loadRemoteResource);
+
     Navy.WebInstaller.loadJSON('/base/fixture/config/config1.json', function(obj){
       expect(obj).toEqual({prop1: 'dummy config1'});
       Navy.WebInstaller.setEnableDatabase(true);
