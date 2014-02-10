@@ -168,7 +168,11 @@ Navy.Class.instance('Navy.WebInstaller', {
       callback && callback(resource.path, responseText, resource.contentType);
     };
     loader.onerror = function(loader, resource) {
-      errorCallback && errorCallback(resource.path);
+      if (errorCallback) {
+        errorCallback(resource.path);
+      } else {
+        throw new Error('not found the path in remote. path = ' + path);
+      }
     };
     loader.load(resource);
   },
