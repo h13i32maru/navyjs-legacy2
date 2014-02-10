@@ -223,7 +223,6 @@ Navy.Class.instance('Navy.WebInstaller', {
     }.bind(this);
 
     var error = function(e) {
-      this._pickInvalidResources();
       console.error(e);
     };
 
