@@ -223,4 +223,36 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
       expect(exception.message).toContain('.invalid');
     });
   });
+
+  describe('Navy.WebInstaller.Loader exception:', function(){
+    var loader = new Navy.WebInstaller.Loader();
+
+    it('throws unknown content type exception.', function(){
+      var exception = null;
+      try {
+        loader.load({contentType: 'invalid/*'});
+      } catch(e) {
+        exception = e;
+      }
+
+      expect(exception.message).toContain('unknown content type');
+      expect(exception.message).toContain('invalid/*');
+    });
+
+    it('does not throw exception when onload/onerror is null.', function(){
+      loader.onload = null;
+      loader.onerror = null;
+
+      var exception = null;
+      try {
+        loader._onLoad();
+        loader._onError();
+      } catch(e) {
+        exception = e;
+      }
+
+      expect(exception).toBeNull();
+    });
+
+  });
 });
