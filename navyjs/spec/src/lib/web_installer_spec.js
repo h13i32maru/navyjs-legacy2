@@ -102,5 +102,52 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
       Navy.WebInstaller.setEnableDatabase(true);
       done();
     });
-  })
+  });
+
+  describe('exceptions', function(){
+    it('throws not javascript exception.', function(done){
+      window.onerror = function(errorMsg){
+        window.onerror = null;
+        expect(errorMsg).toContain('the path is not javascript');
+        expect(errorMsg).toContain('config1.json');
+        done();
+      };
+      var scriptElement = document.createElement('script');
+      Navy.WebInstaller.loadJavaScript('/base/fixture/config/config1.json', scriptElement, function(scriptElement){});
+    });
+
+    it('throws not json exception.', function(done){
+      window.onerror = function(errorMsg){
+        window.onerror = null;
+        expect(errorMsg).toContain('the path is not json');
+        expect(errorMsg).toContain('code1.js');
+        done();
+      };
+      Navy.WebInstaller.loadJSON('/base/fixture/code/code1.js', function(obj){});
+    });
+
+    it('throws not css exception.', function(done){
+      window.onerror = function(errorMsg){
+        window.onerror = null;
+        expect(errorMsg).toContain('the path is not css');
+        expect(errorMsg).toContain('code1.js');
+        done();
+      };
+
+      var styleElement = document.createElement('style');
+      Navy.WebInstaller.loadCSS('/base/fixture/code/code1.js', styleElement, function(styleElement){});
+    });
+
+    it('throws not image exception.', function(done){
+      window.onerror = function(errorMsg){
+        window.onerror = null;
+        expect(errorMsg).toContain('the path is not image');
+        expect(errorMsg).toContain('code1.js');
+        done();
+      };
+
+      var imageElement = new Image();
+      Navy.WebInstaller.loadImage('/base/fixture/code/code1.js', imageElement, function(){});
+    });
+  });
 });
