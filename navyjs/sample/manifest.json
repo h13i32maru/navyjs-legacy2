@@ -59,7 +59,7 @@
     },
     {
       "path": "layout/page1.json",
-      "md5": "e0ad35d46dcbf2f25b44ef5cc616bd68"
+      "md5": "551fd48684add8c9b59192a68df1cffb"
     },
     {
       "path": "layout/page2.json",
@@ -74,12 +74,24 @@
       "md5": "550b4944b9a4025fef4553548ea6856b"
     },
     {
+      "path": "layout/tab1.json",
+      "md5": "d9c74c4320850d79ce7ec95108bbf0a4"
+    },
+    {
+      "path": "layout/tab2.json",
+      "md5": "21f8ec10c6b99d05bbc55dd37742f040"
+    },
+    {
+      "path": "layout/tab3.json",
+      "md5": "08a80017648f512313b639a19b052986"
+    },
+    {
       "path": "navy/navy.js",
-      "md5": "9d24c3a65782fb30abd80f8906c7cbfa"
+      "md5": "07dd44ffbb745a843e82b4aa9aaa8f64"
     },
     {
       "path": "navy/navy.min.js",
-      "md5": "125cef2aa7bd73cb1bbf55b5cef5fd2d"
+      "md5": "4a11a149678c61cfe9a7edabc813f2cb"
     }
   ]
 }

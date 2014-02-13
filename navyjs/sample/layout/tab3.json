@@ -1,0 +1,32 @@
+{
+  "layouts": [
+    {
+      "id": "list_view",
+      "class": "Navy.ViewGroup.ListView",
+      "visible": true,
+      "pos": {"x": 0, "y": 0},
+      "sizePolicy": {"width": "fixed", "height": "fixed"},
+      "size": {"width": 640, "height": 500},
+      "extra": {
+        "itemLayoutFile": "layout/group1.json",
+        "itemLayoutMargin": 10
+      }
+    },
+    {
+      "id": "text_edit",
+      "class": "Navy.View.TextEdit",
+      "visible": true,
+      "pos": {"x": 0, "y": 500},
+      "sizePolicy": {"width": "fixed", "height": "fixed"},
+      "size": {"width": 300, "height": 50},
+      "border": "solid 1px #ffff00",
+      "extra": {
+        "text": "",
+        "fontSize": 20,
+        "fontColor": "#000000",
+        "placeholder": "user name",
+        "textType": "password"
+      }
+    }
+  ]
+}

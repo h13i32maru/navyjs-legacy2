@@ -5,7 +5,7 @@
       "class": "Navy.View.View",
       "visible": true,
       "sizePolicy": {"width": "fixed", "height": "fixed"},
-      "size": {"width": 600, "height": 168},
+      "size": {"width": 640, "height": 168},
       "pos": {"x": 0, "y": 0},
       "backgroundColor": "#aaaaaa"
     },

@@ -1,0 +1,16 @@
+{
+  "layouts": [
+    {
+      "id": "list_view",
+      "class": "Navy.ViewGroup.ListView",
+      "visible": true,
+      "pos": {"x": 0, "y": 0},
+      "sizePolicy": {"width": "fixed", "height": "fixed"},
+      "size": {"width": 640, "height": 500},
+      "extra": {
+        "itemLayoutFile": "layout/group1.json",
+        "itemLayoutMargin": 10
+      }
+    }
+  ]
+}
