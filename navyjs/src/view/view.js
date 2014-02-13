@@ -14,7 +14,7 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
   _element: null,
   _parentView: null,
 
-  _linkGesture: null,
+  _tapGesture: null,
 
   /**
    *
@@ -84,7 +84,8 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
     this._element = document.createElement('div');
     this._element.style.visibility = 'hidden';
 
-    this._linkGesture = new Navy.Gesture.Tap(this._element, this._onLink.bind(this));
+    this._tapGesture = new Navy.Gesture.Tap(this._element, this._onTap.bind(this));
+    this._tapGesture.start();
   },
 
   _applyLayout: function(layout, callback) {
@@ -188,25 +189,34 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
     this._element.style.cssText += cssText;
   },
 
-  _onLink: function(/* domEvent */) {
+  _onTap: function(/* domEvent */) {
+    this.trigger('Tap', null, null, this._onTapDefault.bind(this));
+  },
+
+  _onTapDefault: function(/* ev */) {
+    if (!this._layout.link || !this._layout.link.id) {
+      return;
+    }
+
     var linkId = this._layout.link.id;
+    this.trigger('Link', {linkId: linkId}, null, this._onLinkDefault.bind(this));
+  },
 
-    var defaultCallback = function(ev) {
-      var tmp = linkId.split('/');
-      var type = tmp[0];
-      var id = tmp[1];
+  _onLinkDefault: function(ev) {
+    var linkId = ev.data.linkId;
 
-      switch (type) {
-      case 'page':
-        this.getScene().linkPage(id, ev.data);
-        break;
-      case 'scene':
-        Navy.Root.linkScene(id, ev.data);
-        break;
-      }
-    }.bind(this);
+    var tmp = linkId.split('/');
+    var type = tmp[0];
+    var id = tmp[1];
 
-    this.trigger('Link', {linkId: linkId}, null, defaultCallback);
+    switch (type) {
+    case 'page':
+      this.getScene().linkPage(id, ev.data);
+      break;
+    case 'scene':
+      Navy.Root.linkScene(id, ev.data);
+      break;
+    }
   },
 
   addRawEventListener: function(eventName, callback) {
@@ -493,12 +503,6 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
 
   setLink: function(link) {
     this._layout.link = link;
-
-    if (link) {
-      this._linkGesture.start();
-    } else {
-      this._linkGesture.stop();
-    }
   },
 
   getLink: function() {
