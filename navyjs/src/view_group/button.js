@@ -17,30 +17,7 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
   },
 
   _loadExtraResource: function($super, layout, callback) {
-    function cb() {
-      $super(layout, callback);
-    }
-
-    var notify = new Navy.Notify(3, cb);
-    var pass = notify.pass.bind(notify);
-
-    if (layout.extra.normal.src) {
-      Navy.Resource.loadImage(null, layout.extra.normal.src, pass);
-    } else {
-      pass();
-    }
-
-    if (layout.extra.active.src) {
-      Navy.Resource.loadImage(null, layout.extra.active.src, pass);
-    } else {
-      pass();
-    }
-
-    if (layout.extra.disabled.src) {
-      Navy.Resource.loadImage(null, layout.extra.disabled.src, pass);
-    } else {
-      pass();
-    }
+    $super(layout, callback);
   },
 
   _applyExtraLayout: function($super, layout, callback) {
