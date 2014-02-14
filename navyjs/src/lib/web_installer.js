@@ -402,7 +402,9 @@ Navy.Class('Navy.WebInstaller.Loader', {
     }
 
     if ('responseText' in this._loaderElement) {
-      if (this._loaderElement.status === 200) {
+      // Creatorの場合、ローカルのfileを読み込んだ時はstatusに0が設定されるのでその場合は200として考える.
+      var status = this._loaderElement.status || 200;
+      if (status === 200) {
         var responseText = this._loaderElement.responseText;
         this.onload(this, this._resource, responseText);
       } else {
