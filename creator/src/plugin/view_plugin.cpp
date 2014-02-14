@@ -181,6 +181,11 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
                 viewJson.set(key, widgetDefine.getStr(index + ".value"));
                 QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
                 widget = b;
+            } else if (type == "array") {
+                QLineEdit *l = new QLineEdit();
+//                viewJson.set(key, widgetDefine.getStr(index + ".value"));
+                QObject::connect(l, SIGNAL(textChanged(QString)), receiver, slot);
+                widget = l;
             }
 
             if (widget != NULL) {

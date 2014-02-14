@@ -1,0 +1,45 @@
+{
+  "class": "Navy.ViewGroup.Tab",
+  "define": [
+    {
+      "label": "",
+      "key": "",
+      "type": "",
+      "value": ""
+    },
+    {
+      "label": "fontColor",
+      "key": "extra.label.fontColor",
+      "type": "string",
+      "value": "#000000"
+    },
+    {
+      "label": "normal(src)",
+      "key": "extra.label.normal.src",
+      "type": "imageList",
+      "value": ""
+    },
+    {
+      "label": "active(src)",
+      "key": "extra.label.active.src",
+      "type": "imageList",
+      "value": ""
+    },
+    {
+      "label": "disabled(src)",
+      "key": "extra.label.disabled.src",
+      "type": "imageList",
+      "value": ""
+    },
+    {
+      "label": "contents",
+      "key": "extra.contents",
+      "type": "array",
+      "columns": [
+        {"label": "label", "key": "label", "type": "string"},
+        {"label": "id", "key": "id", "type": "string"},
+        {"label": "layoutFile", "key": "layoutFile", "type": "layoutList"}
+      ]
+    }
+  ]
+}

@@ -311,6 +311,7 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
 
         // always show
         mPropMap["Navy.View.View"]->show();
+        mPropMap["Navy.ViewGroup.Tab"]->show();
 
         // sync
         NJson view = views.getObject("0");
