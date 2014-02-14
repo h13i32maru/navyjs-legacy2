@@ -12,9 +12,12 @@
 #include <QLayout>
 #include <QHeaderView>
 #include <QPushButton>
+#include <QDebug>
 
 #include <extend/n_combo_box.h>
 #include <extend/n_text_list_selector.h>
+
+#include <window/n_layout_json_table.h>
 
 ViewPlugin* ViewPlugin::mInstance = NULL;
 
@@ -182,10 +185,14 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
                 QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
                 widget = b;
             } else if (type == "array") {
-                QLineEdit *l = new QLineEdit();
-//                viewJson.set(key, widgetDefine.getStr(index + ".value"));
-                QObject::connect(l, SIGNAL(textChanged(QString)), receiver, slot);
-                widget = l;
+                QPushButton *b = new QPushButton(QObject::tr("Edit"));
+                QObject::connect(b, &QPushButton::clicked, [](){
+                    NLayoutJSONTable t(NULL);
+                    t.exec();
+                    qDebug() << "push!!!";
+                });
+//                QObject::connect(b, SIGNAL(clicked()), receiver, slot);
+                widget = b;
             }
 
             if (widget != NULL) {
