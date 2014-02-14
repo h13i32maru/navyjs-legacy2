@@ -29,6 +29,125 @@ ViewPlugin* ViewPlugin::instance() {
     return mInstance;
 }
 
+QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, QObject *receiver, const char* slot) {
+    NJson dummy;
+    return ViewPlugin::createWidget(widgetDefine, dummy, receiver, slot);
+}
+
+QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QObject *receiver, const char *slot) {
+    QWidget *widget = NULL;
+    const char *signal = NULL;
+
+    QString type = widgetDefine.getStr("type");
+    QString key = widgetDefine.getStr("key");
+
+    if (type == "string") {
+        QLineEdit *l = new QLineEdit();
+        viewJson.set(key, widgetDefine.getStr("value"));
+        widget = l;
+        signal = SIGNAL(textChanged(QString));
+    }
+
+    if (type == "number") {
+        QSpinBox *s = new QSpinBox();
+        s->setMinimum(0);
+        s->setMaximum(9999);
+        viewJson.set(key, widgetDefine.getInt("value"));
+        widget = s;
+        signal = SIGNAL(valueChanged(int));
+    }
+
+    if (type == "boolean") {
+        QCheckBox *c = new QCheckBox();
+        viewJson.set(key, widgetDefine.getBool("value"));
+        widget = c;
+        signal = SIGNAL(toggled(bool));
+    }
+
+    if (type == "stringList") {
+        QComboBox *c = new QComboBox();
+        NJson strings = widgetDefine.getObject("value");
+        viewJson.set(key, strings.getStr("0"));
+        for (int k = 0; k < strings.length(); k++) {
+            c->addItem(strings.getStr(QString::number(k)));
+        }
+        widget = c;
+        signal = SIGNAL(currentTextChanged(QString));
+    }
+
+    if (type == "numberList") {
+        QComboBox *c = new QComboBox();
+        NJson strings = widgetDefine.getObject("value");
+        viewJson.set(key, strings.getInt("0"));
+        for (int k = 0; k < strings.length(); k++) {
+            c->addItem(strings.getStr(QString::number(k)));
+        }
+        widget = c;
+        signal = SIGNAL(currentTextChanged(QString));
+    }
+
+    if (type == "pageList") {
+        NTextListSelector *b = new NTextListSelector(NTextListSelector::PAGE);
+        viewJson.set(key, widgetDefine.getStr("value"));
+        widget = b;
+        signal = SIGNAL(textChanged(QString));
+    }
+
+    if (type == "sceneList") {
+        NTextListSelector *b = new NTextListSelector(NTextListSelector::SCENE);
+        viewJson.set(key, widgetDefine.getStr("value"));
+        widget = b;
+        signal = SIGNAL(textChanged(QString));
+    }
+
+    if (type == "imageList") {
+        NTextListSelector *b = new NTextListSelector(NTextListSelector::IMAGE);
+        viewJson.set(key, widgetDefine.getStr("value"));
+        widget = b;
+        signal = SIGNAL(textChanged(QString));
+    }
+
+    if (type == "layoutList") {
+        NTextListSelector *b = new NTextListSelector(NTextListSelector::LAYOUT);
+        viewJson.set(key, widgetDefine.getStr("value"));
+        widget = b;
+        signal = SIGNAL(textChanged(QString));
+    }
+
+    if (type == "linkList") {
+        NTextListSelector *b = new NTextListSelector(NTextListSelector::LINK);
+        viewJson.set(key, widgetDefine.getStr("value"));
+        widget = b;
+        signal = SIGNAL(textChanged(QString));
+    }
+
+    if (type == "array") {
+        QPushButton *b = new QPushButton(QObject::tr("Edit"));
+        NJson columns = widgetDefine.getObject("columns");
+        QObject::connect(b, &QPushButton::clicked, [=](){
+            NLayoutJSONTable t(NULL);
+            for (int i = 0; i < columns.length(); i++) {
+                QString index = QString::number(i);
+                t.addColumn(columns.getObject(index));
+            }
+            t.exec();
+            qDebug() << "push!!!";
+        });
+//                QObject::connect(b, SIGNAL(clicked()), receiver, slot);
+        widget = b;
+        signal = NULL;
+    }
+
+    // ----
+    if (widget != NULL) {
+        widget->setObjectName(type + ":" + key);
+    }
+    if (receiver != NULL && slot != NULL && widget != NULL && signal != NULL) {
+        QObject::connect(widget, signal, receiver, slot);
+    }
+    return widget;
+}
+
 ViewPlugin::ViewPlugin() {
 }
 
@@ -122,81 +241,8 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
             QString label = widgetDefine.getStr(index + ".label");
             QString type = widgetDefine.getStr(index + ".type");
             QString key = widgetDefine.getStr(index + ".key");
-            QWidget *widget = NULL;
-
-            if (type == "string") {
-                QLineEdit *l = new QLineEdit();
-                viewJson.set(key, widgetDefine.getStr(index + ".value"));
-                QObject::connect(l, SIGNAL(textChanged(QString)), receiver, slot);
-                widget = l;
-            } else if (type == "number") {
-                QSpinBox *s = new QSpinBox();
-                s->setMinimum(0);
-                s->setMaximum(9999);
-                viewJson.set(key, widgetDefine.getInt(index + ".value"));
-                QObject::connect(s, SIGNAL(valueChanged(int)), receiver, slot);
-                widget = s;
-            } else if (type == "boolean") {
-                QCheckBox *c = new QCheckBox();
-                viewJson.set(key, widgetDefine.getBool(index + ".value"));
-                QObject::connect(c, SIGNAL(toggled(bool)), receiver, slot);
-                widget = c;
-            } else if (type == "stringList") {
-                QComboBox *c = new QComboBox();
-                NJson strings = widgetDefine.getObject(index + ".value");
-                viewJson.set(key, strings.getStr("0"));
-                for (int k = 0; k < strings.length(); k++) {
-                    c->addItem(strings.getStr(QString::number(k)));
-                }
-                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
-                widget = c;
-            } else if (type == "numberList") {
-                QComboBox *c = new QComboBox();
-                NJson strings = widgetDefine.getObject(index + ".value");
-                viewJson.set(key, strings.getInt("0"));
-                for (int k = 0; k < strings.length(); k++) {
-                    c->addItem(strings.getStr(QString::number(k)));
-                }
-                QObject::connect(c, SIGNAL(currentTextChanged(QString)), receiver, slot);
-                widget = c;
-            } else if (type == "pageList") {
-                NTextListSelector *b = new NTextListSelector(NTextListSelector::PAGE);
-                viewJson.set(key, widgetDefine.getStr(index + ".value"));
-                QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
-                widget = b;
-            } else if (type == "sceneList") {
-                NTextListSelector *b = new NTextListSelector(NTextListSelector::SCENE);
-                viewJson.set(key, widgetDefine.getStr(index + ".value"));
-                QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
-                widget = b;
-            } else if (type == "imageList") {
-                NTextListSelector *b = new NTextListSelector(NTextListSelector::IMAGE);
-                viewJson.set(key, widgetDefine.getStr(index + ".value"));
-                QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
-                widget = b;
-            } else if (type == "layoutList") {
-                NTextListSelector *b = new NTextListSelector(NTextListSelector::LAYOUT);
-                viewJson.set(key, widgetDefine.getStr(index + ".value"));
-                QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
-                widget = b;
-            } else if (type == "linkList") {
-                NTextListSelector *b = new NTextListSelector(NTextListSelector::LINK);
-                viewJson.set(key, widgetDefine.getStr(index + ".value"));
-                QObject::connect(b, SIGNAL(textChanged(QString)), receiver, slot);
-                widget = b;
-            } else if (type == "array") {
-                QPushButton *b = new QPushButton(QObject::tr("Edit"));
-                QObject::connect(b, &QPushButton::clicked, [](){
-                    NLayoutJSONTable t(NULL);
-                    t.exec();
-                    qDebug() << "push!!!";
-                });
-//                QObject::connect(b, SIGNAL(clicked()), receiver, slot);
-                widget = b;
-            }
-
+            QWidget *widget = ViewPlugin::createWidget(widgetDefine.getObject(index), viewJson, receiver, slot);
             if (widget != NULL) {
-                widget->setObjectName(type + ":" + key);
                 QStandardItem *propLabel = new QStandardItem(label);
                 propLabel->setEditable(false);
                 propLabel->setSelectable(false);

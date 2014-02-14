@@ -10,6 +10,8 @@ class ViewPlugin
 {
 public:
     static ViewPlugin* instance();
+    static QWidget* createWidget(const NJson &widgetDefine, QObject *receiver = NULL, const char* slot = NULL);
+    static QWidget* createWidget(const NJson &widgetDefine, NJson &viewJson, QObject *receiver = NULL, const char* slot = NULL);
 
 private:
     static ViewPlugin* mInstance;
