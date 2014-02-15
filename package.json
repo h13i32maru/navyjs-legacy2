@@ -1,15 +1,12 @@
 {
   "author" : "h13i32maru",
   "name" : "NavyJS",
-  "description" : "NavyJS Unit Test with BusterJS and Travis CI",
+  "description" : "NavyJS build and unit test.",
   "version" : "0.0.1",
   "devDependencies" : {
     "phantomjs" : "",
     "uglify-js": "",
     "karma": "",
     "karma-coverage": ""
-  },
-  "scripts": {
-    "install": "./navyjs/tools/install_jasmine2.sh"
   }
 }
