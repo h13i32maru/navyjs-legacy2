@@ -15,6 +15,7 @@
 #include <QDebug>
 
 #include <extend/n_combo_box.h>
+#include <extend/n_json_array_editor.h>
 #include <extend/n_text_list_selector.h>
 
 #include <window/n_layout_json_table.h>
@@ -122,20 +123,10 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
     }
 
     if (type == "array") {
-        QPushButton *b = new QPushButton(QObject::tr("Edit"));
-        NJson columns = widgetDefine.getObject("columns");
-        QObject::connect(b, &QPushButton::clicked, [=](){
-            NLayoutJSONTable t(NULL);
-            for (int i = 0; i < columns.length(); i++) {
-                QString index = QString::number(i);
-                t.addColumn(columns.getObject(index));
-            }
-            t.exec();
-            qDebug() << "push!!!";
-        });
-//                QObject::connect(b, SIGNAL(clicked()), receiver, slot);
-        widget = b;
-        signal = NULL;
+        NJsonArrayEditor *e = new NJsonArrayEditor(widgetDefine);
+        viewJson.set(key, widgetDefine.getObject("value"));
+        widget = e;
+        signal = SIGNAL(changedJsonArray());
     }
 
     // ----
@@ -146,6 +137,102 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         QObject::connect(widget, signal, receiver, slot);
     }
     return widget;
+}
+
+QString ViewPlugin::encodeValue(QWidget *widget) {
+    QString type = widget->objectName().split(":")[0];
+
+    if (type == "string") {
+        QLineEdit *l = (QLineEdit*) widget;
+        return l->text();
+    } else if (type == "number") {
+        QSpinBox *s = (QSpinBox*) widget;
+        return QString::number(s->value());
+    } else if (type == "boolean") {
+        QCheckBox *c = (QCheckBox*) widget;
+        return c->isChecked() ? "true": "false";
+    } else if (type == "stringList") {
+        QComboBox *c = (QComboBox*) widget;
+        return c->currentText();
+    } else if (type == "numberList") {
+        QComboBox *c = (QComboBox*) widget;
+        return c->currentText();
+    } else if (type == "pageList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        return b->text();
+    } else if (type == "sceneList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        return b->text();
+    } else if (type == "imageList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        return b->text();
+    } else if (type == "linkList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        return b->text();
+    } else if (type == "layoutList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        return b->text();
+    }
+}
+
+QString ViewPlugin::encodeValue(const NJson &jsonArray, const QString &type, const QString &key) {
+    if (type.contains("number")) {
+        return QString::number(jsonArray.getInt(key));
+    } else if (type.contains("boolean")) {
+        return jsonArray.getBool(key) ? "true": "false";
+    } else if (type.contains("array")) {
+        return jsonArray.getObject(key).stringify();
+    } else {
+        return jsonArray.getStr(key);
+    }
+}
+
+void ViewPlugin::decodeValue(QWidget *widget, const QString &value) {
+    QString type = widget->objectName().split(":")[0];
+
+    if (type == "string") {
+        QLineEdit *l = (QLineEdit*) widget;
+        l->setText(value);
+    } else if (type == "number") {
+        QSpinBox *s = (QSpinBox*) widget;
+        s->setValue(value.toInt());
+    } else if (type == "boolean") {
+        QCheckBox *c = (QCheckBox*) widget;
+        c->setChecked(value == "true");
+    } else if (type == "stringList") {
+        QComboBox *c = (QComboBox*) widget;
+        c->setCurrentText(value);
+    } else if (type == "numberList") {
+        QComboBox *c = (QComboBox*) widget;
+        c->setCurrentText(value);
+    } else if (type == "pageList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        b->setText(value);
+    } else if (type == "sceneList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        b->setText(value);
+    } else if (type == "imageList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        b->setText(value);
+    } else if (type == "linkList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        b->setText(value);
+    } else if (type == "layoutList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        b->setText(value);
+    }
+}
+
+void ViewPlugin::decodeValue(NJson &jsonArray, const QString &value, const QString &type, const QString &key) {
+    if (type.contains("number")) {
+        jsonArray.set(key, value.toInt());
+    } else if (type.contains("boolean")) {
+        jsonArray.set(key, value == "true");
+    } else if (type == "array"){
+        jsonArray.set(key, NJson(value));
+    } else {
+        jsonArray.set(key, value);
+    }
 }
 
 ViewPlugin::ViewPlugin() {
@@ -311,6 +398,9 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
         } else if (type == "layoutList") {
             NTextListSelector *b = (NTextListSelector*)widget;
             b->setText(view.getStr(key));
+        } else if (type == "array") {
+            NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
+            e->setJsonArray(view.getObject(key));
         }
 
         widget->blockSignals(false);
@@ -361,6 +451,9 @@ void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
         } else if (type == "layoutList") {
             NTextListSelector *b = (NTextListSelector*)widget;
             view.set(key, b->text());
+        } else if (type == "array") {
+            NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
+            view.set(key, e->getJsonArray());
         }
     }
 }

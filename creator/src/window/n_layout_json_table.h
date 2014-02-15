@@ -19,13 +19,16 @@ public:
     ~NLayoutJSONTable();
     void addColumn(NJson widgetDefine);
 
+    void setJsonArray(const NJson &jsonArray);
+    NJson getJsonArray() const;
+
 private:
     Ui::NLayoutJSONTable *ui;
     QModelIndex mCurrentShowIndex;
     QList<NJson> mWidgetDefines;
 
 private slots:
-    void addRow();
+    void addRow(bool atLast = false);
     void showCellWidget(const QModelIndex &modelIndex);
     void hideCurrentCellWidget();
 };

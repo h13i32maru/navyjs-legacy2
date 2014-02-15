@@ -2,12 +2,6 @@
   "class": "Navy.ViewGroup.Tab",
   "define": [
     {
-      "label": "",
-      "key": "",
-      "type": "",
-      "value": ""
-    },
-    {
       "label": "fontColor",
       "key": "extra.label.fontColor",
       "type": "string",
@@ -35,6 +29,7 @@
       "label": "contents",
       "key": "extra.contents",
       "type": "array",
+      "value": [],
       "columns": [
         {"label": "label", "key": "label", "type": "string"},
         {"label": "id", "key": "id", "type": "string"},
