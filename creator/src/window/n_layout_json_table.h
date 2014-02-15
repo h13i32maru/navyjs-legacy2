@@ -40,6 +40,7 @@ private slots:
     void hideCurrentCellWidget();
     void hideCellWidget(QTableWidgetItem *item);
     void hideAllCellWidget();
+    void clickedOutOfCell();
 };
 
 #endif // N_LAYOUT_JSON_TABLE_H

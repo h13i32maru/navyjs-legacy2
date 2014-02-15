@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     extend/n_text_list_selector.cpp \
     n_manifest_widget.cpp \
     window/n_layout_json_table.cpp \
-    extend/n_json_array_editor.cpp
+    extend/n_json_array_editor.cpp \
+    extend/n_table_widget.cpp
 
 HEADERS  += main_window.h \
     n_code_widget.h \
@@ -79,7 +80,8 @@ HEADERS  += main_window.h \
     extend/n_text_list_selector.h \
     n_manifest_widget.h \
     window/n_layout_json_table.h \
-    extend/n_json_array_editor.h
+    extend/n_json_array_editor.h \
+    extend/n_table_widget.h
 
 FORMS    += main_window.ui \
     n_code_widget.ui \

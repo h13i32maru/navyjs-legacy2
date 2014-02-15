@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTableWidget" name="tableWidget">
+    <widget class="NTableWidget" name="tableWidget">
      <property name="tabKeyNavigation">
       <bool>false</bool>
      </property>
@@ -79,6 +79,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>NTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header>extend/n_table_widget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
