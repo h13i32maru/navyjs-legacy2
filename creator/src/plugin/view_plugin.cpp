@@ -330,70 +330,6 @@ QWidget* ViewPlugin::copyWidget(QWidget *widget) {
     return newWidget;
 }
 
-/*
-QString ViewPlugin::encodeValue(const NJson &jsonArray, const QString &type, const QString &key) {
-    if (type.contains("number")) {
-        return QString::number(jsonArray.getInt(key));
-    } else if (type.contains("boolean")) {
-        return jsonArray.getBool(key) ? "true": "false";
-    } else if (type.contains("array")) {
-        return jsonArray.getObject(key).stringify();
-    } else {
-        return jsonArray.getStr(key);
-    }
-}
-*/
-
-/*
-void ViewPlugin::decodeValue(QWidget *widget, const QString &value) {
-    QString type = widget->objectName().split(":")[0];
-
-    if (type == "string") {
-        QLineEdit *l = (QLineEdit*) widget;
-        l->setText(value);
-    } else if (type == "number") {
-        QSpinBox *s = (QSpinBox*) widget;
-        s->setValue(value.toInt());
-    } else if (type == "boolean") {
-        QCheckBox *c = (QCheckBox*) widget;
-        c->setChecked(value == "true");
-    } else if (type == "stringList") {
-        QComboBox *c = (QComboBox*) widget;
-        c->setCurrentText(value);
-    } else if (type == "numberList") {
-        QComboBox *c = (QComboBox*) widget;
-        c->setCurrentText(value);
-    } else if (type == "pageList") {
-        NTextListSelector *b = (NTextListSelector*)widget;
-        b->setText(value);
-    } else if (type == "sceneList") {
-        NTextListSelector *b = (NTextListSelector*)widget;
-        b->setText(value);
-    } else if (type == "imageList") {
-        NTextListSelector *b = (NTextListSelector*)widget;
-        b->setText(value);
-    } else if (type == "linkList") {
-        NTextListSelector *b = (NTextListSelector*)widget;
-        b->setText(value);
-    } else if (type == "layoutList") {
-        NTextListSelector *b = (NTextListSelector*)widget;
-        b->setText(value);
-    }
-}
-
-void ViewPlugin::decodeValue(NJson &jsonArray, const QString &value, const QString &type, const QString &key) {
-    if (type.contains("number")) {
-        jsonArray.set(key, value.toInt());
-    } else if (type.contains("boolean")) {
-        jsonArray.set(key, value == "true");
-    } else if (type == "array"){
-        jsonArray.set(key, NJson(value));
-    } else {
-        jsonArray.set(key, value);
-    }
-}
-*/
-
 ViewPlugin::ViewPlugin() {
 }
 
@@ -522,49 +458,8 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
     for (int row = 0; row < model->rowCount(); row++) {
         index = model->index(row, 1);
         QWidget *widget = table->indexWidget(index);
-//        QString type = widget->objectName().split(":")[0];
-//        QString key = widget->objectName().split(":")[1];
-
         widget->blockSignals(true);
-
         ViewPlugin::syncViewToWidget(view, widget);
-        /*
-        if (type == "string") {
-            QLineEdit *l = (QLineEdit*) widget;
-            l->setText(view.getStr(key));
-        } else if (type == "number") {
-            QSpinBox *s = (QSpinBox*) widget;
-            s->setValue(view.getInt(key));
-        } else if (type == "boolean") {
-            QCheckBox *c = (QCheckBox*) widget;
-            c->setChecked(view.getBool(key));
-        } else if (type == "stringList") {
-            QComboBox *c = (QComboBox*) widget;
-            c->setCurrentText(view.getStr(key));
-        } else if (type == "numberList") {
-            QComboBox *c = (QComboBox*) widget;
-            c->setCurrentText(QString::number(view.getInt(key)));
-        } else if (type == "pageList") {
-            NTextListSelector *b = (NTextListSelector*)widget;
-            b->setText(view.getStr(key));
-        } else if (type == "sceneList") {
-            NTextListSelector *b = (NTextListSelector*)widget;
-            b->setText(view.getStr(key));
-        } else if (type == "imageList") {
-            NTextListSelector *b = (NTextListSelector*)widget;
-            b->setText(view.getStr(key));
-        } else if (type == "linkList") {
-            NTextListSelector *b = (NTextListSelector*)widget;
-            b->setText(view.getStr(key));
-        } else if (type == "layoutList") {
-            NTextListSelector *b = (NTextListSelector*)widget;
-            b->setText(view.getStr(key));
-        } else if (type == "array") {
-            NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
-            e->setJsonArray(view.getObject(key));
-        }
-        */
-
         widget->blockSignals(false);
     }
 }
@@ -581,44 +476,5 @@ void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
         index = model->index(row, 1);
         QWidget *widget = table->indexWidget(index);
         ViewPlugin::syncWidgetToView(widget, view);
-        /*
-        QString type = widget->objectName().split(":")[0];
-        QString key = widget->objectName().split(":")[1];
-
-        if (type == "string") {
-            QLineEdit *l = (QLineEdit*) widget;
-            view.set(key, l->text());
-        } else if (type == "number") {
-            QSpinBox *s = (QSpinBox*) widget;
-            view.set(key, s->value());
-        } else if (type == "boolean") {
-            QCheckBox *c = (QCheckBox*) widget;
-            view.set(key, c->isChecked());
-        } else if (type == "stringList") {
-            QComboBox *c = (QComboBox*) widget;
-            view.set(key, c->currentText());
-        } else if (type == "numberList") {
-            QComboBox *c = (QComboBox*) widget;
-            view.set(key, c->currentText());
-        } else if (type == "pageList") {
-            NTextListSelector *b = (NTextListSelector*)widget;
-            view.set(key, b->text());
-        } else if (type == "sceneList") {
-            NTextListSelector *b = (NTextListSelector*)widget;
-            view.set(key, b->text());
-        } else if (type == "imageList") {
-            NTextListSelector *b = (NTextListSelector*)widget;
-            view.set(key, b->text());
-        } else if (type == "linkList") {
-            NTextListSelector *b = (NTextListSelector*)widget;
-            view.set(key, b->text());
-        } else if (type == "layoutList") {
-            NTextListSelector *b = (NTextListSelector*)widget;
-            view.set(key, b->text());
-        } else if (type == "array") {
-            NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
-            view.set(key, e->getJsonArray());
-        }
-        */
     }
 }
