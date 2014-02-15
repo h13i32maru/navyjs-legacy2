@@ -20,9 +20,11 @@ public:
     explicit NLayoutJSONTable(QWidget *parent = 0);
     ~NLayoutJSONTable();
     void addColumn(NJson widgetDefine);
-
     void setJsonArray(const NJson &jsonArray);
     NJson getJsonArray() const;
+
+public slots:
+    virtual void accept();
 
 private:
     Ui::NLayoutJSONTable *ui;

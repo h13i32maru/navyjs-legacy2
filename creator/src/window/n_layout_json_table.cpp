@@ -25,6 +25,11 @@ NLayoutJSONTable::NLayoutJSONTable(QWidget *parent) : QDialog(parent), ui(new Ui
     connect(this->ui->tableWidget, SIGNAL(cellClicked(int,int)), this, SLOT(showCellWidget(int,int)));
 }
 
+void NLayoutJSONTable::accept() {
+    hideCurrentCellWidget();
+    QDialog::accept();
+}
+
 void NLayoutJSONTable::addColumn(NJson widgetDefine) {
     QString label = widgetDefine.getStr("label");
     int count = ui->tableWidget->horizontalHeader()->count();
@@ -110,6 +115,8 @@ void NLayoutJSONTable::hideCurrentCellWidget() {
 
     QTableWidgetItem *item = ui->tableWidget->item(mCurrentRow, mCurrentColumn);
     hideCellWidget(item);
+
+    mCurrentRow = mCurrentColumn = -1;
 }
 
 void NLayoutJSONTable::hideAllCellWidget() {
