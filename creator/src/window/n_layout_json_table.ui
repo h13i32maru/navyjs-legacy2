@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTableWidget" name="tableView">
+    <widget class="QTableWidget" name="tableWidget">
      <property name="tabKeyNavigation">
       <bool>false</bool>
      </property>
