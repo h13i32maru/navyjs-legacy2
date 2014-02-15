@@ -18,7 +18,9 @@ NLayoutJSONTable::NLayoutJSONTable(QWidget *parent) : QDialog(parent), ui(new Ui
 
     connect(this->ui->okButton, SIGNAL(clicked()), this, SLOT(accept()));
     connect(this->ui->cancelButton, SIGNAL(clicked()), this, SLOT(close()));
+
     connect(this->ui->addButton, SIGNAL(clicked()), this, SLOT(addRow()));
+    connect(this->ui->remoteButton, SIGNAL(clicked()), this, SLOT(removeRow()));
 
     connect(this->ui->tableWidget, SIGNAL(cellClicked(int,int)), this, SLOT(showCellWidget(int,int)));
 }
@@ -78,6 +80,14 @@ void NLayoutJSONTable::addRow(bool atLast) {
         QWidget *widget = ViewPlugin::createWidget(mWidgetDefines[columnIndex]);
         mCellToWidget[item] = widget;
         ui->tableWidget->setItem(rowIndex, columnIndex, item);
+    }
+}
+
+void NLayoutJSONTable::removeRow() {
+    QList<QTableWidgetItem *> items = ui->tableWidget->selectedItems();
+    if (items.length() != 0) {
+        ui->tableWidget->removeRow(items[0]->row());
+        ui->tableWidget->clearSelection();
     }
 }
 

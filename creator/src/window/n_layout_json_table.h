@@ -33,6 +33,7 @@ private:
 
 private slots:
     void addRow(bool atLast = false);
+    void removeRow();
     void showCellWidget(int row, int column);
     void hideCurrentCellWidget();
     void hideCellWidget(QTableWidgetItem *item);
