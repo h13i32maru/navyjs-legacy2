@@ -26,19 +26,15 @@ public:
 
 private:
     Ui::NLayoutJSONTable *ui;
-//    QHash<QStandardItem *, QWidget *> mCellToWidget;
     QHash<QTableWidgetItem *, QWidget *> mCellToWidget;
-//    QModelIndex mCurrentShowIndex;
     int mCurrentRow;
     int mCurrentColumn;
     QList<NJson> mWidgetDefines;
 
 private slots:
     void addRow(bool atLast = false);
-//    void showCellWidget(const QModelIndex &modelIndex);
     void showCellWidget(int row, int column);
     void hideCurrentCellWidget();
-//    void hideCellWidget(QStandardItem *item);
     void hideCellWidget(QTableWidgetItem *item);
     void hideAllCellWidget();
 };
