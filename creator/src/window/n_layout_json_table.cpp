@@ -41,10 +41,14 @@ NJson NLayoutJSONTable::getJsonArray() const {
     for (int row = 0; row < model->rowCount(); row++) {
        for(int column = 0; column < mWidgetDefines.length(); column++) {
            QStandardItem *item = model->item(row, column);
+           QWidget *widget = mCellToWidget[item];
+           ViewPlugin::syncWidgetToView(widget, jsonArray, QString::number(row));
+           /*
            QString value = item->text();
            QString type = mWidgetDefines[column].getStr("type");
            QString key = QString::number(row) + "." + mWidgetDefines[column].getStr("key");
            ViewPlugin::decodeValue(jsonArray, value, type, key);
+           */
        }
     }
 
@@ -56,14 +60,22 @@ void NLayoutJSONTable::setJsonArray(const NJson &jsonArray) {
     QStandardItemModel *model = (QStandardItemModel *)ui->tableView->model();
     for (int row = 0; row < jsonArray.length(); row++) {
         addRow(true);
-       for(int column = 0; column < mWidgetDefines.length(); column++) {
+        for(int column = 0; column < mWidgetDefines.length(); column++) {
+           QStandardItem *item = model->item(row, column);
+           QWidget *widget = mCellToWidget[item];
+           ViewPlugin::syncViewToWidget(jsonArray, widget, QString::number(row));
+           QString value = ViewPlugin::widgetToString(widget);
+           item->setText(value);
+
+           /*
            QString type = mWidgetDefines[column].getStr("type");
            QString key = QString::number(row) + "." + mWidgetDefines[column].getStr("key");
            QString value = ViewPlugin::encodeValue(jsonArray, type, key);
 
            QStandardItem *item = model->item(row, column);
            item->setText(value);
-       }
+           */
+        }
     }
 }
 
@@ -81,12 +93,37 @@ void NLayoutJSONTable::addRow(bool atLast) {
     }
 
     model->insertRow(rowIndex);
-    for (int i = 0; i < model->columnCount(); i++) {
-        model->setItem(rowIndex, i, new QStandardItem("hoge"));
+    for (int columnIndex = 0; columnIndex < model->columnCount(); columnIndex++) {
+        QStandardItem *item = new QStandardItem("");
+        QWidget *widget = ViewPlugin::createWidget(mWidgetDefines[columnIndex]);
+        mCellToWidget[item] = widget;
+
+        model->setItem(rowIndex, columnIndex, item);
     }
 }
 
 void NLayoutJSONTable::showCellWidget(const QModelIndex &modelIndex) {
+    hideCurrentCellWidget();
+
+    QStandardItemModel *model = (QStandardItemModel *)ui->tableView->model();
+    QStandardItem *item = model->item(modelIndex.row(), modelIndex.column());
+    QWidget *widget = mCellToWidget[item];
+
+    widget->setAutoFillBackground(true);
+    widget->show();
+    if (ui->tableView->indexWidget(modelIndex) != widget) {
+        ui->tableView->setIndexWidget(modelIndex, widget);
+    }
+
+//    qDebug() << "before set index widget";
+//    qDebug() << "widget = " << widget;
+//    widget->setAutoFillBackground(true);
+//    widget->show();
+//    ui->tableView->setIndexWidget(modelIndex, widget);
+//    qDebug() << "after set index widget";
+
+    mCurrentShowIndex = modelIndex;
+    /*
     hideCurrentCellWidget();
 
     QWidget *widget = ViewPlugin::createWidget(mWidgetDefines[modelIndex.column()]);
@@ -97,6 +134,7 @@ void NLayoutJSONTable::showCellWidget(const QModelIndex &modelIndex) {
     ViewPlugin::decodeValue(widget, item->text());
 
     mCurrentShowIndex = modelIndex;
+    */
 }
 
 void NLayoutJSONTable::hideCurrentCellWidget() {
@@ -104,18 +142,28 @@ void NLayoutJSONTable::hideCurrentCellWidget() {
         return;
     }
 
-    // widgetが保持している値を文字列にエンコードしてラベルに保存する
-    QWidget *widget = ui->tableView->indexWidget(mCurrentShowIndex);
-    QString value = ViewPlugin::encodeValue(widget);
-
     QStandardItemModel *model = (QStandardItemModel *)ui->tableView->model();
     QStandardItem *item = model->item(mCurrentShowIndex.row(), mCurrentShowIndex.column());
 
-    item->setText(value);
-    // --
+    hideCellWidget(item);
+}
 
-    // widgetを削除
-    ui->tableView->setIndexWidget(mCurrentShowIndex, NULL);
+void NLayoutJSONTable::hideAllCellWidget() {
+    foreach (QStandardItem *item, mCellToWidget.keys()) {
+        hideCellWidget(item);
+    }
+}
+
+void NLayoutJSONTable::hideCellWidget(QStandardItem* item) {
+    QWidget *widget = mCellToWidget[item];
+
+    QString value = ViewPlugin::widgetToString(widget);
+    item->setText(value);
+
+    // setIndexWidgetをすると以前のwidgetは破棄されてしまうのでcopyして新しいwidgetを作っておく
+    QWidget *newWidget = ViewPlugin::copyWidget(widget);
+    mCellToWidget[item] = newWidget;
+    ui->tableView->setIndexWidget(item->index(), NULL);
 }
 
 NLayoutJSONTable::~NLayoutJSONTable()

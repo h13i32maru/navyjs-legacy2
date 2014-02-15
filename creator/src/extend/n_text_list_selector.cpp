@@ -23,6 +23,10 @@ void NTextListSelector::setType(TYPE type) {
     mType = type;
 }
 
+NTextListSelector::TYPE NTextListSelector::getType() {
+    return mType;
+}
+
 void NTextListSelector::setText(const QString &text) {
     QString oldText = this->text();
     QPushButton::setText(text);

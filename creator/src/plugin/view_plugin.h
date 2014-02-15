@@ -12,10 +12,13 @@ public:
     static ViewPlugin* instance();
     static QWidget* createWidget(const NJson &widgetDefine, QObject *receiver = NULL, const char* slot = NULL);
     static QWidget* createWidget(const NJson &widgetDefine, NJson &viewJson, QObject *receiver = NULL, const char* slot = NULL);
-    static QString encodeValue(QWidget *widget);
-    static QString encodeValue(const NJson &jsonArray, const QString &type, const QString &key);
-    static void decodeValue(QWidget *widget, const QString &value);
-    static void decodeValue(NJson &jsonArray, const QString &value, const QString &type, const QString &key);
+    static void syncWidgetToView(QWidget *widget, NJson &view, const QString &keyPrefix = QString(""));
+    static void syncViewToWidget(const NJson &view, QWidget *widget, const QString &keyPrefix = QString(""));
+    static QString widgetToString(QWidget *widget);
+    static QWidget* copyWidget(QWidget *widget);
+//    static QString encodeValue(const NJson &jsonArray, const QString &type, const QString &key);
+//    static void decodeValue(QWidget *widget, const QString &value);
+//    static void decodeValue(NJson &jsonArray, const QString &value, const QString &type, const QString &key);
 
 private:
     static ViewPlugin* mInstance;

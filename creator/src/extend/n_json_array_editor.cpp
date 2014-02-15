@@ -11,6 +11,10 @@ NJsonArrayEditor::NJsonArrayEditor(NJson widgetDefine, QWidget *parent) : QPushB
     connect(this, SIGNAL(clicked()), this, SLOT(showEditor()));
 }
 
+NJson NJsonArrayEditor::getWidgetDefineJson() {
+    return mWidgetDefine;
+}
+
 NJson NJsonArrayEditor::getJsonArray() const{
     return mJsonArray;
 }

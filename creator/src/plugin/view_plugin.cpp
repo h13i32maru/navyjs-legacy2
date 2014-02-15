@@ -139,7 +139,94 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
     return widget;
 }
 
-QString ViewPlugin::encodeValue(QWidget *widget) {
+void ViewPlugin::syncWidgetToView(QWidget *widget, NJson &view, const QString &keyPrefix) {
+    QString type = widget->objectName().split(":")[0];
+    QString key = widget->objectName().split(":")[1];
+    if (!keyPrefix.isEmpty()) {
+        key = keyPrefix + "." + key;
+    }
+
+    if (type == "string") {
+        QLineEdit *l = (QLineEdit*) widget;
+        view.set(key, l->text());
+    } else if (type == "number") {
+        QSpinBox *s = (QSpinBox*) widget;
+        view.set(key, s->value());
+    } else if (type == "boolean") {
+        QCheckBox *c = (QCheckBox*) widget;
+        view.set(key, c->isChecked());
+    } else if (type == "stringList") {
+        QComboBox *c = (QComboBox*) widget;
+        view.set(key, c->currentText());
+    } else if (type == "numberList") {
+        QComboBox *c = (QComboBox*) widget;
+        view.set(key, c->currentText().toInt());
+    } else if (type == "pageList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        view.set(key, b->text());
+    } else if (type == "sceneList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        view.set(key, b->text());
+    } else if (type == "imageList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        view.set(key, b->text());
+    } else if (type == "linkList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        view.set(key, b->text());
+    } else if (type == "layoutList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        view.set(key, b->text());
+    } else if (type == "array") {
+        NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
+        view.set(key, e->getJsonArray());
+    }
+}
+
+void ViewPlugin::syncViewToWidget(const NJson &view, QWidget *widget, const QString &keyPrefix) {
+    QString type = widget->objectName().split(":")[0];
+    QString key = widget->objectName().split(":")[1];
+
+    if (!keyPrefix.isEmpty()) {
+        key = keyPrefix + "." + key;
+    }
+
+    if (type == "string") {
+        QLineEdit *l = (QLineEdit*) widget;
+        l->setText(view.getStr(key));
+    } else if (type == "number") {
+        QSpinBox *s = (QSpinBox*) widget;
+        s->setValue(view.getInt(key));
+    } else if (type == "boolean") {
+        QCheckBox *c = (QCheckBox*) widget;
+        c->setChecked(view.getBool(key));
+    } else if (type == "stringList") {
+        QComboBox *c = (QComboBox*) widget;
+        c->setCurrentText(view.getStr(key));
+    } else if (type == "numberList") {
+        QComboBox *c = (QComboBox*) widget;
+        c->setCurrentText(QString::number(view.getInt(key)));
+    } else if (type == "pageList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        b->setText(view.getStr(key));
+    } else if (type == "sceneList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        b->setText(view.getStr(key));
+    } else if (type == "imageList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        b->setText(view.getStr(key));
+    } else if (type == "linkList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        b->setText(view.getStr(key));
+    } else if (type == "layoutList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        b->setText(view.getStr(key));
+    } else if (type == "array") {
+        NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
+        e->setJsonArray(view.getObject(key));
+    }
+}
+
+QString ViewPlugin::widgetToString(QWidget *widget) {
     QString type = widget->objectName().split(":")[0];
 
     if (type == "string") {
@@ -172,9 +259,78 @@ QString ViewPlugin::encodeValue(QWidget *widget) {
     } else if (type == "layoutList") {
         NTextListSelector *b = (NTextListSelector*)widget;
         return b->text();
+    } else if (type == "array") {
+        NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
+        return e->getJsonArray().stringify();
     }
 }
 
+QWidget* ViewPlugin::copyWidget(QWidget *widget) {
+    QString type = widget->objectName().split(":")[0];
+
+    QWidget *newWidget;
+    if (type == "string") {
+        QLineEdit *l = (QLineEdit*) widget;
+        QLineEdit *ll = new QLineEdit();
+        ll->setText(l->text());
+        newWidget = ll;
+    } else if (type == "number") {
+        QSpinBox *s = (QSpinBox*) widget;
+        QSpinBox *ss = new QSpinBox();
+        ss->setValue(s->value());
+        newWidget = ss;
+    } else if (type == "boolean") {
+        QCheckBox *c = (QCheckBox*) widget;
+        QCheckBox *cc = new QCheckBox();
+        cc->setChecked(c->isChecked());
+        newWidget = cc;
+    } else if (type == "stringList") {
+        QComboBox *c = (QComboBox*) widget;
+        QComboBox *cc = new QComboBox();
+        cc->setCurrentText(c->currentText());
+        newWidget = cc;
+    } else if (type == "numberList") {
+        QComboBox *c = (QComboBox*) widget;
+        QComboBox *cc = new QComboBox();
+        cc->setCurrentText(c->currentText());
+        newWidget = cc;
+    } else if (type == "pageList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        NTextListSelector *bb = new NTextListSelector();
+        bb->setText(b->text());
+        newWidget = bb;
+    } else if (type == "sceneList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        NTextListSelector *bb = new NTextListSelector(b->getType());
+        bb->setText(b->text());
+        newWidget = bb;
+    } else if (type == "imageList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        NTextListSelector *bb = new NTextListSelector(b->getType());
+        bb->setText(b->text());
+        newWidget = bb;
+    } else if (type == "linkList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        NTextListSelector *bb = new NTextListSelector(b->getType());
+        bb->setText(b->text());
+        newWidget = bb;
+    } else if (type == "layoutList") {
+        NTextListSelector *b = (NTextListSelector*)widget;
+        NTextListSelector *bb = new NTextListSelector(b->getType());
+        bb->setText(b->text());
+        newWidget = bb;
+    } else if (type == "array") {
+        NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
+        NJsonArrayEditor *ee = new NJsonArrayEditor(e->getWidgetDefineJson());
+        ee->setJsonArray(e->getJsonArray());
+        newWidget = ee;
+    }
+
+    newWidget->setObjectName(widget->objectName());
+    return newWidget;
+}
+
+/*
 QString ViewPlugin::encodeValue(const NJson &jsonArray, const QString &type, const QString &key) {
     if (type.contains("number")) {
         return QString::number(jsonArray.getInt(key));
@@ -186,7 +342,9 @@ QString ViewPlugin::encodeValue(const NJson &jsonArray, const QString &type, con
         return jsonArray.getStr(key);
     }
 }
+*/
 
+/*
 void ViewPlugin::decodeValue(QWidget *widget, const QString &value) {
     QString type = widget->objectName().split(":")[0];
 
@@ -234,6 +392,7 @@ void ViewPlugin::decodeValue(NJson &jsonArray, const QString &value, const QStri
         jsonArray.set(key, value);
     }
 }
+*/
 
 ViewPlugin::ViewPlugin() {
 }
@@ -363,11 +522,13 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
     for (int row = 0; row < model->rowCount(); row++) {
         index = model->index(row, 1);
         QWidget *widget = table->indexWidget(index);
-        QString type = widget->objectName().split(":")[0];
-        QString key = widget->objectName().split(":")[1];
+//        QString type = widget->objectName().split(":")[0];
+//        QString key = widget->objectName().split(":")[1];
 
         widget->blockSignals(true);
 
+        ViewPlugin::syncViewToWidget(view, widget);
+        /*
         if (type == "string") {
             QLineEdit *l = (QLineEdit*) widget;
             l->setText(view.getStr(key));
@@ -402,6 +563,7 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
             NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
             e->setJsonArray(view.getObject(key));
         }
+        */
 
         widget->blockSignals(false);
     }
@@ -418,6 +580,8 @@ void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
     for (int row = 0; row < model->rowCount(); row++) {
         index = model->index(row, 1);
         QWidget *widget = table->indexWidget(index);
+        ViewPlugin::syncWidgetToView(widget, view);
+        /*
         QString type = widget->objectName().split(":")[0];
         QString key = widget->objectName().split(":")[1];
 
@@ -455,5 +619,6 @@ void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
             NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
             view.set(key, e->getJsonArray());
         }
+        */
     }
 }

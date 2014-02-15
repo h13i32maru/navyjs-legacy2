@@ -12,6 +12,7 @@ public:
     explicit NJsonArrayEditor(NJson widgetDefine, QWidget *parent = 0);
     NJson getJsonArray() const;
     void setJsonArray(const NJson &jsonArray);
+    NJson getWidgetDefineJson();
 
 private:
     NJson mWidgetDefine;

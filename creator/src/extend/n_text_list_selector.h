@@ -12,6 +12,7 @@ public:
     explicit NTextListSelector(TYPE type, QWidget *parent = 0);
     void setText(const QString &text);
     void setType(TYPE type);
+    TYPE getType();
 
 private:
     TYPE mType;
