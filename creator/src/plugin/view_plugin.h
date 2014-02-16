@@ -32,7 +32,7 @@ private:
 
 public:
     void load(const QString &pluginDirPath);
-    void createTableView(QWidget *parentWidget, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot);
+    void createTableView(QTableWidget *tableWidget, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot);
     void syncViewToWidget(const NJson &view, const QString &className) const;
     void syncWidgetToView(NJson &view, const QString &className) const;
     void showTable(const QString &className);

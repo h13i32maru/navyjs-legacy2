@@ -64,7 +64,7 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     // create property widget for view.
     mViewPlugin = new ViewPlugin(this);
     mViewPlugin->load(NProject::instance()->pluginDirPath());
-    mViewPlugin->createTableView(ui->propScrollAreaWidgetContents, &mDefaultMap, this, SLOT(syncWidgetToView()));
+    mViewPlugin->createTableView(ui->tableWidget, &mDefaultMap, this, SLOT(syncWidgetToView()));
     mViewPlugin->showTable("Navy.View.View");
     QStringList viewClassNames = mViewPlugin->getClassNames();
     viewClassNames.sort();
@@ -82,7 +82,7 @@ void NLayoutWidget::toggleLayerTreeWidget() {
 }
 
 void NLayoutWidget::toggleLayoutPropWidget() {
-    ui->scrollArea->setVisible(ui->scrollArea->isVisible() ^ true);
+    ui->tableWidget->setVisible(ui->tableWidget->isVisible() ^ true);
 }
 
 void NLayoutWidget::toggleViewClassTreeWidget() {
@@ -297,9 +297,9 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
 
     // 選択しているViewが1つじゃない場合はどのViewの設定をいじればよいかがわからないので、ウィジェットを無効に設定しておく
     if (views.length() != 1) {
-        ui->propScrollAreaWidgetContents->setEnabled(false);
+        ui->tableWidget->setEnabled(false);
     } else {
-        ui->propScrollAreaWidgetContents->setEnabled(true);
+        ui->tableWidget->setEnabled(true);
     }
 
     // show prop widget for view class and sync views to widget

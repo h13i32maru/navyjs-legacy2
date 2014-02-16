@@ -346,17 +346,9 @@ QList<NJson> ViewPlugin::getJsonList() const {
     return mJsonList;
 }
 
-void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot){
+void ViewPlugin::createTableView(QTableWidget *tableWidget, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot){
     mReceiver = receiver;
     mSlot = slot;
-
-    QTableWidget *tableWidget = new QTableWidget();
-    tableWidget->setColumnCount(2);
-    tableWidget->horizontalHeader()->setStretchLastSection(true);
-    tableWidget->verticalHeader()->setHidden(true);
-    tableWidget->horizontalHeader()->setHidden(true);
-    parentWidget->layout()->addWidget(tableWidget);
-
     QList<NJson> jsonList = getJsonList();
     int row = 0;
     for (int i = 0; i < jsonList.length(); i++) {
@@ -394,17 +386,6 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, NJson> *de
     }
 
     QObject::connect(tableWidget, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(showCellWidget(QTableWidgetItem*)));
-    tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
-    tableWidget->setAlternatingRowColors(true);
-    tableWidget->setSelectionBehavior(QTableWidget::SelectRows);
-    tableWidget->setSelectionMode(QTableWidget::SingleSelection);
-    tableWidget->setMinimumHeight((tableWidget->rowCount() + 1) * tableWidget->rowHeight(0));
-    tableWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    tableWidget->setTabKeyNavigation(false);
-
-    ((QHBoxLayout *)parentWidget->layout())->addStretch();
-
     hideAllTable();
 }
 
