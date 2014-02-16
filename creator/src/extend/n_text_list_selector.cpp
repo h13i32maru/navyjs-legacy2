@@ -52,6 +52,9 @@ void NTextListSelector::execListDialog() {
     case IMAGE:
         list = NProject::instance()->images();
         break;
+    case CODE:
+        list = NProject::instance()->codes();
+        break;
     }
 
     dialog.setTextList(list);

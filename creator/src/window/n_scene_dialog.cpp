@@ -19,23 +19,17 @@ NSceneDialog::NSceneDialog(TYPE type, NJson &configScene, QWidget *parent) :
         mSceneIndex = configScene.length();
     }
 
-    QStringList codeList = NProject::instance()->codes();
-    ui->classFile->setList(codeList);
-
-    QStringList pageList = NProject::instance()->pages();
-    ui->page->setList(pageList);
-
-    QStringList layoutList = NProject::instance()->layouts();
-    ui->layout->setList(layoutList);
-
+    ui->classFile->setType(NTextListSelector::CODE);
+    ui->page->setType(NTextListSelector::PAGE);
+    ui->layout->setType(NTextListSelector::LAYOUT);
     ui->backgroundColor->setText("#000000");
 
     connect(ui->id, SIGNAL(textChanged(QString)), this, SLOT(autoInputWithId()));
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(updateScene()));
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
-    connect(ui->classFile, SIGNAL(currentTextChanged(QString)), this, SLOT(checkClassFile(QString)));
-    connect(ui->layout, SIGNAL(currentTextChanged(QString)), this, SLOT(checkLayoutFile(QString)));
-    connect(ui->page, SIGNAL(currentTextChanged(QString)), this, SLOT(checkPage(QString)));
+    connect(ui->classFile, SIGNAL(textChanged(QString)), this, SLOT(checkClassFile(QString)));
+    connect(ui->layout, SIGNAL(textChanged(QString)), this, SLOT(checkLayoutFile(QString)));
+    connect(ui->page, SIGNAL(textChanged(QString)), this, SLOT(checkPage(QString)));
 }
 
 void NSceneDialog::checkClassFile(const QString &path) {
@@ -68,9 +62,9 @@ void NSceneDialog::setSceneId(const QString &sceneId) {
 
     ui->id->setText(scene.getStr("id"));
     ui->className->setText(scene.getStr("class"));
-    ui->classFile->setCurrentText(scene.getStr("classFile"));
-    ui->page->setCurrentText(scene.getStr("extra.page"));
-    ui->layout->setCurrentText(scene.getStr("extra.contentLayoutFile"));
+    ui->classFile->setText(scene.getStr("classFile"));
+    ui->page->setText(scene.getStr("extra.page"));
+    ui->layout->setText(scene.getStr("extra.contentLayoutFile"));
     ui->backgroundColor->setText(scene.getStr("backgroundColor"));
     ui->transition->setCurrentText(scene.getStr("extra.transition.class"));
 }
@@ -83,8 +77,8 @@ void NSceneDialog::autoInputWithId() {
     QString layoutFilePath = QString("layout/") + fileName + ".json";
 
     ui->className->setText(className);
-    ui->classFile->setCurrentText(codeFilePath);
-    ui->layout->setCurrentText(layoutFilePath);
+    ui->classFile->setText(codeFilePath);
+    ui->layout->setText(layoutFilePath);
 }
 
 void NSceneDialog::updateScene() {
@@ -115,7 +109,7 @@ void NSceneDialog::updateScene() {
     }
 
     // class file check.
-    QString classFile = ui->classFile->currentText();
+    QString classFile = ui->classFile->text();
     if (!NProject::instance()->existsContentsFile(classFile)) {
         QString path = NProject::instance()->contentsFilePath(classFile);
         QMap<QString, QString> replace;
@@ -126,7 +120,7 @@ void NSceneDialog::updateScene() {
     }
 
     // layout check
-    QString layoutFile = ui->layout->currentText();
+    QString layoutFile = ui->layout->text();
     if (!NProject::instance()->existsContentsFile(layoutFile)) {
         QString path = NProject::instance()->contentsFilePath(layoutFile);
         if (!NUtil::createFileFromTemplate(":/template_code/layout.json", path)) {
@@ -135,7 +129,7 @@ void NSceneDialog::updateScene() {
     }
 
     // page check
-    QString page = ui->page->currentText();
+    QString page = ui->page->text();
     if (!NProject::instance()->existsPage(page)) {
         return;
     }
