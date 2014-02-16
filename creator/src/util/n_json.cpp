@@ -49,7 +49,7 @@ bool NJson::writeToFile(const QString &filePath) const {
     return file.write(stringify());
 }
 
-QByteArray NJson::stringify() const
+QByteArray NJson::stringify(QJsonDocument::JsonFormat format) const
 {
     QJsonDocument doc;
     if (mRootValue.isArray()) {
@@ -58,7 +58,7 @@ QByteArray NJson::stringify() const
         doc = QJsonDocument(mRootValue.toObject());
     }
 
-    return doc.toJson();
+    return doc.toJson(format);
 }
 
 int NJson::length() const
