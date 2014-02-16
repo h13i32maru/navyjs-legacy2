@@ -78,9 +78,6 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         signal = SIGNAL(currentTextChanged(QString));
 
         if (originWidget != NULL) {
-            for (int k = 0; k < ((QComboBox*)originWidget)->count(); k++) {
-                c->addItem( ((QComboBox*)originWidget)->itemText(k) );
-            }
             c->setCurrentText( ((QComboBox*)originWidget)->currentText() );
         }
     }
@@ -96,9 +93,6 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         signal = SIGNAL(currentTextChanged(QString));
 
         if (originWidget != NULL) {
-            for (int k = 0; k < ((QComboBox*)originWidget)->count(); k++) {
-                c->addItem( ((QComboBox*)originWidget)->itemText(k) );
-            }
             c->setCurrentText( ((QComboBox*)originWidget)->currentText() );
         }
     }
@@ -171,14 +165,11 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
 
     // ----
     if (widget != NULL) {
+        widget->setProperty("widgetDefine", QVariant(widgetDefine.stringify()));
         widget->setObjectName(type + ":" + key);
 
         if (widgetDefine.getBool("readOnly")) {
             widget->setEnabled(false);
-        }
-
-        if (originWidget != NULL) {
-            widget->setEnabled(originWidget->isEnabled());
         }
     }
     if (receiver != NULL && slot != NULL && widget != NULL && signal != NULL) {
@@ -317,12 +308,8 @@ QString ViewPlugin::widgetToString(QWidget *widget) {
 }
 
 QWidget* ViewPlugin::copyWidget(QWidget *widget, QObject* receiver, const char *slot) {
-    QString type = widget->objectName().split(":")[0];
-    QString key = widget->objectName().split(":")[1];
-
     NJson widgetDefine;
-    widgetDefine.set("key", key);
-    widgetDefine.set("type", type);
+    widgetDefine.parse(widget->property("widgetDefine").toString());
     QWidget *newWidget = ViewPlugin::createWidget(widgetDefine, receiver, slot, widget);
     return newWidget;
 }
