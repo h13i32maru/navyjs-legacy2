@@ -117,9 +117,6 @@ void MainWindow::openProject() {
         return;
     }
 
-    QString projectDirPath = QFileInfo(projectFilePath).dir().absolutePath();
-    setCurrentProject(projectDirPath);
-
     // FIXME: remove this debug code.
     NProject *project = NProject::instance();
     QDir(project->contentsFilePath("navy")).removeRecursively();
@@ -132,6 +129,9 @@ void MainWindow::openProject() {
     NUtil::copyDir(":/template/tools", project->toolsDirPath());
     NUtil::createFileFromTemplate(":/template/contents/index.html", project->contentsFilePath("index.html"));
     NUtil::createFileFromTemplate(":/template/contents/index_creator.html", project->contentsFilePath("index_creator.html"));
+
+    QString projectDirPath = QFileInfo(projectFilePath).dir().absolutePath();
+    setCurrentProject(projectDirPath);
 }
 
 void MainWindow::showFileOpener() {
