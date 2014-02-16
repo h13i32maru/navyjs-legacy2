@@ -28,6 +28,9 @@
      <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectRows</enum>
      </property>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
     </widget>
    </item>
    <item>
@@ -71,6 +74,9 @@
        <widget class="QPushButton" name="okButton">
         <property name="text">
          <string>OK</string>
+        </property>
+        <property name="default">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
