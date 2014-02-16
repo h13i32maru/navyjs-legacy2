@@ -1,10 +1,10 @@
 {
-  "resources": [
-    {"path": "/base/fixture/code/code1.js", "md5": "md5 of code/code1.js"},
-    {"path": "/base/fixture/code/code2.js", "md5": "md5 of code/code2.js"},
-    {"path": "/base/fixture/config/config1.json", "md5": "md5 of config/config1.json"},
-    {"path": "/base/fixture/image/image1.png", "md5": "md5 of image/image1.png"},
-    {"path": "/base/fixture/layout/layout1.json", "md5": "new md5 of layout/layout1.json"},
-    {"path": "/base/fixture/css/style1.css", "md5": "md5 of css/style1.css"}
+  "assets": [
+    {"path": "/base/fixture/code/code1.js", "hash": "hash of code/code1.js"},
+    {"path": "/base/fixture/code/code2.js", "hash": "hash of code/code2.js"},
+    {"path": "/base/fixture/config/config1.json", "hash": "hash of config/config1.json"},
+    {"path": "/base/fixture/image/image1.png", "hash": "hash of image/image1.png"},
+    {"path": "/base/fixture/layout/layout1.json", "hash": "new hash of layout/layout1.json"},
+    {"path": "/base/fixture/css/style1.css", "hash": "hash of css/style1.css"}
   ]
 }

@@ -18,7 +18,7 @@ Navy.Class.instance('Navy.AssetInstaller', {
   _manifestURL: null,
   _remoteManifest: null,
   _localManifest: null,
-  _invalidResources: null,
+  _invalidAssets: null,
   _concurrency: 4,
   _enableDatabase: null,
 
@@ -30,10 +30,10 @@ Navy.Class.instance('Navy.AssetInstaller', {
   _callbackOnError: null,
 
   // DBを使うか使わないかで中身が変更されるメソッド.
-  _loadResource: null,
+  _loadAsset: null,
 
   initialize: function(manifestURL) {
-    this._localManifest = {baseUrl: '', resources: []};
+    this._localManifest = {baseUrl: '', assets: []};
     this.setManifestURL(manifestURL);
 
     this.setEnableDatabase(true);
@@ -48,9 +48,9 @@ Navy.Class.instance('Navy.AssetInstaller', {
 
     // DBを使う場合はローカルから、使わない場合はリモートからリソースを取得する.
     if (enable) {
-      this._loadResource = this._loadLocalResource;
+      this._loadAsset = this._loadLocalAsset;
     } else {
-      this._loadResource = this._loadRemoteResource;
+      this._loadAsset = this._loadRemoteAsset;
     }
   },
 
@@ -75,7 +75,7 @@ Navy.Class.instance('Navy.AssetInstaller', {
   },
 
   loadJavaScript: function(path, scriptElement, callback) {
-    this._loadResource(path, function(path, content, contentType){
+    this._loadAsset(path, function(path, content, contentType){
       if (contentType !== 'text/javascript') {
         throw new Error('the path is not javascript. path = ' + path);
       }
@@ -86,7 +86,7 @@ Navy.Class.instance('Navy.AssetInstaller', {
   },
 
   loadJSON: function(path, callback) {
-    this._loadResource(path, function(path, content, contentType){
+    this._loadAsset(path, function(path, content, contentType){
       if (contentType !== 'text/json') {
         throw new Error('the path is not json. path = ' + path);
       }
@@ -97,7 +97,7 @@ Navy.Class.instance('Navy.AssetInstaller', {
   },
 
   loadCSS: function(path, styleElement, callback) {
-    this._loadResource(path, function(path, content, contentType){
+    this._loadAsset(path, function(path, content, contentType){
       if (contentType !== 'text/stylesheet') {
         throw new Error('the path is not css. path = ' + path);
       }
@@ -118,7 +118,7 @@ Navy.Class.instance('Navy.AssetInstaller', {
       throw new Error('fail loading image. path = ' + path);
     });
 
-    this._loadResource(path, function(path, content, contentType){
+    this._loadAsset(path, function(path, content, contentType){
       if (contentType.indexOf('image/') !== 0) {
         throw new Error('the path is not image. path = ' + path);
       }
@@ -129,9 +129,9 @@ Navy.Class.instance('Navy.AssetInstaller', {
     }, 'image/*');
   },
 
-  _loadLocalResource: function(path, callback, errorCallback, contentType) {
+  _loadLocalAsset: function(path, callback, errorCallback, contentType) {
     var transaction = function(tr) {
-      tr.executeSql('SELECT content, contentType from resource where path = ?', [path], function(transaction, result){
+      tr.executeSql('SELECT content, contentType from asset where path = ?', [path], function(transaction, result){
         var rows = result.rows;
         if (rows.length !== 1) {
           if (errorCallback) {
@@ -157,29 +157,29 @@ Navy.Class.instance('Navy.AssetInstaller', {
     this._db.transaction(transaction, error);
   },
 
-  _loadRemoteResource: function(path, callback, errorCallback, contentType) {
-    var resource = {
+  _loadRemoteAsset: function(path, callback, errorCallback, contentType) {
+    var asset = {
       path: path,
       contentType: contentType || this._getContentType(path)
     };
 
     var loader = new Navy.AssetInstaller.Loader();
-    loader.onload = function(loader, resource, responseText) {
-      callback && callback(resource.path, responseText, resource.contentType);
+    loader.onload = function(loader, asset, responseText) {
+      callback && callback(asset.path, responseText, asset.contentType);
     };
-    loader.onerror = function(loader, resource) {
+    loader.onerror = function(loader, asset) {
       if (errorCallback) {
-        errorCallback(resource.path);
+        errorCallback(asset.path);
       } else {
         throw new Error('not found the path in remote. path = ' + path);
       }
     };
-    loader.load(resource);
+    loader.load(asset);
   },
 
   _initDB: function() {
     var transaction = function(tr) {
-      tr.executeSql('CREATE TABLE IF NOT EXISTS resource (path TEXT PRIMARY KEY, md5 TEXT, contentType TEXT, content TEXT)');
+      tr.executeSql('CREATE TABLE IF NOT EXISTS asset (path TEXT PRIMARY KEY, hash TEXT, contentType TEXT, content TEXT)');
     };
 
     var error = function(e) {
@@ -210,13 +210,13 @@ Navy.Class.instance('Navy.AssetInstaller', {
 
   _loadLocalManifest: function() {
     var transaction = function(tr) {
-      tr.executeSql('SELECT path, md5 from resource', null, function(transaction, result){
+      tr.executeSql('SELECT path, hash from asset', null, function(transaction, result){
         var rows = result.rows;
         for (var i = 0; i < rows.length; i++) {
           var item = rows.item(i);
-          this._localManifest.resources.push({
+          this._localManifest.assets.push({
             path: item.path,
-            md5: item.md5
+            hash: item.hash
           });
         }
       }.bind(this));
@@ -227,39 +227,39 @@ Navy.Class.instance('Navy.AssetInstaller', {
     };
 
     var success = function() {
-      this._pickInvalidResources();
+      this._pickInvalidAssets();
     }.bind(this);
 
     this._db.transaction(transaction, error, success);
   },
 
-  _pickInvalidResources: function() {
-    var localResourceMap = this._manifestToResourceMap(this._localManifest);
-    var remoteResourceMap = this._manifestToResourceMap(this._remoteManifest);
-    var invalidResources = [];
+  _pickInvalidAssets: function() {
+    var localAssetMap = this._manifestToAssetMap(this._localManifest);
+    var remoteAssetMap = this._manifestToAssetMap(this._remoteManifest);
+    var invalidAssets = [];
 
-    for (var remotePath in remoteResourceMap) {
-      var remoteMD5 = remoteResourceMap[remotePath].md5;
+    for (var remotePath in remoteAssetMap) {
+      var remoteHash = remoteAssetMap[remotePath].hash;
 
-      if (!localResourceMap[remotePath]) {
-        invalidResources.push({path: remotePath, md5: remoteMD5});
+      if (!localAssetMap[remotePath]) {
+        invalidAssets.push({path: remotePath, hash: remoteHash});
         continue;
       }
 
-      var localMD5 = localResourceMap[remotePath].md5;
-      if (remoteMD5 !== localMD5) {
-        invalidResources.push({path: remotePath, md5: remoteMD5});
+      var localHash = localAssetMap[remotePath].hash;
+      if (remoteHash !== localHash) {
+        invalidAssets.push({path: remotePath, hash: remoteHash});
       }
     }
 
-    this._invalidResources = invalidResources;
-    this._totalInvalidCount = invalidResources.length;
+    this._invalidAssets = invalidAssets;
+    this._totalInvalidCount = invalidAssets.length;
     this._doneInvalidCount = 0;
 
-    this._startLoadingRemoteResourcesToLocal();
+    this._startLoadingRemoteAssetsToLocal();
   },
 
-  _startLoadingRemoteResourcesToLocal: function() {
+  _startLoadingRemoteAssetsToLocal: function() {
     if (this._totalInvalidCount === 0) {
       this._callbackOnComplete();
       return
@@ -267,54 +267,54 @@ Navy.Class.instance('Navy.AssetInstaller', {
 
     for (var i = 0; i < this._concurrency; i++) {
       var loader = new Navy.AssetInstaller.Loader();
-      loader.onload = this._onLoadRemoteResourceToLocal.bind(this);
-      loader.onerror = this._onLoadRemoteResourceErrorToLocal.bind(this);
-      this._loadRemoteResourceToLocal(loader);
+      loader.onload = this._onLoadRemoteAssetToLocal.bind(this);
+      loader.onerror = this._onLoadRemoteAssetErrorToLocal.bind(this);
+      this._loadRemoteAssetToLocal(loader);
     }
   },
 
-  _loadRemoteResourceToLocal: function(loader) {
-    if (this._invalidResources.length === 0) {
+  _loadRemoteAssetToLocal: function(loader) {
+    if (this._invalidAssets.length === 0) {
       if (this._doneInvalidCount === this._totalInvalidCount) {
         this._callbackOnComplete();
       }
       return;
     }
 
-    var resource = this._invalidResources.shift();
-    var path = resource.path;
-    resource.contentType = resource.contentType || this._getContentType(path);
+    var asset = this._invalidAssets.shift();
+    var path = asset.path;
+    asset.contentType = asset.contentType || this._getContentType(path);
 
-    loader.load(resource);
+    loader.load(asset);
   },
 
-  _onLoadRemoteResourceToLocal: function(loader, resource, responseText) {
-    this._saveRemoteResource(loader, resource, responseText);
+  _onLoadRemoteAssetToLocal: function(loader, asset, responseText) {
+    this._saveRemoteAsset(loader, asset, responseText);
   },
 
-  _onLoadRemoteResourceErrorToLocal: function(loader, resource) {
-    console.error(resource);
-    this._callbackOnError(resource.path);
+  _onLoadRemoteAssetErrorToLocal: function(loader, asset) {
+    console.error(asset);
+    this._callbackOnError(asset.path);
   },
 
-  _saveRemoteResource: function(loader, resource, responseText) {
+  _saveRemoteAsset: function(loader, asset, responseText) {
     function transaction(tr) {
-      var path = resource.path;
-      var md5 = resource.md5;
-      var contentType = resource.contentType;
+      var path = asset.path;
+      var hash = asset.hash;
+      var contentType = asset.contentType;
       var content = responseText || null;
-      tr.executeSql('INSERT OR REPLACE INTO resource (path, md5, contentType, content) VALUES (?, ?, ?, ?)', [path, md5, contentType, content]);
+      tr.executeSql('INSERT OR REPLACE INTO asset (path, hash, contentType, content) VALUES (?, ?, ?, ?)', [path, hash, contentType, content]);
     }
 
     var error = function(e) {
-      console.error(e, resource);
-      this._callbackOnError(resource.path);
+      console.error(e, asset);
+      this._callbackOnError(asset.path);
     }.bind(this);
 
     var success = function() {
       this._doneInvalidCount++;
       this._callbackOnProgress(this._doneInvalidCount, this._totalInvalidCount);
-      this._loadRemoteResourceToLocal(loader);
+      this._loadRemoteAssetToLocal(loader);
     }.bind(this);
 
     this._db.transaction(transaction, error, success);
@@ -322,7 +322,7 @@ Navy.Class.instance('Navy.AssetInstaller', {
 
   _deleteAll: function(callback) {
     var transaction = function(tr) {
-      tr.executeSql('DROP TABLE IF EXISTS resource');
+      tr.executeSql('DROP TABLE IF EXISTS asset');
     };
 
     var error = function(e) {
@@ -337,11 +337,11 @@ Navy.Class.instance('Navy.AssetInstaller', {
     db.transaction(transaction, error, success);
   },
 
-  _manifestToResourceMap: function(manifest) {
-    var resources = manifest.resources;
+  _manifestToAssetMap: function(manifest) {
+    var assets = manifest.assets;
     var map = {};
-    for (var i = 0; i < resources.length; i++) {
-      map[resources[i].path] = resources[i];
+    for (var i = 0; i < assets.length; i++) {
+      map[assets[i].path] = assets[i];
     }
 
     return map;
@@ -368,13 +368,13 @@ Navy.Class('Navy.AssetInstaller.Loader', {
   onload: null,
   onerror: null,
 
-  _resource: null,
+  _asset: null,
   _loaderElement: null,
 
-  load: function(resource) {
-    this._resource = resource;
-    var path = resource.path;
-    var contentType = resource.contentType;
+  load: function(asset) {
+    this._asset = asset;
+    var path = asset.path;
+    var contentType = asset.contentType;
 
     if (contentType.indexOf('text/') === 0) {
       var xhr = new XMLHttpRequest();
@@ -406,12 +406,12 @@ Navy.Class('Navy.AssetInstaller.Loader', {
       var status = this._loaderElement.status || 200;
       if (status === 200) {
         var responseText = this._loaderElement.responseText;
-        this.onload(this, this._resource, responseText);
+        this.onload(this, this._asset, responseText);
       } else {
         this._onError();
       }
     } else {
-      this.onload(this, this._resource);
+      this.onload(this, this._asset);
     }
   },
 
@@ -420,6 +420,6 @@ Navy.Class('Navy.AssetInstaller.Loader', {
       return;
     }
 
-    this.onerror(this, this._resource);
+    this.onerror(this, this._asset);
   }
 });
