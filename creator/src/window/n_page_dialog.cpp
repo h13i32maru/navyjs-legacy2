@@ -18,19 +18,15 @@ NPageDialog::NPageDialog(TYPE type, NJson &configPage, QWidget *parent) :
         mPageIndex = configPage.length();
     }
 
-    QStringList codeList = NProject::instance()->codes();
-    ui->classFile->setList(codeList);
-
-    QStringList layoutList = NProject::instance()->layouts();
-    ui->layout->setList(layoutList);
-
+    ui->classFile->setType(NTextListSelector::CODE);
+    ui->layout->setType(NTextListSelector::LAYOUT);
     ui->backgroundColor->setText("#000000");
 
     connect(ui->id, SIGNAL(textChanged(QString)), this, SLOT(autoInputWithId()));
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(updatePage()));
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
-    connect(ui->classFile, SIGNAL(currentTextChanged(QString)), this, SLOT(checkClassFile(QString)));
-    connect(ui->layout, SIGNAL(currentTextChanged(QString)), this, SLOT(checkLayoutFile(QString)));
+    connect(ui->classFile, SIGNAL(textChanged(QString)), this, SLOT(checkClassFile(QString)));
+    connect(ui->layout, SIGNAL(textChanged(QString)), this, SLOT(checkLayoutFile(QString)));
 }
 
 void NPageDialog::checkClassFile(const QString &path) {
@@ -55,8 +51,8 @@ void NPageDialog::setPageId(const QString &pageId) {
 
     ui->id->setText(page.getStr("id"));
     ui->className->setText(page.getStr("class"));
-    ui->classFile->setCurrentText(page.getStr("classFile"));
-    ui->layout->setCurrentText(page.getStr("extra.contentLayoutFile"));
+    ui->classFile->setText(page.getStr("classFile"));
+    ui->layout->setText(page.getStr("extra.contentLayoutFile"));
     ui->backgroundColor->setText(page.getStr("backgroundColor"));
     ui->transition->setCurrentText(page.getStr("extra.transition.class"));
 }
@@ -69,8 +65,8 @@ void NPageDialog::autoInputWithId() {
     QString layoutFilePath = QString("layout/") + fileName + ".json";
 
     ui->className->setText(className);
-    ui->classFile->setCurrentText(codeFilePath);
-    ui->layout->setCurrentText(layoutFilePath);
+    ui->classFile->setText(codeFilePath);
+    ui->layout->setText(layoutFilePath);
 }
 
 void NPageDialog::updatePage() {
@@ -102,7 +98,7 @@ void NPageDialog::updatePage() {
     }
 
     // class file check.
-    QString classFile = ui->classFile->currentText();
+    QString classFile = ui->classFile->text();
     if (!NProject::instance()->existsContentsFile(classFile)) {
         QString path = NProject::instance()->contentsFilePath(classFile);
         QMap<QString, QString> replace;
@@ -113,7 +109,7 @@ void NPageDialog::updatePage() {
     }
 
     // layout check
-    QString layoutFile = ui->layout->currentText();
+    QString layoutFile = ui->layout->text();
     if (!NProject::instance()->existsContentsFile(layoutFile)) {
         QString path = NProject::instance()->contentsFilePath(layoutFile);
         if (!NUtil::createFileFromTemplate(":/template_code/layout.json", path)) {
