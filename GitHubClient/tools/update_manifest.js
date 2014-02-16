@@ -1,5 +1,5 @@
 var ManifestBuilder = {
-  _resources: [],
+  _assets: [],
 
   build: function(rootDir, enableFormat) {
     var fs = require('fs');
@@ -9,50 +9,50 @@ var ManifestBuilder = {
       var path = rootDir + '/' + files[i];
       var stat = fs.statSync(path);
       if (stat.isDirectory()) {
-        this._collectResourcesPath(path);
+        this._collectAssetsPath(path);
       }
     }
 
-    this._generateResourcesMD5();
-    this._formatResourcesPath(rootDir);
+    this._generateAssetsMD5();
+    this._formatAssetsPath(rootDir);
     this._writeManifestFile(rootDir + '/' + 'manifest.json', enableFormat);
   },
 
-  _collectResourcesPath: function(dir) {
+  _collectAssetsPath: function(dir) {
     var fs = require('fs');
     var files = fs.readdirSync(dir);
     for (var i = 0; i < files.length; i++) {
       var path = dir + '/' + files[i];
       var stat = fs.statSync(path);
       if (stat.isDirectory()) {
-        this._collectResourcesPath(path);
+        this._collectAssetsPath(path);
       } else {
-        this._resources.push({
+        this._assets.push({
           path: path
         });
       }
     }
   },
 
-  _generateResourcesMD5: function() {
+  _generateAssetsMD5: function() {
     var crypto = require('crypto');
     var fs = require('fs');
-    var resources = this._resources;
+    var assets = this._assets;
 
-    for (var i = 0; i < resources.length; i++) {
-      var path = resources[i].path;
+    for (var i = 0; i < assets.length; i++) {
+      var path = assets[i].path;
       var md5 = crypto.createHash('md5');
       md5.update(fs.readFileSync(path));
-      resources[i].md5 = md5.digest('hex');
+      assets[i].hash = md5.digest('hex');
     }
   },
 
-  _formatResourcesPath: function(rootDir) {
-    var resources = this._resources;
+  _formatAssetsPath: function(rootDir) {
+    var assets = this._assets;
     var regexp = new RegExp('^' + rootDir + '/+');
 
-    for (var i = 0; i < resources.length; i++) {
-      resources[i].path = resources[i].path.replace(regexp, '');
+    for (var i = 0; i < assets.length; i++) {
+      assets[i].path = assets[i].path.replace(regexp, '');
     }
   },
 
@@ -61,7 +61,7 @@ var ManifestBuilder = {
 
     var data = JSON.stringify({
       baseUrl: '',
-      resources: this._resources
+      assets: this._assets
     }, null, enableFormat ? 2 : 0);
 
     fs.writeFileSync(path, data);
