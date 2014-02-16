@@ -23,6 +23,7 @@ public:
     static QWidget* copyWidget(QWidget *widget, QObject *receiver = NULL, const char *slot = NULL);
 
 private:
+    QTableWidget *mTableWidget;
     QList<NJson> mJsonList;
     QTableWidgetItem *mCurrentTableWidgetItem;
     QHash<QTableWidgetItem *, QWidget *> mItemToWidget;
@@ -40,6 +41,7 @@ public:
     void hideAllTable();
     QStringList getClassNames() const;
     QList<NJson> getJsonList() const;
+    void setNumberToSpinBox(const QString &objectName, int value);
 
 private slots:
     void showCellWidget(QTableWidgetItem *item);

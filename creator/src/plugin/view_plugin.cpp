@@ -347,6 +347,7 @@ QList<NJson> ViewPlugin::getJsonList() const {
 }
 
 void ViewPlugin::createTableView(QTableWidget *tableWidget, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot){
+    mTableWidget = tableWidget;
     mReceiver = receiver;
     mSlot = slot;
     QList<NJson> jsonList = getJsonList();
@@ -490,4 +491,18 @@ void ViewPlugin::hideCellWidget(QTableWidgetItem *item) {
     QWidget *newWidget = copyWidget(widget, mReceiver, mSlot);
     mItemToWidget[item] = newWidget;
     tableWidget->setCellWidget(item->row(), 1, NULL);
+}
+
+void ViewPlugin::setNumberToSpinBox(const QString &objectName, int value) {
+    foreach (QTableWidgetItem *item, mItemToWidget.keys()) {
+        QWidget *widget = mItemToWidget[item];
+        if (widget->objectName() == objectName) {
+            QSpinBox *s = (QSpinBox*)widget;
+            s->blockSignals(true);
+            s->setValue(value);
+            s->blockSignals(false);
+            item->setText(QString::number(value));
+            return;
+        }
+    }
 }

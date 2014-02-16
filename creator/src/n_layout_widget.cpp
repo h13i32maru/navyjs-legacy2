@@ -298,31 +298,13 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
 }
 
 void NLayoutWidget::setViewPosFromJS(int x, int y) {
-    QSpinBox *s;
-
-//    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:pos.x");
-//    s->blockSignals(true);
-//    s->setValue(x);
-//    s->blockSignals(false);
-
-//    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:pos.y");
-//    s->blockSignals(true);
-//    s->setValue(y);
-//    s->blockSignals(false);
+    mViewPlugin->setNumberToSpinBox("number:pos.x", x);
+    mViewPlugin->setNumberToSpinBox("number:pos.y", y);
 }
 
 void NLayoutWidget::setViewSizeFromJS(int width, int height) {
-    QSpinBox *s;
-
-//    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:size.width");
-//    s->blockSignals(true);
-//    s->setValue(width);
-//    s->blockSignals(false);
-
-//    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:size.height");
-//    s->blockSignals(true);
-//    s->setValue(height);
-//    s->blockSignals(false);
+    mViewPlugin->setNumberToSpinBox("number:size.width", width);
+    mViewPlugin->setNumberToSpinBox("number:size.height", height);
 }
 
 /*************************************************
