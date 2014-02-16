@@ -2,6 +2,19 @@
   "class": "Navy.View.View",
   "define": [
     {
+      "label": "id",
+      "key": "id",
+      "type": "string",
+      "value": ""
+    },
+    {
+      "label": "class",
+      "key": "class",
+      "type": "string",
+      "value": "",
+      "readOnly": true
+    },
+    {
       "label": "visible",
       "key": "visible",
       "type": "boolean",

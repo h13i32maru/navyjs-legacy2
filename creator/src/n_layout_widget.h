@@ -10,6 +10,8 @@
 
 #include <window/n_layout_setting_dialog.h>
 
+#include <plugin/view_plugin.h>
+
 namespace Ui {
 class NLayoutWidget;
 }
@@ -34,6 +36,7 @@ private:
     Ui::NLayoutWidget *ui;
     NativeBridge *mNative;
 
+    ViewPlugin *mViewPlugin;
     QTableWidget *mCurrentExtraTableWidget;
     QMap<QString, QTableWidget*> mPropMap;
     QMap<QString, NJson> mDefaultMap;

@@ -94,9 +94,6 @@ void MainWindow::setCurrentProject(QString dirPath, QString projectName) {
 
     row = mFileSysteMmodel->index(project->contentsFilePath("navy")).row();
     mFileTreeView->setRowHidden(row, rootIndex, true);
-
-    // load plugin
-    ViewPlugin::instance()->load(NProject::instance()->pluginDirPath());
 }
 
 void MainWindow::newProject()

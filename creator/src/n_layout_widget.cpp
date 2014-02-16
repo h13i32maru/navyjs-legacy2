@@ -62,7 +62,9 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     connect(mNative, SIGNAL(currentViewSizeFromJS(int,int)), this, SLOT(setViewSizeFromJS(int,int)));
 
     // create property widget for view.
-    ViewPlugin::instance()->createTableView(ui->propScrollAreaWidgetContents, &mPropMap, &mDefaultMap, this, SLOT(syncWidgetToView()));
+    mViewPlugin = new ViewPlugin(this);
+    mViewPlugin->load(NProject::instance()->pluginDirPath());
+    mViewPlugin->createTableView(ui->propScrollAreaWidgetContents, &mPropMap, &mDefaultMap, this, SLOT(syncWidgetToView()));
     mCurrentExtraTableWidget = NULL;
     mPropMap["Navy.View.View"]->show();
     QStringList viewClassNames = mPropMap.keys();
@@ -144,7 +146,7 @@ void NLayoutWidget::syncWidgetToView() {
     QTableWidget *table = mPropMap["Navy.View.View"];
     QTableWidget *extraTable = mCurrentExtraTableWidget;
     NJson view;
-    ViewPlugin::instance()->syncWidgetToView(view, table, extraTable);
+    mViewPlugin->syncWidgetToView(view, table, extraTable);
 
     QString selectedViewId = items[0]->text(ViewsColId);
     QString id = view.getStr("id");
@@ -316,7 +318,7 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
         NJson view = views.getObject("0");
         QTableWidget *table = mPropMap["Navy.View.View"];
         QTableWidget *extraTable = mPropMap[className];
-        ViewPlugin::instance()->syncViewToWidget(view, table, extraTable);
+        mViewPlugin->syncViewToWidget(view, table, extraTable);
     }
 }
 

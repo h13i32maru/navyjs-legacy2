@@ -20,22 +20,12 @@
 
 #include <window/n_layout_json_table.h>
 
-ViewPlugin* ViewPlugin::mInstance = NULL;
-
-ViewPlugin* ViewPlugin::instance() {
-    if (mInstance == NULL) {
-        mInstance = new ViewPlugin();
-    }
-
-    return mInstance;
-}
-
-QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, QObject *receiver, const char* slot) {
+QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, QObject *receiver, const char* slot, QWidget *originWidget) {
     NJson dummy;
-    return ViewPlugin::createWidget(widgetDefine, dummy, receiver, slot);
+    return ViewPlugin::createWidget(widgetDefine, dummy, receiver, slot, originWidget);
 }
 
-QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QObject *receiver, const char *slot) {
+QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QObject *receiver, const char *slot, QWidget *originWidget) {
     QWidget *widget = NULL;
     const char *signal = NULL;
 
@@ -47,6 +37,10 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         viewJson.set(key, widgetDefine.getStr("value"));
         widget = l;
         signal = SIGNAL(textChanged(QString));
+
+        if (originWidget != NULL) {
+            l->setText( ((QLineEdit*)originWidget)->text() );
+        }
     }
 
     if (type == "number") {
@@ -56,6 +50,10 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         viewJson.set(key, widgetDefine.getInt("value"));
         widget = s;
         signal = SIGNAL(valueChanged(int));
+
+        if (originWidget != NULL) {
+            s->setValue( ((QSpinBox*)originWidget)->value() );
+        }
     }
 
     if (type == "boolean") {
@@ -63,6 +61,10 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         viewJson.set(key, widgetDefine.getBool("value"));
         widget = c;
         signal = SIGNAL(toggled(bool));
+
+        if (originWidget != NULL) {
+            c->setChecked( ((QCheckBox*)originWidget)->isChecked() );
+        }
     }
 
     if (type == "stringList") {
@@ -74,6 +76,13 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         }
         widget = c;
         signal = SIGNAL(currentTextChanged(QString));
+
+        if (originWidget != NULL) {
+            for (int k = 0; k < ((QComboBox*)originWidget)->count(); k++) {
+                c->addItem( ((QComboBox*)originWidget)->itemText(k) );
+            }
+            c->setCurrentText( ((QComboBox*)originWidget)->currentText() );
+        }
     }
 
     if (type == "numberList") {
@@ -85,6 +94,13 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         }
         widget = c;
         signal = SIGNAL(currentTextChanged(QString));
+
+        if (originWidget != NULL) {
+            for (int k = 0; k < ((QComboBox*)originWidget)->count(); k++) {
+                c->addItem( ((QComboBox*)originWidget)->itemText(k) );
+            }
+            c->setCurrentText( ((QComboBox*)originWidget)->currentText() );
+        }
     }
 
     if (type == "pageList") {
@@ -92,6 +108,10 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         viewJson.set(key, widgetDefine.getStr("value"));
         widget = b;
         signal = SIGNAL(textChanged(QString));
+
+        if (originWidget != NULL) {
+            b->setText( ((NTextListSelector*)originWidget)->text() );
+        }
     }
 
     if (type == "sceneList") {
@@ -99,6 +119,10 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         viewJson.set(key, widgetDefine.getStr("value"));
         widget = b;
         signal = SIGNAL(textChanged(QString));
+
+        if (originWidget != NULL) {
+            b->setText( ((NTextListSelector*)originWidget)->text() );
+        }
     }
 
     if (type == "imageList") {
@@ -106,6 +130,10 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         viewJson.set(key, widgetDefine.getStr("value"));
         widget = b;
         signal = SIGNAL(textChanged(QString));
+
+        if (originWidget != NULL) {
+            b->setText( ((NTextListSelector*)originWidget)->text() );
+        }
     }
 
     if (type == "layoutList") {
@@ -113,6 +141,10 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         viewJson.set(key, widgetDefine.getStr("value"));
         widget = b;
         signal = SIGNAL(textChanged(QString));
+
+        if (originWidget != NULL) {
+            b->setText( ((NTextListSelector*)originWidget)->text() );
+        }
     }
 
     if (type == "linkList") {
@@ -120,6 +152,10 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         viewJson.set(key, widgetDefine.getStr("value"));
         widget = b;
         signal = SIGNAL(textChanged(QString));
+
+        if (originWidget != NULL) {
+            b->setText( ((NTextListSelector*)originWidget)->text() );
+        }
     }
 
     if (type == "array") {
@@ -127,11 +163,23 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
         viewJson.set(key, widgetDefine.getObject("value"));
         widget = e;
         signal = SIGNAL(changedJsonArray());
+
+        if (originWidget != NULL) {
+            e->setJsonArray( ((NJsonArrayEditor*)originWidget)->getJsonArray() );
+        }
     }
 
     // ----
     if (widget != NULL) {
         widget->setObjectName(type + ":" + key);
+
+        if (widgetDefine.getBool("readOnly")) {
+            widget->setEnabled(false);
+        }
+
+        if (originWidget != NULL) {
+            widget->setEnabled(originWidget->isEnabled());
+        }
     }
     if (receiver != NULL && slot != NULL && widget != NULL && signal != NULL) {
         QObject::connect(widget, signal, receiver, slot);
@@ -262,13 +310,23 @@ QString ViewPlugin::widgetToString(QWidget *widget) {
     } else if (type == "array") {
         NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
         return e->getJsonArray().stringify();
+    } else {
+        qCritical() << "type is unknown. " << type;
+        return "";
     }
 }
 
-QWidget* ViewPlugin::copyWidget(QWidget *widget) {
+QWidget* ViewPlugin::copyWidget(QWidget *widget, QObject* receiver, const char *slot) {
     QString type = widget->objectName().split(":")[0];
+    QString key = widget->objectName().split(":")[1];
 
-    QWidget *newWidget;
+    NJson widgetDefine;
+    widgetDefine.set("key", key);
+    widgetDefine.set("type", type);
+    QWidget *newWidget = ViewPlugin::createWidget(widgetDefine, receiver, slot, widget);
+    return newWidget;
+
+    /*
     if (type == "string") {
         QLineEdit *l = (QLineEdit*) widget;
         QLineEdit *ll = new QLineEdit();
@@ -277,6 +335,8 @@ QWidget* ViewPlugin::copyWidget(QWidget *widget) {
     } else if (type == "number") {
         QSpinBox *s = (QSpinBox*) widget;
         QSpinBox *ss = new QSpinBox();
+        ss->setMinimum(s->minimum());
+        ss->setMaximum(s->maximum());
         ss->setValue(s->value());
         newWidget = ss;
     } else if (type == "boolean") {
@@ -324,13 +384,18 @@ QWidget* ViewPlugin::copyWidget(QWidget *widget) {
         NJsonArrayEditor *ee = new NJsonArrayEditor(e->getWidgetDefineJson());
         ee->setJsonArray(e->getJsonArray());
         newWidget = ee;
+    } else {
+        qCritical() << "type is unknown." << type;
+        return NULL;
     }
 
     newWidget->setObjectName(widget->objectName());
     return newWidget;
+    */
 }
 
-ViewPlugin::ViewPlugin() {
+ViewPlugin::ViewPlugin(QObject *parent) : QObject(parent){
+    mCurrentTableWidgetItem = NULL;
 }
 
 void ViewPlugin::load(const QString &pluginDirPath) {
@@ -361,8 +426,11 @@ QList<NJson> ViewPlugin::getJsonList() const {
     return mJsonList;
 }
 
-void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableWidget*> *propMap, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot) const{
+void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableWidget*> *propMap, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot){
     int height = QLabel("AAA").sizeHint().height() * 1.5;
+
+    mReceiver = receiver;
+    mSlot = slot;
 
     QList<NJson> jsonList = getJsonList();
     for (int i = 0; i < jsonList.length(); i++) {
@@ -382,13 +450,11 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableWidg
 //        tableWidget->setModel(model);
         tableWidget->horizontalHeader()->setStretchLastSection(true);
         tableWidget->verticalHeader()->setHidden(true);
-        //table viewのtab navigationを切ることで内部のwidgetがtab navigationできるようになる.
-//        tableWidget->setTabKeyNavigation(false);
 
         int row = 0;
         QString className = json.getStr("class");
-        if (className == "Navy.View.View") {
-            row = 2;
+        if (false && className == "Navy.View.View") {
+            row = 0;
 
             // set id
             {
@@ -443,17 +509,26 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableWidg
                 tableWidget->setItem(row, 0, propLabel);
 //                modelIndex = model->index(row, 1);
 //                tableWidget->setIndexWidget(modelIndex, widget);
-                tableWidget->setCellWidget(row, 1, widget);
+//                tableWidget->setCellWidget(row, 1, widget);
+//                mItemToWidget[propLabel] = widget;
+                QTableWidgetItem *item = new QTableWidgetItem("");
+                tableWidget->setItem(row, 1, item);
+                mItemToWidget[item] = widget;
 //                tableWidget->setRowHeight(row, height);
             }
         }
 
+        QObject::connect(tableWidget, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(showCellWidget(QTableWidgetItem*)));
         tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
+        tableWidget->setAlternatingRowColors(true);
         tableWidget->setSelectionBehavior(QTableWidget::SelectRows);
         tableWidget->setSelectionMode(QTableWidget::SingleSelection);
         tableWidget->setMinimumHeight((row + 1 ) * height);
         tableWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        //table viewのtab navigationを切ることで内部のwidgetがtab navigationできるようになる.
+        tableWidget->setTabKeyNavigation(false);
+
         tableWidget->hide();
 
         propMap->insert(className, tableWidget);
@@ -472,10 +547,15 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableWidget *viewTable, QT
 //void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
 void ViewPlugin::syncViewToWidget(const NJson &view, QTableWidget *table) const {
     for (int row = 0; row < table->rowCount(); row++) {
-        QWidget *widget = table->cellWidget(row, 1);
+        QTableWidgetItem *item = table->item(row, 1);
+        QWidget *widget = mItemToWidget[item];
+
         widget->blockSignals(true);
         ViewPlugin::syncViewToWidget(view, widget);
         widget->blockSignals(false);
+
+        QString value = ViewPlugin::widgetToString(widget);
+        item->setText(value);
     }
     /*
     QAbstractItemModel *model = table->model();
@@ -499,7 +579,8 @@ void ViewPlugin::syncWidgetToView(NJson &view, QTableWidget *table, QTableWidget
 //void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
 void ViewPlugin::syncWidgetToView(NJson &view, QTableWidget *table) const {
     for (int row = 0; row < table->rowCount(); row++) {
-        QWidget *widget = table->cellWidget(row, 1);
+        QTableWidgetItem *item = table->item(row, 1);
+        QWidget *widget = mItemToWidget[item];
         ViewPlugin::syncWidgetToView(widget, view);
     }
     /*
@@ -511,4 +592,41 @@ void ViewPlugin::syncWidgetToView(NJson &view, QTableWidget *table) const {
         ViewPlugin::syncWidgetToView(widget, view);
     }
     */
+}
+
+void ViewPlugin::showCellWidget(QTableWidgetItem *item) {
+    hideCurrentCellWidget();
+
+    // widgetが存在するカラムのitemの場合だけ処理をする
+    if (item->column() != 1) {
+        mCurrentTableWidgetItem = NULL;
+        return;
+    }
+
+    QTableWidget *tableWidget = item->tableWidget();
+    QWidget *widget = mItemToWidget[item];
+    widget->setAutoFillBackground(true);
+
+    tableWidget->setCellWidget(item->row(), 1, widget);
+
+    mCurrentTableWidgetItem = item;
+}
+
+void ViewPlugin::hideCurrentCellWidget() {
+    if (mCurrentTableWidgetItem != NULL) {
+        hideCellWidget(mCurrentTableWidgetItem);
+    }
+}
+
+void ViewPlugin::hideCellWidget(QTableWidgetItem *item) {
+    QTableWidget *tableWidget = item->tableWidget();
+    QWidget *widget = mItemToWidget[item];
+
+    QString value = ViewPlugin::widgetToString(widget);
+    item->setText(value);
+
+    // setIndexWidgetをすると以前のwidgetは破棄されてしまうのでcopyして新しいwidgetを作っておく
+    QWidget *newWidget = copyWidget(widget, mReceiver, mSlot);
+    mItemToWidget[item] = newWidget;
+    tableWidget->setCellWidget(item->row(), 1, NULL);
 }
