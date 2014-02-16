@@ -13,6 +13,7 @@ NConfigAppWidget::NConfigAppWidget(const QString &filePath, QWidget *parent) : N
     ui->appTouchIcon->setType(NTextListSelector::IMAGE);
 
     mConfigApp.parseFromFilePath(filePath);
+    ui->appStartScene->setType(NTextListSelector::SCENE);
 
     syncJsonToWidget();
 
@@ -28,10 +29,6 @@ NConfigAppWidget::NConfigAppWidget(const QString &filePath, QWidget *parent) : N
 }
 
 void NConfigAppWidget::refreshForActive() {
-    {
-        QStringList sceneList = NProject::instance()->scenes();
-        ui->appStartScene->setList(sceneList);
-    }
 }
 
 bool NConfigAppWidget::innerSave() {
@@ -52,7 +49,7 @@ void NConfigAppWidget::syncJsonToWidget() {
     ui->appTouchIcon->setText(mConfigApp.getStr("touchIcon"));
     ui->appSizeWidth->setValue(mConfigApp.getInt("size.width"));
     ui->appSizeHeight->setValue(mConfigApp.getInt("size.height"));
-    ui->appStartScene->setCurrentText(mConfigApp.getStr("start.scene"));
+    ui->appStartScene->setText(mConfigApp.getStr("start.scene"));
     ui->appFontFamily->setText(mConfigApp.getStr("fontFamily"));
 }
 
@@ -61,7 +58,7 @@ void NConfigAppWidget::syncWidgetToJson() {
     mConfigApp.set("touchIcon", ui->appTouchIcon->text());
     mConfigApp.set("size.width", ui->appSizeWidth->value());
     mConfigApp.set("size.height", ui->appSizeHeight->value());
-    mConfigApp.set("start.scene", ui->appStartScene->currentText());
+    mConfigApp.set("start.scene", ui->appStartScene->text());
     mConfigApp.set("fontFamily", ui->appFontFamily->text());
 }
 

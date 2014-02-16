@@ -66,19 +66,6 @@
       <item row="0" column="1" colspan="2">
        <widget class="QLineEdit" name="appName"/>
       </item>
-      <item row="4" column="1" colspan="2">
-       <widget class="NComboBox" name="appStartScene">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="1" colspan="2">
        <widget class="QLineEdit" name="appFontFamily"/>
       </item>
@@ -150,17 +137,19 @@
         </property>
        </widget>
       </item>
+      <item row="4" column="1" colspan="2">
+       <widget class="NTextListSelector" name="appStartScene">
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>NComboBox</class>
-   <extends>QComboBox</extends>
-   <header>extend/n_combo_box.h</header>
-  </customwidget>
   <customwidget>
    <class>NTextListSelector</class>
    <extends>QPushButton</extends>

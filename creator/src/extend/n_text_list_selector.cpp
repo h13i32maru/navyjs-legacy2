@@ -7,10 +7,7 @@
 NTextListSelector::NTextListSelector(QWidget *parent) : QPushButton(parent) {
     connect(this, SIGNAL(clicked()), this, SLOT(execListDialog()));
 
-    this->setFlat(true);
-    this->setStyleSheet("QPushButton { \
-                        text-align: left;\
-                      }");
+    this->setStyleSheet("QPushButton { text-align: left; }");
 }
 
 NTextListSelector::NTextListSelector(TYPE type, QWidget *parent) : NTextListSelector(parent) {

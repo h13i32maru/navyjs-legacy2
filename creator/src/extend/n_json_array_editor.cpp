@@ -7,10 +7,7 @@
 NJsonArrayEditor::NJsonArrayEditor(NJson widgetDefine, QWidget *parent) : QPushButton(parent)
 {
     setText("...");
-    this->setFlat(true);
-    this->setStyleSheet("QPushButton { \
-                        text-align: left;\
-                      }");
+    this->setStyleSheet("QPushButton { text-align: left; }");
 
     mWidgetDefine = widgetDefine;
     mJsonArray.parse(QString("[]"));

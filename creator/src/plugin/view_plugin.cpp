@@ -99,6 +99,7 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
 
     if (type == "pageList") {
         NTextListSelector *b = new NTextListSelector(NTextListSelector::PAGE);
+        b->setFlat(true);
         viewJson.set(key, widgetDefine.getStr("value"));
         widget = b;
         signal = SIGNAL(textChanged(QString));
@@ -110,6 +111,7 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
 
     if (type == "sceneList") {
         NTextListSelector *b = new NTextListSelector(NTextListSelector::SCENE);
+        b->setFlat(true);
         viewJson.set(key, widgetDefine.getStr("value"));
         widget = b;
         signal = SIGNAL(textChanged(QString));
@@ -121,6 +123,7 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
 
     if (type == "imageList") {
         NTextListSelector *b = new NTextListSelector(NTextListSelector::IMAGE);
+        b->setFlat(true);
         viewJson.set(key, widgetDefine.getStr("value"));
         widget = b;
         signal = SIGNAL(textChanged(QString));
@@ -132,6 +135,7 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
 
     if (type == "layoutList") {
         NTextListSelector *b = new NTextListSelector(NTextListSelector::LAYOUT);
+        b->setFlat(true);
         viewJson.set(key, widgetDefine.getStr("value"));
         widget = b;
         signal = SIGNAL(textChanged(QString));
@@ -143,6 +147,7 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
 
     if (type == "linkList") {
         NTextListSelector *b = new NTextListSelector(NTextListSelector::LINK);
+        b->setFlat(true);
         viewJson.set(key, widgetDefine.getStr("value"));
         widget = b;
         signal = SIGNAL(textChanged(QString));
@@ -154,6 +159,7 @@ QWidget* ViewPlugin::createWidget(const NJson &widgetDefine, NJson &viewJson, QO
 
     if (type == "array") {
         NJsonArrayEditor *e = new NJsonArrayEditor(widgetDefine);
+        e->setFlat(true);
         viewJson.set(key, widgetDefine.getObject("value"));
         widget = e;
         signal = SIGNAL(changedJsonArray());
