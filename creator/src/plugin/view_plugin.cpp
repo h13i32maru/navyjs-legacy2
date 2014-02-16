@@ -299,8 +299,8 @@ QString ViewPlugin::widgetToString(QWidget *widget) {
         NTextListSelector *b = (NTextListSelector*)widget;
         return b->text();
     } else if (type == "array") {
-        NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
-        return e->getJsonArray().stringify();
+        // stringifyした値だと表示に不適切なので固定文字列とする(ちょっと微妙)
+        return "...";
     } else {
         qCritical() << "type is unknown. " << type;
         return "";
