@@ -325,73 +325,6 @@ QWidget* ViewPlugin::copyWidget(QWidget *widget, QObject* receiver, const char *
     widgetDefine.set("type", type);
     QWidget *newWidget = ViewPlugin::createWidget(widgetDefine, receiver, slot, widget);
     return newWidget;
-
-    /*
-    if (type == "string") {
-        QLineEdit *l = (QLineEdit*) widget;
-        QLineEdit *ll = new QLineEdit();
-        ll->setText(l->text());
-        newWidget = ll;
-    } else if (type == "number") {
-        QSpinBox *s = (QSpinBox*) widget;
-        QSpinBox *ss = new QSpinBox();
-        ss->setMinimum(s->minimum());
-        ss->setMaximum(s->maximum());
-        ss->setValue(s->value());
-        newWidget = ss;
-    } else if (type == "boolean") {
-        QCheckBox *c = (QCheckBox*) widget;
-        QCheckBox *cc = new QCheckBox();
-        cc->setChecked(c->isChecked());
-        newWidget = cc;
-    } else if (type == "stringList") {
-        QComboBox *c = (QComboBox*) widget;
-        QComboBox *cc = new QComboBox();
-        cc->setCurrentText(c->currentText());
-        newWidget = cc;
-    } else if (type == "numberList") {
-        QComboBox *c = (QComboBox*) widget;
-        QComboBox *cc = new QComboBox();
-        cc->setCurrentText(c->currentText());
-        newWidget = cc;
-    } else if (type == "pageList") {
-        NTextListSelector *b = (NTextListSelector*)widget;
-        NTextListSelector *bb = new NTextListSelector();
-        bb->setText(b->text());
-        newWidget = bb;
-    } else if (type == "sceneList") {
-        NTextListSelector *b = (NTextListSelector*)widget;
-        NTextListSelector *bb = new NTextListSelector(b->getType());
-        bb->setText(b->text());
-        newWidget = bb;
-    } else if (type == "imageList") {
-        NTextListSelector *b = (NTextListSelector*)widget;
-        NTextListSelector *bb = new NTextListSelector(b->getType());
-        bb->setText(b->text());
-        newWidget = bb;
-    } else if (type == "linkList") {
-        NTextListSelector *b = (NTextListSelector*)widget;
-        NTextListSelector *bb = new NTextListSelector(b->getType());
-        bb->setText(b->text());
-        newWidget = bb;
-    } else if (type == "layoutList") {
-        NTextListSelector *b = (NTextListSelector*)widget;
-        NTextListSelector *bb = new NTextListSelector(b->getType());
-        bb->setText(b->text());
-        newWidget = bb;
-    } else if (type == "array") {
-        NJsonArrayEditor *e = (NJsonArrayEditor *)widget;
-        NJsonArrayEditor *ee = new NJsonArrayEditor(e->getWidgetDefineJson());
-        ee->setJsonArray(e->getJsonArray());
-        newWidget = ee;
-    } else {
-        qCritical() << "type is unknown." << type;
-        return NULL;
-    }
-
-    newWidget->setObjectName(widget->objectName());
-    return newWidget;
-    */
 }
 
 ViewPlugin::ViewPlugin(QObject *parent) : QObject(parent){
@@ -437,84 +370,28 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableWidg
         NJson json = jsonList[i];
         NJson widgetDefine = json.getObject("define");
 
-//        QModelIndex modelIndex;
-//        QStandardItemModel *model = new QStandardItemModel(widgetDefine.length(), 2);
-//        model->setHorizontalHeaderItem(0, new QStandardItem("Property"));
-//        model->setHorizontalHeaderItem(1, new QStandardItem("Value"));
-
         QTableWidget *tableWidget = new QTableWidget();
         tableWidget->setColumnCount(2);
         tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("Property"));
         tableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("Value"));
         parentWidget->layout()->addWidget(tableWidget);
-//        tableWidget->setModel(model);
         tableWidget->horizontalHeader()->setStretchLastSection(true);
         tableWidget->verticalHeader()->setHidden(true);
 
-        int row = 0;
         QString className = json.getStr("class");
-        if (false && className == "Navy.View.View") {
-            row = 0;
-
-            // set id
-            {
-                tableWidget->insertRow(0);
-//                QStandardItem *propLabel = new QStandardItem("id");
-                QTableWidgetItem *propLabel = new QTableWidgetItem("id");
-//                propLabel->setEditable(false);
-//                propLabel->setSelectable(false);
-//                model->setItem(0, 0, propLabel);
-//                modelIndex = model->index(0, 1);
-                tableWidget->setItem(0, 0, propLabel);
-                QLineEdit *l = new QLineEdit();
-                l->setObjectName("string:id");
-//                tableWidget->setIndexWidget(modelIndex, l);
-                tableWidget->setCellWidget(0, 1, l);
-//                tableWidget->setRowHeight(0, height);
-                QObject::connect(l, SIGNAL(textChanged(QString)), receiver, slot);
-            }
-
-            // set class
-            {
-                tableWidget->insertRow(1);
-//                QStandardItem *propLabel = new QStandardItem("class");
-                QTableWidgetItem *propLabel = new QTableWidgetItem("class");
-//                propLabel->setEditable(false);
-//                propLabel->setSelectable(false);
-//                model->setItem(1, 0, propLabel);
-//                modelIndex = model->index(1, 1);
-                tableWidget->setItem(1, 0, propLabel);
-                QLineEdit *l = new QLineEdit(className);
-                l->setReadOnly(true);
-                l->setObjectName("string:class");
-//                tableWidget->setIndexWidget(modelIndex, l);
-                tableWidget->setCellWidget(1, 1, l);
-//                tableWidget->setRowHeight(1, height);
-            }
-        }
-
         NJson viewJson;
 
-        for (int j = 0; j < widgetDefine.length(); j++, row++) {
+        for (int row = 0; row < widgetDefine.length(); row++) {
             tableWidget->insertRow(row);
-            QString index = QString::number(j);
+            QString index = QString::number(row);
             QString label = widgetDefine.getStr(index + ".label");
             QWidget *widget = ViewPlugin::createWidget(widgetDefine.getObject(index), viewJson, receiver, slot);
             if (widget != NULL) {
-//                QStandardItem *propLabel = new QStandardItem(label);
                 QTableWidgetItem *propLabel = new QTableWidgetItem(label);
-//                propLabel->setEditable(false);
-//                propLabel->setSelectable(false);
-//                model->setItem(row, 0, propLabel);
                 tableWidget->setItem(row, 0, propLabel);
-//                modelIndex = model->index(row, 1);
-//                tableWidget->setIndexWidget(modelIndex, widget);
-//                tableWidget->setCellWidget(row, 1, widget);
-//                mItemToWidget[propLabel] = widget;
                 QTableWidgetItem *item = new QTableWidgetItem("");
                 tableWidget->setItem(row, 1, item);
                 mItemToWidget[item] = widget;
-//                tableWidget->setRowHeight(row, height);
             }
         }
 
@@ -523,7 +400,7 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableWidg
         tableWidget->setAlternatingRowColors(true);
         tableWidget->setSelectionBehavior(QTableWidget::SelectRows);
         tableWidget->setSelectionMode(QTableWidget::SingleSelection);
-        tableWidget->setMinimumHeight((row + 1 ) * height);
+        tableWidget->setMinimumHeight((tableWidget->rowCount() + 1 ) * height);
         tableWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         //table viewのtab navigationを切ることで内部のwidgetがtab navigationできるようになる.
@@ -538,13 +415,11 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableWidg
     ((QHBoxLayout *)parentWidget->layout())->addStretch();
 }
 
-//void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *viewTable, QTableView *extraTable) const {
 void ViewPlugin::syncViewToWidget(const NJson &view, QTableWidget *viewTable, QTableWidget *extraTable) const {
     this->syncViewToWidget(view, viewTable);
     this->syncViewToWidget(view, extraTable);
 }
 
-//void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
 void ViewPlugin::syncViewToWidget(const NJson &view, QTableWidget *table) const {
     for (int row = 0; row < table->rowCount(); row++) {
         QTableWidgetItem *item = table->item(row, 1);
@@ -557,41 +432,19 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableWidget *table) const 
         QString value = ViewPlugin::widgetToString(widget);
         item->setText(value);
     }
-    /*
-    QAbstractItemModel *model = table->model();
-    QModelIndex index;
-    for (int row = 0; row < model->rowCount(); row++) {
-        index = model->index(row, 1);
-        QWidget *widget = table->indexWidget(index);
-        widget->blockSignals(true);
-        ViewPlugin::syncViewToWidget(view, widget);
-        widget->blockSignals(false);
-    }
-    */
 }
 
-//void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table, QTableView *extraTable) const {
 void ViewPlugin::syncWidgetToView(NJson &view, QTableWidget *table, QTableWidget *extraTable) const {
     this->syncWidgetToView(view, table);
     this->syncWidgetToView(view, extraTable);
 }
 
-//void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
 void ViewPlugin::syncWidgetToView(NJson &view, QTableWidget *table) const {
     for (int row = 0; row < table->rowCount(); row++) {
         QTableWidgetItem *item = table->item(row, 1);
         QWidget *widget = mItemToWidget[item];
         ViewPlugin::syncWidgetToView(widget, view);
     }
-    /*
-    QAbstractItemModel *model = table->model();
-    QModelIndex index;
-    for (int row = 0; row < model->rowCount(); row++) {
-        index = model->index(row, 1);
-        QWidget *widget = table->indexWidget(index);
-        ViewPlugin::syncWidgetToView(widget, view);
-    }
-    */
 }
 
 void ViewPlugin::showCellWidget(QTableWidgetItem *item) {
