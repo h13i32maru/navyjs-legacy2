@@ -347,27 +347,24 @@ QList<NJson> ViewPlugin::getJsonList() const {
 }
 
 void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableWidget*> *propMap, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot){
-    int height = QLabel("AAA").sizeHint().height() * 1.5;
-
     mReceiver = receiver;
     mSlot = slot;
 
     QList<NJson> jsonList = getJsonList();
     for (int i = 0; i < jsonList.length(); i++) {
         NJson json = jsonList[i];
+        QString className = json.getStr("class");
         NJson widgetDefine = json.getObject("define");
 
         QTableWidget *tableWidget = new QTableWidget();
         tableWidget->setColumnCount(2);
-        tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("Property"));
+        tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem(className.split(".").last()));
         tableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("Value"));
         parentWidget->layout()->addWidget(tableWidget);
         tableWidget->horizontalHeader()->setStretchLastSection(true);
         tableWidget->verticalHeader()->setHidden(true);
 
-        QString className = json.getStr("class");
         NJson viewJson;
-
         for (int row = 0; row < widgetDefine.length(); row++) {
             tableWidget->insertRow(row);
             QString index = QString::number(row);
@@ -387,7 +384,7 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableWidg
         tableWidget->setAlternatingRowColors(true);
         tableWidget->setSelectionBehavior(QTableWidget::SelectRows);
         tableWidget->setSelectionMode(QTableWidget::SingleSelection);
-        tableWidget->setMinimumHeight((tableWidget->rowCount() + 1 ) * height);
+        tableWidget->setMinimumHeight((tableWidget->rowCount() + 1) * tableWidget->rowHeight(0));
         tableWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         //table viewのtab navigationを切ることで内部のwidgetがtab navigationできるようになる.
