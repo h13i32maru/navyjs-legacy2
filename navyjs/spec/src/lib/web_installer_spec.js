@@ -1,10 +1,10 @@
-describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
+describe('Navy.AssetInstaller installs web resource to WebSQL:', function(){
 
   /**
    * 正常系のテスト
    */
   it('updates local resources by using manifest.', function(done){
-    Navy.WebInstaller.initialize('/base/fixture/manifest1.json');
+    Navy.AssetInstaller.initialize('/base/fixture/manifest1.json');
 
     var totalUpdatingCount;
     var updatingCount = 0;
@@ -24,11 +24,11 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
       }
     };
 
-    Navy.WebInstaller.update(options);
+    Navy.AssetInstaller.update(options);
   });
 
   it('only update invalid resources.', function(done){
-    Navy.WebInstaller.setManifestURL('/base/fixture/manifest2.json');
+    Navy.AssetInstaller.setManifestURL('/base/fixture/manifest2.json');
 
     var totalUpdatingCount;
     var updatingCount = 0;
@@ -46,7 +46,7 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
         throw new Error('fail updating path. ' + path);
       }
     };
-    Navy.WebInstaller.update(options);
+    Navy.AssetInstaller.update(options);
   });
 
   it('do not update when not changed manifest', function(done){
@@ -59,11 +59,11 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
         done();
       }
     };
-    Navy.WebInstaller.update(options);
+    Navy.AssetInstaller.update(options);
   });
 
   it('call onError when remote file is not exists.', function(done){
-    Navy.WebInstaller.setManifestURL('/base/fixture/manifest3_error.json');
+    Navy.AssetInstaller.setManifestURL('/base/fixture/manifest3_error.json');
 
     var options = {
       onError: function(path) {
@@ -71,19 +71,19 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
         done();
       }
     };
-    Navy.WebInstaller.update(options);
+    Navy.AssetInstaller.update(options);
   });
 
   it('can load javascript.', function(done){
     var scriptElement = document.createElement('script');
-    Navy.WebInstaller.loadJavaScript('/base/fixture/code/code1.js', scriptElement, function(scriptElement){
+    Navy.AssetInstaller.loadJavaScript('/base/fixture/code/code1.js', scriptElement, function(scriptElement){
       expect(scriptElement.textContent).toBe('// dummy code1\n');
       done();
     });
   });
 
   it('can load json.', function(done){
-    Navy.WebInstaller.loadJSON('/base/fixture/layout/layout1.json', function(obj){
+    Navy.AssetInstaller.loadJSON('/base/fixture/layout/layout1.json', function(obj){
       expect(obj).toEqual({prop1: 'dummy layout1'});
       done();
     });
@@ -91,7 +91,7 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
 
   it('can load image.', function(done){
     var imageElement = new Image();
-    Navy.WebInstaller.loadImage('/base/fixture/image/image1.png', imageElement, function(imageElement){
+    Navy.AssetInstaller.loadImage('/base/fixture/image/image1.png', imageElement, function(imageElement){
       var src = imageElement.src;
       expect(src).toContain('/base/fixture/image/image1.png');
       expect(imageElement.complete).toBeTruthy();
@@ -101,16 +101,16 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
 
   it('can load css.', function(done){
     var styleElement = document.createElement('style');
-    Navy.WebInstaller.loadCSS('/base/fixture/css/style1.css', styleElement, function(styleElement){
+    Navy.AssetInstaller.loadCSS('/base/fixture/css/style1.css', styleElement, function(styleElement){
       expect(styleElement.textContent).toBe('/* dummy style1 */\n');
       done();
     })
   });
 
   it('can be updated if disabled database.', function(done){
-    Navy.WebInstaller.setEnableDatabase(false);
+    Navy.AssetInstaller.setEnableDatabase(false);
 
-    Navy.WebInstaller.update({
+    Navy.AssetInstaller.update({
       onProgress: function(){
         throw new Error('onProgress should not be called');
       },
@@ -122,12 +122,12 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
   });
 
   it('can load remote resource.', function(done){
-    Navy.WebInstaller.setEnableDatabase(false);
-    expect(Navy.WebInstaller._loadResource).toBe(Navy.WebInstaller._loadRemoteResource);
+    Navy.AssetInstaller.setEnableDatabase(false);
+    expect(Navy.AssetInstaller._loadResource).toBe(Navy.AssetInstaller._loadRemoteResource);
 
-    Navy.WebInstaller.loadJSON('/base/fixture/config/config1.json', function(obj){
+    Navy.AssetInstaller.loadJSON('/base/fixture/config/config1.json', function(obj){
       expect(obj).toEqual({prop1: 'dummy config1'});
-      Navy.WebInstaller.setEnableDatabase(true);
+      Navy.AssetInstaller.setEnableDatabase(true);
       done();
     });
   });
@@ -144,7 +144,7 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
         done();
       };
       var scriptElement = document.createElement('script');
-      Navy.WebInstaller.loadJavaScript('/base/fixture/config/config1.json', scriptElement, function(scriptElement){});
+      Navy.AssetInstaller.loadJavaScript('/base/fixture/config/config1.json', scriptElement, function(scriptElement){});
     });
 
     it('throws not json exception.', function(done){
@@ -154,7 +154,7 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
         expect(errorMsg).toContain('code1.js');
         done();
       };
-      Navy.WebInstaller.loadJSON('/base/fixture/code/code1.js', function(obj){});
+      Navy.AssetInstaller.loadJSON('/base/fixture/code/code1.js', function(obj){});
     });
 
     it('throws not css exception.', function(done){
@@ -166,7 +166,7 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
       };
 
       var styleElement = document.createElement('style');
-      Navy.WebInstaller.loadCSS('/base/fixture/code/code1.js', styleElement, function(styleElement){});
+      Navy.AssetInstaller.loadCSS('/base/fixture/code/code1.js', styleElement, function(styleElement){});
     });
 
     it('throws not image exception.', function(done){
@@ -178,7 +178,7 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
       };
 
       var imageElement = new Image();
-      Navy.WebInstaller.loadImage('/base/fixture/code/code1.js', imageElement, function(){});
+      Navy.AssetInstaller.loadImage('/base/fixture/code/code1.js', imageElement, function(){});
     });
 
     it('throws not exists image.', function(done){
@@ -190,7 +190,7 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
       };
 
       var imageElement = new Image();
-      Navy.WebInstaller.loadImage('/not_exists_image.png', imageElement, function(){});
+      Navy.AssetInstaller.loadImage('/not_exists_image.png', imageElement, function(){});
     });
 
     it('throws not found path in DB exception.', function(done){
@@ -201,7 +201,7 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
         done();
       };
 
-      Navy.WebInstaller.loadJSON('/not_exists_json.json', function(){});
+      Navy.AssetInstaller.loadJSON('/not_exists_json.json', function(){});
     });
 
     it('throws not found path in remote exception.', function(done){
@@ -212,15 +212,15 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
         done();
       };
 
-      Navy.WebInstaller.setEnableDatabase(false);
-      Navy.WebInstaller.loadJSON('/not_exists_json.json', function(){});
-      Navy.WebInstaller.setEnableDatabase(true);
+      Navy.AssetInstaller.setEnableDatabase(false);
+      Navy.AssetInstaller.loadJSON('/not_exists_json.json', function(){});
+      Navy.AssetInstaller.setEnableDatabase(true);
     });
 
     it('throws unknown file extension exception.', function(){
       var exception = null;
       try {
-        Navy.WebInstaller._getContentType('foo.invalid');
+        Navy.AssetInstaller._getContentType('foo.invalid');
       } catch(e) {
         exception = e;
       }
@@ -233,8 +233,8 @@ describe('Navy.WebInstaller installs web resource to WebSQL:', function(){
   /**
    * 内部クラスのテスト
    */
-  describe('Navy.WebInstaller.Loader exception:', function(){
-    var loader = new Navy.WebInstaller.Loader();
+  describe('Navy.AssetInstaller.Loader exception:', function(){
+    var loader = new Navy.AssetInstaller.Loader();
 
     it('throws unknown content type exception.', function(){
       var exception = null;

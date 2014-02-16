@@ -7,11 +7,11 @@ window.addEventListener('DOMContentLoaded', function(){
 
   var hash = Navy.URL.parseHash(location.href);
 
-  Navy.WebInstaller.initialize('./manifest.json');
+  Navy.AssetInstaller.initialize('./manifest.json');
   if (hash['web_installer_db'] === 'false') {
-    Navy.WebInstaller.setEnableDatabase(false);
+    Navy.AssetInstaller.setEnableDatabase(false);
   }
-  Navy.WebInstaller.update({
+  Navy.AssetInstaller.update({
     forceUpdate: true,
     onProgress: function(progress, total) {
       var progressElement = document.querySelector('#web_installer_inner_progress');

@@ -1,7 +1,7 @@
 /**
- * @typedef {Object} Navy.WebInstaller
+ * @typedef {Object} Navy.AssetInstaller
  */
-Navy.Class.instance('Navy.WebInstaller', {
+Navy.Class.instance('Navy.AssetInstaller', {
   $static: {
     contentType: {
       '.js': 'text/javascript',
@@ -163,7 +163,7 @@ Navy.Class.instance('Navy.WebInstaller', {
       contentType: contentType || this._getContentType(path)
     };
 
-    var loader = new Navy.WebInstaller.Loader();
+    var loader = new Navy.AssetInstaller.Loader();
     loader.onload = function(loader, resource, responseText) {
       callback && callback(resource.path, responseText, resource.contentType);
     };
@@ -190,7 +190,7 @@ Navy.Class.instance('Navy.WebInstaller', {
       this._loadRemoteManifest();
     }.bind(this);
 
-    this._db = openDatabase('web_installer', "0.1", "WebInstaller", 5 * 1000 * 1000);
+    this._db = openDatabase('asset_installer', "0.1", "AssetInstaller", 5 * 1000 * 1000);
     this._db.transaction(transaction, error, success);
   },
 
@@ -266,7 +266,7 @@ Navy.Class.instance('Navy.WebInstaller', {
     }
 
     for (var i = 0; i < this._concurrency; i++) {
-      var loader = new Navy.WebInstaller.Loader();
+      var loader = new Navy.AssetInstaller.Loader();
       loader.onload = this._onLoadRemoteResourceToLocal.bind(this);
       loader.onerror = this._onLoadRemoteResourceErrorToLocal.bind(this);
       this._loadRemoteResourceToLocal(loader);
@@ -333,7 +333,7 @@ Navy.Class.instance('Navy.WebInstaller', {
       callback && callback();
     }.bind(this);
 
-    var db = openDatabase('web_installer', "0.1", "WebInstaller", 5 * 1000 * 1000);
+    var db = openDatabase('asset_installer', "0.1", "AssetInstaller", 5 * 1000 * 1000);
     db.transaction(transaction, error, success);
   },
 
@@ -362,9 +362,9 @@ Navy.Class.instance('Navy.WebInstaller', {
 });
 
 /**
- * @class Navy.WebInstaller.Loader
+ * @class Navy.AssetInstaller.Loader
  */
-Navy.Class('Navy.WebInstaller.Loader', {
+Navy.Class('Navy.AssetInstaller.Loader', {
   onload: null,
   onerror: null,
 

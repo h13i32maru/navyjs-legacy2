@@ -6,17 +6,17 @@ Navy.Class.instance('Navy.Resource', {
   },
 
   loadLayout: function(layoutFile, callback) {
-    Navy.WebInstaller.loadJSON(layoutFile, callback);
+    Navy.AssetInstaller.loadJSON(layoutFile, callback);
   },
 
   loadScript: function(scriptFile, callback) {
     var scriptElement = document.createElement('script');
     document.head.appendChild(scriptElement);
-    Navy.WebInstaller.loadJavaScript(scriptFile, scriptElement, callback);
+    Navy.AssetInstaller.loadJavaScript(scriptFile, scriptElement, callback);
   },
 
   loadImage: function(imageElement, imageFile, callback) {
-    Navy.WebInstaller.loadImage(imageFile, imageElement || new Image(), callback);
+    Navy.AssetInstaller.loadImage(imageFile, imageElement || new Image(), callback);
   },
 
   getClass: function(className) {
