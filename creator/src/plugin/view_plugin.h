@@ -3,7 +3,7 @@
 
 #include <QList>
 #include <QMap>
-#include <QTableView>
+#include <QTableWidget>
 #include "util/n_json.h"
 
 class ViewPlugin
@@ -16,9 +16,6 @@ public:
     static void syncViewToWidget(const NJson &view, QWidget *widget, const QString &keyPrefix = QString(""));
     static QString widgetToString(QWidget *widget);
     static QWidget* copyWidget(QWidget *widget);
-//    static QString encodeValue(const NJson &jsonArray, const QString &type, const QString &key);
-//    static void decodeValue(QWidget *widget, const QString &value);
-//    static void decodeValue(NJson &jsonArray, const QString &value, const QString &type, const QString &key);
 
 private:
     static ViewPlugin* mInstance;
@@ -27,11 +24,11 @@ private:
 
 public:
     void load(const QString &pluginDirPath);
-    void createTableView(QWidget *parentWidget, QMap<QString, QTableView*> *propMap, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot) const;
-    void syncViewToWidget(const NJson &view, QTableView *viewTable, QTableView *extraTable) const;
-    void syncViewToWidget(const NJson &view, QTableView *Table) const;
-    void syncWidgetToView(NJson &view, QTableView *table, QTableView *extraTable) const;
-    void syncWidgetToView(NJson &view, QTableView *table) const;
+    void createTableView(QWidget *parentWidget, QMap<QString, QTableWidget*> *propMap, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot) const;
+    void syncViewToWidget(const NJson &view, QTableWidget *viewTable, QTableWidget *extraTable) const;
+    void syncViewToWidget(const NJson &view, QTableWidget *Table) const;
+    void syncWidgetToView(NJson &view, QTableWidget *table, QTableWidget *extraTable) const;
+    void syncWidgetToView(NJson &view, QTableWidget *table) const;
     QList<NJson> getJsonList() const;
 };
 

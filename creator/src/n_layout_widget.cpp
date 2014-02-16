@@ -63,7 +63,7 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
 
     // create property widget for view.
     ViewPlugin::instance()->createTableView(ui->propScrollAreaWidgetContents, &mPropMap, &mDefaultMap, this, SLOT(syncWidgetToView()));
-    mCurrentExtraTableView = NULL;
+    mCurrentExtraTableWidget = NULL;
     mPropMap["Navy.View.View"]->show();
     QStringList viewClassNames = mPropMap.keys();
     for (QString className: viewClassNames) {
@@ -141,8 +141,8 @@ void NLayoutWidget::syncWidgetToView() {
         return;
     }
 
-    QTableView *table = mPropMap["Navy.View.View"];
-    QTableView *extraTable = mCurrentExtraTableView;
+    QTableWidget *table = mPropMap["Navy.View.View"];
+    QTableWidget *extraTable = mCurrentExtraTableWidget;
     NJson view;
     ViewPlugin::instance()->syncWidgetToView(view, table, extraTable);
 
@@ -303,19 +303,19 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
     // show prop widget for view class and sync views to widget
     QString className = views.getStr("0.class");
     if (mPropMap.contains(className)) {
-        if (mCurrentExtraTableView != NULL) {
-            mCurrentExtraTableView->hide();
+        if (mCurrentExtraTableWidget != NULL) {
+            mCurrentExtraTableWidget->hide();
         }
-        mCurrentExtraTableView = mPropMap[className];
-        mCurrentExtraTableView->show();
+        mCurrentExtraTableWidget = mPropMap[className];
+        mCurrentExtraTableWidget->show();
 
         // always show
         mPropMap["Navy.View.View"]->show();
 
         // sync
         NJson view = views.getObject("0");
-        QTableView *table = mPropMap["Navy.View.View"];
-        QTableView *extraTable = mPropMap[className];
+        QTableWidget *table = mPropMap["Navy.View.View"];
+        QTableWidget *extraTable = mPropMap[className];
         ViewPlugin::instance()->syncViewToWidget(view, table, extraTable);
     }
 }

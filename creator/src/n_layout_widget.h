@@ -5,7 +5,7 @@
 #include "native_bridge.h"
 #include "util/n_json.h"
 
-#include <QTableView>
+#include <QTableWidget>
 #include <QTreeWidgetItem>
 
 #include <window/n_layout_setting_dialog.h>
@@ -34,8 +34,8 @@ private:
     Ui::NLayoutWidget *ui;
     NativeBridge *mNative;
 
-    QTableView *mCurrentExtraTableView;
-    QMap<QString, QTableView*> mPropMap;
+    QTableWidget *mCurrentExtraTableWidget;
+    QMap<QString, QTableWidget*> mPropMap;
     QMap<QString, NJson> mDefaultMap;
 
     QString contentLayoutJsonText() const;

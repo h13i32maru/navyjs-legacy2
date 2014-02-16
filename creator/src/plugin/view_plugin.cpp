@@ -361,7 +361,7 @@ QList<NJson> ViewPlugin::getJsonList() const {
     return mJsonList;
 }
 
-void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView*> *propMap, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot) const{
+void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableWidget*> *propMap, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot) const{
     int height = QLabel("AAA").sizeHint().height() * 1.5;
 
     QList<NJson> jsonList = getJsonList();
@@ -369,18 +369,21 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
         NJson json = jsonList[i];
         NJson widgetDefine = json.getObject("define");
 
-        QModelIndex modelIndex;
-        QStandardItemModel *model = new QStandardItemModel(widgetDefine.length(), 2);
-        model->setHorizontalHeaderItem(0, new QStandardItem("Property"));
-        model->setHorizontalHeaderItem(1, new QStandardItem("Value"));
+//        QModelIndex modelIndex;
+//        QStandardItemModel *model = new QStandardItemModel(widgetDefine.length(), 2);
+//        model->setHorizontalHeaderItem(0, new QStandardItem("Property"));
+//        model->setHorizontalHeaderItem(1, new QStandardItem("Value"));
 
-        QTableView *tableView = new QTableView();
-        parentWidget->layout()->addWidget(tableView);
-        tableView->setModel(model);
-        tableView->horizontalHeader()->setStretchLastSection(true);
-        tableView->verticalHeader()->setHidden(true);
+        QTableWidget *tableWidget = new QTableWidget();
+        tableWidget->setColumnCount(2);
+        tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("Property"));
+        tableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("Value"));
+        parentWidget->layout()->addWidget(tableWidget);
+//        tableWidget->setModel(model);
+        tableWidget->horizontalHeader()->setStretchLastSection(true);
+        tableWidget->verticalHeader()->setHidden(true);
         //table viewのtab navigationを切ることで内部のwidgetがtab navigationできるようになる.
-        tableView->setTabKeyNavigation(false);
+//        tableWidget->setTabKeyNavigation(false);
 
         int row = 0;
         QString className = json.getStr("class");
@@ -389,70 +392,92 @@ void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableView
 
             // set id
             {
-                QStandardItem *propLabel = new QStandardItem("id");
-                propLabel->setEditable(false);
-                propLabel->setSelectable(false);
-                model->setItem(0, 0, propLabel);
-                modelIndex = model->index(0, 1);
+                tableWidget->insertRow(0);
+//                QStandardItem *propLabel = new QStandardItem("id");
+                QTableWidgetItem *propLabel = new QTableWidgetItem("id");
+//                propLabel->setEditable(false);
+//                propLabel->setSelectable(false);
+//                model->setItem(0, 0, propLabel);
+//                modelIndex = model->index(0, 1);
+                tableWidget->setItem(0, 0, propLabel);
                 QLineEdit *l = new QLineEdit();
                 l->setObjectName("string:id");
-                tableView->setIndexWidget(modelIndex, l);
-                tableView->setRowHeight(0, height);
+//                tableWidget->setIndexWidget(modelIndex, l);
+                tableWidget->setCellWidget(0, 1, l);
+//                tableWidget->setRowHeight(0, height);
                 QObject::connect(l, SIGNAL(textChanged(QString)), receiver, slot);
             }
 
             // set class
             {
-                QStandardItem *propLabel = new QStandardItem("class");
-                propLabel->setEditable(false);
-                propLabel->setSelectable(false);
-                model->setItem(1, 0, propLabel);
-                modelIndex = model->index(1, 1);
+                tableWidget->insertRow(1);
+//                QStandardItem *propLabel = new QStandardItem("class");
+                QTableWidgetItem *propLabel = new QTableWidgetItem("class");
+//                propLabel->setEditable(false);
+//                propLabel->setSelectable(false);
+//                model->setItem(1, 0, propLabel);
+//                modelIndex = model->index(1, 1);
+                tableWidget->setItem(1, 0, propLabel);
                 QLineEdit *l = new QLineEdit(className);
                 l->setReadOnly(true);
                 l->setObjectName("string:class");
-                tableView->setIndexWidget(modelIndex, l);
-                tableView->setRowHeight(1, height);
+//                tableWidget->setIndexWidget(modelIndex, l);
+                tableWidget->setCellWidget(1, 1, l);
+//                tableWidget->setRowHeight(1, height);
             }
         }
 
         NJson viewJson;
 
         for (int j = 0; j < widgetDefine.length(); j++, row++) {
+            tableWidget->insertRow(row);
             QString index = QString::number(j);
             QString label = widgetDefine.getStr(index + ".label");
-            QString type = widgetDefine.getStr(index + ".type");
-            QString key = widgetDefine.getStr(index + ".key");
             QWidget *widget = ViewPlugin::createWidget(widgetDefine.getObject(index), viewJson, receiver, slot);
             if (widget != NULL) {
-                QStandardItem *propLabel = new QStandardItem(label);
-                propLabel->setEditable(false);
-                propLabel->setSelectable(false);
-                model->setItem(row, 0, propLabel);
-                modelIndex = model->index(row, 1);
-                tableView->setIndexWidget(modelIndex, widget);
-                tableView->setRowHeight(row, height);
+//                QStandardItem *propLabel = new QStandardItem(label);
+                QTableWidgetItem *propLabel = new QTableWidgetItem(label);
+//                propLabel->setEditable(false);
+//                propLabel->setSelectable(false);
+//                model->setItem(row, 0, propLabel);
+                tableWidget->setItem(row, 0, propLabel);
+//                modelIndex = model->index(row, 1);
+//                tableWidget->setIndexWidget(modelIndex, widget);
+                tableWidget->setCellWidget(row, 1, widget);
+//                tableWidget->setRowHeight(row, height);
             }
         }
 
-        tableView->setMinimumHeight((row + 1 ) * height);
-        tableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        tableView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        tableView->hide();
+        tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
+        tableWidget->setSelectionBehavior(QTableWidget::SelectRows);
+        tableWidget->setSelectionMode(QTableWidget::SingleSelection);
+        tableWidget->setMinimumHeight((row + 1 ) * height);
+        tableWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        tableWidget->hide();
 
-        propMap->insert(className, tableView);
+        propMap->insert(className, tableWidget);
         defaultMap->insert(className, viewJson);
     }
 
     ((QHBoxLayout *)parentWidget->layout())->addStretch();
 }
 
-void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *viewTable, QTableView *extraTable) const {
+//void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *viewTable, QTableView *extraTable) const {
+void ViewPlugin::syncViewToWidget(const NJson &view, QTableWidget *viewTable, QTableWidget *extraTable) const {
     this->syncViewToWidget(view, viewTable);
     this->syncViewToWidget(view, extraTable);
 }
 
-void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
+//void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
+void ViewPlugin::syncViewToWidget(const NJson &view, QTableWidget *table) const {
+    for (int row = 0; row < table->rowCount(); row++) {
+        QWidget *widget = table->cellWidget(row, 1);
+        widget->blockSignals(true);
+        ViewPlugin::syncViewToWidget(view, widget);
+        widget->blockSignals(false);
+    }
+    /*
     QAbstractItemModel *model = table->model();
     QModelIndex index;
     for (int row = 0; row < model->rowCount(); row++) {
@@ -462,14 +487,22 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableView *table) const {
         ViewPlugin::syncViewToWidget(view, widget);
         widget->blockSignals(false);
     }
+    */
 }
 
-void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table, QTableView *extraTable) const {
+//void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table, QTableView *extraTable) const {
+void ViewPlugin::syncWidgetToView(NJson &view, QTableWidget *table, QTableWidget *extraTable) const {
     this->syncWidgetToView(view, table);
     this->syncWidgetToView(view, extraTable);
 }
 
-void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
+//void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
+void ViewPlugin::syncWidgetToView(NJson &view, QTableWidget *table) const {
+    for (int row = 0; row < table->rowCount(); row++) {
+        QWidget *widget = table->cellWidget(row, 1);
+        ViewPlugin::syncWidgetToView(widget, view);
+    }
+    /*
     QAbstractItemModel *model = table->model();
     QModelIndex index;
     for (int row = 0; row < model->rowCount(); row++) {
@@ -477,4 +510,5 @@ void ViewPlugin::syncWidgetToView(NJson &view, QTableView *table) const {
         QWidget *widget = table->indexWidget(index);
         ViewPlugin::syncWidgetToView(widget, view);
     }
+    */
 }
