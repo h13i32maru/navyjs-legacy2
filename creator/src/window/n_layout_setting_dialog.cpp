@@ -9,8 +9,8 @@ NLayoutSettingDialog::NLayoutSettingDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->screenScene->setList(NProject::instance()->scenes());
-    ui->screenPage->setList(NProject::instance()->pages());
+    ui->screenScene->setType(NTextListSelector::SCENE);
+    ui->screenPage->setType(NTextListSelector::PAGE);
 
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(accept()));
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(reject()));

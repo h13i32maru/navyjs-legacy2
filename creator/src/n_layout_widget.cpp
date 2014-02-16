@@ -79,8 +79,8 @@ void NLayoutWidget::showLayoutSettingDialog() {
         return;
     }
 
-    QString sceneId = mLayoutSettingDialog.ui->screenScene->currentText();
-    QString pageId = mLayoutSettingDialog.ui->screenPage->currentText();
+    QString sceneId = mLayoutSettingDialog.ui->screenScene->text();
+    QString pageId = mLayoutSettingDialog.ui->screenPage->text();
     bool enable = mLayoutSettingDialog.ui->screenEnable->isChecked();
     emit mNative->setScreenToJS(sceneId, pageId, enable);
 
@@ -256,8 +256,8 @@ void NLayoutWidget::setViewsFromJS(const NJson &views) {
 
 void NLayoutWidget::setMetaFromJS(const NJson &meta) {
     mLayoutSettingDialog.ui->screenEnable->setChecked(meta.getBool("screenEnable"));
-    mLayoutSettingDialog.ui->screenScene->setCurrentText(meta.getStr("screenSceneId"));
-    mLayoutSettingDialog.ui->screenPage->setCurrentText(meta.getStr("screenPageId"));
+    mLayoutSettingDialog.ui->screenScene->setText(meta.getStr("screenSceneId"));
+    mLayoutSettingDialog.ui->screenPage->setText(meta.getStr("screenPageId"));
 }
 
 void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
