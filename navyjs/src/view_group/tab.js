@@ -5,6 +5,8 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
   _applyExtraLayout: function($super, layout, callback){
     $super(layout, callback);
 
+    this.removeAllViews();
+
     this._tabLabels = [];
     this._tabContents = [];
 
