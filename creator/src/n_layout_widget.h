@@ -37,8 +37,6 @@ private:
     NativeBridge *mNative;
 
     ViewPlugin *mViewPlugin;
-    QTableWidget *mCurrentExtraTableWidget;
-    QMap<QString, QTableWidget*> mPropMap;
     QMap<QString, NJson> mDefaultMap;
 
     QString contentLayoutJsonText() const;

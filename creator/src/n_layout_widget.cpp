@@ -64,10 +64,10 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     // create property widget for view.
     mViewPlugin = new ViewPlugin(this);
     mViewPlugin->load(NProject::instance()->pluginDirPath());
-    mViewPlugin->createTableView(ui->propScrollAreaWidgetContents, &mPropMap, &mDefaultMap, this, SLOT(syncWidgetToView()));
-    mCurrentExtraTableWidget = NULL;
-    mPropMap["Navy.View.View"]->show();
-    QStringList viewClassNames = mPropMap.keys();
+    mViewPlugin->createTableView(ui->propScrollAreaWidgetContents, &mDefaultMap, this, SLOT(syncWidgetToView()));
+    mViewPlugin->showTable("Navy.View.View");
+    QStringList viewClassNames = mViewPlugin->getClassNames();
+    viewClassNames.sort();
     for (QString className: viewClassNames) {
         QTreeWidgetItem *item = new QTreeWidgetItem();
         QString label = className.split(".").last();
@@ -143,10 +143,10 @@ void NLayoutWidget::syncWidgetToView() {
         return;
     }
 
-    QTableWidget *table = mPropMap["Navy.View.View"];
-    QTableWidget *extraTable = mCurrentExtraTableWidget;
     NJson view;
-    mViewPlugin->syncWidgetToView(view, table, extraTable);
+    QString className = items[0]->text(ViewsColClass);
+    mViewPlugin->syncWidgetToView(view, "Navy.View.View");
+    mViewPlugin->syncWidgetToView(view, className);
 
     QString selectedViewId = items[0]->text(ViewsColId);
     QString id = view.getStr("id");
@@ -303,51 +303,42 @@ void NLayoutWidget::setSelectedsViewsFromJS(const NJson &views) {
     }
 
     // show prop widget for view class and sync views to widget
-    QString className = views.getStr("0.class");
-    if (mPropMap.contains(className)) {
-        if (mCurrentExtraTableWidget != NULL) {
-            mCurrentExtraTableWidget->hide();
-        }
-        mCurrentExtraTableWidget = mPropMap[className];
-        mCurrentExtraTableWidget->show();
+    NJson view = views.getObject("0");
+    QString className = view.getStr("class");
+    mViewPlugin->hideAllTable();
+    mViewPlugin->showTable("Navy.View.View");
+    mViewPlugin->showTable(className);
 
-        // always show
-        mPropMap["Navy.View.View"]->show();
-
-        // sync
-        NJson view = views.getObject("0");
-        QTableWidget *table = mPropMap["Navy.View.View"];
-        QTableWidget *extraTable = mPropMap[className];
-        mViewPlugin->syncViewToWidget(view, table, extraTable);
-    }
+    mViewPlugin->syncViewToWidget(view, "Navy.View.View");
+    mViewPlugin->syncViewToWidget(view, className);
 }
 
 void NLayoutWidget::setViewPosFromJS(int x, int y) {
     QSpinBox *s;
 
-    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:pos.x");
-    s->blockSignals(true);
-    s->setValue(x);
-    s->blockSignals(false);
+//    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:pos.x");
+//    s->blockSignals(true);
+//    s->setValue(x);
+//    s->blockSignals(false);
 
-    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:pos.y");
-    s->blockSignals(true);
-    s->setValue(y);
-    s->blockSignals(false);
+//    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:pos.y");
+//    s->blockSignals(true);
+//    s->setValue(y);
+//    s->blockSignals(false);
 }
 
 void NLayoutWidget::setViewSizeFromJS(int width, int height) {
     QSpinBox *s;
 
-    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:size.width");
-    s->blockSignals(true);
-    s->setValue(width);
-    s->blockSignals(false);
+//    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:size.width");
+//    s->blockSignals(true);
+//    s->setValue(width);
+//    s->blockSignals(false);
 
-    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:size.height");
-    s->blockSignals(true);
-    s->setValue(height);
-    s->blockSignals(false);
+//    s = mPropMap["Navy.View.View"]->findChild<QSpinBox*>("number:size.height");
+//    s->blockSignals(true);
+//    s->setValue(height);
+//    s->blockSignals(false);
 }
 
 /*************************************************

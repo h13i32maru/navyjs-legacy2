@@ -28,14 +28,17 @@ private:
     QHash<QTableWidgetItem *, QWidget *> mItemToWidget;
     QObject *mReceiver;
     const char *mSlot;
+    QHash<QString, QList<QTableWidgetItem*> > mClassToItems;
 
 public:
     void load(const QString &pluginDirPath);
-    void createTableView(QWidget *parentWidget, QMap<QString, QTableWidget*> *propMap, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot);
-    void syncViewToWidget(const NJson &view, QTableWidget *viewTable, QTableWidget *extraTable) const;
-    void syncViewToWidget(const NJson &view, QTableWidget *Table) const;
-    void syncWidgetToView(NJson &view, QTableWidget *table, QTableWidget *extraTable) const;
-    void syncWidgetToView(NJson &view, QTableWidget *table) const;
+    void createTableView(QWidget *parentWidget, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot);
+    void syncViewToWidget(const NJson &view, const QString &className) const;
+    void syncWidgetToView(NJson &view, const QString &className) const;
+    void showTable(const QString &className);
+    void hideTable(const QString &className);
+    void hideAllTable();
+    QStringList getClassNames() const;
     QList<NJson> getJsonList() const;
 
 private slots:

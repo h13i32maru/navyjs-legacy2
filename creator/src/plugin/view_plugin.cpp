@@ -346,68 +346,78 @@ QList<NJson> ViewPlugin::getJsonList() const {
     return mJsonList;
 }
 
-void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, QTableWidget*> *propMap, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot){
+void ViewPlugin::createTableView(QWidget *parentWidget, QMap<QString, NJson> *defaultMap, QObject *receiver, const char *slot){
     mReceiver = receiver;
     mSlot = slot;
 
+    QTableWidget *tableWidget = new QTableWidget();
+    tableWidget->setColumnCount(2);
+    tableWidget->horizontalHeader()->setStretchLastSection(true);
+    tableWidget->verticalHeader()->setHidden(true);
+    tableWidget->horizontalHeader()->setHidden(true);
+    parentWidget->layout()->addWidget(tableWidget);
+
     QList<NJson> jsonList = getJsonList();
+    int row = 0;
     for (int i = 0; i < jsonList.length(); i++) {
         NJson json = jsonList[i];
         QString className = json.getStr("class");
         NJson widgetDefine = json.getObject("define");
-
-        QTableWidget *tableWidget = new QTableWidget();
-        tableWidget->setColumnCount(2);
-        tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem(className.split(".").last()));
-        tableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("Value"));
-        parentWidget->layout()->addWidget(tableWidget);
-        tableWidget->horizontalHeader()->setStretchLastSection(true);
-        tableWidget->verticalHeader()->setHidden(true);
-
         NJson viewJson;
-        for (int row = 0; row < widgetDefine.length(); row++) {
+        QList<QTableWidgetItem *> items;
+
+        tableWidget->insertRow(row);
+        QTableWidgetItem *separator = new QTableWidgetItem(className);
+        separator->setBackgroundColor(QColor(200, 200, 200));
+        tableWidget->setItem(row, 0, separator);
+        tableWidget->setSpan(row, 0, 1, 2);
+        items.append(separator);
+        row++;
+
+        for (int j = 0; j < widgetDefine.length(); j++, row++) {
             tableWidget->insertRow(row);
-            QString index = QString::number(row);
+            QString index = QString::number(j);
             QString label = widgetDefine.getStr(index + ".label");
             QWidget *widget = ViewPlugin::createWidget(widgetDefine.getObject(index), viewJson, receiver, slot);
-            if (widget != NULL) {
-                QTableWidgetItem *propLabel = new QTableWidgetItem(label);
-                tableWidget->setItem(row, 0, propLabel);
-                QTableWidgetItem *item = new QTableWidgetItem("");
-                tableWidget->setItem(row, 1, item);
-                mItemToWidget[item] = widget;
-            }
+            QTableWidgetItem *propLabel = new QTableWidgetItem(label);
+            QTableWidgetItem *item = new QTableWidgetItem("");
+
+            tableWidget->setItem(row, 0, propLabel);
+            tableWidget->setItem(row, 1, item);
+
+            mItemToWidget[item] = widget;
+            items.append(item);
         }
 
-        QObject::connect(tableWidget, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(showCellWidget(QTableWidgetItem*)));
-        tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
-        tableWidget->setAlternatingRowColors(true);
-        tableWidget->setSelectionBehavior(QTableWidget::SelectRows);
-        tableWidget->setSelectionMode(QTableWidget::SingleSelection);
-        tableWidget->setMinimumHeight((tableWidget->rowCount() + 1) * tableWidget->rowHeight(0));
-        tableWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        //table viewのtab navigationを切ることで内部のwidgetがtab navigationできるようになる.
-        tableWidget->setTabKeyNavigation(false);
-
-        tableWidget->hide();
-
-        propMap->insert(className, tableWidget);
+        mClassToItems[className] = items;
         defaultMap->insert(className, viewJson);
     }
 
+    QObject::connect(tableWidget, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(showCellWidget(QTableWidgetItem*)));
+    tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
+    tableWidget->setAlternatingRowColors(true);
+    tableWidget->setSelectionBehavior(QTableWidget::SelectRows);
+    tableWidget->setSelectionMode(QTableWidget::SingleSelection);
+    tableWidget->setMinimumHeight((tableWidget->rowCount() + 1) * tableWidget->rowHeight(0));
+    tableWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    tableWidget->setTabKeyNavigation(false);
+
     ((QHBoxLayout *)parentWidget->layout())->addStretch();
+
+    hideAllTable();
 }
 
-void ViewPlugin::syncViewToWidget(const NJson &view, QTableWidget *viewTable, QTableWidget *extraTable) const {
-    this->syncViewToWidget(view, viewTable);
-    this->syncViewToWidget(view, extraTable);
-}
+void ViewPlugin::syncViewToWidget(const NJson &view, const QString &className) const {
+    QList<QTableWidgetItem *> items = mClassToItems[className];
 
-void ViewPlugin::syncViewToWidget(const NJson &view, QTableWidget *table) const {
-    for (int row = 0; row < table->rowCount(); row++) {
-        QTableWidgetItem *item = table->item(row, 1);
+    foreach (QTableWidgetItem *item, items) {
         QWidget *widget = mItemToWidget[item];
+
+        // separatorとしての行はNULLなのでcontinueする
+        if (widget == NULL) {
+            continue;
+        }
 
         widget->blockSignals(true);
         ViewPlugin::syncViewToWidget(view, widget);
@@ -418,17 +428,50 @@ void ViewPlugin::syncViewToWidget(const NJson &view, QTableWidget *table) const 
     }
 }
 
-void ViewPlugin::syncWidgetToView(NJson &view, QTableWidget *table, QTableWidget *extraTable) const {
-    this->syncWidgetToView(view, table);
-    this->syncWidgetToView(view, extraTable);
-}
+void ViewPlugin::syncWidgetToView(NJson &view, const QString &className) const {
+    QList<QTableWidgetItem *> items = mClassToItems[className];
 
-void ViewPlugin::syncWidgetToView(NJson &view, QTableWidget *table) const {
-    for (int row = 0; row < table->rowCount(); row++) {
-        QTableWidgetItem *item = table->item(row, 1);
+    foreach (QTableWidgetItem *item, items) {
         QWidget *widget = mItemToWidget[item];
+        // separatorとしての行はNULLなのでcontinueする
+        if (widget == NULL) {
+            continue;
+        }
+
         ViewPlugin::syncWidgetToView(widget, view);
     }
+}
+
+void ViewPlugin::showTable(const QString &className) {
+    if (!mClassToItems.contains(className)) {
+        return;
+    }
+
+    foreach (QTableWidgetItem *item, mClassToItems[className]) {
+        QTableWidget *tableWidget = item->tableWidget();
+        tableWidget->showRow(item->row());
+    }
+}
+
+void ViewPlugin::hideTable(const QString &className) {
+    if (!mClassToItems.contains(className)) {
+        return;
+    }
+
+    foreach (QTableWidgetItem *item, mClassToItems[className]) {
+        QTableWidget *tableWidget = item->tableWidget();
+        tableWidget->hideRow(item->row());
+    }
+}
+
+void ViewPlugin::hideAllTable() {
+    foreach (const QString &className, mClassToItems.keys()) {
+        hideTable(className);
+    }
+}
+
+QStringList ViewPlugin::getClassNames() const{
+    return mClassToItems.keys();
 }
 
 void ViewPlugin::showCellWidget(QTableWidgetItem *item) {
