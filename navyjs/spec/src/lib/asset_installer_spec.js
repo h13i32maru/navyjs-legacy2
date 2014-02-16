@@ -1,9 +1,9 @@
-describe('Navy.AssetInstaller installs web resource to WebSQL:', function(){
+describe('Navy.AssetInstaller installs web asset to WebSQL:', function(){
 
   /**
    * 正常系のテスト
    */
-  it('updates local resources by using manifest.', function(done){
+  it('updates local assets by using manifest.', function(done){
     Navy.AssetInstaller.initialize('/base/fixture/manifest1.json');
 
     var totalUpdatingCount;
@@ -27,7 +27,7 @@ describe('Navy.AssetInstaller installs web resource to WebSQL:', function(){
     Navy.AssetInstaller.update(options);
   });
 
-  it('only update invalid resources.', function(done){
+  it('only update invalid assets.', function(done){
     Navy.AssetInstaller.setManifestURL('/base/fixture/manifest2.json');
 
     var totalUpdatingCount;
@@ -121,9 +121,9 @@ describe('Navy.AssetInstaller installs web resource to WebSQL:', function(){
     });
   });
 
-  it('can load remote resource.', function(done){
+  it('can load remote asset.', function(done){
     Navy.AssetInstaller.setEnableDatabase(false);
-    expect(Navy.AssetInstaller._loadResource).toBe(Navy.AssetInstaller._loadRemoteResource);
+    expect(Navy.AssetInstaller._loadAsset).toBe(Navy.AssetInstaller._loadRemoteAsset);
 
     Navy.AssetInstaller.loadJSON('/base/fixture/config/config1.json', function(obj){
       expect(obj).toEqual({prop1: 'dummy config1'});
