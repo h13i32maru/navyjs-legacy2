@@ -42,10 +42,6 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
     mNative->setLayoutPath(layoutPath);
     injectNativeBridge();
 
-    connect(ui->layerToggleButton, SIGNAL(clicked()), this, SLOT(toggleLayerTreeWidget()));
-    connect(ui->propToggleButton, SIGNAL(clicked()), this, SLOT(toggleLayoutPropWidget()));
-    connect(ui->viewToggleButton, SIGNAL(clicked()), this, SLOT(toggleViewClassTreeWidget()));
-
     reload();
 
     connect(ui->viewClassTreeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(addViewToJS(QTreeWidgetItem*, int)));
@@ -75,18 +71,6 @@ NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWi
         item->setText(ViewClassColClass, className);
         ui->viewClassTreeWidget->addTopLevelItem(item);
     }
-}
-
-void NLayoutWidget::toggleLayerTreeWidget() {
-    ui->layerTreeWidget->setVisible(ui->layerTreeWidget->isVisible() ^ true);
-}
-
-void NLayoutWidget::toggleLayoutPropWidget() {
-    ui->tableWidget->setVisible(ui->tableWidget->isVisible() ^ true);
-}
-
-void NLayoutWidget::toggleViewClassTreeWidget() {
-    ui->viewClassTreeWidget->setVisible(ui->viewClassTreeWidget->isVisible() ^ true);
 }
 
 void NLayoutWidget::showLayoutSettingDialog() {
