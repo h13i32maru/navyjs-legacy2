@@ -43,4 +43,22 @@
         <file>template_code/layout.json</file>
         <file>template_code/page.js</file>
     </qresource>
+
+    <qresource prefix="/">
+        <file>sample/Hello_World/contents/code/hello_world.js</file>
+        <file>sample/Hello_World/contents/code/main_page.js</file>
+        <file>sample/Hello_World/contents/code/main_scene.js</file>
+        <file>sample/Hello_World/contents/config/app.json</file>
+        <file>sample/Hello_World/contents/config/page.json</file>
+        <file>sample/Hello_World/contents/config/scene.json</file>
+        <file>sample/Hello_World/contents/image/button_active.png</file>
+        <file>sample/Hello_World/contents/image/button_disabled.png</file>
+        <file>sample/Hello_World/contents/image/button_normal.png</file>
+        <file>sample/Hello_World/contents/image/loading.png</file>
+        <file>sample/Hello_World/contents/layout/hello_world.json</file>
+        <file>sample/Hello_World/contents/layout/main_page.json</file>
+        <file>sample/Hello_World/contents/layout/main_scene.json</file>
+        <file>sample/Hello_World/contents/manifest.json</file>
+        <file>sample/Hello_World/project.ncproject</file>
+    </qresource>
 </RCC>
