@@ -6,11 +6,11 @@ window.addEventListener('DOMContentLoaded', function(){
   }
 
   var hash = Navy.URL.parseHash(location.href);
-
   Navy.AssetInstaller.initialize('./manifest.json');
   if (hash['asset_installer_db'] === 'false') {
     Navy.AssetInstaller.setEnableDatabase(false);
   }
+
   Navy.AssetInstaller.update({
     forceUpdate: true,
     onProgress: function(progress, total) {
