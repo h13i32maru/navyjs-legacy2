@@ -34,6 +34,10 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     return currentStackObj.scene;
   },
 
+  getSceneStackCount: function() {
+    return this._sceneStack.length;
+  },
+
   getCurrentPage: function() {
     var scene = this.getCurrentScene();
     return scene.getCurrentPage();

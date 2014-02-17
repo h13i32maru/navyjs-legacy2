@@ -55,6 +55,10 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     return currentStackObj.page;
   },
 
+  getPageStackCount: function() {
+    return this._pageStack.length;
+  },
+
   // fixme: callbackを実装する.
   linkPage: function(id, data) {
     if (id === '$back') {
