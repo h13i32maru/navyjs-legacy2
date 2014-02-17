@@ -1,7 +1,7 @@
 /**
- * @typedef {Object} Navy.Resource
+ * @typedef {Object} Navy.Asset
  */
-Navy.Class.instance('Navy.Resource', {
+Navy.Class.instance('Navy.Asset', {
   _scriptFileMap: null,
 
   initialize: function(){

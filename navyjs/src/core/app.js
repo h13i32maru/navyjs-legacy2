@@ -6,7 +6,7 @@ Navy.Class.instance('Navy.App', {
 
   initialize: function(){
     Navy.History.initialize();
-    Navy.Resource.initialize();
+    Navy.Asset.initialize();
     Navy.Config.initialize(this._onInitConfig.bind(this));
   },
 

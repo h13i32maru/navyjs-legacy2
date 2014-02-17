@@ -30,7 +30,7 @@ Navy.Page;
 /**
  * @typedef Object
  */
-Navy.Resource;
+Navy.Asset;
 
 /**
  * @typedef Object

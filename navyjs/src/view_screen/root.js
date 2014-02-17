@@ -168,11 +168,11 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
 
   _createScene: function(sceneName, callback) {
     var layout = this._cloneObject(Navy.Config.scene[sceneName]);
-    Navy.Resource.loadScript(layout.classFile, this._onLoadScript.bind(this, layout, callback));
+    Navy.Asset.loadScript(layout.classFile, this._onLoadScript.bind(this, layout, callback));
   },
 
   _onLoadScript: function(layout, callback) {
-    var SceneClass = Navy.Resource.getClass(layout.class);
+    var SceneClass = Navy.Asset.getClass(layout.class);
     var scene = new SceneClass(layout, callback);
 
     // addViewしてしまうとsceneが見えてしまうので遷移アニメーションが開始するまで非表示にしておく.
@@ -191,7 +191,7 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     }
 
     // TODO: 組み込みだけじゃんくてカスタムのTransitionにも対応する.
-    var TransitionClass = Navy.Resource.getClass(scene.getLayout().extra.transition.class);
+    var TransitionClass = Navy.Asset.getClass(scene.getLayout().extra.transition.class);
     var transition = new TransitionClass(beforeScene, scene);
     this._sceneStack.push({
       scene: scene,

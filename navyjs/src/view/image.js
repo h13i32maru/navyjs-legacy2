@@ -45,7 +45,7 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
 
   setSrc: function(src, callback) {
     this._layout.extra.src = src;
-    Navy.Resource.loadImage(this._imgElm, src, function(src, width, height){
+    Navy.Asset.loadImage(this._imgElm, src, function(src, width, height){
       this._onLoadImage(src, width, height);
       callback && callback();
     }.bind(this));

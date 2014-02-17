@@ -17,7 +17,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     Include.Screen.initialize(this);
     Include.NativeBridge.initialize(this);
 
-    Navy.Resource.loadLayout(this._layout.extra.contentLayoutFile, this._onLoadLayout.bind(this));
+    Navy.Asset.loadLayout(this._layout.extra.contentLayoutFile, this._onLoadLayout.bind(this));
   },
 
   onResumeAfter: function($super, ev) {
@@ -69,7 +69,7 @@ Navy.Class('CreatorPage', Navy.Page, {
     layout.id = viewId;
     layout.class = viewClass;
 
-    var _class = Navy.Resource.getClass(viewClass);
+    var _class = Navy.Asset.getClass(viewClass);
     var view = new _class(layout, function(){
       this.addView(view);
       Native.changedLayoutContentFromJS();

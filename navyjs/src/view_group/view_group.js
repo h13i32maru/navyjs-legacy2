@@ -24,7 +24,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
   _loadExtraResource: function($super, layout, callback) {
     if (layout && layout.extra.contentLayoutFile) {
       this._layout.extra.contentLayoutFile = layout.extra.contentLayoutFile;
-      Navy.Resource.loadLayout(layout.extra.contentLayoutFile, function(contentLayout){
+      Navy.Asset.loadLayout(layout.extra.contentLayoutFile, function(contentLayout){
         this._contentLayouts = contentLayout.layouts;
         $super(layout, callback);
       }.bind(this));
@@ -49,7 +49,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
 
     for (var i = 0; i < contentLayouts.length; i++) {
       var contentLayout = contentLayouts[i];
-      var ViewClass = Navy.Resource.getClass(contentLayout.class);
+      var ViewClass = Navy.Asset.getClass(contentLayout.class);
       var view = new ViewClass(contentLayout, pass);
       this.addView(view);
     }
@@ -61,7 +61,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
 
     for (var i = 0; i < contentLayouts.length; i++) {
       var contentLayout = contentLayouts[i];
-      var ViewClass = Navy.Resource.getClass(contentLayout.class);
+      var ViewClass = Navy.Asset.getClass(contentLayout.class);
       var view = new ViewClass(contentLayout, pass);
       this.addView(view);
     }

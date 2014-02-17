@@ -185,17 +185,17 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
 
   _createPage: function(pageName, callback) {
     var layout = this._cloneObject(Navy.Config.page[pageName]);
-    Navy.Resource.loadScript(layout.classFile, this._onLoadScript.bind(this, layout, callback));
+    Navy.Asset.loadScript(layout.classFile, this._onLoadScript.bind(this, layout, callback));
   },
 
   _createPageByLayout: function(layout, callback) {
-    var PageClass = Navy.Resource.getClass(layout.class);
+    var PageClass = Navy.Asset.getClass(layout.class);
     var page = new PageClass(layout, callback);
     this.addView(page, this._sceneFixedFirstView);
   },
 
   _onLoadScript: function(layout, callback) {
-    var PageClass = Navy.Resource.getClass(layout.class);
+    var PageClass = Navy.Asset.getClass(layout.class);
     var page = new PageClass(layout, callback);
 
     // addViewしてしまうとpageが見えてしまうので遷移アニメーションが開始するまで非表示にしておく.
@@ -214,7 +214,7 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     }
 
     // TODO: 組み込みだけじゃんくてカスタムのTransitionにも対応する.
-    var TransitionClass = Navy.Resource.getClass(page.getLayout().extra.transition.class);
+    var TransitionClass = Navy.Asset.getClass(page.getLayout().extra.transition.class);
     var transition = new TransitionClass(beforePage, page);
     this._pageStack.push({
       page: page,
