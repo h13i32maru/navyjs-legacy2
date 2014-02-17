@@ -21,7 +21,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     $super(layout, callback);
   },
 
-  _loadExtraResource: function($super, layout, callback) {
+  _loadExtraAsset: function($super, layout, callback) {
     if (layout && layout.extra.contentLayoutFile) {
       this._layout.extra.contentLayoutFile = layout.extra.contentLayoutFile;
       Navy.Asset.loadLayout(layout.extra.contentLayoutFile, function(contentLayout){

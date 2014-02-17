@@ -44,7 +44,7 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
       return;
     }
 
-    function onLoadResource() {
+    function onLoadAsset() {
       var notify = new Navy.Notify(2, onApplyLayout.bind(this));
       var pass = notify.pass.bind(notify);
       this._applyLayout(layout, pass);
@@ -57,10 +57,10 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
     }
 
     this._layout = layout;
-    var notify = new Navy.Notify(2, onLoadResource.bind(this));
+    var notify = new Navy.Notify(2, onLoadAsset.bind(this));
     var pass = notify.pass.bind(notify);
-    this._loadResource(layout, pass);
-    this._loadExtraResource(layout, pass);
+    this._loadAsset(layout, pass);
+    this._loadExtraAsset(layout, pass);
   },
 
   getLayout: function() {
@@ -105,7 +105,7 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
     callback && setTimeout(callback, 0);
   },
 
-  _loadResource: function(layout, callback) {
+  _loadAsset: function(layout, callback) {
     callback && setTimeout(callback, 0);
   },
 
@@ -133,7 +133,7 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
    * @param callback
    * @private
    */
-  _loadExtraResource: function(layout, callback) {
+  _loadExtraAsset: function(layout, callback) {
     callback && setTimeout(callback, 0);
   },
 

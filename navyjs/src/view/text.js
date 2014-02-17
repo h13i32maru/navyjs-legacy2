@@ -36,7 +36,7 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
     $super(layout, callback);
   },
 
-  _loadExtraResource: function($super, layout, callback) {
+  _loadExtraAsset: function($super, layout, callback) {
     this.setText(layout.extra.text);
 
     $super(layout, callback);

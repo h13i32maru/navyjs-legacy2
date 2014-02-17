@@ -22,7 +22,7 @@ Navy.Class('Navy.View.TextEdit', Navy.View.View, {
     this._element.appendChild(this._textElement);
   },
 
-  _loadExtraResource: function($super, layout, callback) {
+  _loadExtraAsset: function($super, layout, callback) {
     this.setText(layout.extra.text);
 
     $super(layout, callback);

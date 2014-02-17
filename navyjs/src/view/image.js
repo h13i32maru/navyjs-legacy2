@@ -20,7 +20,7 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
     $super(layout, callback);
   },
 
-  _loadExtraResource: function($super, layout, callback) {
+  _loadExtraAsset: function($super, layout, callback) {
     if (layout && layout.extra.src) {
       this.setSrc(layout.extra.src, function(){
         $super(layout, callback);

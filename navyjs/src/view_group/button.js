@@ -16,7 +16,7 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
     this._element.addEventListener('touchend', this._onTouchEnd.bind(this));
   },
 
-  _loadExtraResource: function($super, layout, callback) {
+  _loadExtraAsset: function($super, layout, callback) {
     $super(layout, callback);
   },
 
