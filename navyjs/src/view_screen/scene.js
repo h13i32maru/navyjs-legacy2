@@ -71,6 +71,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
   nextPage: function(pageName, data, callback) {
     Navy.Root.lockView();
 
+    Navy.History.forwarded();
+
     this._createPage(pageName, function(page){
       this._addPage(page, data);
       callback && callback(page);
