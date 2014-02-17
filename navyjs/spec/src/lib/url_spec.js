@@ -12,4 +12,22 @@ describe('Navy.URL is utility for URL:', function(){
     expect(hash).not.toBeNull();
   });
 
+  it('can stringify hash object', function(){
+    var hash = {
+      hash1: 100,
+      hash2: 20
+    };
+
+    var str = Navy.URL.stringifyHash(hash);
+
+    // 本来は順番が保証されないのでちょっと微妙なspecになってしまってる.
+    expect(str).toBe('#hash1=100&hash2=20');
+  });
+
+  it('can stringify none-hash object', function(){
+    var hash = {};
+
+    var str = Navy.URL.stringifyHash(hash);
+    expect(str).toBe('');
+  });
 });

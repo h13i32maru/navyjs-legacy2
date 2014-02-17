@@ -18,5 +18,18 @@ Navy.Class.instance('Navy.URL', {
       result[key] = value;
     }
     return result;
+  },
+
+  stringifyHash: function(hash) {
+    var result = [];
+    for (var key in hash) {
+      result.push(key + '=' + hash[key]);
+    }
+
+    if (result.length) {
+      return '#' + result.join('&');
+    } else {
+      return '';
+    }
   }
 });
