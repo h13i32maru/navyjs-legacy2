@@ -1,0 +1,39 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "#42497e",
+      "border": "",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#ffffff",
+        "fontSize": 30,
+        "text": "Sample App",
+        "textAlign": {
+          "horizontal": "center",
+          "vertical": "baseline"
+        }
+      },
+      "id": "Text3",
+      "link": {
+        "id": ""
+      },
+      "padding": "",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 72,
+        "width": 361
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "matchParent"
+      },
+      "visible": true
+    }
+  ],
+  "meta": {
+    "__creator__": {}
+  }
+}

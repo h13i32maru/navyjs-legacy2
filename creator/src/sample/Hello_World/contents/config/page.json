@@ -1,0 +1,26 @@
+[
+    {
+        "backgroundColor": "#ffffff",
+        "class": "MainPage",
+        "classFile": "code/main_page.js",
+        "extra": {
+            "contentLayoutFile": "layout/main_page.json",
+            "transition": {
+                "class": "Navy.Transition.SlideRight"
+            }
+        },
+        "id": "MainPage"
+    },
+    {
+        "backgroundColor": "#ffdd4d",
+        "class": "HelloWorld",
+        "classFile": "code/hello_world.js",
+        "extra": {
+            "contentLayoutFile": "layout/hello_world.json",
+            "transition": {
+                "class": "Navy.Transition.SlideRight"
+            }
+        },
+        "id": "HelloWorld"
+    }
+]

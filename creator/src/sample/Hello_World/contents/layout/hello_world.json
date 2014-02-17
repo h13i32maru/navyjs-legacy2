@@ -1,0 +1,43 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#000000",
+        "fontSize": 62,
+        "text": "Hello World",
+        "textAlign": {
+          "horizontal": "center",
+          "vertical": "baseline"
+        }
+      },
+      "id": "Text1",
+      "link": {
+        "id": "page/$back"
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 96,
+        "y": 518
+      },
+      "size": {
+        "height": 100,
+        "width": 449
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    }
+  ],
+  "meta": {
+    "__creator__": {
+      "screenSceneId": "MainScene",
+      "screenEnable": true,
+      "screenPageId": "HelloWorld"
+    }
+  }
+}

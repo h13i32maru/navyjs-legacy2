@@ -1,0 +1,113 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.ViewGroup.Button",
+      "extra": {
+        "active": {
+          "src": "image/button_active.png"
+        },
+        "disabled": {
+          "src": "image/button_disabled.png"
+        },
+        "fontColor": "#ffffff",
+        "fontSize": 39,
+        "normal": {
+          "src": "image/button_normal.png"
+        },
+        "text": "Tap",
+        "contentLayoutFile": null
+      },
+      "id": "TapButton",
+      "link": {
+        "id": "page/HelloWorld"
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 226,
+        "y": 524
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "wrapContent",
+        "width": "wrapContent"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#000000",
+        "fontSize": 50,
+        "text": "0",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "top"
+        }
+      },
+      "id": "Count",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 385,
+        "y": 632
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "wrapContent"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#000000",
+        "fontSize": 50,
+        "text": "Count:",
+        "textAlign": {
+          "horizontal": "right",
+          "vertical": "top"
+        }
+      },
+      "id": "Text3",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 223,
+        "y": 632
+      },
+      "size": {
+        "height": 100,
+        "width": 302
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "wrapContent"
+      },
+      "visible": true
+    }
+  ],
+  "meta": {
+    "__creator__": {
+      "screenSceneId": "MainScene",
+      "screenPageId": "MainPage",
+      "screenEnable": true
+    }
+  }
+}
