@@ -2,7 +2,10 @@
  * @typedef {Object} Navy.Resource
  */
 Navy.Class.instance('Navy.Resource', {
+  _scriptFileMap: null,
+
   initialize: function(){
+    this._scriptFileMap = {};
   },
 
   loadLayout: function(layoutFile, callback) {
@@ -10,6 +13,12 @@ Navy.Class.instance('Navy.Resource', {
   },
 
   loadScript: function(scriptFile, callback) {
+    if (this._scriptFileMap[scriptFile]) {
+      setTimeout(callback, 0);
+      return;
+    }
+
+    this._scriptFileMap[scriptFile] = true;
     var scriptElement = document.createElement('script');
     document.head.appendChild(scriptElement);
     Navy.AssetInstaller.loadJavaScript(scriptFile, scriptElement, callback);
