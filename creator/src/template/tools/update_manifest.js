@@ -1,11 +1,16 @@
 var ManifestBuilder = {
   _assets: [],
+  _ignoreDirNames: ['creator', 'navy'],
 
   build: function(rootDir, enableFormat) {
     var fs = require('fs');
     var files = fs.readdirSync(rootDir);
 
     for (var i = 0; i < files.length; i++) {
+      if (this._ignoreDirNames.indexOf(files[i]) != -1) {
+        continue;
+      }
+
       var path = rootDir + '/' + files[i];
       var stat = fs.statSync(path);
       if (stat.isDirectory()) {

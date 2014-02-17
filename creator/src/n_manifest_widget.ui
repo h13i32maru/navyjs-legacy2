@@ -47,7 +47,7 @@
      </column>
      <column>
       <property name="text">
-       <string>md5</string>
+       <string>hash</string>
       </property>
      </column>
     </widget>
