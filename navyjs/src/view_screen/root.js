@@ -1,3 +1,6 @@
+/**
+ * @typedef {Object} Navy.Root
+ */
 Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   _sceneStack: null,
   _loadingElement: null,
