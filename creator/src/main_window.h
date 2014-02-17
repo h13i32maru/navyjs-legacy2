@@ -38,9 +38,11 @@ private:
     QList<int> searchTabIndexesByPath(const QString &path, const bool &isDir);
     bool isFileContentChanged(int tabIndex);
     bool saveFile(int tabIndex);
+    void initSampleProjectMenu();
 
 private slots:
     void openProject();
+    void openSampleProject(QAction *action);
     void newProject();
     void showProjectSetting();
     void showFileOpener();

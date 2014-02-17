@@ -44,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     mGoogleChromeProcess = new QProcess();
     mNodeJSProcess = new QProcess();
 
+    initSampleProjectMenu();
+
     connect(ui->actionPreferences, SIGNAL(triggered()), mPrefDialog, SLOT(exec()));
     connect(ui->actionNewProject, SIGNAL(triggered(bool)), this, SLOT(newProject()));
     connect(ui->actionOpenProject, SIGNAL(triggered(bool)), this, SLOT(openProject()));
@@ -56,6 +58,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionCloseTab, SIGNAL(triggered(bool)), this, SLOT(closeCurrentFile()));
     connect(ui->actionNextTab, SIGNAL(triggered(bool)), this, SLOT(nextFile()));
     connect(ui->actionPrevTab, SIGNAL(triggered(bool)), this, SLOT(prevFile()));
+    connect(ui->menuSampleProject, SIGNAL(triggered(QAction*)), this, SLOT(openSampleProject(QAction*)));
 
     connect(mFileTreeView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
     connect(mFileTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(openFile(QModelIndex)));
@@ -64,13 +67,45 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(mFileTabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 }
 
+void MainWindow::initSampleProjectMenu() {
+    QDir dir(":/sample/");
+    dir.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
+    QStringList list = dir.entryList();
+
+    for (int i = 0; i < list.length(); i++) {
+        QString projectDirPath = dir.absoluteFilePath(list[i]);
+        QString projectFilePath = projectDirPath +  "/project.ncproject";
+
+        NJson json;
+        json.parseFromFilePath(projectFilePath);
+        QString projectName = json.getStr("projectName");
+
+        QAction *action = new QAction(projectName, ui->menuSampleProject);
+        action->setProperty("projectDirPath", QVariant(projectDirPath));
+        ui->menuSampleProject->addAction(action);
+    }
+}
+
 void MainWindow::showProjectSetting() {
     NProject::instance()->showSettingDialog();
 }
 
 void MainWindow::setCurrentProject(QString dirPath, QString projectName) {
-    NProject::instance()->setProject(dirPath, projectName);
-    setWindowTitle(NProject::instance()->projectName() + " - [" + dirPath + "]");
+    NProject *project = NProject::instance();
+    project->setProject(dirPath, projectName);
+    setWindowTitle(project->projectName() + " - [" + dirPath + "]");
+
+    // FIXME: remove this debug code.
+    QDir(project->contentsFilePath("navy")).removeRecursively();
+    QDir(project->contentsFilePath("creator")).removeRecursively();
+    QDir(project->pluginDirPath()).removeRecursively();
+    QDir(project->toolsDirPath()).removeRecursively();
+    NUtil::copyDir(":/template/contents/navy", project->contentsFilePath("navy"));
+    NUtil::copyDir(":/template/contents/creator", project->contentsFilePath("creator"));
+    NUtil::copyDir(":/template/plugin", project->pluginDirPath());
+    NUtil::copyDir(":/template/tools", project->toolsDirPath());
+    NUtil::createFileFromTemplate(":/template/contents/index.html", project->contentsFilePath("index.html"));
+    NUtil::createFileFromTemplate(":/template/contents/index_creator.html", project->contentsFilePath("index_creator.html"));
 
     QString rootDirPath = NProject::instance()->contentsDirPath();
     mFileSysteMmodel->setRootPath(rootDirPath);
@@ -80,7 +115,6 @@ void MainWindow::setCurrentProject(QString dirPath, QString projectName) {
     mFileTabWidget->clear();
 
     // 特定のファイルは非表示にする
-    NProject *project = NProject::instance();
     QModelIndex rootIndex = mFileTreeView->rootIndex();
     int row;
     row = mFileSysteMmodel->index(project->contentsFilePath("index.html")).row();
@@ -117,21 +151,26 @@ void MainWindow::openProject() {
         return;
     }
 
-    // FIXME: remove this debug code.
-    NProject *project = NProject::instance();
-    QDir(project->contentsFilePath("navy")).removeRecursively();
-    QDir(project->contentsFilePath("creator")).removeRecursively();
-    QDir(project->pluginDirPath()).removeRecursively();
-    QDir(project->toolsDirPath()).removeRecursively();
-    NUtil::copyDir(":/template/contents/navy", project->contentsFilePath("navy"));
-    NUtil::copyDir(":/template/contents/creator", project->contentsFilePath("creator"));
-    NUtil::copyDir(":/template/plugin", project->pluginDirPath());
-    NUtil::copyDir(":/template/tools", project->toolsDirPath());
-    NUtil::createFileFromTemplate(":/template/contents/index.html", project->contentsFilePath("index.html"));
-    NUtil::createFileFromTemplate(":/template/contents/index_creator.html", project->contentsFilePath("index_creator.html"));
-
     QString projectDirPath = QFileInfo(projectFilePath).dir().absolutePath();
     setCurrentProject(projectDirPath);
+}
+
+void MainWindow::openSampleProject(QAction *action) {
+    QString parentDirPath = QFileDialog::getExistingDirectory(this, tr("Copy Sample Project"), QDir::homePath() + "/Desktop");
+    if (parentDirPath.isEmpty()) {
+        return;
+    }
+
+    // sample プロジェクトのディレクトリ名を抜き出して、コピー先のパス文字列を作る
+    QString projectDirPath = action->property("projectDirPath").toString();
+    QString baseName = QFileInfo(projectDirPath).baseName();
+    QString distDirPath = parentDirPath + "/" + baseName;
+    if (QDir(distDirPath).exists()) {
+        return;
+    }
+
+    NUtil::copyDir(projectDirPath, distDirPath);
+    setCurrentProject(distDirPath);
 }
 
 void MainWindow::showFileOpener() {

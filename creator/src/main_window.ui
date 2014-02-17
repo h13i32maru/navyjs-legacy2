@@ -119,6 +119,11 @@
     <property name="title">
      <string>File</string>
     </property>
+    <widget class="QMenu" name="menuSampleProject">
+     <property name="title">
+      <string>Sample Project</string>
+     </property>
+    </widget>
     <addaction name="actionNewProject"/>
     <addaction name="actionOpenProject"/>
     <addaction name="actionPreferences"/>
@@ -126,6 +131,8 @@
     <addaction name="actionProjectSetting"/>
     <addaction name="actionOpenFile"/>
     <addaction name="actionSaveAll"/>
+    <addaction name="separator"/>
+    <addaction name="menuSampleProject"/>
    </widget>
    <widget class="QMenu" name="menuBuild">
     <property name="title">
@@ -243,6 +250,11 @@
   <action name="actionUpdateManifest">
    <property name="text">
     <string>Update Manifest</string>
+   </property>
+  </action>
+  <action name="actionAaa">
+   <property name="text">
+    <string>aaa</string>
    </property>
   </action>
  </widget>
