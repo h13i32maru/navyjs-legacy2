@@ -107,8 +107,8 @@ describe('Navy.AssetInstaller installs web asset to WebSQL:', function(){
     })
   });
 
-  it('can be updated if disabled database.', function(done){
-    Navy.AssetInstaller.setEnableDatabase(false);
+  it('can be updated if always load remote.', function(done){
+    Navy.AssetInstaller.setAlwaysRemote(true);
 
     Navy.AssetInstaller.update({
       onProgress: function(){
@@ -121,13 +121,13 @@ describe('Navy.AssetInstaller installs web asset to WebSQL:', function(){
     });
   });
 
-  it('can load remote asset.', function(done){
-    Navy.AssetInstaller.setEnableDatabase(false);
+  it('can always load remote asset.', function(done){
+    Navy.AssetInstaller.setAlwaysRemote(true);
     expect(Navy.AssetInstaller._loadAsset).toBe(Navy.AssetInstaller._loadRemoteAsset);
 
     Navy.AssetInstaller.loadJSON('/base/fixture/config/config1.json', function(obj){
       expect(obj).toEqual({prop1: 'dummy config1'});
-      Navy.AssetInstaller.setEnableDatabase(true);
+      Navy.AssetInstaller.setAlwaysRemote(false);
       done();
     });
   });
@@ -212,9 +212,9 @@ describe('Navy.AssetInstaller installs web asset to WebSQL:', function(){
         done();
       };
 
-      Navy.AssetInstaller.setEnableDatabase(false);
+      Navy.AssetInstaller.setAlwaysRemote(true);
       Navy.AssetInstaller.loadJSON('/not_exists_json.json', function(){});
-      Navy.AssetInstaller.setEnableDatabase(true);
+      Navy.AssetInstaller.setAlwaysRemote(true);
     });
 
     it('throws unknown file extension exception.', function(){
