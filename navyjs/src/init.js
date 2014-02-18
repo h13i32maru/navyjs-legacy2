@@ -1,18 +1,24 @@
 window.Navy = {};
 
+(function(){
+  var scriptElements = document.querySelectorAll('script');
+  var selfScriptElement = scriptElements[scriptElements.length - 1];
+  var assetConfig = JSON.parse(selfScriptElement.dataset.assetConfig);
+  window.Navy.assetConfig = assetConfig;
+})();
+
 window.addEventListener('DOMContentLoaded', function(){
   if (Navy.UnitTest) {
     return;
   }
 
-  var hash = Navy.URL.parseHash(location.href);
   Navy.AssetInstaller.initialize('./manifest.json');
-  if (hash['asset_installer_db'] === 'false') {
-    Navy.AssetInstaller.setEnableDatabase(false);
-  }
+
+  // かならずremoteを使う場合は都度サーバから取得することになる.
+  Navy.AssetInstaller.setAlwaysRemote(Navy.assetConfig.alwaysRemote);
 
   Navy.AssetInstaller.update({
-    forceUpdate: true,
+    forceUpdate: Navy.assetConfig.forceUpdate,
     onProgress: function(progress, total) {
       var progressElement = document.querySelector('#asset_installer_inner_progress');
       if (progressElement) {

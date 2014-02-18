@@ -20,7 +20,7 @@ Navy.Class.instance('Navy.AssetInstaller', {
   _localManifest: null,
   _invalidAssets: null,
   _concurrency: 4,
-  _enableDatabase: null,
+  _alwaysRemote: false,
 
   _totalInvalidCount: 0,
   _doneInvalidCount: 0,
@@ -36,21 +36,20 @@ Navy.Class.instance('Navy.AssetInstaller', {
     this._localManifest = {baseUrl: '', assets: []};
     this.setManifestURL(manifestURL);
 
-    this.setEnableDatabase(true);
+    this.setAlwaysRemote(false);
   },
 
   setManifestURL: function(manifestURL) {
     this._manifestURL = manifestURL;
   },
 
-  setEnableDatabase: function(enable) {
-    this._enableDatabase = enable;
+  setAlwaysRemote: function(alwaysRemote) {
+    this._alwaysRemote = alwaysRemote;
 
-    // DBを使う場合はローカルから、使わない場合はリモートからリソースを取得する.
-    if (enable) {
-      this._loadAsset = this._loadLocalAsset;
-    } else {
+    if (alwaysRemote) {
       this._loadAsset = this._loadRemoteAsset;
+    } else {
+      this._loadAsset = this._loadLocalAsset;
     }
   },
 
@@ -60,7 +59,7 @@ Navy.Class.instance('Navy.AssetInstaller', {
     this._callbackOnError = options.onError || function(){};
     var forceUpdate = options.forceUpdate || false;
 
-    if (!this._enableDatabase) {
+    if (this._alwaysRemote) {
       setTimeout(function(){
         this._callbackOnComplete();
       }.bind(this), 0);
