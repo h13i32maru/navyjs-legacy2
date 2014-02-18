@@ -26,52 +26,16 @@
       "hash": "c4fc8a99856bd4ae6b8900cc823f9cf2"
     },
     {
-      "path": "creator/creator_page.js",
-      "hash": "4cf10a4dbb507ddbe0795a476cc5c604"
-    },
-    {
-      "path": "creator/creator_scene.js",
-      "hash": "1e6f82461d573e941e4629ec49087210"
-    },
-    {
-      "path": "creator/grouping_view.js",
-      "hash": "84c4b11d581c8f1a3030aa3eb9b10a62"
-    },
-    {
-      "path": "creator/include/grouping.js",
-      "hash": "e3afc0b12e320aaa37268bc755819923"
-    },
-    {
-      "path": "creator/include/include.js",
-      "hash": "3ab2ec14f76f64250b1b4c7fb049489e"
-    },
-    {
-      "path": "creator/include/move.js",
-      "hash": "d10e0beb5b620babc5b7d01787fae68f"
-    },
-    {
-      "path": "creator/include/native_bridge.js",
-      "hash": "4bb0ac3459c80c6b0fafc7ffe5116795"
-    },
-    {
-      "path": "creator/include/screen.js",
-      "hash": "ef2d03ff6fa5db317c7b6d0d1cfe4dfc"
-    },
-    {
-      "path": "creator/include/tidy.js",
-      "hash": "04a745197c078413e59b0ef3ce0b33de"
-    },
-    {
       "path": "image/button_active.png",
-      "hash": "a794470fedc30acfff93875a92a50f7d"
+      "hash": "3947e9be62c0db5f0f0bd628b6d1d8e4"
     },
     {
       "path": "image/button_disabled.png",
-      "hash": "e780949bf5030fad813adc6387957772"
+      "hash": "24eb45153a4c48c97959ebcb33ce69f4"
     },
     {
       "path": "image/button_normal.png",
-      "hash": "28901ef32d4ed7b44ae39b194cab3754"
+      "hash": "8ab505b7193d6dee71969b25c911698f"
     },
     {
       "path": "image/loading.png",
@@ -88,14 +52,6 @@
     {
       "path": "layout/main_scene.json",
       "hash": "834e02b7e534ffa627bc261c302a2372"
-    },
-    {
-      "path": "navy/navy.js",
-      "hash": "8a1ce214b097b73b254a057bcfec19bc"
-    },
-    {
-      "path": "navy/navy.min.js",
-      "hash": "73aa84a0d1dfcc8518d44eefe8d64656"
     }
   ]
 }
