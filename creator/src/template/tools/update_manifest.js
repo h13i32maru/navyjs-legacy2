@@ -27,6 +27,10 @@ var ManifestBuilder = {
     var fs = require('fs');
     var files = fs.readdirSync(dir);
     for (var i = 0; i < files.length; i++) {
+      if (files[i].charAt(0) === '.') {
+        continue;
+      }
+
       var path = dir + '/' + files[i];
       var stat = fs.statSync(path);
       if (stat.isDirectory()) {

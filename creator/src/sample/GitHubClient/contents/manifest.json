@@ -3,7 +3,7 @@
   "assets": [
     {
       "path": "code/login_page.js",
-      "hash": "eb3792056156568bb275603a14431fdc"
+      "hash": "a3fbf238cff281b33a98a2469f4b067c"
     },
     {
       "path": "code/login_scene.js",
@@ -31,7 +31,7 @@
     },
     {
       "path": "config/app.json",
-      "hash": "5535ec6d4404f6a2cd67a286f26f5054"
+      "hash": "e0a0b71e955f42baa83f11b97aff3923"
     },
     {
       "path": "config/page.json",
@@ -54,12 +54,12 @@
       "hash": "28901ef32d4ed7b44ae39b194cab3754"
     },
     {
-      "path": "image/loading.png",
-      "hash": "437ad1830069cd318a9225746c183fbc"
+      "path": "image/icon.png",
+      "hash": "82d3884dbcb2219e4f23e697bbe1e604"
     },
     {
-      "path": "image/touch-icon.png",
-      "hash": "b51411685a8d51dfa3ed1934661c5460"
+      "path": "image/loading.png",
+      "hash": "437ad1830069cd318a9225746c183fbc"
     },
     {
       "path": "layout/footer.json",

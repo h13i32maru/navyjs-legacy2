@@ -15,7 +15,7 @@
     },
     {
       "path": "config/app.json",
-      "hash": "e92f7358aa2e153da6456f1cb8b4bee3"
+      "hash": "de0cffc2b8f68eab65290f64546843c6"
     },
     {
       "path": "config/page.json",
@@ -36,6 +36,10 @@
     {
       "path": "image/button_normal.png",
       "hash": "8ab505b7193d6dee71969b25c911698f"
+    },
+    {
+      "path": "image/icon.png",
+      "hash": "694da9b50eb2bdf8a4eca6813e951a27"
     },
     {
       "path": "image/loading.png",

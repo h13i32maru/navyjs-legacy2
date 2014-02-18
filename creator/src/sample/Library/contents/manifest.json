@@ -7,7 +7,7 @@
     },
     {
       "path": "code/list_view_page.js",
-      "hash": "147bf21c3bdfb8786436ccb4f0ef0e11"
+      "hash": "2e17236c8be1560a936ca630fcfea287"
     },
     {
       "path": "code/main_page.js",
@@ -27,7 +27,7 @@
     },
     {
       "path": "config/app.json",
-      "hash": "c15bc38219f24854c3b7c316f055f21e"
+      "hash": "45cfbedcde490f2785585c5ace4f662a"
     },
     {
       "path": "config/page.json",
@@ -50,6 +50,10 @@
       "hash": "8ab505b7193d6dee71969b25c911698f"
     },
     {
+      "path": "image/icon.png",
+      "hash": "f80f766e713a59c32941eeace3a768c3"
+    },
+    {
       "path": "image/loading.png",
       "hash": "437ad1830069cd318a9225746c183fbc"
     },
@@ -67,7 +71,7 @@
     },
     {
       "path": "layout/list_view_page.json",
-      "hash": "30458d593c217c864eca75a61863353e"
+      "hash": "1c90dd02a218e884739cb1cec1c6997c"
     },
     {
       "path": "layout/main_page.json",

@@ -22,7 +22,7 @@ NConfigAppWidget::NConfigAppWidget(const QString &filePath, QWidget *parent) : N
     connect(ui->appTouchIcon, SIGNAL(textChanged(QString)), this, SLOT(changed()));
     connect(ui->appSizeWidth, SIGNAL(valueChanged(int)), this, SLOT(changed()));
     connect(ui->appSizeHeight, SIGNAL(valueChanged(int)), this, SLOT(changed()));
-    connect(ui->appStartScene, SIGNAL(currentTextChanged(QString)), this, SLOT(changed()));
+    connect(ui->appStartScene, SIGNAL(textChanged(QString)), this, SLOT(changed()));
     connect(ui->appFontFamily, SIGNAL(textChanged(QString)), this, SLOT(changed()));
 
     refreshForActive();

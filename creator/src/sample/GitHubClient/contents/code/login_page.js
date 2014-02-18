@@ -2,6 +2,7 @@ Navy.Class('LoginPage', Navy.Page, {
   _token: null,
 
   onCreate: function($super, ev) {
+
     $super(ev);
 
     var token = localStorage.getItem('token');
@@ -19,7 +20,12 @@ Navy.Class('LoginPage', Navy.Page, {
       }.bind(this));
     }
 
-    this.findViewById('LoginButton').on('Link', this._onLogin.bind(this));
+//    this.findViewById('LoginButton').on('Link', this._onLogin.bind(this));
+    this.findViewById('LoginButton').on('Tap', function(ev){
+      ev.preventDefault();
+      window.open('https://github.com/settings/tokens/new');
+      return true;
+    });
   },
 
   _onLogin: function(ev) {

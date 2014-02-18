@@ -11,11 +11,12 @@
 <file>sample/GitHubClient/contents/config/app.json</file>
 <file>sample/GitHubClient/contents/config/page.json</file>
 <file>sample/GitHubClient/contents/config/scene.json</file>
+<file>sample/GitHubClient/contents/image/.DS_Store</file>
 <file>sample/GitHubClient/contents/image/button_active.png</file>
 <file>sample/GitHubClient/contents/image/button_disabled.png</file>
 <file>sample/GitHubClient/contents/image/button_normal.png</file>
+<file>sample/GitHubClient/contents/image/icon.png</file>
 <file>sample/GitHubClient/contents/image/loading.png</file>
-<file>sample/GitHubClient/contents/image/touch-icon.png</file>
 <file>sample/GitHubClient/contents/layout/footer.json</file>
 <file>sample/GitHubClient/contents/layout/item_repo.json</file>
 <file>sample/GitHubClient/contents/layout/item_user.json</file>
@@ -37,6 +38,7 @@
 <file>sample/HelloWorld/contents/image/button_active.png</file>
 <file>sample/HelloWorld/contents/image/button_disabled.png</file>
 <file>sample/HelloWorld/contents/image/button_normal.png</file>
+<file>sample/HelloWorld/contents/image/icon.png</file>
 <file>sample/HelloWorld/contents/image/loading.png</file>
 <file>sample/HelloWorld/contents/layout/hello_world.json</file>
 <file>sample/HelloWorld/contents/layout/main_page.json</file>
@@ -55,6 +57,7 @@
 <file>sample/Library/contents/image/button_active.png</file>
 <file>sample/Library/contents/image/button_disabled.png</file>
 <file>sample/Library/contents/image/button_normal.png</file>
+<file>sample/Library/contents/image/icon.png</file>
 <file>sample/Library/contents/image/loading.png</file>
 <file>sample/Library/contents/image/star.png</file>
 <file>sample/Library/contents/layout/basic_page.json</file>

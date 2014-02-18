@@ -8,5 +8,5 @@
     "start": {
         "scene": "MainScene"
     },
-    "touchIcon": ""
+    "touchIcon": "image/icon.png"
 }
