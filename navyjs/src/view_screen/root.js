@@ -65,6 +65,9 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
   backScene: function(data) {
     if (this._sceneStack.length >= 2) {
       this.lockView();
+
+      Navy.History.backed();
+
       var prevStackObj = this._getPrevStack();
       prevStackObj.scene.trigger('ResumeBefore', data);
 

@@ -83,6 +83,8 @@ Navy.Class('Navy.Scene', Navy.ViewGroup.ViewGroup, {
     if (this._pageStack.length >= 2) {
       Navy.Root.lockView();
 
+      Navy.History.backed();
+
       var currentStackObj = this._getCurrentStack();
       var prevStackObj = this._getPrevStack();
 
