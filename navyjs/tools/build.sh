@@ -48,8 +48,5 @@ echo "build/navy.min.js"
 mkdir -p $root_dir/navyjs/sample/navy
 cp build/navy* $root_dir/navyjs/sample/navy/
 
-mkdir -p $root_dir/GitHubClient/contents/navy
-cp build/navy* $root_dir/GitHubClient/contents/navy/
-
 mkdir -p $root_dir/creator/src/template/contents/navy
 cp build/navy* $root_dir/creator/src/template/contents/navy/
