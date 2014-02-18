@@ -1,0 +1,62 @@
+[
+    {
+        "backgroundColor": "#ffffff",
+        "class": "MainPage",
+        "classFile": "code/main_page.js",
+        "extra": {
+            "contentLayoutFile": "layout/main_page.json",
+            "transition": {
+                "class": "Navy.Transition.SlideRight"
+            }
+        },
+        "id": "MainPage"
+    },
+    {
+        "backgroundColor": "#B8E986",
+        "class": "BasicPage",
+        "classFile": "code/basic_page.js",
+        "extra": {
+            "contentLayoutFile": "layout/basic_page.json",
+            "transition": {
+                "class": "Navy.Transition.SlideRight"
+            }
+        },
+        "id": "BasicPage"
+    },
+    {
+        "backgroundColor": "#B8E986",
+        "class": "ViewGroupPage",
+        "classFile": "code/view_group_page.js",
+        "extra": {
+            "contentLayoutFile": "layout/view_group_page.json",
+            "transition": {
+                "class": "Navy.Transition.SlideRight"
+            }
+        },
+        "id": "ViewGroupPage"
+    },
+    {
+        "backgroundColor": "#B8E986",
+        "class": "ListViewPage",
+        "classFile": "code/list_view_page.js",
+        "extra": {
+            "contentLayoutFile": "layout/list_view_page.json",
+            "transition": {
+                "class": "Navy.Transition.SlideRight"
+            }
+        },
+        "id": "ListViewPage"
+    },
+    {
+        "backgroundColor": "#B8E986",
+        "class": "TabPage",
+        "classFile": "code/tab_page.js",
+        "extra": {
+            "contentLayoutFile": "layout/tab_page.json",
+            "transition": {
+                "class": "Navy.Transition.SlideRight"
+            }
+        },
+        "id": "TabPage"
+    }
+]

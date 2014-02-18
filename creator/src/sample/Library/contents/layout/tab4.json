@@ -1,0 +1,62 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "#0075AD",
+      "border": "none 4px #000000",
+      "class": "Navy.View.View",
+      "id": "View1",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 407,
+        "width": 637
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#000",
+        "fontSize": 30,
+        "text": "Tab4",
+        "textAlign": {
+          "horizontal": "center",
+          "vertical": "baseline"
+        }
+      },
+      "id": "Text2",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 268,
+        "y": 153
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    }
+  ],
+  "meta": {
+    "__creator__": {}
+  }
+}

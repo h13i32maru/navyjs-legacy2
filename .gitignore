@@ -10,10 +10,9 @@ GitHubClient/contents/creator
 GitHubClient/plugin
 GitHubClient/tools
 
-creator/src/sample/Hello_World/plugin
-creator/src/sample/Hello_World/tools
-creator/src/sample/Hello_World/contents/creator
-creator/src/sample/Hello_World/contents/navy
-creator/src/sample/Hello_World/contents/index.html
-creator/src/sample/Hello_World/contents/index_creator.html
-
+creator/src/sample/*/plugin
+creator/src/sample/*/tools
+creator/src/sample/*/contents/creator
+creator/src/sample/*/contents/navy
+creator/src/sample/*/contents/index.html
+creator/src/sample/*/contents/index_creator.html

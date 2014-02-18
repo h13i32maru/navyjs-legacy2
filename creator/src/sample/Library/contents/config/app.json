@@ -1,0 +1,12 @@
+{
+    "fontFamily": "sans-serif",
+    "name": "Library",
+    "size": {
+        "height": 1136,
+        "width": 640
+    },
+    "start": {
+        "scene": "MainScene"
+    },
+    "touchIcon": ""
+}

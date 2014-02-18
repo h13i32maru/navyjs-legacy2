@@ -1,0 +1,80 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.ViewGroup.ListView",
+      "extra": {
+        "itemLayoutFile": "layout/list_item.json",
+        "itemLayoutMargin": 10,
+        "itemLink": {
+          "id": ""
+        },
+        "mock": false,
+        "contentLayoutFile": null
+      },
+      "id": "ListView1",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 35,
+        "y": 282
+      },
+      "size": {
+        "height": 743,
+        "width": 570
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#000000",
+        "fontSize": 30,
+        "text": "Each row uses the same layout.",
+        "textAlign": {
+          "horizontal": "center",
+          "vertical": "top"
+        }
+      },
+      "id": "Text2",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 40,
+        "y": 189
+      },
+      "size": {
+        "height": 49,
+        "width": 561
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          2
+        ]
+      }
+    }
+  ],
+  "meta": {
+    "__creator__": {
+      "screenSceneId": "MainScene",
+      "screenPageId": "ListViewPage",
+      "screenEnable": true
+    }
+  }
+}

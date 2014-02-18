@@ -1,0 +1,103 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.ViewGroup.Tab",
+      "extra": {
+        "contents": [
+          {
+            "id": "Tab1",
+            "label": "Tab1",
+            "layoutFile": "layout/tab1.json"
+          },
+          {
+            "id": "Tab2",
+            "label": "Tab2",
+            "layoutFile": "layout/tab2.json"
+          },
+          {
+            "id": "Tab3",
+            "label": "Tab3",
+            "layoutFile": "layout/tab3.json"
+          },
+          {
+            "id": "Tab4",
+            "label": "Tab4",
+            "layoutFile": "layout/tab4.json"
+          }
+        ],
+        "label": {
+          "active": {
+            "src": "image/button_active.png"
+          },
+          "disabled": {
+            "src": "image/button_disabled.png"
+          },
+          "fontColor": "#ffffff",
+          "normal": {
+            "src": "image/button_normal.png"
+          }
+        },
+        "contentLayoutFile": null
+      },
+      "id": "Tab1",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 0,
+        "y": 295
+      },
+      "size": {
+        "height": 483,
+        "width": 641
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "matchParent"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#000000",
+        "fontSize": 30,
+        "text": "Each tab uses a different layout.",
+        "textAlign": {
+          "horizontal": "center",
+          "vertical": "top"
+        }
+      },
+      "id": "Text2",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 62,
+        "y": 189
+      },
+      "size": {
+        "height": 57,
+        "width": 517
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    }
+  ],
+  "meta": {
+    "__creator__": {
+      "screenSceneId": "MainScene",
+      "screenPageId": "TabPage",
+      "screenEnable": true
+    }
+  }
+}

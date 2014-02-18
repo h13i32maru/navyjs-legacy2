@@ -1,0 +1,109 @@
+{
+  "baseUrl": "",
+  "assets": [
+    {
+      "path": "code/basic_page.js",
+      "hash": "b8a9bcfbdf972c12c2c7df5d3aff5ff7"
+    },
+    {
+      "path": "code/list_view_page.js",
+      "hash": "147bf21c3bdfb8786436ccb4f0ef0e11"
+    },
+    {
+      "path": "code/main_page.js",
+      "hash": "32e1b64322bc803db89cdeecbc1cc574"
+    },
+    {
+      "path": "code/main_scene.js",
+      "hash": "63d0161ee01ab9c2ae233a8ffa5025db"
+    },
+    {
+      "path": "code/tab_page.js",
+      "hash": "7b3fd0cb2fdc101a5f4ef4fa1c89bcb0"
+    },
+    {
+      "path": "code/view_group_page.js",
+      "hash": "0cdd605b601fe702d55b25bb5ccd66dc"
+    },
+    {
+      "path": "config/app.json",
+      "hash": "c15bc38219f24854c3b7c316f055f21e"
+    },
+    {
+      "path": "config/page.json",
+      "hash": "b3d50160c63a2d87f6d3b792e6300f6c"
+    },
+    {
+      "path": "config/scene.json",
+      "hash": "c4fc8a99856bd4ae6b8900cc823f9cf2"
+    },
+    {
+      "path": "image/button_active.png",
+      "hash": "3947e9be62c0db5f0f0bd628b6d1d8e4"
+    },
+    {
+      "path": "image/button_disabled.png",
+      "hash": "24eb45153a4c48c97959ebcb33ce69f4"
+    },
+    {
+      "path": "image/button_normal.png",
+      "hash": "8ab505b7193d6dee71969b25c911698f"
+    },
+    {
+      "path": "image/loading.png",
+      "hash": "437ad1830069cd318a9225746c183fbc"
+    },
+    {
+      "path": "image/star.png",
+      "hash": "d453aeeb83717c472e945f3cd0a47b48"
+    },
+    {
+      "path": "layout/basic_page.json",
+      "hash": "4d4554ab778554d930df6ca40d27b918"
+    },
+    {
+      "path": "layout/list_item.json",
+      "hash": "37f36995ed14708e3816851a84fe2ed7"
+    },
+    {
+      "path": "layout/list_view_page.json",
+      "hash": "30458d593c217c864eca75a61863353e"
+    },
+    {
+      "path": "layout/main_page.json",
+      "hash": "b7812a81ce376a8343aeb9a035cc14f8"
+    },
+    {
+      "path": "layout/main_scene.json",
+      "hash": "62b211add1a9678db9a07e4f7fd7a679"
+    },
+    {
+      "path": "layout/tab1.json",
+      "hash": "878b0a4ca125096a9f85bd33158f5c05"
+    },
+    {
+      "path": "layout/tab2.json",
+      "hash": "eddbc58bdd80142ac4dd0fc68c8d4716"
+    },
+    {
+      "path": "layout/tab3.json",
+      "hash": "d48d4cdcd2e1147aba1fb01269b2d379"
+    },
+    {
+      "path": "layout/tab4.json",
+      "hash": "43a67560407d9fe24fd6a4d5236e82a8"
+    },
+    {
+      "path": "layout/tab_page.json",
+      "hash": "26cd18a62a2b5b5509ce9cff01df0f48"
+    },
+    {
+      "path": "layout/view_group.json",
+      "hash": "cbec7cfc612c1f4bba9f928e270e3bf3"
+    },
+    {
+      "path": "layout/view_group_page.json",
+      "hash": "ceac606f732bf26956b187be881cb7e6"
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "#FC685C",
+      "border": "",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#ffffff",
+        "fontSize": 30,
+        "text": "Basic",
+        "textAlign": {
+          "horizontal": "center",
+          "vertical": "baseline"
+        }
+      },
+      "id": "Text1",
+      "link": {
+        "id": "page/BasicPage"
+      },
+      "padding": "",
+      "pos": {
+        "x": 160,
+        "y": 242
+      },
+      "size": {
+        "height": 100,
+        "width": 320
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          1
+        ]
+      }
+    },
+    {
+      "backgroundColor": "#FC685C",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#ffffff",
+        "fontSize": 30,
+        "text": "ViewGroup",
+        "textAlign": {
+          "horizontal": "center",
+          "vertical": "baseline"
+        }
+      },
+      "id": "Text2",
+      "link": {
+        "id": "page/ViewGroupPage"
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 160,
+        "y": 411
+      },
+      "size": {
+        "height": 100,
+        "width": 320
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          5
+        ]
+      }
+    },
+    {
+      "backgroundColor": "#FC685C",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#ffffff",
+        "fontSize": 30,
+        "text": "ListView",
+        "textAlign": {
+          "horizontal": "center",
+          "vertical": "baseline"
+        }
+      },
+      "id": "Text3",
+      "link": {
+        "id": "page/ListViewPage"
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 160,
+        "y": 580
+      },
+      "size": {
+        "height": 100,
+        "width": 320
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          6
+        ]
+      }
+    },
+    {
+      "backgroundColor": "#FC685C",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#ffffff",
+        "fontSize": 30,
+        "text": "Tab",
+        "textAlign": {
+          "horizontal": "center",
+          "vertical": "baseline"
+        }
+      },
+      "id": "Text4",
+      "link": {
+        "id": "page/TabPage"
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 160,
+        "y": 749
+      },
+      "size": {
+        "height": 100,
+        "width": 320
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    }
+  ],
+  "meta": {
+    "__creator__": {
+      "screenSceneId": "MainScene",
+      "screenPageId": "MainPage",
+      "screenEnable": true
+    }
+  }
+}

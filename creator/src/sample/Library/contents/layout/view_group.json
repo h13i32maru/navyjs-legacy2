@@ -1,0 +1,104 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "#dddddd",
+      "border": "none 4px #000000",
+      "class": "Navy.View.View",
+      "id": "View1",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 140,
+        "width": 500
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          1
+        ]
+      }
+    },
+    {
+      "backgroundColor": "#0075AD",
+      "border": "none 4px #000000",
+      "class": "Navy.View.View",
+      "id": "View2",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 350,
+        "y": 20
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "#7ED321",
+      "border": "none 4px #000000",
+      "class": "Navy.View.View",
+      "id": "View3",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 200,
+        "y": 20
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "#D02B3F",
+      "border": "none 4px #000000",
+      "class": "Navy.View.View",
+      "id": "View4",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 50,
+        "y": 20
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    }
+  ],
+  "meta": {
+    "__creator__": {}
+  }
+}
