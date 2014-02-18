@@ -12,6 +12,10 @@ Navy.Class.instance('Navy.Asset', {
     Navy.AssetInstaller.loadJSON(layoutFile, callback);
   },
 
+  loadJSON: function(jsonFile, callback) {
+    Navy.AssetInstaller.loadJSON(jsonFile, callback);
+  },
+
   loadScript: function(scriptFile, callback) {
     if (this._scriptFileMap[scriptFile]) {
       setTimeout(callback, 0);
