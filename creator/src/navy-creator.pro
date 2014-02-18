@@ -105,4 +105,5 @@ FORMS    += main_window.ui \
     window/n_layout_json_table.ui
 
 RESOURCES += \
-    resource.qrc
+    resource.qrc\
+    resource_sample_project.qrc
