@@ -79,6 +79,6 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
 
     setTimeout(function(){
       this._imageView.setSrc(this._layout.extra.normal.src);
-    }.bind(this), 400);
+    }.bind(this), 100);
   }
 });
