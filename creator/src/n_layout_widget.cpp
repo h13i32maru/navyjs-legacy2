@@ -22,7 +22,7 @@
 #include <window/n_layout_setting_dialog.h>
 #include <ui_n_layout_setting_dialog.h>
 
-const QString NLayoutWidget::HtmlFilePath = "index_creator.html";
+const QString NLayoutWidget::HtmlFilePath = "creator.html";
 
 NLayoutWidget::NLayoutWidget(const QString &filePath, QWidget *parent) : NFileWidget(filePath, parent), ui(new Ui::NLayoutWidget)
 {
@@ -216,7 +216,7 @@ void NLayoutWidget::contextMenuForWebView(const QPoint &/*point*/) {
  ************************************************/
 void NLayoutWidget::reload() {
     QWebView *webView = ui->webView;
-    QString htmlPath = "file://" + NProject::instance()->contentsFilePath(HtmlFilePath) + "#asset_installer_db=false";
+    QString htmlPath = "file://" + NProject::instance()->contentsFilePath(HtmlFilePath);
     webView->load(QUrl(htmlPath));
 }
 

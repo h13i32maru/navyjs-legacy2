@@ -26,7 +26,6 @@
         <file>template/contents/creator/include/move.js</file>
         <file>template/contents/creator/include/screen.js</file>
         <file>template/contents/creator/include/native_bridge.js</file>
-        <file>template/contents/index_creator.html</file>
         <file>template/contents/image/button_normal.png</file>
         <file>template/contents/image/button_active.png</file>
         <file>template/contents/image/button_disabled.png</file>
@@ -39,6 +38,9 @@
         <file>template/contents/code/main_scene.js</file>
         <file>template/contents/code/main_page.js</file>
         <file>template/contents/index.html</file>
+        <file>template/contents/creator.html</file>
+        <file>template/contents/update.html</file>
+        <file>template/contents/remote.html</file>
         <file>template_code/scene.js</file>
         <file>template_code/layout.json</file>
         <file>template_code/page.js</file>

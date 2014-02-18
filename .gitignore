@@ -14,5 +14,4 @@ creator/src/sample/*/plugin
 creator/src/sample/*/tools
 creator/src/sample/*/contents/creator
 creator/src/sample/*/contents/navy
-creator/src/sample/*/contents/index.html
-creator/src/sample/*/contents/index_creator.html
+creator/src/sample/*/contents/*.html

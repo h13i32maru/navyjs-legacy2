@@ -105,7 +105,9 @@ void MainWindow::setCurrentProject(QString dirPath, QString projectName) {
     NUtil::copyDir(":/template/plugin", project->pluginDirPath());
     NUtil::copyDir(":/template/tools", project->toolsDirPath());
     NUtil::createFileFromTemplate(":/template/contents/index.html", project->contentsFilePath("index.html"));
-    NUtil::createFileFromTemplate(":/template/contents/index_creator.html", project->contentsFilePath("index_creator.html"));
+    NUtil::createFileFromTemplate(":/template/contents/creator.html", project->contentsFilePath("creator.html"));
+    NUtil::createFileFromTemplate(":/template/contents/remote.html", project->contentsFilePath("remote.html"));
+    NUtil::createFileFromTemplate(":/template/contents/update.html", project->contentsFilePath("update.html"));
 
     QString rootDirPath = NProject::instance()->contentsDirPath();
     mFileSysteMmodel->setRootPath(rootDirPath);
@@ -116,18 +118,12 @@ void MainWindow::setCurrentProject(QString dirPath, QString projectName) {
 
     // 特定のファイルは非表示にする
     QModelIndex rootIndex = mFileTreeView->rootIndex();
-    int row;
-    row = mFileSysteMmodel->index(project->contentsFilePath("index.html")).row();
-    mFileTreeView->setRowHidden(row, rootIndex, true);
-
-    row = mFileSysteMmodel->index(project->contentsFilePath("index_creator.html")).row();
-    mFileTreeView->setRowHidden(row, rootIndex, true);
-
-    row = mFileSysteMmodel->index(project->contentsFilePath("creator")).row();
-    mFileTreeView->setRowHidden(row, rootIndex, true);
-
-    row = mFileSysteMmodel->index(project->contentsFilePath("navy")).row();
-    mFileTreeView->setRowHidden(row, rootIndex, true);
+    QStringList hiddenFiles;
+    hiddenFiles << "index.html" << "creator.html" << "update.html" << "remote.html" << "creator" << "navy";
+    foreach (QString fileName, hiddenFiles) {
+        int row = mFileSysteMmodel->index(project->contentsFilePath(fileName)).row();
+        mFileTreeView->setRowHidden(row, rootIndex, true);
+    }
 }
 
 void MainWindow::newProject()
