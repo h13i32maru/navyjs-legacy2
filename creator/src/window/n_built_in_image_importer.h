@@ -2,6 +2,7 @@
 #define N_BUILT_IN_IMAGE_IMPORTER_H
 
 #include <QDialog>
+#include <QTreeWidgetItem>
 
 namespace Ui {
 class NBuiltInImageImporter;
@@ -17,9 +18,14 @@ public:
 
 private:
     Ui::NBuiltInImageImporter *ui;
+    QHash<QWidget *, QString> mImageWidgetToSrcPath;
+    QHash<QWidget *, QString> mImageWidgetToDstPath;
 
 private:
     void setupImageWidget();
+
+private slots:
+    void importImage(QTreeWidgetItem *item);
 };
 
 #endif // N_BUILT_IN_IMAGE_IMPORTER_H
