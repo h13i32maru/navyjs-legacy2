@@ -25,6 +25,7 @@
         <file>template/contents/config/app.json</file>
         <file>template/contents/config/page.json</file>
         <file>template/contents/config/scene.json</file>
+        <file>template/contents/image/icon.png</file>
         <file>template/contents/layout/main_scene.json</file>
         <file>template/contents/layout/main_page.json</file>
         <file>template/contents/code/main_scene.js</file>
@@ -33,9 +34,5 @@
         <file>template/contents/creator.html</file>
         <file>template/contents/update.html</file>
         <file>template/contents/remote.html</file>
-        <file>template_code/scene.js</file>
-        <file>template_code/layout.json</file>
-        <file>template_code/page.js</file>
-        <file>template/contents/image/icon.png</file>
     </qresource>
 </RCC>

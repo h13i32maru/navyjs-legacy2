@@ -108,6 +108,7 @@ FORMS    += main_window.ui \
     window/n_built_in_image_importer.ui
 
 RESOURCES += \
-    resource.qrc\
-    resource_sample_project.qrc \
+    resource/template.qrc\
+    resource/template_code.qrc\
+    resource/sample.qrc \
     resource/built_in_image.qrc
