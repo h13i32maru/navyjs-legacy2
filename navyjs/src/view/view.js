@@ -304,6 +304,18 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
     }
   },
 
+  isDisplay: function() {
+    return this._element.style.display !== 'none';
+  },
+
+  setDisplay: function(display) {
+    if (display) {
+      this._element.style.display = '';
+    } else {
+      this._element.style.display = 'none';
+    }
+  },
+
   setBackgroundColor: function(backgroundColor) {
     this._layout.backgroundColor = backgroundColor;
     this._element.style.backgroundColor = backgroundColor;

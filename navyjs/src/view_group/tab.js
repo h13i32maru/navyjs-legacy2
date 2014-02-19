@@ -34,6 +34,13 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
 
       // tapした時の表示切り替え
       tabLabel.on('Tap', this._onTapTabLabel.bind(this, tabContent));
+
+      /*
+       * 1つめのタブだけ表示する.
+       * setVisibleじゃなくてsetDisplayを使っているのは、
+       * visibleでの表示切り替えだとレイヤー同士が干渉してしまうのでdisplayでまったく存在しないようにしている.
+       */
+      tabContent.setDisplay(i === 0);
     }
   },
 
@@ -61,7 +68,7 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
 
     var layout = {
       id: content.id,
-      visible: index === 0, // はじめのviewだけ表示する
+      visible: true,
       sizePolicy: {width: 'matchParent', height: 'fixed'},
       size: {width: 0, height: 0},
       pos: {x: 0, y:0},
@@ -105,8 +112,8 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
     var contents = this._layout.extra.contents;
     for (var i = 0; i < contents.length; i++) {
       var tabContentId = contents[i].id;
-      this.findViewById(tabContentId).setVisible(false);
+      this.findViewById(tabContentId).setDisplay(false);
     }
-    tabContent.setVisible(true);
+    tabContent.setDisplay(true);
   }
 });
