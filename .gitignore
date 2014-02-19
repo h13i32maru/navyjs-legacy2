@@ -1,17 +1,12 @@
 creator/src/navy-creator.pro.user
-creator/src/template/contents/navy
 creator/build
 navyjs/build
-navyjs/sample/navy
 node_modules
 navyjs/spec/coverage
-GitHubClient/contents/navy
-GitHubClient/contents/creator
-GitHubClient/plugin
-GitHubClient/tools
 
-creator/src/sample/*/plugin
-creator/src/sample/*/tools
-creator/src/sample/*/contents/creator
-creator/src/sample/*/contents/navy
-creator/src/sample/*/contents/*.html
+creator/src/resource/sample/*/plugin
+creator/src/resource/sample/*/tools
+creator/src/resource/sample/*/contents/creator
+creator/src/resource/sample/*/contents/navy
+creator/src/resource/sample/*/contents/*.html
+creator/src/resource/template/contents/navy

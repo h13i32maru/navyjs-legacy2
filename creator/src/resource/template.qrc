@@ -11,6 +11,7 @@
         <file>template/plugin/built_in_view/navy.view_group.button.json</file>
         <file>template/plugin/built_in_view/navy.view_group.list_view.json</file>
         <file>template/plugin/built_in_view/navy.view_group.tab.json</file>
+        <file>template/contents/manifest.json</file>
         <file>template/contents/navy/navy.js</file>
         <file>template/contents/navy/navy.min.js</file>
         <file>template/contents/creator/creator_page.js</file>

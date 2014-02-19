@@ -1,0 +1,37 @@
+{
+  "baseUrl": "",
+  "assets": [
+    {
+      "path": "code/main_page.js",
+      "hash": "32e1b64322bc803db89cdeecbc1cc574"
+    },
+    {
+      "path": "code/main_scene.js",
+      "hash": "63d0161ee01ab9c2ae233a8ffa5025db"
+    },
+    {
+      "path": "config/app.json",
+      "hash": "f58514346356b4fc94ffc31a3faf3f44"
+    },
+    {
+      "path": "config/page.json",
+      "hash": "13ff3abccef6c1d662e320b705188d67"
+    },
+    {
+      "path": "config/scene.json",
+      "hash": "c4fc8a99856bd4ae6b8900cc823f9cf2"
+    },
+    {
+      "path": "image/icon.png",
+      "hash": "a69f159c1b536bc4d00f97556c30d26b"
+    },
+    {
+      "path": "layout/main_page.json",
+      "hash": "216f9e38da1d60863dd2c32cd2fd6847"
+    },
+    {
+      "path": "layout/main_scene.json",
+      "hash": "0100bc4c6476e8a421e0e415cdd36321"
+    }
+  ]
+}
