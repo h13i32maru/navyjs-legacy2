@@ -15,7 +15,7 @@
     },
     {
       "path": "config/app.json",
-      "hash": "de0cffc2b8f68eab65290f64546843c6"
+      "hash": "f86f2bb12edd5c6849a76ec138057fd1"
     },
     {
       "path": "config/page.json",
@@ -24,18 +24,6 @@
     {
       "path": "config/scene.json",
       "hash": "c4fc8a99856bd4ae6b8900cc823f9cf2"
-    },
-    {
-      "path": "image/button_active.png",
-      "hash": "3947e9be62c0db5f0f0bd628b6d1d8e4"
-    },
-    {
-      "path": "image/button_disabled.png",
-      "hash": "24eb45153a4c48c97959ebcb33ce69f4"
-    },
-    {
-      "path": "image/button_normal.png",
-      "hash": "8ab505b7193d6dee71969b25c911698f"
     },
     {
       "path": "image/icon.png",

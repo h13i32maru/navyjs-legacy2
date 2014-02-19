@@ -3,7 +3,7 @@
   "assets": [
     {
       "path": "code/login_page.js",
-      "hash": "a3fbf238cff281b33a98a2469f4b067c"
+      "hash": "27129fb94f7c9174f826e2e705905922"
     },
     {
       "path": "code/login_scene.js",
@@ -31,7 +31,7 @@
     },
     {
       "path": "config/app.json",
-      "hash": "e0a0b71e955f42baa83f11b97aff3923"
+      "hash": "dc97cd47061cdcf472031a621b8d14c2"
     },
     {
       "path": "config/page.json",

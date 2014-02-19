@@ -1,5 +1,8 @@
 {
     "fontFamily": "sans-serif",
+    "loading": {
+        "src": "image/loading.png"
+    },
     "name": "Hello World",
     "size": {
         "height": 1136,

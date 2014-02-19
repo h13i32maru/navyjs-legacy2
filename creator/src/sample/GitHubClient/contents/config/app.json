@@ -1,5 +1,8 @@
 {
     "fontFamily": "sans-serif",
+    "loading": {
+        "src": "image/loading.png"
+    },
     "name": "GitHubClient",
     "size": {
         "height": 1096,
@@ -8,8 +11,5 @@
     "start": {
         "scene": "LoginScene"
     },
-    "touchIcon": "image/icon.png",
-    "loading": {
-      "src": "image/loading.png"
-    }
+    "touchIcon": "image/icon.png"
 }

@@ -11,9 +11,10 @@ NConfigAppWidget::NConfigAppWidget(const QString &filePath, QWidget *parent) : N
 {
     ui->setupUi(this);
     ui->appTouchIcon->setType(NTextListSelector::IMAGE);
+    ui->appStartScene->setType(NTextListSelector::SCENE);
+    ui->appLoadingSrc->setType(NTextListSelector::IMAGE);
 
     mConfigApp.parseFromFilePath(filePath);
-    ui->appStartScene->setType(NTextListSelector::SCENE);
 
     syncJsonToWidget();
 
@@ -24,6 +25,7 @@ NConfigAppWidget::NConfigAppWidget(const QString &filePath, QWidget *parent) : N
     connect(ui->appSizeHeight, SIGNAL(valueChanged(int)), this, SLOT(changed()));
     connect(ui->appStartScene, SIGNAL(textChanged(QString)), this, SLOT(changed()));
     connect(ui->appFontFamily, SIGNAL(textChanged(QString)), this, SLOT(changed()));
+    connect(ui->appLoadingSrc, SIGNAL(textChanged(QString)), this, SLOT(changed()));
 
     refreshForActive();
 }
@@ -51,6 +53,7 @@ void NConfigAppWidget::syncJsonToWidget() {
     ui->appSizeHeight->setValue(mConfigApp.getInt("size.height"));
     ui->appStartScene->setText(mConfigApp.getStr("start.scene"));
     ui->appFontFamily->setText(mConfigApp.getStr("fontFamily"));
+    ui->appLoadingSrc->setText(mConfigApp.getStr("loading.src"));
 }
 
 void NConfigAppWidget::syncWidgetToJson() {
@@ -60,6 +63,7 @@ void NConfigAppWidget::syncWidgetToJson() {
     mConfigApp.set("size.height", ui->appSizeHeight->value());
     mConfigApp.set("start.scene", ui->appStartScene->text());
     mConfigApp.set("fontFamily", ui->appFontFamily->text());
+    mConfigApp.set("loading.src", ui->appLoadingSrc->text());
 }
 
 void NConfigAppWidget::contextMenu(QPoint /*point*/) {
