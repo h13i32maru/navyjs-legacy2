@@ -8,5 +8,8 @@
     "start": {
         "scene": "LoginScene"
     },
-    "touchIcon": "image/icon.png"
+    "touchIcon": "image/icon.png",
+    "loading": {
+      "src": "image/loading.png"
+    }
 }

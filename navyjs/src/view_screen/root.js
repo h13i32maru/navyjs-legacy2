@@ -147,26 +147,23 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     elm.style.width = width + 'px';
     elm.style.height = height + 'px';
 
-    var imgWidth = width * 0.15;
-    var img = document.createElement('img');
-    img.onload = function() {
-      this.style.left = (width/2 -  this.width/ 2) + 'px';
-      this.style.top = (height/2 - this.height/2) + 'px';
-      this.onload = null;
-    };
-
-    // TODO: パスを検討する.
-    img.src = 'image/loading.png';
-    img.style.position = 'absolute';
-    img.width = imgWidth;
-    img.style.cssText += '-webkit-animation-name: navy_loading; -webkit-animation-duration: 1s; -webkit-animation-timing-function: linear; -webkit-animation-iteration-count: infinite;';
-    elm.appendChild(img);
-
     this._loadingElement = elm;
 
-    var style = document.createElement('style');
-    style.textContent = '@-webkit-keyframes navy_loading { 0% { -webkit-transform: rotate(0deg); }  100% { -webkit-transform: rotate(360deg); }';
-    document.head.appendChild(style);
+    if (Navy.Config.app.loading.src) {
+      var img = document.createElement('img');
+      Navy.Asset.loadImage(img, Navy.Config.app.loading.src, function(img){
+        var imgWidth = width * 0.15;
+        img.width = imgWidth;
+        img.style.left = (width/2 -  img.width/ 2) + 'px';
+        img.style.top = (height/2 - img.height/2) + 'px';
+        img.style.position = 'absolute';
+        img.style.cssText += '-webkit-animation-name: navy_loading; -webkit-animation-duration: 1s; -webkit-animation-timing-function: linear; -webkit-animation-iteration-count: infinite;';
+        elm.appendChild(img);
+        var style = document.createElement('style');
+        style.textContent = '@-webkit-keyframes navy_loading { 0% { -webkit-transform: rotate(0deg); }  100% { -webkit-transform: rotate(360deg); }';
+        document.head.appendChild(style);
+      });
+    }
   },
 
   _createScene: function(sceneName, callback) {
