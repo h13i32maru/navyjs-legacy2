@@ -6,15 +6,15 @@
       "class": "Navy.ViewGroup.Button",
       "extra": {
         "active": {
-          "src": "image/button_active.png"
+          "src": "image/button/middle/active.png"
         },
         "disabled": {
-          "src": "image/button_disabled.png"
+          "src": "image/button/middle/disabled.png"
         },
         "fontColor": "#ffffff",
         "fontSize": 39,
         "normal": {
-          "src": "image/button_normal.png"
+          "src": "image/button/middle/normal.png"
         },
         "text": "Tap",
         "contentLayoutFile": null
