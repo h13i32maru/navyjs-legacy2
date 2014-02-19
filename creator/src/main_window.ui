@@ -150,8 +150,15 @@
     <addaction name="actionNextTab"/>
     <addaction name="actionPrevTab"/>
    </widget>
+   <widget class="QMenu" name="menuImage">
+    <property name="title">
+     <string>Image</string>
+    </property>
+    <addaction name="actionImportBuiltInImage"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menuBuild"/>
+   <addaction name="menuImage"/>
    <addaction name="menuWindow"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -255,6 +262,11 @@
   <action name="actionAaa">
    <property name="text">
     <string>aaa</string>
+   </property>
+  </action>
+  <action name="actionImportBuiltInImage">
+   <property name="text">
+    <string>Import built-in image</string>
    </property>
   </action>
  </widget>

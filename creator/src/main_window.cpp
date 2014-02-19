@@ -18,6 +18,7 @@
 #include <QInputDialog>
 #include <QProcess>
 
+#include <window/n_built_in_image_importer.h>
 #include <window/n_file_opener.h>
 #include <window/n_new_project_dialog.h>
 
@@ -59,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionNextTab, SIGNAL(triggered(bool)), this, SLOT(nextFile()));
     connect(ui->actionPrevTab, SIGNAL(triggered(bool)), this, SLOT(prevFile()));
     connect(ui->menuSampleProject, SIGNAL(triggered(QAction*)), this, SLOT(openSampleProject(QAction*)));
+    connect(ui->actionImportBuiltInImage, SIGNAL(triggered()), this, SLOT(showBuiltInImageImporter()));
 
     connect(mFileTreeView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
     connect(mFileTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(openFile(QModelIndex)));
@@ -262,6 +264,11 @@ void MainWindow::validate() {
     }
 
     NProject::instance()->validate();
+}
+
+void MainWindow::showBuiltInImageImporter() {
+    NBuiltInImageImporter importer;
+    importer.exec();
 }
 
 QList<int> MainWindow::searchTabIndexesByPath(const QString &path, const bool &isDir) {

@@ -50,6 +50,7 @@ private slots:
     void updateManifest();
     void launchGoogleChrome();
     void validate();
+    void showBuiltInImageImporter();
     void contextMenu(QPoint point);
     void openFile(QModelIndex index);
     void openFile(const QString &filePath);

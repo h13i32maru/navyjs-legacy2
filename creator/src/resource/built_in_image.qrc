@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>built_in_image/button/large/active.png</file>
+        <file>built_in_image/button/large/disabled.png</file>
+        <file>built_in_image/button/large/normal.png</file>
+        <file>built_in_image/button/middle/active.png</file>
+        <file>built_in_image/button/middle/disabled.png</file>
+        <file>built_in_image/button/middle/normal.png</file>
+    </qresource>
+</RCC>
