@@ -5,6 +5,8 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
   _applyExtraLayout: function($super, layout, callback){
     $super(layout, callback);
 
+    this.setVisible(false);
+
     this.removeAllViews();
 
     this._tabLabels = [];
@@ -14,6 +16,7 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
 
     var notify = new Navy.Notify(contents.length * 2, function(){
       this._adjustPositionAndSize();
+      this.setVisible(true);
       $super(layout, callback)
     }.bind(this));
 
@@ -34,13 +37,6 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
 
       // tapした時の表示切り替え
       tabLabel.on('Tap', this._onTapTabLabel.bind(this, tabContent));
-
-      /*
-       * 1つめのタブだけ表示する.
-       * setVisibleじゃなくてsetDisplayを使っているのは、
-       * visibleでの表示切り替えだとレイヤー同士が干渉してしまうのでdisplayでまったく存在しないようにしている.
-       */
-      tabContent.setDisplay(i === 0);
     }
   },
 
@@ -106,14 +102,26 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
       size.height = height;
       tabContent.setSize(size)
     }
+
+    this.changeTabByIndex(0);
   },
 
   _onTapTabLabel: function(tabContent, ev){
+    this.changeTabByTabContent(tabContent);
+  },
+
+  changeTabByIndex: function(index) {
+    var tabContentId = this._layout.extra.contents[index].id;
+    var tabContent = this.findViewById(tabContentId);
+    this.changeTabByTabContent(tabContent);
+  },
+
+  changeTabByTabContent: function(tabContent) {
     var contents = this._layout.extra.contents;
     for (var i = 0; i < contents.length; i++) {
-      var tabContentId = contents[i].id;
-      this.findViewById(tabContentId).setDisplay(false);
+      var _tabContentId = contents[i].id;
+      var _tabContent = this.findViewById(_tabContentId);
+      _tabContent.setDisplay(_tabContent === tabContent);
     }
-    tabContent.setDisplay(true);
   }
 });
