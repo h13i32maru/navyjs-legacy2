@@ -127,6 +127,7 @@
     <addaction name="actionNewProject"/>
     <addaction name="actionOpenProject"/>
     <addaction name="actionPreferences"/>
+    <addaction name="actionAboutNavyCreator"/>
     <addaction name="separator"/>
     <addaction name="actionProjectSetting"/>
     <addaction name="actionOpenFile"/>
@@ -267,6 +268,14 @@
   <action name="actionImportBuiltInImage">
    <property name="text">
     <string>Import built-in image</string>
+   </property>
+  </action>
+  <action name="actionAboutNavyCreator">
+   <property name="text">
+    <string>About NavyCreator</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
    </property>
   </action>
  </widget>

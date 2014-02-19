@@ -18,6 +18,7 @@
 #include <QInputDialog>
 #include <QProcess>
 
+#include <window/n_about_dialog.h>
 #include <window/n_built_in_image_importer.h>
 #include <window/n_file_opener.h>
 #include <window/n_new_project_dialog.h>
@@ -47,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     initSampleProjectMenu();
 
+    connect(ui->actionAboutNavyCreator, SIGNAL(triggered()), this, SLOT(showAbout()));
     connect(ui->actionPreferences, SIGNAL(triggered()), mPrefDialog, SLOT(exec()));
     connect(ui->actionNewProject, SIGNAL(triggered(bool)), this, SLOT(newProject()));
     connect(ui->actionOpenProject, SIGNAL(triggered(bool)), this, SLOT(openProject()));
@@ -86,6 +88,11 @@ void MainWindow::initSampleProjectMenu() {
         action->setProperty("projectDirPath", QVariant(projectDirPath));
         ui->menuSampleProject->addAction(action);
     }
+}
+
+void MainWindow::showAbout() {
+    NAboutDialog dialog(this);
+    dialog.exec();
 }
 
 void MainWindow::showProjectSetting() {

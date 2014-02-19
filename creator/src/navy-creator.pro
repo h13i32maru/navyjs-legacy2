@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     window/n_layout_json_table.cpp \
     extend/n_json_array_editor.cpp \
     extend/n_table_widget.cpp \
-    window/n_built_in_image_importer.cpp
+    window/n_built_in_image_importer.cpp \
+    window/n_about_dialog.cpp
 
 HEADERS  += main_window.h \
     n_code_widget.h \
@@ -83,7 +84,8 @@ HEADERS  += main_window.h \
     window/n_layout_json_table.h \
     extend/n_json_array_editor.h \
     extend/n_table_widget.h \
-    window/n_built_in_image_importer.h
+    window/n_built_in_image_importer.h \
+    window/n_about_dialog.h
 
 FORMS    += main_window.ui \
     n_code_widget.ui \
@@ -105,10 +107,12 @@ FORMS    += main_window.ui \
     window/n_list_dialog.ui \
     n_manifest_widget.ui \
     window/n_layout_json_table.ui \
-    window/n_built_in_image_importer.ui
+    window/n_built_in_image_importer.ui \
+    window/n_about_dialog.ui
 
 RESOURCES += \
     resource/template.qrc\
     resource/template_code.qrc\
     resource/sample.qrc \
-    resource/built_in_image.qrc
+    resource/built_in_image.qrc \
+    resource/misc.qrc

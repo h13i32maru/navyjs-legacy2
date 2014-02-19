@@ -41,6 +41,7 @@ private:
     void initSampleProjectMenu();
 
 private slots:
+    void showAbout();
     void openProject();
     void openSampleProject(QAction *action);
     void newProject();

@@ -1,0 +1,1 @@
+../../../../navyjs/src/version.js
