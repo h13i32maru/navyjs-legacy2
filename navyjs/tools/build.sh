@@ -9,6 +9,7 @@ cd $root_dir/navyjs/
 files="\
     src/wrap_text/header.txt\
     src/init.js\
+    src/version.js\
     src/lib/class.js\
     src/lib/*.js\
     src/core/*.js\
