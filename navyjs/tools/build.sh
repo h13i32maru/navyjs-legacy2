@@ -46,5 +46,5 @@ $root_dir/node_modules/.bin/uglifyjs build/navy.js --mangle --reserved '$super' 
 echo "build/navy.js"
 echo "build/navy.min.js"
 
-mkdir -p $root_dir/creator/src/template/contents/navy
-cp build/navy* $root_dir/creator/src/template/contents/navy/
+mkdir -p $root_dir/creator/src/resource/template/contents/navy
+cp build/navy* $root_dir/creator/src/resource/template/contents/navy/

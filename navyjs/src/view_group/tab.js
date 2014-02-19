@@ -13,7 +13,7 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
     var contents = layout.extra.contents;
 
     var notify = new Navy.Notify(contents.length * 2, function(){
-      this._adjustPosition();
+      this._adjustPositionAndSize();
       $super(layout, callback)
     }.bind(this));
 
@@ -62,7 +62,8 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
     var layout = {
       id: content.id,
       visible: index === 0, // はじめのviewだけ表示する
-      sizePolicy: {width: 'wrapContent', height: 'wrapContent'},
+      sizePolicy: {width: 'matchParent', height: 'fixed'},
+      size: {width: 0, height: 0},
       pos: {x: 0, y:0},
       extra: {
         contentLayoutFile: content.layoutFile
@@ -72,7 +73,7 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
     return layout;
   },
 
-  _adjustPosition: function() {
+  _adjustPositionAndSize: function() {
     var tabLabelSize = this._tabLabels[0].getSize();
 
     var labelWidth = Math.floor(this.getSize().width / this._tabLabels.length);
@@ -85,12 +86,18 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
       tabLabel.setPos(pos);
     }
 
-    var height = tabLabelSize.height;
+    var y = tabLabelSize.height;
+    var height = this.getSize().height - tabLabelSize.height;
     for (var i = 0; i < this._tabContents.length; i++) {
       var tabContent = this._tabContents[i];
+
       var pos = tabContent.getPos();
-      pos.y = height;
+      pos.y = y;
       tabContent.setPos(pos);
+
+      var size = tabContent.getSize();
+      size.height = height;
+      tabContent.setSize(size)
     }
   },
 
