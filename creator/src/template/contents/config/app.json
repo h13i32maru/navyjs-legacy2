@@ -9,5 +9,6 @@
     },
     "loading": {
         "src": ""
-    }
+    },
+    "touchIcon": "image/icon.png"
 }

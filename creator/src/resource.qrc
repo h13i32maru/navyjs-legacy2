@@ -22,7 +22,6 @@
         <file>template/contents/creator/include/move.js</file>
         <file>template/contents/creator/include/screen.js</file>
         <file>template/contents/creator/include/native_bridge.js</file>
-        <file>template/contents/image/loading.png</file>
         <file>template/contents/config/app.json</file>
         <file>template/contents/config/page.json</file>
         <file>template/contents/config/scene.json</file>
@@ -37,5 +36,6 @@
         <file>template_code/scene.js</file>
         <file>template_code/layout.json</file>
         <file>template_code/page.js</file>
+        <file>template/contents/image/icon.png</file>
     </qresource>
 </RCC>
