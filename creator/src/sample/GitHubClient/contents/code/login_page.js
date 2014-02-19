@@ -20,12 +20,7 @@ Navy.Class('LoginPage', Navy.Page, {
       }.bind(this));
     }
 
-//    this.findViewById('LoginButton').on('Link', this._onLogin.bind(this));
-    this.findViewById('LoginButton').on('Tap', function(ev){
-      ev.preventDefault();
-      window.open('https://github.com/settings/tokens/new');
-      return true;
-    });
+    this.findViewById('LoginButton').on('Link', this._onLogin.bind(this));
   },
 
   _onLogin: function(ev) {
