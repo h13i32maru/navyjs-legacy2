@@ -58,14 +58,23 @@ void NBuiltInImageImporter::importImage(QTreeWidgetItem *item) {
     // すでにファイルが存在する場合は上書きするか確認.
     if (QFileInfo(dstPath).exists()) {
         int ret = QMessageBox::question(this, "", "File is already exsit. Do you over write this file?");
-        if (ret != QMessageBox::Ok) {
+        if (ret != QMessageBox::Yes) {
+            return;
+        }
+
+        int removeRet = QFile(dstPath).remove();
+        if (!removeRet) {
+            qCritical() << "fail remove file." << dstPath;
             return;
         }
     }
 
-    bool ret = NUtil::createFileFromTemplate(srcPath, dstPath);
+    QDir::root().mkpath(QFileInfo(dstPath).dir().absolutePath());
+    bool ret = QFile::copy(srcPath, dstPath);
     if (ret) {
         QMessageBox::information(this, "", "Success import.");
+    } else {
+        qCritical() << "fial copy file. " << srcPath << dstPath;
     }
 }
 
