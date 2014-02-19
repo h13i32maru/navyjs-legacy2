@@ -13,9 +13,11 @@ public:
     void setText(const QString &text);
     void setType(TYPE type);
     TYPE getType();
+    void setAllowEmpty(bool allow);
 
 private:
     TYPE mType;
+    bool mAllowEmpty;
 
 signals:
     void textChanged(const QString &text);

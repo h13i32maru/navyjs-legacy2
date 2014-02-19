@@ -5,8 +5,17 @@ NListDialog::NListDialog(QWidget *parent) : QDialog(parent), ui(new Ui::NListDia
 {
     ui->setupUi(this);
 
+    mEmpty = false;
+    setAllowEmpty(false);
+
     connect(ui->listWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
     connect(ui->lineEdit, SIGNAL(textChanged(QString)), this, SLOT(filterTextList(QString)));
+    connect(ui->emptyButton, SIGNAL(clicked()), this, SLOT(acceptEmpty()));
+}
+
+void NListDialog::setAllowEmpty(bool allow) {
+    mAllowEmpty = allow;
+    ui->emptyButton->setVisible(allow);
 }
 
 void NListDialog::setTextList(const QStringList &list) {
@@ -14,6 +23,10 @@ void NListDialog::setTextList(const QStringList &list) {
 }
 
 QString NListDialog::selectedText() {
+    if (mEmpty) {
+        return "";
+    }
+
     QListWidgetItem *item = ui->listWidget->currentItem();
     return item->text();
 }
@@ -37,6 +50,11 @@ void NListDialog::filterTextList(const QString &text) {
             item->setHidden(true);
         }
     }
+}
+
+void NListDialog::acceptEmpty() {
+    mEmpty = true;
+    accept();
 }
 
 NListDialog::~NListDialog()

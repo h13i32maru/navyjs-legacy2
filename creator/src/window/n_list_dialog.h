@@ -17,12 +17,16 @@ public:
     void setTextList(const QStringList &list);
     void setCurrentText(const QString &text);
     QString selectedText();
+    void setAllowEmpty(bool allow);
 
 private:
     Ui::NListDialog *ui;
+    bool mEmpty;
+    bool mAllowEmpty;
 
 protected slots:
     void filterTextList(const QString &text);
+    void acceptEmpty();
 };
 
 #endif // N_LIST_DIALOG_H

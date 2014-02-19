@@ -10,9 +10,13 @@
 NConfigAppWidget::NConfigAppWidget(const QString &filePath, QWidget *parent) : NFileWidget(filePath, parent), ui(new Ui::NConfigAppWidget)
 {
     ui->setupUi(this);
+
     ui->appTouchIcon->setType(NTextListSelector::IMAGE);
     ui->appStartScene->setType(NTextListSelector::SCENE);
     ui->appLoadingSrc->setType(NTextListSelector::IMAGE);
+
+    ui->appTouchIcon->setAllowEmpty(true);
+    ui->appLoadingSrc->setAllowEmpty(true);
 
     mConfigApp.parseFromFilePath(filePath);
 

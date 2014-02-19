@@ -5,6 +5,7 @@
 #include <n_project.h>
 
 NTextListSelector::NTextListSelector(QWidget *parent) : QPushButton(parent) {
+    mAllowEmpty = false;
     connect(this, SIGNAL(clicked()), this, SLOT(execListDialog()));
 
     this->setStyleSheet("QPushButton { text-align: left; }");
@@ -20,6 +21,10 @@ void NTextListSelector::setType(TYPE type) {
 
 NTextListSelector::TYPE NTextListSelector::getType() {
     return mType;
+}
+
+void NTextListSelector::setAllowEmpty(bool allow) {
+    mAllowEmpty = allow;
 }
 
 void NTextListSelector::setText(const QString &text) {
@@ -59,6 +64,7 @@ void NTextListSelector::execListDialog() {
 
     dialog.setTextList(list);
     dialog.setCurrentText(this->text());
+    dialog.setAllowEmpty(mAllowEmpty);
 
     int exec = dialog.exec();
     if (exec == NListDialog::Accepted) {
