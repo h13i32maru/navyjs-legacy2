@@ -1,9 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icon/code.png</file>
-        <file>icon/config.png</file>
-        <file>icon/image.png</file>
-        <file>icon/layout.png</file>
         <file>template/tools/update_manifest.js</file>
         <file>template/project.ncproject</file>
         <file>template/plugin/built_in_view/manifest.json</file>
@@ -26,9 +22,6 @@
         <file>template/contents/creator/include/move.js</file>
         <file>template/contents/creator/include/screen.js</file>
         <file>template/contents/creator/include/native_bridge.js</file>
-        <file>template/contents/image/button_normal.png</file>
-        <file>template/contents/image/button_active.png</file>
-        <file>template/contents/image/button_disabled.png</file>
         <file>template/contents/image/loading.png</file>
         <file>template/contents/config/app.json</file>
         <file>template/contents/config/page.json</file>
