@@ -3,8 +3,11 @@ window.Navy = {};
 (function(){
   var scriptElements = document.querySelectorAll('script');
   var selfScriptElement = scriptElements[scriptElements.length - 1];
-  var assetConfig = JSON.parse(selfScriptElement.dataset.assetConfig);
-  window.Navy.assetConfig = assetConfig;
+  if (selfScriptElement.dataset.assetConfig) {
+    Navy.assetConfig = JSON.parse(selfScriptElement.dataset.assetConfig);
+  } else {
+    window.Navy.assetConfig = {alwaysRemote: false, forceUpdate: false};
+  }
 })();
 
 window.addEventListener('DOMContentLoaded', function(){
