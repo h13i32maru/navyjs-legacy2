@@ -10,6 +10,11 @@
 NBuiltInImageImporter::NBuiltInImageImporter(QWidget *parent) : QDialog(parent), ui(new Ui::NBuiltInImageImporter)
 {
     ui->setupUi(this);
+
+    setupImageWidget();
+}
+
+void NBuiltInImageImporter::setupImageWidget() {
     QStringList paths = NUtil::recursiveEntryList(":/built_in_image", "");
     foreach (QString path, paths) {
         QString absPath = ":/built_in_image/"  + path;

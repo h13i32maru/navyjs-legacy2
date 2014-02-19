@@ -17,6 +17,9 @@ public:
 
 private:
     Ui::NBuiltInImageImporter *ui;
+
+private:
+    void setupImageWidget();
 };
 
 #endif // N_BUILT_IN_IMAGE_IMPORTER_H
