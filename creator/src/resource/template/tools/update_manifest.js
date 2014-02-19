@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var ManifestBuilder = {
   _assets: [],
   _ignoreDirNames: ['creator', 'navy'],

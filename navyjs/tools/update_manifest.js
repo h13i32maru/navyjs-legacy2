@@ -1,1 +1,1 @@
-../../creator/src/template/tools/update_manifest.js
+../../creator/src/resource/template/tools/update_manifest.js
