@@ -93,7 +93,7 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
       var layout = {
         id: 'item' + (currentViewCount + i),
         visible: false,
-        sizePolicy: {width: 'wrapContent', height: 'wrapContent'},
+        sizePolicy: {width: 'matchParent', height: 'wrapContent'},
         pos: {x: 0, y:0},
         extra: {
           contentLayoutFile: this._layout.extra.itemLayoutFile
