@@ -35,9 +35,6 @@
 <file>sample/HelloWorld/contents/config/app.json</file>
 <file>sample/HelloWorld/contents/config/page.json</file>
 <file>sample/HelloWorld/contents/config/scene.json</file>
-<file>sample/HelloWorld/contents/image/button_active.png</file>
-<file>sample/HelloWorld/contents/image/button_disabled.png</file>
-<file>sample/HelloWorld/contents/image/button_normal.png</file>
 <file>sample/HelloWorld/contents/image/icon.png</file>
 <file>sample/HelloWorld/contents/image/loading.png</file>
 <file>sample/HelloWorld/contents/layout/hello_world.json</file>

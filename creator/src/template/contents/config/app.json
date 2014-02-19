@@ -6,5 +6,8 @@
     "fontFamily": "sans-serif",
     "start": {
         "scene": "MainScene"
+    },
+    "loading": {
+        "src": ""
     }
 }
