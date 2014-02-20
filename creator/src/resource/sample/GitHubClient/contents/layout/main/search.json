@@ -17,7 +17,7 @@
       },
       "padding": "0px",
       "pos": {
-        "x": 8,
+        "x": 11,
         "y": 105
       },
       "size": {
@@ -85,7 +85,12 @@
         "height": "fixed",
         "width": "fixed"
       },
-      "visible": true
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          2
+        ]
+      }
     }
   ],
   "meta": {
