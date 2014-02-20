@@ -1,6 +1,42 @@
 Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
   _tabLabels: null,
   _tabContents: null,
+  _currentTabContent: null,
+  _currentTabIndex: -1,
+
+  getCurrentTabIndex: function() {
+    return this._currentTabIndex;
+  },
+
+  getCurrentTabContent: function() {
+    return this._currentTabContent;
+  },
+
+  changeTabByIndex: function(index) {
+    var tabContentId = this._layout.extra.contents[index].id;
+    var tabContent = this.findViewById(tabContentId);
+    this.changeTabByTabContent(tabContent);
+  },
+
+  changeTabByTabContent: function(tabContent) {
+    if (tabContent === this._currentTabContent) {
+      return;
+    }
+
+    var contents = this._layout.extra.contents;
+    for (var i = 0; i < contents.length; i++) {
+      var _tabContentId = contents[i].id;
+      var _tabContent = this.findViewById(_tabContentId);
+
+      _tabContent.setVisible(_tabContent === tabContent);
+      if (_tabContent === tabContent) {
+        this._currentTabContent = tabContent;
+        this._currentTabIndex = i;
+      }
+    }
+
+    this.trigger('ChangedTab');
+  },
 
   _applyExtraLayout: function($super, layout, callback){
     $super(layout, callback);
@@ -108,20 +144,5 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
 
   _onTapTabLabel: function(tabContent, ev){
     this.changeTabByTabContent(tabContent);
-  },
-
-  changeTabByIndex: function(index) {
-    var tabContentId = this._layout.extra.contents[index].id;
-    var tabContent = this.findViewById(tabContentId);
-    this.changeTabByTabContent(tabContent);
-  },
-
-  changeTabByTabContent: function(tabContent) {
-    var contents = this._layout.extra.contents;
-    for (var i = 0; i < contents.length; i++) {
-      var _tabContentId = contents[i].id;
-      var _tabContent = this.findViewById(_tabContentId);
-      _tabContent.setVisible(_tabContent === tabContent);
-    }
   }
 });
