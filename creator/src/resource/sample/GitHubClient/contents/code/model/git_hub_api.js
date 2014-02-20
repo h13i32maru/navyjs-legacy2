@@ -19,18 +19,15 @@ Navy.Class.instance('GitHubAPI', {
   },
 
   login: function(callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', this.LOGIN_URL, true);
-    xhr.onload = function(ev){
-      if (ev.target.status === 200) {
-        this._userData = JSON.parse(ev.target.responseText);
-        callback && callback();
+    this.fetch(this.LOGIN_URL, function(error, data){
+      if (error) {
+        console.error('fail login.');
+        callback && callback(error);
       } else {
-        callback && callback('error');
+        this._userData = data;
+        callback && callback();
       }
-    }.bind(this);
-    xhr.setRequestHeader('Authorization', 'token ' + this._token);
-    xhr.send();
+    }.bind(this));
   },
 
   getUserName: function(){
