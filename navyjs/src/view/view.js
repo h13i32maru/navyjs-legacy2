@@ -299,20 +299,10 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
 
     if (visible) {
       this._element.style.visibility = '';
+      this._element.style.left = this._layout.pos.x + 'px';
     } else {
       this._element.style.visibility = 'hidden';
-    }
-  },
-
-  isDisplay: function() {
-    return this._element.style.display !== 'none';
-  },
-
-  setDisplay: function(display) {
-    if (display) {
-      this._element.style.display = '';
-    } else {
-      this._element.style.display = 'none';
+      this._element.style.left = '9999px';
     }
   },
 

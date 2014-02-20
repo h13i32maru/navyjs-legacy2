@@ -121,7 +121,7 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
     for (var i = 0; i < contents.length; i++) {
       var _tabContentId = contents[i].id;
       var _tabContent = this.findViewById(_tabContentId);
-      _tabContent.setDisplay(_tabContent === tabContent);
+      _tabContent.setVisible(_tabContent === tabContent);
     }
   }
 });
