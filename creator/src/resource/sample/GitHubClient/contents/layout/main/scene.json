@@ -24,12 +24,7 @@
         "height": "wrapContent",
         "width": "wrapContent"
       },
-      "visible": true,
-      "__creator__": {
-        "groupingIds": [
-          1
-        ]
-      }
+      "visible": true
     },
     {
       "backgroundColor": "#fff",
@@ -93,7 +88,12 @@
         "height": "fixed",
         "width": "fixed"
       },
-      "visible": true
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          6
+        ]
+      }
     },
     {
       "backgroundColor": "",

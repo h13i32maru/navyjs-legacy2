@@ -125,6 +125,13 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     var scaleWidth = screenWidth / width;
     var scaleHeight = screenHeight / height;
     var scale = Math.min(scaleWidth, scaleHeight);
+
+    /*
+     * Nexus5 Chrome 32.0.1700.99だと小数点4桁以上を使うと右端に1pxの隙間ができる.
+     * なので3桁までを使うようにする. iPhone5S iOS7.0.4では発生しないのでAndroidバグ?
+     */
+    scale = scale.toFixed(3);
+
     var left = (screenWidth - scale * width) / 2;
     var top = (screenHeight - scale * height) / 2;
     document.body.style.position = 'absolute';
