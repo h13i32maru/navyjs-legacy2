@@ -24,7 +24,12 @@
         "height": "wrapContent",
         "width": "wrapContent"
       },
-      "visible": true
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          7
+        ]
+      }
     },
     {
       "backgroundColor": "#fff",
@@ -137,10 +142,10 @@
       "link": {
         "id": "page/$back"
       },
-      "padding": "0px",
+      "padding": "14px",
       "pos": {
-        "x": 5,
-        "y": 24
+        "x": 7,
+        "y": 12
       },
       "size": {
         "height": 100,
@@ -148,14 +153,9 @@
       },
       "sizePolicy": {
         "height": "wrapContent",
-        "width": "wrapContent"
+        "width": "fixed"
       },
-      "visible": true,
-      "__creator__": {
-        "groupingIds": [
-          5
-        ]
-      }
+      "visible": true
     }
   ],
   "meta": {
