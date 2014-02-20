@@ -1,0 +1,173 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "#fff",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Image",
+      "extra": {
+        "src": "image/icon_mini.png"
+      },
+      "id": "Icon",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 12,
+        "y": 14
+      },
+      "size": {
+        "height": 80,
+        "width": 80
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          8
+        ]
+      }
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontBold": true,
+        "fontColor": "#000000",
+        "fontSize": 24,
+        "text": "Actor action repository",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "baseline"
+        }
+      },
+      "id": "Text",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 116,
+        "y": 7
+      },
+      "size": {
+        "height": 63,
+        "width": 514
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#aaa",
+        "fontSize": 20,
+        "text": "Wed Feb 19 2014 21:57:28 GMT+0900 (JST)",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "baseline"
+        }
+      },
+      "id": "Time",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 116,
+        "y": 67
+      },
+      "size": {
+        "height": 42,
+        "width": 516
+      },
+      "sizePolicy": {
+        "width": "fixed",
+        "height": "fixed"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          10
+        ]
+      }
+    },
+    {
+      "backgroundColor": "#aaa",
+      "border": "none 4px #000000",
+      "class": "Navy.View.View",
+      "id": "View4",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": -2,
+        "y": 111
+      },
+      "size": {
+        "height": 2,
+        "width": 641
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "matchParent"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          4
+        ]
+      }
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#000000",
+        "fontSize": 20,
+        "text": "text",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "top"
+        }
+      },
+      "id": "Name",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 14,
+        "y": 20
+      },
+      "size": {
+        "height": 68,
+        "width": 75
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": false,
+      "__creator__": {
+        "groupingIds": [
+          11
+        ]
+      }
+    }
+  ],
+  "meta": {
+    "__creator__": {}
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "#fff",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Image",
+      "extra": {
+        "src": "image/icon_mini.png"
+      },
+      "id": "Icon",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 17,
+        "y": 10
+      },
+      "size": {
+        "height": 80,
+        "width": 80
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          4
+        ]
+      }
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontBold": true,
+        "fontColor": "#000000",
+        "fontSize": 30,
+        "text": "Name",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "baseline"
+        }
+      },
+      "id": "Name",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 129,
+        "y": 25
+      },
+      "size": {
+        "height": 51,
+        "width": 453
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "#aaa",
+      "border": "none 4px #000000",
+      "class": "Navy.View.View",
+      "id": "View3",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 0,
+        "y": 100
+      },
+      "size": {
+        "height": 2,
+        "width": 639
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "matchParent"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          3
+        ]
+      }
+    }
+  ],
+  "meta": {
+    "__creator__": {}
+  }
+}

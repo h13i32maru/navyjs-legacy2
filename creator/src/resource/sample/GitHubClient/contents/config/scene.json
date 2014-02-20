@@ -1,0 +1,28 @@
+[
+    {
+        "backgroundColor": "",
+        "class": "LoginScene",
+        "classFile": "code/login/scene.js",
+        "extra": {
+            "contentLayoutFile": "layout/login/scene.json",
+            "page": "LoginPage",
+            "transition": {
+                "class": "Navy.Transition.Fade"
+            }
+        },
+        "id": "LoginScene"
+    },
+    {
+        "backgroundColor": "#000000",
+        "class": "MainScene",
+        "classFile": "code/main/scene.js",
+        "extra": {
+            "contentLayoutFile": "layout/main/scene.json",
+            "page": "ProfilePage",
+            "transition": {
+                "class": "Navy.Transition.Fade"
+            }
+        },
+        "id": "MainScene"
+    }
+]

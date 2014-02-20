@@ -1,0 +1,39 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.ViewGroup.ListView",
+      "extra": {
+        "itemLayoutFile": "layout/profile_tab/users_item.json",
+        "itemLayoutMargin": 0,
+        "itemLink": {
+          "id": ""
+        },
+        "mock": false,
+        "contentLayoutFile": null
+      },
+      "id": "ListView",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "matchParent",
+        "width": "matchParent"
+      },
+      "visible": true
+    }
+  ],
+  "meta": {
+    "__creator__": {}
+  }
+}

@@ -1,0 +1,38 @@
+[
+    {
+        "backgroundColor": "#ffffff",
+        "class": "LoginPage",
+        "classFile": "code/login/page.js",
+        "extra": {
+            "contentLayoutFile": "layout/login/page.json",
+            "transition": {
+                "class": "Navy.Transition.SlideRight"
+            }
+        },
+        "id": "LoginPage"
+    },
+    {
+        "backgroundColor": "#fff",
+        "class": "ProfilePage",
+        "classFile": "code/main/profile.js",
+        "extra": {
+            "contentLayoutFile": "layout/main/profile.json",
+            "transition": {
+                "class": "Navy.Transition.SlideRight"
+            }
+        },
+        "id": "ProfilePage"
+    },
+    {
+        "backgroundColor": "#fff",
+        "class": "SearchPage",
+        "classFile": "code/main/search.js",
+        "extra": {
+            "contentLayoutFile": "layout/main/search.json",
+            "transition": {
+                "class": "Navy.Transition.SlideDown"
+            }
+        },
+        "id": "SearchPage"
+    }
+]

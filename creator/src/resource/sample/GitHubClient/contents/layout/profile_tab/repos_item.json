@@ -1,0 +1,303 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontBold": true,
+        "fontColor": "#000000",
+        "fontSize": 30,
+        "text": "Repo Name",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "top"
+        }
+      },
+      "id": "RepoName",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 40,
+        "y": 17
+      },
+      "size": {
+        "height": 51,
+        "width": 568
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontBold": false,
+        "fontColor": "#888",
+        "fontSize": 24,
+        "text": "Description Description Description Description Description Description Description Description Description Description Description Description ",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "top"
+        }
+      },
+      "id": "Description",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 40,
+        "y": 76
+      },
+      "size": {
+        "height": 30,
+        "width": 585
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontBold": false,
+        "fontColor": "#aaa",
+        "fontSize": 20,
+        "text": "Lang",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "top"
+        }
+      },
+      "id": "Lang",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 40,
+        "y": 132
+      },
+      "size": {
+        "height": 40,
+        "width": 151
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontBold": false,
+        "fontColor": "#aaa",
+        "fontSize": 20,
+        "text": "★",
+        "textAlign": {
+          "horizontal": "right",
+          "vertical": "top"
+        }
+      },
+      "id": "Text4",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 187,
+        "y": 132
+      },
+      "size": {
+        "height": 40,
+        "width": 65
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontBold": false,
+        "fontColor": "#aaa",
+        "fontSize": 20,
+        "text": "99999",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "top"
+        }
+      },
+      "id": "Star",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 252,
+        "y": 132
+      },
+      "size": {
+        "height": 40,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontBold": false,
+        "fontColor": "#aaa",
+        "fontSize": 20,
+        "text": "F",
+        "textAlign": {
+          "horizontal": "right",
+          "vertical": "top"
+        }
+      },
+      "id": "Text6",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 352,
+        "y": 132
+      },
+      "size": {
+        "height": 40,
+        "width": 41
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontBold": false,
+        "fontColor": "#aaa",
+        "fontSize": 20,
+        "text": "99999",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "top"
+        }
+      },
+      "id": "Fork",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 393,
+        "y": 132
+      },
+      "size": {
+        "height": 40,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "#aaa",
+      "border": "none 4px #000000",
+      "class": "Navy.View.View",
+      "id": "View8",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 0,
+        "y": 178
+      },
+      "size": {
+        "height": 2,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "matchParent"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          13
+        ]
+      }
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontColor": "#000000",
+        "fontSize": 20,
+        "text": "text",
+        "textAlign": {
+          "horizontal": "left",
+          "vertical": "top"
+        }
+      },
+      "id": "Name",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 503,
+        "y": 59
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": false,
+      "__creator__": {
+        "groupingIds": [
+          15
+        ]
+      }
+    }
+  ],
+  "meta": {
+    "__creator__": {}
+  }
+}

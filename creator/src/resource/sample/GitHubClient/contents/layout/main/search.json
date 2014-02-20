@@ -1,0 +1,98 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "",
+      "border": "solid 2px #aaa",
+      "class": "Navy.View.TextEdit",
+      "extra": {
+        "fontColor": "#000000",
+        "fontSize": 30,
+        "placeholder": "search repo or user",
+        "text": "",
+        "textType": "text"
+      },
+      "id": "SearchEdit",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 8,
+        "y": 105
+      },
+      "size": {
+        "height": 62,
+        "width": 619
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          1
+        ]
+      }
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.ViewGroup.Tab",
+      "extra": {
+        "contents": [
+          {
+            "id": "Repo",
+            "label": "Repository",
+            "layoutFile": "layout/profile_tab/repos.json"
+          },
+          {
+            "id": "User",
+            "label": "User",
+            "layoutFile": "layout/profile_tab/users.json"
+          }
+        ],
+        "label": {
+          "active": {
+            "src": "image/button/large/active.png"
+          },
+          "disabled": {
+            "src": "image/button/large/disabled.png"
+          },
+          "fontBold": true,
+          "fontColor": "#fff",
+          "fontSize": 20,
+          "normal": {
+            "src": "image/button/large/normal.png"
+          }
+        },
+        "contentLayoutFile": null
+      },
+      "id": "Tab2",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 0,
+        "y": 170
+      },
+      "size": {
+        "height": 926,
+        "width": 641
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    }
+  ],
+  "meta": {
+    "__creator__": {
+      "screenSceneId": "MainScene",
+      "screenPageId": "SearchPage",
+      "screenEnable": true
+    }
+  }
+}

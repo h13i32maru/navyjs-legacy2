@@ -1,0 +1,73 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.ViewGroup.Tab",
+      "extra": {
+        "contents": [
+          {
+            "id": "Event",
+            "label": "News",
+            "layoutFile": "layout/profile_tab/events.json"
+          },
+          {
+            "id": "Repository",
+            "label": "Repository",
+            "layoutFile": "layout/profile_tab/repos.json"
+          },
+          {
+            "id": "Follower",
+            "label": "Follower",
+            "layoutFile": "layout/profile_tab/users.json"
+          },
+          {
+            "id": "Following",
+            "label": "Following",
+            "layoutFile": "layout/profile_tab/users.json"
+          }
+        ],
+        "label": {
+          "active": {
+            "src": "image/button/middle/active.png"
+          },
+          "disabled": {
+            "src": "image/button/middle/disabled.png"
+          },
+          "fontBold": true,
+          "fontColor": "#fff",
+          "fontSize": 20,
+          "normal": {
+            "src": "image/button/middle/normal.png"
+          }
+        },
+        "contentLayoutFile": null
+      },
+      "id": "Tab",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 0,
+        "y": 100
+      },
+      "size": {
+        "height": 996,
+        "width": 640
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
+    }
+  ],
+  "meta": {
+    "__creator__": {
+      "screenSceneId": "MainScene",
+      "screenPageId": "ProfilePage",
+      "screenEnable": true
+    }
+  }
+}

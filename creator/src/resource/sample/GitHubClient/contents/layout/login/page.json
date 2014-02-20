@@ -1,0 +1,224 @@
+{
+  "layouts": [
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Image",
+      "extra": {
+        "src": "image/header.png"
+      },
+      "id": "Image6",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "wrapContent",
+        "width": "wrapContent"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          4
+        ]
+      }
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Image",
+      "extra": {
+        "src": "image/icon_mini.png"
+      },
+      "id": "Image2",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 13,
+        "y": 10
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "wrapContent",
+        "width": "wrapContent"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          2
+        ]
+      }
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Text",
+      "extra": {
+        "fontBold": true,
+        "fontColor": "#fff",
+        "fontSize": 40,
+        "text": "GitHubClient",
+        "textAlign": {
+          "horizontal": "center",
+          "vertical": "baseline"
+        }
+      },
+      "id": "Text3",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 112,
+        "y": 0
+      },
+      "size": {
+        "height": 100,
+        "width": 417
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          8
+        ]
+      }
+    },
+    {
+      "backgroundColor": "#000",
+      "border": "solid 2px #888",
+      "class": "Navy.View.TextEdit",
+      "extra": {
+        "fontColor": "#000000",
+        "fontSize": 40,
+        "placeholder": "Access Token",
+        "text": "",
+        "textType": "password"
+      },
+      "id": "TokenEdit",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 51,
+        "y": 451
+      },
+      "size": {
+        "height": 100,
+        "width": 544
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          5
+        ]
+      }
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.ViewGroup.Button",
+      "extra": {
+        "active": {
+          "src": "image/button/middle/active.png"
+        },
+        "disabled": {
+          "src": "image/button/middle/disabled.png"
+        },
+        "fontBold": true,
+        "fontColor": "#fff",
+        "fontSize": 34,
+        "normal": {
+          "src": "image/button/middle/normal.png"
+        },
+        "text": "Login",
+        "contentLayoutFile": null
+      },
+      "id": "LoginButton",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 243,
+        "y": 614
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "wrapContent",
+        "width": "wrapContent"
+      },
+      "visible": true
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.ViewGroup.Button",
+      "extra": {
+        "active": {
+          "src": "image/button/large/active.png"
+        },
+        "disabled": {
+          "src": "image/button/large/disabled.png"
+        },
+        "fontBold": true,
+        "fontColor": "#fff",
+        "fontSize": 30,
+        "normal": {
+          "src": "image/button/large/normal.png"
+        },
+        "text": "Get Access Token",
+        "contentLayoutFile": null
+      },
+      "id": "GetTokenButton",
+      "link": {
+        "id": ""
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 163,
+        "y": 745
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "wrapContent",
+        "width": "wrapContent"
+      },
+      "visible": true
+    }
+  ],
+  "meta": {
+    "__creator__": {
+      "screenEnable": true,
+      "screenSceneId": "LoginScene",
+      "screenPageId": "LoginPage"
+    }
+  }
+}
