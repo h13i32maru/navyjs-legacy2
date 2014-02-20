@@ -78,7 +78,7 @@ var QResourceBuilder = {
 
 function printHelp() {
   var name = require('path').basename(process.argv[1]);
-  console.log(name + ' path/to/sample/project/dir');
+  console.log(name + ' repo/creator/src/resource/sample');
 }
 
 var rootDir = null;
