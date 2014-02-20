@@ -25,15 +25,11 @@ Navy.Class('LoginPage', Navy.Page, {
       return;
     }
 
-    Navy.Root.startLoading();
-
     GitHubAPI.setToken(token);
     GitHubAPI.login(this._onLogin.bind(this));
   },
 
   _onLogin: function(err) {
-    Navy.Root.stopLoading();
-
     if (err) {
       console.error('fail login.');
       return;

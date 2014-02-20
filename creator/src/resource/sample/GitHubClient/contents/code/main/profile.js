@@ -2,6 +2,13 @@ Navy.Class('ProfilePage', Navy.Page, {
   _user: null,
   _icon: '',
 
+  initialize: function($super, layout, callback) {
+    $super(layout, callback);
+
+    // ここで呼び出すの微妙なので何とかしたい.
+    Navy.Root.startLoading();
+  },
+
   onCreate: function($super, ev) {
     $super(ev);
 
@@ -15,6 +22,7 @@ Navy.Class('ProfilePage', Navy.Page, {
     var id = this.findViewById('Tab').on('ChangedTab', function(ev){
       var tab = ev.target;
       if (tab.getCurrentTabIndex() !== 0) {
+        Navy.Root.startLoading();
         this._user.fetchSecondary();
         this._user.addSecondaryCallback(this._onSecondary.bind(this));
         tab.off('ChangedTab', id);
@@ -43,8 +51,6 @@ Navy.Class('ProfilePage', Navy.Page, {
   },
 
   _onPrimary: function() {
-    Navy.Root.startLoading();
-
     // icon
     this._icon = this._user.getIcon();
     this.getScene().findViewById('Icon').setSrc(this._icon);
@@ -74,8 +80,6 @@ Navy.Class('ProfilePage', Navy.Page, {
   },
 
   _onSecondary: function() {
-    Navy.Root.startLoading();
-
     var notify = new Navy.Notify(3, Navy.Root.stopLoading.bind(Navy.Root));
     var pass = notify.pass.bind(notify);
     var onTapUser = this._onTapUser.bind(this);
