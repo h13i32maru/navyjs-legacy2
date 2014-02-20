@@ -407,13 +407,17 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
 
   getSize: function() {
     var width, height;
+    var wrapSize;
 
     switch (this._layout.sizePolicy.width) {
     case this.SIZE_POLICY_FIXED:
       width = this._layout.size.width;
       break;
     case this.SIZE_POLICY_WRAP_CONTENT:
-      width = this._element.offsetWidth;
+      if (!wrapSize) {
+        wrapSize = this._calcWrapContentSize();
+      }
+      width = wrapSize.width;
       break;
     case this.SIZE_POLICY_MATCH_PARENT:
       width = this._element.offsetWidth;
@@ -427,7 +431,10 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
       height = this._layout.size.height;
       break;
     case this.SIZE_POLICY_WRAP_CONTENT:
-      height = this._element.offsetHeight;
+      if (!wrapSize) {
+        wrapSize = this._calcWrapContentSize();
+      }
+      height = wrapSize.height;
       break;
     case this.SIZE_POLICY_MATCH_PARENT:
       height = this._element.offsetHeight;

@@ -33,9 +33,10 @@ Navy.Class('Navy.View.Image', Navy.View.View, {
   _calcWrapContentSize: function() {
     var border = this.getBorderSize();
     var padding = this.getPaddingSize();
+    // android: widthではなくnaturalWidthを使うのはwidthだとなぜか1pxの誤差ができる時がある(Nexus5 Chrome32で発生)
     return {
-      width: this._imgElm.width + border.left + border.right + padding.left + padding.right,
-      height: this._imgElm.height + border.top + border.bottom + padding.top + padding.bottom
+      width: this._imgElm.naturalWidth + border.left + border.right + padding.left + padding.right,
+      height: this._imgElm.naturalHeight + border.top + border.bottom + padding.top + padding.bottom
     };
   },
 
