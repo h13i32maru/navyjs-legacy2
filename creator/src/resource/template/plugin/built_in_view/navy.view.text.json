@@ -20,6 +20,12 @@
       "value": "#000000"
     },
     {
+      "label": "fontBold",
+      "key": "extra.fontBold",
+      "type": "boolean",
+      "value": false
+    },
+    {
       "label": "textAlign(H)",
       "key": "extra.textAlign.horizontal",
       "type": "stringList",

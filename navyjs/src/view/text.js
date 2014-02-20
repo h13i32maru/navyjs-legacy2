@@ -31,6 +31,7 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
 
     this.setFontSize(layout.extra.fontSize);
     this.setFontColor(layout.extra.fontColor);
+    this.setFontBold(layout.extra.fontBold);
     this.setTextAlign(layout.extra.textAlign);
 
     $super(layout, callback);
@@ -104,5 +105,18 @@ Navy.Class('Navy.View.Text', Navy.View.View, {
 
   getTextAlign: function() {
     return this._cloneObject(this._layout.extra.textAlign);
+  },
+
+  setFontBold: function(bold) {
+    this._layout.extra.fontBold = bold;
+    if (bold) {
+      this._textElement.style.fontWeight = 'bold';
+    } else {
+      this._textElement.style.fontWeight = '';
+    }
+  },
+
+  isFontBold: function() {
+    return this._layout.extra.fontBold;
   }
 });

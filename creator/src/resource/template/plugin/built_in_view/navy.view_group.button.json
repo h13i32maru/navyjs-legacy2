@@ -18,6 +18,13 @@
       "key": "extra.fontColor",
       "type": "string",
       "value": "#000000"
+
+    },
+    {
+      "label": "fontBold",
+      "key": "extra.fontBold",
+      "type": "boolean",
+      "value": false
     },
     {
       "label": "normal(src)",

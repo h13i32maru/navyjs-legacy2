@@ -8,6 +8,18 @@
       "value": "#000000"
     },
     {
+      "label": "fontSize",
+      "key": "extra.label.fontSize",
+      "type": "number",
+      "value": 20
+    },
+    {
+      "label": "fontBold",
+      "key": "extra.label.fontBold",
+      "type": "boolean",
+      "value": false
+    },
+    {
       "label": "normal(src)",
       "key": "extra.label.normal.src",
       "type": "imageList",
