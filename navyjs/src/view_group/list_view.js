@@ -26,16 +26,16 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
     }
   },
 
-  setItems: function(items, callback) {
+  setItems: function(items, callback, completeCallback) {
     this.clear();
-    this.insertItems(items, 0, callback);
+    this.insertItems(items, 0, callback, completeCallback);
   },
 
-  addItems: function(items, callback) {
-    this.insertItems(items, this._viewsOrder.length, callback);
+  addItems: function(items, callback, completeCallback) {
+    this.insertItems(items, this._viewsOrder.length, callback, completeCallback);
   },
 
-  insertItems: function(items, index, callback) {
+  insertItems: function(items, index, callback, completeCallback) {
     // 範囲チェック
     if (index < 0 || index > this._viewsOrder.length) {
       throw new Error('out of range. index = ' + index);
@@ -84,6 +84,8 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
         view.getElement().style.marginBottom = margin;
         view.setVisible(true);
       }
+
+      completeCallback && completeCallback();
     }.bind(this));
     var pass = notify.pass.bind(notify);
 
