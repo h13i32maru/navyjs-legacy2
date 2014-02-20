@@ -30,7 +30,7 @@ Navy.Class('ProfilePage', Navy.Page, {
     }.bind(this));
   },
 
-  onResumeBefore: function($super, ev) {
+  onResumeAfter: function($super, ev) {
     $super(ev);
 
     // ヘッダーのユーザ名を設定する
@@ -48,6 +48,7 @@ Navy.Class('ProfilePage', Navy.Page, {
 
     // このページが表示になるときにヘッダのアイコンもデフォルト画像に戻しておく.
     this.getScene().findViewById('Icon').setSrc('image/icon_mini.png');
+    this.getScene().findViewById('UserName').setText('');
   },
 
   _onPrimary: function() {
@@ -88,7 +89,7 @@ Navy.Class('ProfilePage', Navy.Page, {
     var repositoryListView = this.findViewById('Repository.ListView');
     var repos = this._user.repos;
     repositoryListView.setItems(repos, function(repo, viewGroup){
-      viewGroup.findViewById('Name').setText(repo.name);
+      viewGroup.findViewById('RepoName').setText(repo.name);
       viewGroup.findViewById('Description').setText(repo.description);
       viewGroup.findViewById('Lang').setText(repo.language);
       viewGroup.findViewById('Fork').setText(repo.forks_count);

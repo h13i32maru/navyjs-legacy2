@@ -31,14 +31,19 @@
         "height": "fixed",
         "width": "fixed"
       },
-      "visible": true
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          16
+        ]
+      }
     },
     {
       "backgroundColor": "",
       "border": "none 4px #000000",
       "class": "Navy.View.Text",
       "extra": {
-        "fontBold": false,
+        "fontBold": true,
         "fontColor": "#888",
         "fontSize": 24,
         "text": "Description Description Description Description Description Description Description Description Description Description Description Description ",
@@ -71,7 +76,7 @@
       "border": "none 4px #000000",
       "class": "Navy.View.Text",
       "extra": {
-        "fontBold": false,
+        "fontBold": true,
         "fontColor": "#aaa",
         "fontSize": 20,
         "text": "Lang",
@@ -104,7 +109,7 @@
       "border": "none 4px #000000",
       "class": "Navy.View.Text",
       "extra": {
-        "fontBold": false,
+        "fontBold": true,
         "fontColor": "#aaa",
         "fontSize": 20,
         "text": "★",
@@ -137,7 +142,7 @@
       "border": "none 4px #000000",
       "class": "Navy.View.Text",
       "extra": {
-        "fontBold": false,
+        "fontBold": true,
         "fontColor": "#aaa",
         "fontSize": 20,
         "text": "99999",
@@ -170,7 +175,7 @@
       "border": "none 4px #000000",
       "class": "Navy.View.Text",
       "extra": {
-        "fontBold": false,
+        "fontBold": true,
         "fontColor": "#aaa",
         "fontSize": 20,
         "text": "F",
@@ -203,7 +208,7 @@
       "border": "none 4px #000000",
       "class": "Navy.View.Text",
       "extra": {
-        "fontBold": false,
+        "fontBold": true,
         "fontColor": "#aaa",
         "fontSize": 20,
         "text": "99999",
