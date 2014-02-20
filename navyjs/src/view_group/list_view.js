@@ -6,7 +6,9 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
   _applyExtraLayout: function($super, layout, callback) {
     $super(layout, callback);
 
-    this._element.style.overflowY = 'scroll';
+    // android: 要素が何もない状態でもスクロールバーが表示されてしまうので、最初はhiddenにしておく.
+    // 要素が1つ以上になったらscrollを設定する.
+    this._element.style.overflowY = 'hidden';
     this._element.style.overflowX = 'hidden';
     this._element.style.webkitOverflowScrolling = 'touch'; // for ios
 
@@ -24,6 +26,8 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
       var view = this._views[viewId];
       this.removeView(view);
     }
+
+    this._element.style.overflowY = 'hidden';
   },
 
   setItems: function(items, callback, completeCallback) {
@@ -105,6 +109,10 @@ Navy.Class('Navy.ViewGroup.ListView', Navy.ViewGroup.ViewGroup, {
       var viewGroup = new Navy.ViewGroup.ViewGroup(layout, pass);
       this.addView(viewGroup, referenceView);
       viewGroups.push(viewGroup);
+    }
+
+    if (items.length > 0) {
+      this._element.style.overflowY = 'scroll';
     }
   }
 });
