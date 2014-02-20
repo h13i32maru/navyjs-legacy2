@@ -159,10 +159,16 @@ Navy.Class.instance('Navy.Root', Navy.ViewGroup.ViewGroup, {
     if (Navy.Config.app.loading.src) {
       var img = document.createElement('img');
       Navy.Asset.loadImage(img, Navy.Config.app.loading.src, function(img){
-        var imgWidth = width * 0.15;
+        var imgWidth = Math.floor(width * 0.15);
+        // 画像幅が偶数だと回転時にぶれてしまう(偶数の場合回転の中心が定まらないため)
+        // そこで偶数の場合は画像幅を奇数にそろえる.
+        if (imgWidth % 2 === 0) {
+          imgWidth++;
+        }
         img.width = imgWidth;
-        img.style.left = (width/2 -  img.width/ 2) + 'px';
-        img.style.top = (height/2 - img.height/2) + 'px';
+
+        img.style.left = Math.floor((width -  img.width)/2) + 'px';
+        img.style.top = Math.floor((height - img.height)/2) + 'px';
         img.style.position = 'absolute';
         img.style.cssText += '-webkit-animation-name: navy_loading; -webkit-animation-duration: 1s; -webkit-animation-timing-function: linear; -webkit-animation-iteration-count: infinite;';
         elm.appendChild(img);
