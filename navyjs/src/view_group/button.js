@@ -4,6 +4,7 @@
 Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
   _imageView: null,
   _textView: null,
+  _state: null,
 
   initialize: function($super, layout, callback) {
     $super(layout, callback);
@@ -69,7 +70,7 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
       return;
     }
 
-    this._imageView.setSrc(this._layout.extra.active.src);
+    this.setState('_onTouchStartActive');
   },
 
   _onTouchEnd: function(/* ev */) {
@@ -78,7 +79,37 @@ Navy.Class('Navy.ViewGroup.Button', Navy.ViewGroup.ViewGroup, {
     }
 
     setTimeout(function(){
-      this._imageView.setSrc(this._layout.extra.normal.src);
+      // タップのイベントで外部から状態を変更された場合は、normalに戻さず、その状態を維持する.
+      // 例えばタップされたdisabledにするような場合、touch start -> active -> touch end -> disabled -> normal
+      // としてしまうと、外部からdisabledに設定したはずなのに強制的にnormalに戻ってしまうのはダメ.
+      if (this._state === '_onTouchStartActive') {
+        this.setState('normal');
+      }
     }.bind(this), 100);
+  },
+
+  setState: function(state) {
+    switch (state) {
+    case 'normal':
+      this._imageView.setSrc(this._layout.extra.normal.src);
+      break;
+    case 'active':
+      this._imageView.setSrc(this._layout.extra.active.src);
+      break;
+    case 'disabled':
+      this._imageView.setSrc(this._layout.extra.disabled.src);
+      break;
+    case '_onTouchStartActive':
+      this._imageView.setSrc(this._layout.extra.active.src);
+      break;
+    default:
+      throw new Error('unknown state. ' + state);
+      break;
+    }
+    this._state = state;
+  },
+
+  getState: function() {
+    return this._state;
   }
 });

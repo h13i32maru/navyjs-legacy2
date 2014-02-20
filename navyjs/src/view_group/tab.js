@@ -32,6 +32,11 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
       if (_tabContent === tabContent) {
         this._currentTabContent = tabContent;
         this._currentTabIndex = i;
+        _tabContent.setVisible(true);
+        this._tabLabels[i].setState('disabled');
+      } else {
+        _tabContent.setVisible(false);
+        this._tabLabels[i].setState('normal');
       }
     }
 
