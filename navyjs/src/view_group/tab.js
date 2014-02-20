@@ -53,7 +53,7 @@ Navy.Class('Navy.ViewGroup.Tab', Navy.ViewGroup.ViewGroup, {
     var notify = new Navy.Notify(contents.length * 2, function(){
       this._adjustPositionAndSize();
       this.setVisible(true);
-      $super(layout, callback)
+      $super(layout, callback);
     }.bind(this));
 
     var pass = notify.pass.bind(notify);
