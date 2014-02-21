@@ -46,5 +46,17 @@
             }
         },
         "id": "GuideTokenPage"
+    },
+    {
+        "backgroundColor": "#FFF098",
+        "class": "InstallPage",
+        "classFile": "code/login/install.js",
+        "extra": {
+            "contentLayoutFile": "layout/login/install.json",
+            "transition": {
+                "class": "Navy.Transition.SlideRight"
+            }
+        },
+        "id": "InstallPage"
     }
 ]

@@ -3,7 +3,11 @@
   "assets": [
     {
       "path": "code/login/guide_token.js",
-      "hash": "b304ec3abb8d4b3a5b6e4853127c7963"
+      "hash": "db19af9f9a9615047b4ac70f50cb8149"
+    },
+    {
+      "path": "code/login/install.js",
+      "hash": "8b410973d217d30009fad692666bb365"
     },
     {
       "path": "code/login/page.js",
@@ -43,7 +47,7 @@
     },
     {
       "path": "config/page.json",
-      "hash": "b4d2fc0561f71e4129be35318bbe1b62"
+      "hash": "1e29d22f8b8204cbe80a9b8d4510a846"
     },
     {
       "path": "config/scene.json",
@@ -78,8 +82,16 @@
       "hash": "b22644cd1b7519d9bbebbee4be4d3b34"
     },
     {
+      "path": "image/for_android.png",
+      "hash": "d75ec7de119f9b79eb8a14905fc08669"
+    },
+    {
+      "path": "image/for_ios.png",
+      "hash": "632cb2a15553fa9daf6ff8af88ad32c8"
+    },
+    {
       "path": "image/guide_token.png",
-      "hash": "360a435fd5c0a5f6848d015d5c28cffa"
+      "hash": "d154a2601d30b4a2ab64929c0ee8f5a0"
     },
     {
       "path": "image/header.png",
@@ -106,8 +118,12 @@
       "hash": "4c2e40874190145fdab67ba1bb55b7c5"
     },
     {
+      "path": "layout/login/install.json",
+      "hash": "ddff9eb27e90a4f9a9f7c253189e7d60"
+    },
+    {
       "path": "layout/login/page.json",
-      "hash": "ea62d962328b0651b7f1f5788aaad8df"
+      "hash": "b83d1c6b5a629599a8eb39a7f472fdab"
     },
     {
       "path": "layout/login/scene.json",

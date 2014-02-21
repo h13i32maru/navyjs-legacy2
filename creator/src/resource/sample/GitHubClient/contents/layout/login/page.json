@@ -17,8 +17,8 @@
       },
       "padding": "0px",
       "pos": {
-        "x": 51,
-        "y": 451
+        "x": 48,
+        "y": 330
       },
       "size": {
         "height": 100,
@@ -61,8 +61,8 @@
       },
       "padding": "0px",
       "pos": {
-        "x": 243,
-        "y": 614
+        "x": 240,
+        "y": 493
       },
       "size": {
         "height": 100,
@@ -105,8 +105,52 @@
       },
       "padding": "0px",
       "pos": {
-        "x": 163,
-        "y": 800
+        "x": 160,
+        "y": 787
+      },
+      "size": {
+        "height": 100,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "wrapContent",
+        "width": "wrapContent"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          10
+        ]
+      }
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.ViewGroup.Button",
+      "extra": {
+        "active": {
+          "src": "image/button/large/active.png"
+        },
+        "disabled": {
+          "src": "image/button/large/disabled.png"
+        },
+        "fontBold": true,
+        "fontColor": "#fff",
+        "fontSize": 24,
+        "normal": {
+          "src": "image/button/large/normal.png"
+        },
+        "text": "How to install",
+        "contentLayoutFile": null
+      },
+      "id": "Button4",
+      "link": {
+        "id": "page/InstallPage"
+      },
+      "padding": "0px",
+      "pos": {
+        "x": 160,
+        "y": 880
       },
       "size": {
         "height": 100,
