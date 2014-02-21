@@ -1,6 +1,8 @@
 <RCC><qresource prefix="/">
 <file>sample/GitHubClient/project.ncproject</file>
 <file>sample/GitHubClient/contents/manifest.json</file>
+<file>sample/GitHubClient/contents/code/login/guide_token.js</file>
+<file>sample/GitHubClient/contents/code/login/install.js</file>
 <file>sample/GitHubClient/contents/code/login/page.js</file>
 <file>sample/GitHubClient/contents/code/login/scene.js</file>
 <file>sample/GitHubClient/contents/code/main/profile.js</file>
@@ -16,14 +18,20 @@
 <file>sample/GitHubClient/contents/image/button/large/active.png</file>
 <file>sample/GitHubClient/contents/image/button/large/disabled.png</file>
 <file>sample/GitHubClient/contents/image/button/large/normal.png</file>
+<file>sample/GitHubClient/contents/image/button/middle/.DS_Store</file>
 <file>sample/GitHubClient/contents/image/button/middle/active.png</file>
 <file>sample/GitHubClient/contents/image/button/middle/disabled.png</file>
 <file>sample/GitHubClient/contents/image/button/middle/normal.png</file>
+<file>sample/GitHubClient/contents/image/for_android.png</file>
+<file>sample/GitHubClient/contents/image/for_ios.png</file>
+<file>sample/GitHubClient/contents/image/guide_token.png</file>
 <file>sample/GitHubClient/contents/image/header.png</file>
 <file>sample/GitHubClient/contents/image/icon.png</file>
 <file>sample/GitHubClient/contents/image/icon_mini.png</file>
 <file>sample/GitHubClient/contents/image/loading.png</file>
 <file>sample/GitHubClient/contents/image/search.png</file>
+<file>sample/GitHubClient/contents/layout/login/guide_token.json</file>
+<file>sample/GitHubClient/contents/layout/login/install.json</file>
 <file>sample/GitHubClient/contents/layout/login/page.json</file>
 <file>sample/GitHubClient/contents/layout/login/scene.json</file>
 <file>sample/GitHubClient/contents/layout/main/profile.json</file>
