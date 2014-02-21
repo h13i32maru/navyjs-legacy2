@@ -1,106 +1,6 @@
 {
   "layouts": [
     {
-      "backgroundColor": "",
-      "border": "none 4px #000000",
-      "class": "Navy.View.Image",
-      "extra": {
-        "src": "image/header.png"
-      },
-      "id": "Image6",
-      "link": {
-        "id": ""
-      },
-      "padding": "0px",
-      "pos": {
-        "x": 0,
-        "y": 0
-      },
-      "size": {
-        "height": 100,
-        "width": 100
-      },
-      "sizePolicy": {
-        "height": "wrapContent",
-        "width": "wrapContent"
-      },
-      "visible": true,
-      "__creator__": {
-        "groupingIds": [
-          4
-        ]
-      }
-    },
-    {
-      "backgroundColor": "",
-      "border": "none 4px #000000",
-      "class": "Navy.View.Image",
-      "extra": {
-        "src": "image/icon_mini.png"
-      },
-      "id": "Image2",
-      "link": {
-        "id": ""
-      },
-      "padding": "0px",
-      "pos": {
-        "x": 13,
-        "y": 10
-      },
-      "size": {
-        "height": 100,
-        "width": 100
-      },
-      "sizePolicy": {
-        "height": "wrapContent",
-        "width": "wrapContent"
-      },
-      "visible": true,
-      "__creator__": {
-        "groupingIds": [
-          2
-        ]
-      }
-    },
-    {
-      "backgroundColor": "",
-      "border": "none 4px #000000",
-      "class": "Navy.View.Text",
-      "extra": {
-        "fontBold": true,
-        "fontColor": "#fff",
-        "fontSize": 40,
-        "text": "GitHubClient",
-        "textAlign": {
-          "horizontal": "center",
-          "vertical": "baseline"
-        }
-      },
-      "id": "Text3",
-      "link": {
-        "id": ""
-      },
-      "padding": "0px",
-      "pos": {
-        "x": 112,
-        "y": 0
-      },
-      "size": {
-        "height": 100,
-        "width": 417
-      },
-      "sizePolicy": {
-        "height": "fixed",
-        "width": "fixed"
-      },
-      "visible": true,
-      "__creator__": {
-        "groupingIds": [
-          8
-        ]
-      }
-    },
-    {
       "backgroundColor": "#000",
       "border": "solid 2px #888",
       "class": "Navy.View.TextEdit",
@@ -172,7 +72,12 @@
         "height": "wrapContent",
         "width": "wrapContent"
       },
-      "visible": true
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          9
+        ]
+      }
     },
     {
       "backgroundColor": "",
@@ -187,21 +92,21 @@
         },
         "fontBold": true,
         "fontColor": "#fff",
-        "fontSize": 30,
+        "fontSize": 24,
         "normal": {
           "src": "image/button/large/normal.png"
         },
-        "text": "Get Access Token",
+        "text": "About access token",
         "contentLayoutFile": null
       },
       "id": "GetTokenButton",
       "link": {
-        "id": ""
+        "id": "page/GuideTokenPage"
       },
       "padding": "0px",
       "pos": {
         "x": 163,
-        "y": 745
+        "y": 800
       },
       "size": {
         "height": 100,

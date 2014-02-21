@@ -13,10 +13,6 @@ Navy.Class('LoginPage', Navy.Page, {
       this.findViewById('TokenEdit').setText(token);
       this.findViewById('LoginButton').trigger('Tap');
     }
-
-    this.findViewById('GetTokenButton').on('Tap', function(){
-      window.open('https://github.com/settings/applications#personal-access-tokens');
-    });
   },
 
   _onTapLoginButton: function(/* ev */) {

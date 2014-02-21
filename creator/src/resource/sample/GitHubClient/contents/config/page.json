@@ -34,5 +34,17 @@
             }
         },
         "id": "SearchPage"
+    },
+    {
+        "backgroundColor": "#FFF098",
+        "class": "GuideTokenPage",
+        "classFile": "code/login/guide_token.js",
+        "extra": {
+            "contentLayoutFile": "layout/login/guide_token.json",
+            "transition": {
+                "class": "Navy.Transition.SlideRight"
+            }
+        },
+        "id": "GuideTokenPage"
     }
 ]

@@ -2,16 +2,20 @@
   "baseUrl": "",
   "assets": [
     {
+      "path": "code/login/guide_token.js",
+      "hash": "b304ec3abb8d4b3a5b6e4853127c7963"
+    },
+    {
       "path": "code/login/page.js",
-      "hash": "ca1442d85c3bd60eb7d8db10774a354a"
+      "hash": "e7e313bca76ee7b981bda957d1a5c42b"
     },
     {
       "path": "code/login/scene.js",
-      "hash": "ee4579ede5ec2345e9d2937584f55b4e"
+      "hash": "60e7f497f5264881cf5db2f64d909edb"
     },
     {
       "path": "code/main/profile.js",
-      "hash": "c0e19b5131434e7c4a5187543f0755a0"
+      "hash": "57baa44ec935775114a4d91aac330f9d"
     },
     {
       "path": "code/main/scene.js",
@@ -23,7 +27,7 @@
     },
     {
       "path": "code/model/git_hub_api.js",
-      "hash": "32e6576fc4a572def414aeea4fd52cde"
+      "hash": "87d7eebf3893fbd80b09c15686550679"
     },
     {
       "path": "code/model/search_api.js",
@@ -39,7 +43,7 @@
     },
     {
       "path": "config/page.json",
-      "hash": "7ce45865733cf0f04088a2eb3440d46a"
+      "hash": "b4d2fc0561f71e4129be35318bbe1b62"
     },
     {
       "path": "config/scene.json",
@@ -47,31 +51,35 @@
     },
     {
       "path": "image/back.png",
-      "hash": "f3db180dde1a3583371b1f58681bc05c"
+      "hash": "b8f829c03cc81e9832e7450cd98bfc97"
     },
     {
       "path": "image/button/large/active.png",
-      "hash": "2703077d44c179fe10be0410d7027671"
+      "hash": "ad7394ae43f3b82e3d5fbf8ef7b7954c"
     },
     {
       "path": "image/button/large/disabled.png",
-      "hash": "141b85196d7cb1713df25a08fa89a910"
+      "hash": "434bc41e1eb9c7eb812ed7bbc73f24f8"
     },
     {
       "path": "image/button/large/normal.png",
-      "hash": "5cea5a655c36c2800506fde4d3a97758"
+      "hash": "f03faa671d8a4a7827ec4ff3da02ce21"
     },
     {
       "path": "image/button/middle/active.png",
-      "hash": "e71b6ec13faaf5415b1246da41523a95"
+      "hash": "d415919364ca2da71baf0eaf1acf76f8"
     },
     {
       "path": "image/button/middle/disabled.png",
-      "hash": "4deda67fc23a856f5bebd07a5cc68042"
+      "hash": "be7696c253aac28ded04ab56a5dcb199"
     },
     {
       "path": "image/button/middle/normal.png",
-      "hash": "5478171b0216b6e8e9c8dc3d3b3777fe"
+      "hash": "b22644cd1b7519d9bbebbee4be4d3b34"
+    },
+    {
+      "path": "image/guide_token.png",
+      "hash": "360a435fd5c0a5f6848d015d5c28cffa"
     },
     {
       "path": "image/header.png",
@@ -94,12 +102,16 @@
       "hash": "f9d283efc31afce509cf207ab0ace207"
     },
     {
+      "path": "layout/login/guide_token.json",
+      "hash": "4c2e40874190145fdab67ba1bb55b7c5"
+    },
+    {
       "path": "layout/login/page.json",
-      "hash": "8f496ce85554bc80ea7e85bbb38ab60e"
+      "hash": "ea62d962328b0651b7f1f5788aaad8df"
     },
     {
       "path": "layout/login/scene.json",
-      "hash": "1862576688a13070aac303bab3ab31c0"
+      "hash": "008c1aac2943fd4239787e8debb243c7"
     },
     {
       "path": "layout/main/profile.json",
@@ -107,11 +119,11 @@
     },
     {
       "path": "layout/main/scene.json",
-      "hash": "e60da5b8316058c0cd9543508f397038"
+      "hash": "40cd6f8ddce80c9448783be80fd1c403"
     },
     {
       "path": "layout/main/search.json",
-      "hash": "1d4e44c805215c872a30c0358ba356fb"
+      "hash": "def015dfff99fcfefd073ddc5158ec7d"
     },
     {
       "path": "layout/profile_tab/events.json",
@@ -127,7 +139,7 @@
     },
     {
       "path": "layout/profile_tab/repos_item.json",
-      "hash": "0df544eea32fc9a5c5c7c2bc32f2574c"
+      "hash": "871f4b9f77bebc12fb645b114d328386"
     },
     {
       "path": "layout/profile_tab/users.json",
