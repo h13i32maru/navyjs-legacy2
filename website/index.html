@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>NavyJS</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+  <style>
+    body {
+      background-color: #fff;
+      color: #333;
+    }
+    a {
+      color: #000080;
+      font-weight: 500;
+    }
+    h1, h2, h3 {
+      font-weight: bold;
+      color: #444;
+    }
+    h2 {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    section {
+      margin-bottom: 60px;
+    }
+
+    header.navbar {
+      margin-bottom: 0;
+    }
+
+    .container {
+      max-width: 1000px;
+    }
+
+    .n-docs-header{
+      background-color: #636EDA;
+      color: #fff;
+      padding: 20px 0;
+    }
+    .n-docs-header h1 {
+      color: inherit;
+    }
+    .n-docs-header small {
+      color: inherit;
+    }
+
+    .n-download-section {
+      margin-top: 60px;
+      text-align: center;
+    }
+
+    .n-download-section a {
+      width: 300px;
+      display: inline-block;
+      border: solid 1px #636EDA;
+      padding: 40px 0;
+      margin: 0 20px;
+    }
+
+    .n-download-section a:hover {
+      background-color: #636EDA;
+      color: #fff;
+    }
+
+    footer {
+      padding: 30px;
+      background-color: #333;
+    }
+
+    footer .container {
+      text-align: center;
+    }
+
+    footer a {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar navbar-static-top bs-docs-nav">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">NavyJS</a>
+    </div>
+
+    <nav class="collapse navbar-collapse bs-navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Sample</a></li>
+        <li><a href="#">Hello World</a></li>
+        <li><a href="#"><strike>Document</strike></a></li>
+        <li><a href="#"><strike>API</strike></a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="n-docs-header">
+  <div class="container">
+    <h1>NavyJS <small>&</small> NavyCreator</h1>
+    <p>Web application framework for mobile & development environment.</p>
+  </div>
+</div>
+
+<div class="container">
+  <section class="n-download-section">
+    <a class="h4" href="#">Download v0.0.1 (Mac OSX)</a>
+    <a class="h4" href="#">Source on GitHub</a>
+  </section>
+  <section>
+    <h2>Overview</h2>
+
+    <h3>Goal</h3>
+    <p>「ブラウザをアプリケーションプラットフォームとすること」をゴールと考えています。</p>
+    <p>しかし現状はこのゴールが受け入れられるのか？実現可能なのか？を確かめるための最小限のフレームワーク(コンセプトフレームワーク)として開発しています。</p>
+
+    <h3>NavyJS</h3>
+    <p>SPA(Single Page Application)、View、アセットなどの仕組みを提供するモバイル用のWebアプリケーションフレームワークです。</p>
+    <p>対応ブラウザ</p>
+    <ul>
+      <li>Chrome for Android</li>
+      <li>Mobile Safari</li>
+      <li>Google Chrome</li>
+    </ul>
+
+    <h3>NavyCreator</h3>
+    <p>GUIで画面レイアウトを作成したり、アセットの管理を行うための専用開発環境(簡易IDE)です。</p>
+    <p>対応OS</p>
+    <ul>
+      <li>Mac OSX</li>
+    </ul>
+
+    <div class="row">
+      <div class="col-md-3">
+        <img height="400px" src="image/overview1.png"/>
+        <p>NavyJS</p>
+      </div>
+      <div class="col-md-3">
+        <img height="400px" src="image/overview3.png"/>
+        <p>NavyCreator</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Feature</h2>
+
+    <h3>View</h3>
+    <p>JS/HTML/CSSをパッケージングし、より高度で再利用可能な部品としてボタン、リスト、タブなどのViewを提供します。</p>
+
+    <h3>Layout</h3>
+    <p>画面上に配置するViewをGUI(NavyCreator)を使って作成することができます。
+    作成されたレイアウトファイル(JSON)をNavyJSが読み込むことでブラウザ上にHTMLを動的に構築し画面を描画します。
+    レイアウトから他のレイアウトを読み込むことことでレイアウト自体を再利用できます。</p>
+
+    <h3>SPA</h3>
+    <p>画面単位で独立した状態を保持することができるので、シングルページアプリケーションを簡単に構築することができます。
+    画面のライフサイクル(生成、表示、非表示、破棄)を管理する機能を提供します。</p>
+
+    <h3>Asset</h3>
+    <p>アセット(JS/レイアウト/画像)をブラウザに擬似的にインストールすることでネットワークアクセスをせずにアセットを利用することができます。
+    Webサーバ上で新しいアセットが公開されると差分更新することができます。</p>
+    <p>注意: 現状、画像はブラウザキャッシュを利用しているため、サーバ側での適切なレスポンスヘッダの設定が必要になります。</p>
+  </section>
+
+  <section>
+    <h2>Architecture</h2>
+
+    <h3>System Structure</h3>
+    レイアウト、ロジック、画像
+    NavyJS
+    ブラウザ
+
+    <h3>View Hierarchy</h3>
+    画面/レイアウト/View/Scene/Page/アセット
+
+    <h3>Life Cycle</h3>
+    生成、表示、非表示、破棄
+  </section>
+</div>
+
+<footer>
+  <div class="container">
+    <a href="https://twitter.com/h13i32maru">@h13i32maru</a>
+  </div>
+</footer>
+
+</body>
+</html>
