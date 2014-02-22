@@ -70,6 +70,7 @@
     footer {
       padding: 30px;
       background-color: #333;
+      color: #fff;
     }
 
     footer .container {
@@ -77,7 +78,7 @@
     }
 
     footer a {
-      color: #fff;
+      color: inherit;
     }
   </style>
 </head>
@@ -117,32 +118,37 @@
     <h2>Overview</h2>
 
     <h3>Goal</h3>
-    <p>「ブラウザをアプリケーションプラットフォームとすること」をゴールと考えています。</p>
-    <p>しかし現状はこのゴールが受け入れられるのか？実現可能なのか？を確かめるための最小限のフレームワーク(コンセプトフレームワーク)として開発しています。</p>
+    <p>NavyJSのゴールは「ブラウザをアプリケーションプラットフォームとすること」です。
+      そのためには再利用可能なUI部品、アセットの管理、画面のライフサイクルなどのアプリケーションを開発する上での基本的な機能をフレームワークとして提供する必要があると考えています。
+      また画面レイアウトを効率良く作成するためにはGUIによる開発環境も必要となってきます。
+      これらの機能と環境を１つのフレームワークとして提供しているのがNavyJSとNavyCreatorです。
+    </p>
+    <p>しかし現状はこのゴールが世の中に受け入れられるのか？実現可能なのか？を確かめるために最小限の機能を持った
+      フレームワーク(コンセプトフレームワーク)として提供することを直近のゴールとしています。
+    </p>
 
     <h3>NavyJS</h3>
-    <p>SPA(Single Page Application)、View、アセットなどの仕組みを提供するモバイル用のWebアプリケーションフレームワークです。</p>
-    <p>対応ブラウザ</p>
-    <ul>
-      <li>Chrome for Android</li>
-      <li>Mobile Safari</li>
-      <li>Google Chrome</li>
-    </ul>
+    <p>SPA(Single Page Application)、View、アセットなどの仕組みを提供するモバイル用のWebアプリケーションフレームワークです。
+      フロントエンド開発者はNavyJSが提供するAPIを通してアプリケーションを開発することになります。エディタはもちろん開発者が好みのもので開発することが可能です。
+    </p>
+    <p>
+      現在は「Chrome for Android」「Mobile Safari」と開発時の確認用として「Google Chrome」に対応しています。
+    </p>
 
     <h3>NavyCreator</h3>
-    <p>GUIで画面レイアウトを作成したり、アセットの管理を行うための専用開発環境(簡易IDE)です。</p>
-    <p>対応OS</p>
-    <ul>
-      <li>Mac OSX</li>
-    </ul>
+    <p>GUIでUI部品を配置したり、大きさを変更したり、プロパティを設定することで画面レイアウトをします。
+      またアプリケーション中で使用されるアセット(JS/レイアウト/画像)の定義ファイルを管理します。
+      開発したアプリケーションはサーバにアップロードすることなくローカルのGoogle Chromeを使うことで動作確認を行うことが出来ます。
+    </p>
+    <p>現在は「Max OSX」にのみ対応しています。</p>
 
     <div class="row">
       <div class="col-md-3">
-        <img height="400px" src="image/overview1.png"/>
+        <img height="400px" src="image/overview1-1.png"/>
         <p>NavyJS</p>
       </div>
       <div class="col-md-3">
-        <img height="400px" src="image/overview3.png"/>
+        <img height="400px" src="image/overview1-3.png"/>
         <p>NavyCreator</p>
       </div>
     </div>
@@ -150,23 +156,38 @@
 
   <section>
     <h2>Feature</h2>
-
-    <h3>View</h3>
-    <p>JS/HTML/CSSをパッケージングし、より高度で再利用可能な部品としてボタン、リスト、タブなどのViewを提供します。</p>
-
-    <h3>Layout</h3>
-    <p>画面上に配置するViewをGUI(NavyCreator)を使って作成することができます。
-    作成されたレイアウトファイル(JSON)をNavyJSが読み込むことでブラウザ上にHTMLを動的に構築し画面を描画します。
-    レイアウトから他のレイアウトを読み込むことことでレイアウト自体を再利用できます。</p>
-
-    <h3>SPA</h3>
-    <p>画面単位で独立した状態を保持することができるので、シングルページアプリケーションを簡単に構築することができます。
-    画面のライフサイクル(生成、表示、非表示、破棄)を管理する機能を提供します。</p>
-
-    <h3>Asset</h3>
-    <p>アセット(JS/レイアウト/画像)をブラウザに擬似的にインストールすることでネットワークアクセスをせずにアセットを利用することができます。
-    Webサーバ上で新しいアセットが公開されると差分更新することができます。</p>
-    <p>注意: 現状、画像はブラウザキャッシュを利用しているため、サーバ側での適切なレスポンスヘッダの設定が必要になります。</p>
+    <div class="row">
+      <div class="col-md-6">
+        <h3>View</h3>
+        <p>これまでHTMLでUI部品を実現する場合、JavaScript/HTML/CSSを組み合わせて開発者自身が作成してきました。
+          そこでNavyJSではこれらのJavaScript/HTML/CSSをパッケージングし、Viewと呼ばれる再利用可能なUI部品を提供します。
+          Viewを継承し具体的な機能を持つボタン、タブ、リストなどが存在します。
+        </p>
+      </div>
+      <div class="col-md-6">
+        <h3>Layout</h3>
+        <p>画面上に配置するViewの位置、サイズ、プロパティを定義したファイルがLayoutです。
+          このレイアウトファイル(JSON)をNavyJSが読み込むことでブラウザ上にHTMLを構築し画面を描画します。
+          レイアウトは他のレイアウトを読み込むことが可能となっているので、レイアウト自体も再利用できます。
+          レイアウトはNavyCreator(GUI)を使って作成するために開発者が直接レイアウトファイルを記述することはありません。
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h3>SPA</h3>
+        <p>NavyJSはSPA(シングルページアプリケーション)での開発が前提となっており、遷移時に動的にレイアウトを読み込み画面を構築します。
+          また画面単位で独立した状態を保持し、画面間でのデータの受け渡しも可能になっています。
+          画面はNavyJSにより管理され、ライフサイクル(生成、表示、非表示、破棄)イベントを通して処理を実装することになります。
+        </p>
+      </div>
+      <div class="col-md-6">
+        <h3>Asset</h3>
+        <p>アセット(JS/レイアウト/画像)をブラウザに保存することでネットワークアクセスをせずにアセットを利用することができます。
+          Webサーバ上で新しいアセットが公開されるとアセットの定義ファイルを元に差分更新することができます。</p>
+        <p>注意: 現在、画像の保存にはブラウザキャッシュを利用しているため、サーバ側での適切なレスポンスヘッダの設定が必要になります。</p>
+      </div>
+    </div>
   </section>
 
   <section>
@@ -175,30 +196,43 @@
     <h3>System Structure</h3>
     <div class="row">
       <div class="col-md-4">
-        <p>hoge hoge hoge</p>
+        <p>開発者はアプリケーションに必要なJavaScript / Layout / Imageをアセットとして作成します。
+          そしてアプリケーションが起動するとNavyJSは画面表示に必要なアセットをアセットの管理機構から取得します。
+          レイアウトとJSの取得が完了すると、画面の表示に必要なインスタンスを生成し画面を表示します。
+          画面はScene/Pageという単位で構成されており、ユーザはこのScene/Pageを見ることになります。
+        </p>
       </div>
       <div class="col-md-8">
         <img width="580px" src="image/overview3-1.png"/>
       </div>
     </div>
 
-    <h3>View Hierarchy</h3>
-    <div class="row">
-      <div class="col-md-4">
-        <p>hoge hoge hoge</p>
-      </div>
-      <div class="col-md-8">
-        <img width="580px" src="image/overview3-2.png"/>
-      </div>
-    </div>
-
-    <h3>Life Cycle</h3>
     <div class="row">
       <div class="col-md-6">
-        <p>hoge hoge hoge</p>
+        <h3>View Hierarchy</h3>
+        <p>
+          画面に表示される全ての表示要素はViewを継承しており、Viewの階層構造になっています。
+          Rootは端末の画面上に常に表示され、複数のSceneを持つことができます。Sceneから別のSceneに遷移することができます。
+          例えばログイン画面からメイン画面への遷移に使われることを想定しています。
+          Sceneは複数のPageを持つことができ、Sceneと同じくPageも別のPageに遷移することができます。この場合、同じScene内での画面遷移になるので、
+          Sceneに表示されている要素は常に画面上に表示され続けます。
+          PageはView(画像、テキストなど)やViewGroup(タブ、リストなど)を任意の数だけ持つことができます。
+        </p>
+        <div style="text-align:center;">
+          <img height="340px" src="image/overview3-2.png"/>
+        </div>
       </div>
       <div class="col-md-6">
-        <img width="200px" src="image/overview3-3.png"/>
+        <h3>Life Cycle</h3>
+        <p>
+          Pageはライフサイクルを持っており、生成されてから破棄されるまでにいくつかの状態をループします。
+          まずPageAが生成されるとonCreateが実行され、onResumeに進み、アクティブな状態になります。このアクティブな状態とは端末の画面上に表示されユーザに見えていることを状態です。
+          そして他のPageBに遷移すると遷移元PageAはonPauseが実行され、非アクティブな状態になります。遷移先PageBはonCreate, onResumeと進みアクティブな状態になります。
+          PageBからPageAに戻ってくるとPageBではonPause, onDestroyが実行されインスタンスが破棄されます。PageAはonResumeが実行されアクティブな状態に戻ります。
+        </p>
+        <div style="text-align:center;">
+          <img height="340px" src="image/overview3-3.png"/>
+        </div>
       </div>
     </div>
   </section>
@@ -206,9 +240,8 @@
 
 <footer>
   <div class="container">
-    <a href="https://twitter.com/h13i32maru">@h13i32maru</a>
-    Released under the MIT License
-    Copyright (c) 2014 Evan You
+    <p>Released under the MIT License</p>
+    <p>Copyright (c) 2014 <a href="https://twitter.com/h13i32maru">@h13i32maru</a></p>
   </div>
 </footer>
 
