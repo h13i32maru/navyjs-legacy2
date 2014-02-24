@@ -1,0 +1,63 @@
+body {
+  background-color: #fff;
+  color: #666;
+  line-height:1.7;
+}
+
+a {
+  color: #000080;
+  font-weight: 500;
+}
+h1, h2, h3 {
+  font-weight: bold;
+  color: #444;
+}
+h2 {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+section {
+  margin-bottom: 60px;
+}
+
+/*
+ * header
+ */
+header.navbar {
+  margin-bottom: 0;
+}
+
+.container {
+  max-width: 1000px;
+}
+
+.n-docs-header{
+  background-color: #392D8B;
+  color: #fff;
+  padding: 20px 0;
+}
+.n-docs-header h1 {
+  color: inherit;
+}
+.n-docs-header small {
+  color: inherit;
+}
+
+/*
+ * footer
+ */
+footer {
+  padding: 30px;
+  background-color: #333;
+  color: #fff;
+}
+
+footer .container {
+  text-align: center;
+}
+
+footer a {
+  color: inherit;
+}
