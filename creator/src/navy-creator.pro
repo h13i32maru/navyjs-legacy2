@@ -13,6 +13,12 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = "NavyCreator"
 TEMPLATE = app
 
+# 現在QtCreatorではinfo.plistが作られないバグが有る。
+# 通常はICONを設定すれば良いだけだが、QMAKE_INFO_PLISTも設定しないとアイコンが設定されない
+# http://qt-project.org/doc/qt-5/appicon.html#setting-the-application-icon-on-mac-os-x
+# http://qt-project.org/forums/viewthread/24811/
+ICON = resource/nc.icns
+QMAKE_INFO_PLIST = resource/info.plist
 
 SOURCES += main.cpp\
         main_window.cpp \
