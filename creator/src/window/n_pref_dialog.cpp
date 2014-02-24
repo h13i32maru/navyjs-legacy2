@@ -34,7 +34,7 @@ void NPrefDialog::setDefault() {
     // chrome
     ui->googleChromeEdit->setText("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
     ui->allowFileAccessFromFileCheck->setChecked(true);
-    ui->disableWebSecurityCheck->setChecked(true);
+    ui->disableWebSecurityCheck->setChecked(false);
     ui->userDataDirEdit->setText(QDir::homePath() + "/.navy_creator_chrome");
     ui->otherOptionsEdit->setText("");
 
