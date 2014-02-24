@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>FAQ</title>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/common.css">
+  <style>
+    .faq-container section {
+      margin-bottom:60px;
+    }
+
+    .faq-container h4 {
+      border-left: solid 10px #392D8B;
+      padding-left: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar navbar-static-top bs-docs-nav">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">NavyJS</a>
+    </div>
+
+    <nav class="collapse navbar-collapse bs-navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="/sample/">Sample</a></li>
+        <li><a href="/helloworld/">Hello World</a></li>
+        <li><a class="text-muted"><strike>Document</strike></a></li>
+        <li><a class="text-muted"><strike>API</strike></a></li>
+        <li><a href="/faq/">FAQ</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="container faq-container">
+  <h2>FAQ</h2>
+
+  <section>
+    <h4>なぜ作ったのか？</h4>
+    <p>
+      AndroidやiOSではUI部品や画面管理などのアプリを作る上で必要な機能をフレームワーク側が提供しています。
+      しかしWebフロントエンドにはそれらの機能がないので、自作するもしくは他のライブラリを色々組み合わせないといけません。
+      そこでWebフロントエンドでもアプリ開発に必要な機能を作ればもっとアプリを作りやすくなるのでは？と思ったからです。
+    </p>
+    <p>
+      個人的な理由としては大きなHTML/CSSを保守性高く構造化することが難しいと感じているので、HTML/CSSを書かずにアプリを作りたいと思っています。
+      それとパフォーマンスがよいWebアプリを作るためにはSPAやアセット管理などが必要だと思っています。
+    </p>
+  </section>
+
+  <section>
+    <h4>なぜ未完成で公開したのか？</h4>
+    <p>
+      このようなコンセプトのフレームワークが世の中に受け入れられるのか？実現可能かのか？を知りたかったからです。
+      そのためにコンセプトを理解してもらうだけの最小限の機能にとどめ、なるべく早く公開することにしました。
+      つまりフレームワーク自体の品質はまだまだです。このようなフレームワークを根治的には「コンセプトフレームワーク」と呼んでいます。
+    </p>
+  </section>
+
+  <section id="roadmap">
+    <h4>今後のロードマップはどうなっているのか？</h4>
+    <p>サンプルアプリのGitHub Clientを対象にドックフーディングを行いながら品質を向上させていきます。そのため、新しいViewの追加は直近では行う予定はありません。</p>
+    <ul>
+      <li>コード品質向上</li>
+      <li>ユニットテスト向上</li>
+      <li>パフォーマンス改善</li>
+      <li>セキュリティチェック</li>
+      <li>ドキュメント整備</li>
+      <li>インターフェースの変更も含む破壊的リファクタリング</li>
+    </ul>
+  </section>
+
+  <section>
+    <h4>学習コストは？</h4>
+    <p>
+      将来的に機能が揃ってくると他のフレームワークに比べ、高いものになると思います。
+      しかし比較的大きな規模のWebアプリを作る場合、現状では沢山のフレームワークやツールを組み合わせる(もしくは自作する)ことになります。
+      それらトータルの学習コストもかなり高いものになるので実はあまり差が出てこないのではないかと予想しています。
+    </p>
+  </section>
+
+  <section>
+    <h4>AppCacheやWebComponentとの関連性は？</h4>
+    <p>
+      全くありません。ただし、考え方は非常に似ています。
+      ViewはWebComponents CustomElement, Shadow DOM、LayoutはTemplate, Imports、AssetはAppCacheに似ています。
+      なのでもしかすると将来何かしら相互利用できる形になるかもしれません。
+    </p>
+  </section>
+
+  <section>
+    <h4>他のMV*ライブラリやaltJSとの親和性は？</h4>
+    <p>
+      現在は考慮していません。
+    </p>
+  </section>
+
+  <section>
+    <h4>WebViewでの利用は？</h4>
+    <p>
+      現在は考慮していません。
+      iOSはMobile SafariとUIWebViewが(JITを除けば)ほぼ同じなので利用できるかもしれません。
+      しかしAndroidはChrome for Androidを前提としているため利用することはできません。
+    </p>
+  </section>
+
+  <section>
+    <h4>ゲームでの利用は？</h4>
+    <p>
+      NavyJSが対象としているアプリは主にツール / ユーティリティ系のアプリです。
+      ゲームのような60FPSを目指すアプリには向いていません。
+    </p>
+  </section>
+
+  <section>
+    <h4>独自のViewは使えるのか？</h4>
+    <p>
+      現在は組み込みのViewのみの対応です。しかしサードパーティなViewを組み込める仕組みを検討しており、将来的には対応予定です。
+    </p>
+  </section>
+
+  <section>
+    <h4>マルチ解像度、マルチアスペクト比の対応は？</h4>
+    <p>
+      現在は固定解像度、固定アスペクト比の対応です。
+      タブレット除くをAndroidは16:9のアスペクト比が多くなってきています。
+      このため早急に対応が必要とは考えていません。しかし将来的にはマルチ解像度、マルチアスペクト比の対応も検討予定です。
+    </p>
+  </section>
+
+  <section>
+    <h4>データバインディングの利用は？</h4>
+    <p>
+      現在はデータバインディングに対応していません。
+      イベント駆動による更新チェック方式(AngularJS)、getter/setterによる変数ラップ方式(Knocout, Vue.js)のどちらの方式もモバイル上で使うにはパフォーマンスのボトルネックになりがちなので対応を見送りました。
+      <a href="http://wiki.ecmascript.org/doku.php?id=harmony:observe" target="_blank">Object.ovserve</a>はこの問題を解決する可能性があり期待しています。
+    </p>
+  </section>
+
+  <section>
+    <h4>興味があるんだけどどうすればよい？</h4>
+    <p>
+      <a href="https://twitter.com/h13i32maru">@h13i32maru</a>まで気軽に連絡ください :D
+    </p>
+  </section>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Released under the MIT License</p>
+    <p>Copyright (c) 2014 <a href="https://twitter.com/h13i32maru">@h13i32maru</a></p>
+  </div>
+</footer>
+</body>
+</html>
