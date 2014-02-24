@@ -27,10 +27,6 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
 
     this._preventDOMEvent = this._preventDOMEvent.bind(this);
 
-    if (layout) {
-      this._id = layout.id;
-    }
-
     this._layout = layout;
 
     this._createElement(layout);
@@ -57,6 +53,13 @@ Navy.Class('Navy.View.View', Navy.EventTarget, {
     }
 
     this._layout = layout;
+
+    if (layout.id !== this._id) {
+      var oldId = this._id;
+      this._id = layout.id;
+      this.trigger('IdChanged', {oldId: oldId, newId: layout.id});
+    }
+
     var notify = new Navy.Notify(2, onLoadAsset.bind(this));
     var pass = notify.pass.bind(notify);
     this._loadAsset(layout, pass);
