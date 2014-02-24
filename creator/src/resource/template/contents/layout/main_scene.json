@@ -1,9 +1,14 @@
 {
   "layouts": [
     {
-      "backgroundColor": "#aaaaff",
+      "backgroundColor": "#392D8B",
+      "border": "",
       "class": "Navy.View.View",
-      "id": "header_bg",
+      "id": "View1",
+      "link": {
+        "id": ""
+      },
+      "padding": "",
       "pos": {
         "x": 0,
         "y": 0
@@ -12,42 +17,52 @@
         "height": 82,
         "width": 640
       },
-      "sizePolicy": {"width": "fixed", "height": "fixed"},
-      "visible": true
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          3
+        ]
+      }
     },
     {
-      "visible": true,
-      "backgroundColor": "#0000ff",
+      "backgroundColor": "",
+      "border": "",
       "class": "Navy.View.Text",
       "extra": {
-        "text": ""
+        "fontBold": false,
+        "fontColor": "#fff",
+        "fontSize": 30,
+        "text": "MainScene",
+        "textAlign": {
+          "horizontal": "center",
+          "vertical": "baseline"
+        }
       },
-      "id": "left_button",
+      "id": "Text2",
+      "link": {
+        "id": ""
+      },
+      "padding": "",
       "pos": {
-        "x": 11,
-        "y": 11
+        "x": 220,
+        "y": 16
       },
       "size": {
-        "height": 60,
-        "width": 70
+        "height": 50,
+        "width": 200
       },
-      "sizePolicy": {"width": "fixed", "height": "fixed"}
-    },
-    {
-      "visible": true,
-      "backgroundColor": "",
-      "class": "Navy.View.Text",
-      "extra": {
-        "fontSize": 30,
-        "text": "MainScene"
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
       },
-      "id": "Text3",
-      "pos": {
-        "x": 253,
-        "y": 27
-      },
-      "size": {},
-      "sizePolicy": {"width": "wrapContent", "height": "wrapContent"}
+      "visible": true
     }
-  ]
+  ],
+  "meta": {
+    "__creator__": {}
+  }
 }

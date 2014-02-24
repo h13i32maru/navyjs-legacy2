@@ -142,6 +142,7 @@ void NLayoutWidget::syncWidgetToView() {
         }
 
         items[0]->setText(ViewsColId, id);
+        emit mNative->changedViewIdToJS(selectedViewId, id);
     }
 
     emit mNative->changedViewPropertyToJS(view.toVariant());

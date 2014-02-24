@@ -8,6 +8,7 @@
  *   changedViewsOrderToJS: {connect: function},
  *   changedSelectedViewToJS: {connect: function},
  *   changedViewPropertyToJS: {connect: function},
+ *   changedViewIdToJS: {connect: function},
  *   addViewToJS: {connect: function},
  *   deleteSelectedViewsToJS: {connect: function},
  *   setScreenToJS: {connect: function},

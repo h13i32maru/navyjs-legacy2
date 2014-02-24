@@ -9,6 +9,7 @@ Navy.Class.instance('Include.NativeBridge', Include.Include, {
       Native.changedViewsOrderToJS.connect(this._updateViewsOrderFromNative.bind(this));
       Native.changedSelectedViewToJS.connect(this._selectViewsFromNative.bind(this));
       Native.changedViewPropertyToJS.connect(this._updateSelectedViewLayoutFromNative.bind(this));
+      Native.changedViewIdToJS.connect(this._updateSelectedViewIdFromNative.bind(this));
       Native.addViewToJS.connect(this._addViewFromNative.bind(this));
       Native.deleteSelectedViewsToJS.connect(this._deleteSelectedViewsFromNative.bind(this));
       Native.setScreenToJS.connect(this._setScreenFromNative.bind(this));
@@ -45,6 +46,10 @@ Navy.Class.instance('Include.NativeBridge', Include.Include, {
 
   _updateSelectedViewLayoutFromNative: function(layout) {
     this._updateSelectedViewLayout(layout);
+  },
+
+  _updateSelectedViewIdFromNative: function(oldId, newId) {
+    this._updateSelectedViewId(oldId, newId);
   },
 
   _execGroupingViewsFromNative: function() {

@@ -55,6 +55,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
     }
   },
 
+  // FIXME: 不要な関数
   _onLoadContentLayout: function(contentLayouts) {
     var notify = new Navy.Notify(contentLayouts.length, this._initCallback);
     var pass = notify.pass.bind(notify);
@@ -65,6 +66,14 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
       var view = new ViewClass(contentLayout, pass);
       this.addView(view);
     }
+  },
+
+  _updateChildViewId: function(ev) {
+    var oldId = ev.data.oldId;
+    var newId = ev.data.newId;
+
+    this._views[newId] = this._views[oldId];
+    delete this._views[oldId];
   },
 
   /**
@@ -264,6 +273,7 @@ Navy.Class('Navy.ViewGroup.ViewGroup', Navy.View.View, {
 
     view.on('SizeChanged', this._resizeWrapContentByChangedView.bind(this));
     view.on('PosChanged', this._resizeWrapContentByChangedView.bind(this));
+    view.on('IdChanged', this._updateChildViewId.bind(this));
   },
 
   removeView: function(view) {

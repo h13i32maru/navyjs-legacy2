@@ -1,20 +1,40 @@
 {
   "layouts": [
     {
-      "visible": true,
       "backgroundColor": "",
+      "border": "",
       "class": "Navy.View.Text",
       "extra": {
+        "fontBold": false,
+        "fontColor": "",
         "fontSize": 50,
-        "text": "MainPage"
+        "text": "MainPage",
+        "textAlign": {
+          "horizontal": "center",
+          "vertical": "baseline"
+        }
       },
       "id": "Text1",
+      "link": {
+        "id": ""
+      },
+      "padding": "",
       "pos": {
-        "x": 223,
+        "x": 170,
         "y": 516
       },
-      "size": {},
-      "sizePolicy": {"width": "wrapContent", "height": "wrapContent"}
+      "size": {
+        "height": 100,
+        "width": 300
+      },
+      "sizePolicy": {
+        "height": "fixed",
+        "width": "fixed"
+      },
+      "visible": true
     }
-  ]
+  ],
+  "meta": {
+    "__creator__": {}
+  }
 }

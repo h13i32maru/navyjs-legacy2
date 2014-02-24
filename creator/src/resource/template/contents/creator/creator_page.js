@@ -122,6 +122,12 @@ Navy.Class('CreatorPage', Navy.Page, {
     }.bind(this));
   },
 
+  _updateSelectedViewId: function(oldId, newId) {
+    var groupingView = this._viewIdToGroupingViewMap[oldId];
+    this._viewIdToGroupingViewMap[newId] = groupingView;
+    delete this._viewIdToGroupingViewMap[oldId];
+  },
+
   _convertGroupingViewsToViews: function(groupingViews) {
     var views = [];
     for (var i = 0; i < groupingViews.length; i++) {

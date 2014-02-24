@@ -15,7 +15,7 @@
     },
     {
       "path": "config/page.json",
-      "hash": "13ff3abccef6c1d662e320b705188d67"
+      "hash": "6a32cc55cc37ead5c553aca679c43cf7"
     },
     {
       "path": "config/scene.json",
@@ -27,11 +27,11 @@
     },
     {
       "path": "layout/main_page.json",
-      "hash": "216f9e38da1d60863dd2c32cd2fd6847"
+      "hash": "3790384f2e2e3fa3ddfe52b94cf88884"
     },
     {
       "path": "layout/main_scene.json",
-      "hash": "0100bc4c6476e8a421e0e415cdd36321"
+      "hash": "73f52ca12abda38a7a5b7ac4ba236397"
     }
   ]
 }
