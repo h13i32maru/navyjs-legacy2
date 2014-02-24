@@ -6,6 +6,26 @@
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="../css/common.css">
   <link rel="shortcut icon" href="../image/favicon.ico">
+  <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=desert"></script>
+  <style>
+    /* for google prettify */
+    li.L0, li.L1, li.L2, li.L3,
+    li.L5, li.L6, li.L7, li.L8
+    { list-style-type: decimal !important }
+
+    .code-description span {
+      background-color:#ddd;
+      padding:4px;
+    }
+
+    .dir-tree {
+      background-color:#333;
+      color: #fff;
+    }
+    .dir-tree span{
+      color: #98fb98;
+    }
+  </style>
 </head>
 <body>
 
@@ -34,13 +54,108 @@
   </p>
 
   <section>
+    <div class="row">
+      <div class="col-md-4">
+        <img width="145px" src="../image/helloworld/app1.png">
+        <img width="145px" src="../image/helloworld/app2.png">
+      </div>
+      <div class="col-md-6">
+        <p class="code-description">
+          このHello Worldアプリは２つの画面から構成されています。
+          一つ目の<span>MainPage</span>画面にはボタンとユーザがボタンをタップした回数が表示されます。
+          ユーザはそのボタンをタップすると<span>HelloWorldPage</span>に移動します。
+          <span>HelloWorldPage</span>ではHello Worldの文字をタップすると前の画面に戻ります。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>File/Directory</h3>
+    <p>アプリに必要なファイル/ディレクトリ構成はこのようになっています。</p>
+    <pre class="dir-tree">
+HelloWorld/contents/
+├── code <span>// JavaScriptを保存するディレクトリ</span>
+│   ├── hello_world.js
+│   ├── main_page.js
+│   └── main_scene.js
+├── config <span>// アプリの各種設定を保存するディレクトリ</span>
+│   ├── app.json <span>// アプリの画面サイズや起動画面を設定</span>
+│   ├── page.json <span>// アプリのページとレイアウトのマッピング設定</span>
+│   └── scene.json <span>// アプリのシーンとレイアウトのマッピング設定</span>
+├── image <span>// 画像を保存するディレクトリ</span>
+│   ├── button
+│   │   └── middle
+│   │       ├── active.png
+│   │       ├── disabled.png
+│   │       └── normal.png
+│   └── icon.png
+├── index.html <span>// アプリのエントリポイント</span>
+├── layout <span>// レイアウトファイルを保存するディレクトリ</span>
+│   ├── hello_world.json
+│   ├── main_page.json
+│   └── main_scene.json
+├── manifest.json <span>// アセット(code/config/image/layout)の定義ファイル</span>
+└─── navy <span>// NavyJS本体のコードを保存するディレクトリ</span>
+    ├── navy.js
+    └── navy.min.js
+    </pre>
+  </section>
+
+  <section>
     <h3>Layout</h3>
-    <p>まずはレイアウトの作成方法を動画で解説します。</p>
+    <p>レイアウトの作成方法を動画で解説します。</p>
   </section>
 
   <section>
     <h3>Code</h3>
-    <p>次にコードの内容について解説します。</p>
+    <p>コードの内容について解説します。</p>
+    <p>
+      NavyJSではまず<span>Navy.Page</span>を継承したクラス(コンストラクタ関数)を作成します。そしてライフサイクルメソッドをオーバーライドして各画面で行う処理を記述します。
+      主にユーザからの入力イベントのハンドリングや、他のモデルの呼び出し、表示内容の更新などを行います。
+    </p>
+    <p>
+      ユーザがボタンをタップした回数を画面上に表示する処理を実装してみます。
+    </p>
+    <pre class="prettyprint lang-js linenums:1">
+Navy.Class('MainPage', Navy.Page, {
+  _count: 0,
+
+  onCreate: function($super, ev) {
+    $super(ev);
+
+    var buttonView = this.findViewById('TapButton');
+    buttonView.on('Tap', function(){
+      this._count++;
+      var countView = this.findViewById('Count');
+      countView.setText(this._count);
+    }.bind(this));
+  }
+});
+    </pre>
+    <p>code/main_page.js</p>
+
+    <div class="code-description">
+      <p>
+        1行目の<span>Navy.Class</span>はクラスを定義する関数です。第1引数にクラス名、第2引数に親クラス、第3引数にプロトタイプオブジェクトを指定します。
+        プロトタイプオブジェクにはプロパティ、メソッドを定義します。ここでは<span>_count</span>プロパティと<span>onCreate</span>メソッドが定義されています。
+      </p>
+
+      <p>
+        4行目、5行目の<span>$super</span>変数は親クラスのメソッドを参照します。
+        <span>onCreate</span>メソッドは<span>Navy.Page#onCreate</span>をオーバーライドしているので<span>$super</span>を使って親クラスのメソッドを呼び出す必要があります。
+        <span>onCreate</span>メソッドは<span>MainPage</span>がインスタンス化されレイアウトの準備が完了したとき(まだ端末上には表示されていない)に呼び出されます。
+        通常、インスタンスの初期化処理はこの<span>onCreate</span>メソッドで行うことになります。
+      </p>
+
+      <p>
+        7行目の<span>findViewById</span>メソッドは指定されたIDのViewを返します。IDはレイアウト作成時に設定したものを指定します。
+      </p>
+
+      <p>
+        8行目〜12行目は<span>buttonView</span>がタップされた時の処理を記述しています。ここは通常のDOMイベントと同じようにイベント名、コールバック関数を指定します。
+      </p>
+    </div>
   </section>
 </div>
 
