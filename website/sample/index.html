@@ -2,10 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8"/>
-  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">-->
   <title>Sample</title>
-  <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/common.css">
 </head>
 <body>
 
@@ -17,7 +16,7 @@
 
     <nav class="collapse navbar-collapse bs-navbar-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="#">Sample</a></li>
+        <li><a>Sample</a></li>
         <li><a href="#">Hello World</a></li>
         <li><a class="text-muted"><strike>Document</strike></a></li>
         <li><a class="text-muted"><strike>API</strike></a></li>
@@ -27,5 +26,88 @@
   </div>
 </header>
 
+<div class="container">
+  <section>
+    <h2>Sample</h2>
+    <div class="row">
+
+      <div class="col-md-6">
+        <h4>GitHub Client</h4>
+        <div class="row">
+          <div class="col-md-4">
+            <img width="150px" src="../image/sample/sample1.png">
+          </div>
+          <div class="col-md-6">
+            <span>
+              <img src="../image/sample/qrcode1.png">
+              <small><a href="#">ghc.navyjs.org</a></small>
+            </span>
+            <p>Android版 GitHub Clientを元にNavyJSで実装したGitHub Clientサンプルアプリです。</p>
+            <p class="alert alert-info"><small>このアプリにはGitHub APIトークンが必要です。<br/><a href="#">Getting GitHub token</a></small></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6" style="border-left: solid 1px #ddd;">
+        <h4>Library</h4>
+        <div class="row">
+          <div class="col-md-4">
+            <img width="150px" src="../image/sample/sample2.png">
+          </div>
+          <div class="col-md-6">
+            <span>
+              <img src="../image/sample/qrcode1.png">
+              <small><a href="#">library.navyjs.org</a></small>
+            </span>
+            <p>NavyJSで使用できるUI部品を網羅したサンプルアプリです。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>How to install</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <h4>iOS: Mobile Safari</h4>
+        <img height="250px" src="../image/sample/for_ios_1.png">
+        <span> → </span>
+        <img height="250px" src="../image/sample/for_ios_2.png">
+      </div>
+      <div class="col-md-6">
+        <h4>Android: Chrome for Android</h4>
+        <img height="250px" src="../image/sample/for_android_1.png">
+        <span> → </span>
+        <img height="250px" src="../image/sample/for_android_2.png">
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Getting GitHub token</h2>
+    <p>
+      サンプルアプリのGitHubClientを使用するためにはGitHub APIへアクセスするためのトークンを取得する必要があります。
+      <a href="https://github.com/settings/applications#personal-access-tokens">https://github.com/settings/applications#personal-access-tokens</a>にアクセスして
+      下記の手順でトークンを取得してください。
+      <div class="alert alert-info">取得したトークンはコピー&ペーストでGitHubClientに貼り付けるため、トークンの取得はお使いのモバイル端末で行うことをおすすめします。</div>
+    </p>
+    <h4>1. 「Generate new token」をクリックします</h4>
+    <img src="../image/sample/token1.png">
+
+    <h4>2. 「public_repo」を選択してトークンを生成します</h4>
+    <img src="../image/sample/token2.png">
+
+    <h4>3. トークンをコピーしてGitHubClientに貼り付けます</h4>
+    <img src="../image/sample/token3.png">
+  </section>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Released under the MIT License</p>
+    <p>Copyright (c) 2014 <a href="https://twitter.com/h13i32maru">@h13i32maru</a></p>
+  </div>
+</footer>
 </body>
 </html>
