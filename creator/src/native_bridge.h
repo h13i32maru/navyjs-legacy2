@@ -54,6 +54,7 @@ signals:
 
     // Viewのプロパティが変更された時にJSに送信される
     void changedViewPropertyToJS(const QVariant &json);
+    void changedViewIdToJS(const QString &oldId, const QString &newId);
 
     // Viewが追加されたときにJSに送信される
     void addViewToJS(const QString &viewId, const QString &viewClass, const QVariant &json);
