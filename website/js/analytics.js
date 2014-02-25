@@ -5,3 +5,15 @@
 
 ga('create', 'UA-48365698-1', 'navyjs.org');
 ga('send', 'pageview');
+
+// リンクのクリックを個別に軽装する
+var trackElements = document.querySelectorAll('a[data-track=true]');
+for (var i = 0; i < trackElements.length; i++) {
+  var elm = trackElements[i];
+  elm.addEventListener('click', function(){
+    var category = this.href;
+    var action = 'from: ' + location.href;
+    var label = this.getAttribute('data-track-label');
+    ga('send', 'event', category, action, label);
+  });
+}

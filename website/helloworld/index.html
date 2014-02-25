@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="../css/common.css">
   <link rel="shortcut icon" href="../image/favicon.ico">
   <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=desert"></script>
-  <script src="../js/analytics.js"></script>
   <style>
     /* for google prettify */
     li.L0, li.L1, li.L2, li.L3,
@@ -66,7 +65,7 @@
           一つ目の<span>MainPage</span>画面にはボタンとユーザがボタンをタップした回数が表示されます。
           ユーザはそのボタンをタップすると<span>HelloWorldPage</span>に移動します。
           <span>HelloWorldPage</span>ではHello Worldの文字をタップすると前の画面に戻ります。
-          <a href="http://hello.navyjs.org" target="_blank">hello.navyjs.org</a>
+          <a href="http://hello.navyjs.org" target="_blank" data-track="true">hello.navyjs.org</a>
         </p>
       </div>
     </div>
@@ -165,8 +164,9 @@ Navy.Class('MainPage', Navy.Page, {
 <footer>
   <div class="container">
     <p>Released under the MIT License</p>
-    <p>Copyright (c) 2014 <a href="https://twitter.com/h13i32maru">@h13i32maru</a></p>
+    <p>Copyright (c) 2014 <a href="https://twitter.com/h13i32maru" data-track="true">@h13i32maru</a></p>
   </div>
 </footer>
+<script src="../js/analytics.js"></script>
 </body>
 </html>
