@@ -70,6 +70,7 @@
 <file>sample/Library/contents/config/app.json</file>
 <file>sample/Library/contents/config/page.json</file>
 <file>sample/Library/contents/config/scene.json</file>
+<file>sample/Library/contents/image/back.png</file>
 <file>sample/Library/contents/image/button_active.png</file>
 <file>sample/Library/contents/image/button_disabled.png</file>
 <file>sample/Library/contents/image/button_normal.png</file>
