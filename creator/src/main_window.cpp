@@ -208,6 +208,11 @@ void MainWindow::updateManifest() {
     QSettings *s = mPrefDialog->getSettings();
     QString program = s->value(NPrefDialog::NODE_JS_PATH).toString();
 
+    if (!QFileInfo(program).exists()) {
+        QMessageBox::critical(this, "", "nodejs is not exists. " + program);
+        return;
+    }
+
     QStringList arguments;
     arguments.append(NProject::instance()->toolsDirPath() + "/update_manifest.js");
     arguments.append("--format");
