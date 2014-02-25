@@ -171,6 +171,7 @@ void MainWindow::openSampleProject(QAction *action) {
     QString baseName = QFileInfo(projectDirPath).baseName();
     QString distDirPath = parentDirPath + "/" + baseName;
     if (QDir(distDirPath).exists()) {
+        QMessageBox::critical(this, "", "already exists directory." + distDirPath);
         return;
     }
 
