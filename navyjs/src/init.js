@@ -37,4 +37,25 @@ window.addEventListener('DOMContentLoaded', function(){
       console.error(path);
     }
   });
+
+  // PCで見ている場合にtouchがエミュレートされていなければ警告を出すようにする
+  if (!('ontouchstart' in window.document.body)) {
+    (function(){
+      var touched = false;
+      var ontouchstart = function(){
+        touched = true;
+      };
+      var onclick = function(){
+        if (touched) {
+          document.body.removeEventListener('touchstart', ontouchstart);
+          document.body.removeEventListener('click', onclick);
+        } else {
+          alert('Please emulate touch by Chrome Devtools.\nTool -> Developer Tool -> Emulation -> Sensors -> Emulate touch screen.');
+        }
+      };
+
+      document.body.addEventListener('touchstart', ontouchstart);
+      document.body.addEventListener('click', onclick);
+    })();
+  }
 });
