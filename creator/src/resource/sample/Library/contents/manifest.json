@@ -38,6 +38,10 @@
       "hash": "c4fc8a99856bd4ae6b8900cc823f9cf2"
     },
     {
+      "path": "image/back.png",
+      "hash": "b8f829c03cc81e9832e7450cd98bfc97"
+    },
+    {
       "path": "image/button_active.png",
       "hash": "3947e9be62c0db5f0f0bd628b6d1d8e4"
     },
@@ -79,7 +83,7 @@
     },
     {
       "path": "layout/main_scene.json",
-      "hash": "62b211add1a9678db9a07e4f7fd7a679"
+      "hash": "eaf1aab264b4663edcf7843ffff5814d"
     },
     {
       "path": "layout/tab1.json",

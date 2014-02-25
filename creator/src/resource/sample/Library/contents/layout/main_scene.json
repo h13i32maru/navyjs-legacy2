@@ -30,6 +30,37 @@
         "height": "fixed",
         "width": "matchParent"
       },
+      "visible": true,
+      "__creator__": {
+        "groupingIds": [
+          1
+        ]
+      }
+    },
+    {
+      "backgroundColor": "",
+      "border": "none 4px #000000",
+      "class": "Navy.View.Image",
+      "extra": {
+        "src": "image/back.png"
+      },
+      "id": "Image2",
+      "link": {
+        "id": "page/$back"
+      },
+      "padding": "10px 0",
+      "pos": {
+        "x": 18,
+        "y": 6
+      },
+      "size": {
+        "height": 64,
+        "width": 100
+      },
+      "sizePolicy": {
+        "height": "wrapContent",
+        "width": "fixed"
+      },
       "visible": true
     }
   ],
