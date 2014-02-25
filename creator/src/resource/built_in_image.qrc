@@ -8,5 +8,6 @@
         <file>built_in_image/button/middle/normal.png</file>
         <file>built_in_image/icon.png</file>
         <file>built_in_image/loading.png</file>
+        <file>built_in_image/back.png</file>
     </qresource>
 </RCC>
