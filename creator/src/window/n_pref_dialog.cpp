@@ -7,19 +7,19 @@
 #include <QVariant>
 #include <QDebug>
 
-const QString NPrefDialog::DONE_PREFERENCE = "donePrefrence";
-const QString NPrefDialog::PREVIEW_GOOGLE_CHROME_PATH = "preview/googleChromePath";
-const QString NPrefDialog::PREVIEW_ALLOW_FILE_ACCESS_FROM_FILE = "preview/allowFileAccessFromFile";
-const QString NPrefDialog::PREVIEW_DISABLE_WEB_SECURITY = "preview/disableWebSecurity";
-const QString NPrefDialog::PREVIEW_USER_DATA_DIR = "preview/userDataDir";
-const QString NPrefDialog::PREVIEW_OTHER_OPTIONS = "preview/otherOptions";
-const QString NPrefDialog::NODE_JS_PATH = "pref/nodejsPath";
+const QString NPrefDialog::PREVIEW_GOOGLE_CHROME_PATH = "pref/chrome/googleChromePath";
+const QString NPrefDialog::PREVIEW_ALLOW_FILE_ACCESS_FROM_FILE = "pref/chrome/allowFileAccessFromFile";
+const QString NPrefDialog::PREVIEW_DISABLE_WEB_SECURITY = "pref/chrome/disableWebSecurity";
+const QString NPrefDialog::PREVIEW_USER_DATA_DIR = "pref/chrome/userDataDir";
+const QString NPrefDialog::PREVIEW_OTHER_OPTIONS = "pref/chrome/otherOptions";
+const QString NPrefDialog::NODE_JS_PATH = "pref/node/nodejsPath";
 
-NPrefDialog::NPrefDialog(QWidget *parent) : QDialog(parent), ui(new Ui::NPrefDialog), mSettings("h13i32maru.jp", "NavyCreator") {
+NPrefDialog::NPrefDialog(QWidget *parent) : QDialog(parent), ui(new Ui::NPrefDialog), mSettings("navyjs.org", "NavyCreator") {
     ui->setupUi(this);
 
-    if (!mSettings.value(DONE_PREFERENCE).toBool()) {
+    if (!mSettings.contains(PREVIEW_GOOGLE_CHROME_PATH)) {
         this->setDefault();
+        this->syncWidgetToSettings();
     }
 
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
@@ -108,7 +108,6 @@ int NPrefDialog::exec() {
     int ret = QDialog::exec();
 
     if (ret == Accepted) {
-        mSettings.setValue(DONE_PREFERENCE, true);
         this->syncWidgetToSettings();
     }
 

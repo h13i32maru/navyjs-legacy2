@@ -13,7 +13,6 @@ class NPrefDialog : public QDialog
     Q_OBJECT
 
 public:
-    static const QString DONE_PREFERENCE;
     static const QString PREVIEW_GOOGLE_CHROME_PATH;
     static const QString PREVIEW_ALLOW_FILE_ACCESS_FROM_FILE;
     static const QString PREVIEW_DISABLE_WEB_SECURITY;
