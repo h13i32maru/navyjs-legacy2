@@ -10,6 +10,8 @@ NAboutDialog::NAboutDialog(QWidget *parent) : QDialog(parent), ui(new Ui::NAbout
 {
     ui->setupUi(this);
 
+    this->setFixedSize(this->sizeHint());
+
     // navyjs version
     QString jsVersion = "-";
     QFile file(":/misc/version.js");

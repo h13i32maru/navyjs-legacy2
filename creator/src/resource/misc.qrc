@@ -1,5 +1,6 @@
 <RCC>
-  <qresource prefix="/">
-    <file>misc/version.js</file>
-  </qresource>
+    <qresource prefix="/">
+        <file>misc/version.js</file>
+        <file>misc/icon.png</file>
+    </qresource>
 </RCC>
