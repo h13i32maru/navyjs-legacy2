@@ -16,7 +16,9 @@ Navy.Class('LoginPage', Navy.Page, {
   },
 
   _onTapLoginButton: function(/* ev */) {
-    var token = this.findViewById('TokenEdit').getText().trim();
+    var token = this.findViewById('TokenEdit').getText();
+    // コピペすると余計な文字も含まれてくる可能性があるので、tokenだけを取り出す.
+    token = token.match(/[0-9a-z]{40}/)[0];
     if (!token) {
       return;
     }
