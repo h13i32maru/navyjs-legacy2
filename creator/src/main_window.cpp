@@ -221,11 +221,7 @@ void MainWindow::launchGoogleChrome() {
         return;
     }
 
-    int ret = QMessageBox::question(this, tr(""),
-                tr("Do you want to launch the Google Chrome that enable cross-domain access and local file access?"));
-    if (ret != QMessageBox::Yes) {
-        return;
-    }
+    QStringList msg;
 
     QSettings *s = mPrefDialog->getSettings();
     QString program = s->value(NPrefDialog::PREVIEW_GOOGLE_CHROME_PATH).toString();
@@ -233,10 +229,12 @@ void MainWindow::launchGoogleChrome() {
     QStringList arguments;
     if (s->value(NPrefDialog::PREVIEW_ALLOW_FILE_ACCESS_FROM_FILE).toBool()) {
         arguments.append("--allow-file-access-from-files");
+        msg.append("local file access");
     }
 
     if (s->value(NPrefDialog::PREVIEW_DISABLE_WEB_SECURITY).toBool()) {
         arguments.append("--disable-web-security");
+        msg.append("enable cross-domain access");
     }
 
     if (!s->value(NPrefDialog::PREVIEW_USER_DATA_DIR).toString().isEmpty()) {
@@ -247,6 +245,13 @@ void MainWindow::launchGoogleChrome() {
     if (!s->value((NPrefDialog::PREVIEW_OTHER_OPTIONS)).toString().isEmpty()) {
         QStringList options = s->value(NPrefDialog::PREVIEW_OTHER_OPTIONS).toString().split(" ");
         arguments.append(options);
+    }
+
+    if (msg.length() > 0) {
+        int ret = QMessageBox::question(this, "", "Do you want to launch the Google Chrome that " + msg.join(" and ") + "?");
+        if (ret != QMessageBox::Yes) {
+            return;
+        }
     }
 
     QString filePath = "file://" + NProject::instance()->contentsFilePath("index.html");
