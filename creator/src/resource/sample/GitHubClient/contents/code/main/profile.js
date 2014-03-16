@@ -72,7 +72,7 @@ Navy.Class('ProfilePage', Navy.Page, {
       viewGroup.findViewById('Name').setText(event.actor.login);
       viewGroup.findViewById('Text').setText(User.createEventText(event));
       viewGroup.findViewById('Time').setText(new Date(event.created_at).toString());
-      viewGroup.findViewById('Icon').setSrc(event.actor.avatar_url + '&s=80');
+      viewGroup.findViewById('Icon').setSrc(event.actor.avatar_url + '?s=80');
 
       if (isSelf) {
         viewGroup.on('Tap', onTapUser);
